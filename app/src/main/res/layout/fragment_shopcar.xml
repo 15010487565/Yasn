@@ -1,0 +1,54 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/view_simple_topbar" />
+
+        <LinearLayout
+            android:id="@+id/announcement_linear"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_45"
+            android:background="@color/orange_laba"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/height_20"
+                android:layout_height="@dimen/height_20"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:background="@mipmap/laba" />
+
+            <TextView
+                android:id="@+id/announcement_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_16" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/order_recy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <include layout="@layout/footview_listview" />
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
+

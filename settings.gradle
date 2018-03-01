@@ -1,0 +1,2 @@
+include ':app', ':mylibrary', ':gsyVideoPlayer-java', ':gsyVideoPlayer', ':gsyVideoPlayer-ex_so', ':gsyVideoPlayer-armv5', ':gsyVideoPlayer-armv64', ':gsyVideoPlayer-armv7a', ':gsyVideoPlayer-x86', ':shareLibrary', ':JsBridgelibrary', ':sobotsdk'
+include ':spinner_lib'

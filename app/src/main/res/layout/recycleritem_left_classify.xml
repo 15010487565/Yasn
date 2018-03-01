@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yasn.purchase.view.ChoiceItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/height_45"
+    android:gravity="center">
+    <View
+        android:id="@+id/line"
+        android:layout_width="@dimen/margin_3"
+        android:layout_height="match_parent"
+        android:background="@color/orange"/>
+    <TextView
+        android:id="@+id/leftclassify"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_66"
+        android:textSize="@dimen/textsize_16"
+        android:gravity="center"
+        android:text="推荐分类"/>
+</com.yasn.purchase.view.ChoiceItemLayout>

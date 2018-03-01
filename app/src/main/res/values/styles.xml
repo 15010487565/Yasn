@@ -1,0 +1,213 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="BaseAppTheme" parent="activitynotAnimation">
+        <item name="android:listDivider">@drawable/divider</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:listDivider">@drawable/divider</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppThemeFullScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@mipmap/launch_bg</item>
+    </style>
+
+    <style name="AppWelcome" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowBackground">@mipmap/launch_bg</item>
+    </style>
+
+    <style name="PopupAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_bottom_menu_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_bottom_menu_exit</item>
+    </style>
+
+    <style name="padding_style">
+        <item name="android:paddingLeft">@dimen/padding_m</item>
+        <item name="android:paddingRight">@dimen/padding_m</item>
+        <item name="android:paddingTop">@dimen/padding_s</item>
+        <item name="android:paddingBottom">@dimen/padding_s</item>
+    </style>
+
+    <style name="Theme.notAnimation" parent="AppThemeFullScreen">
+        <item name="android:windowAnimationStyle">@style/notAnimation</item>
+    </style>
+
+    <style name="activitynotAnimation" parent="android:Theme">
+        <item name="android:windowAnimationStyle">@style/notAnimation</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="notAnimation">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+        <item name="android:taskOpenEnterAnimation">@null</item>
+        <item name="android:taskOpenExitAnimation">@null</item>
+        <item name="android:taskCloseEnterAnimation">@null</item>
+        <item name="android:taskCloseExitAnimation">@null</item>
+        <item name="android:taskToFrontEnterAnimation">@null</item>
+        <item name="android:taskToFrontExitAnimation">@null</item>
+        <item name="android:taskToBackEnterAnimation">@null</item>
+        <item name="android:taskToBackExitAnimation">@null</item>
+    </style>
+    <!-- window 透明的-->
+    <style name="Theme.AppCompat.Translucent" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/no_color</item>
+        <item name="colorPrimaryDark">@color/dark</item>
+    </style>
+
+    <style name="dialog_style" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <!--弹出框动画-->
+    <style name="share_animation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
+    <!-- 对话框样式 -->
+    <style name="dialog_bottom_full" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:scrollHorizontally">true</item>
+    </style>
+
+    <style name="style_text14_black_66">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black_66</item>
+    </style>
+
+    <style name="style_textcolor_black_66">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/black_66</item>
+    </style>
+
+    <style name="style_textcolor_black_99">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/black_99</item>
+    </style>
+
+    <style name="style_textcolor_orange">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="TabLayoutTextStyle_goods">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">@dimen/textsize_16</item>
+    </style>
+
+    <style name="horizontal_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">#EDEDED</item>
+    </style>
+
+    <style name="common_horizontal_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">#dddddd</item>
+        <item name="android:alpha">0.4</item>
+    </style>
+
+    <style name="style_black_s15">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">#222222</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="style_red_s18">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="style_tabView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">#222222</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="style_navigation">
+        <item name="android:layout_width">190dp</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">#ec0f38</item>
+    </style>
+
+    <style name="goodsdetailspromotion_shape">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/margin_3</item>
+        <item name="android:paddingRight">@dimen/margin_3</item>
+        <item name="android:paddingTop">@dimen/margin_1</item>
+        <item name="android:paddingBottom">@dimen/margin_1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:background">@drawable/text_red_white</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">@dimen/textsize_14</item>
+    </style>
+
+    <style name="goodsdetailspromotion_context">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/margin_10</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/black_66</item>
+        <item name="android:textSize">@dimen/textsize_14</item>
+    </style>
+
+    <style name="include_goodsdetails_details_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:layout_marginTop">@dimen/margin_2</item>
+        <item name="android:textSize">@dimen/textsize_12</item>
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="include_goodsdetails_details_image">
+        <item name="android:layout_width">@dimen/height_25</item>
+        <item name="android:layout_height">@dimen/height_25</item>
+    </style>
+
+    <style name="mypopwindow_anim_style">
+        <item name="android:windowEnterAnimation">@anim/home_in_anim</item>
+        <item name="android:windowExitAnimation">@anim/home_out_anim</item>
+    </style>
+
+</resources>

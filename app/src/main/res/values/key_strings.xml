@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Weixin -->
+    <string name="weixin_key">wxfaf772b01b93fb55</string>
+
+    <!-- QQ -->
+    <string name="tencent_qq_appid">1104548558</string>
+    <!-- 智齿 -->
+    <string name="zhichi_key">e87117167f08440f80dbc113c9f14689</string>
+</resources>

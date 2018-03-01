@@ -1,0 +1,79 @@
+<resources>
+    <string name="app_name">雅森车品宝</string>
+    <string name="data_failure_tip">数据加载失败,请稍后再试或检查网络</string>
+    <string name="press_back_again_to_quit">再按一次退出程序</string>
+    <string name="clear_sucess">缓存已清空</string>
+    <string name="refresh_sucess">已刷新</string>
+
+    <string name="find_new_version">发现新版本,请更新后再进入应用</string>
+    <string name="is_new_version">您使用的已是最新版本</string>
+    <string name="update">更新</string>
+    <string name="quit">退出</string>
+    <string name="failed">failed</string>
+    <string name="done">done</string>
+
+    <string name="notifyTitle">提示</string>
+    <string name="notifyMsg">当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。</string>
+    <string name="setting">设置</string>
+    <string name="cancel">取消</string>
+
+    <string name="detail_text">sss</string>
+
+    <string name="strToastYourAreTheLatestVersion">你已经是最新版了</string>
+    <string name="strToastCheckUpgradeError">检查新版本失败，请稍后重试</string>
+    <string name="strToastCheckingUpgrade">正在检查，请稍候...</string>
+    <string name="strNotificationDownloading">正在下载</string>
+    <string name="strNotificationClickToView">点击查看</string>
+    <string name="strNotificationClickToInstall">点击安装</string>
+    <string name="strNotificationClickToRetry">点击重试</string>
+    <string name="strNotificationDownloadSucc">下载完成</string>
+    <string name="strNotificationDownloadError">下载失败</string>
+    <string name="strNotificationHaveNewVersion">有新版本</string>
+    <string name="strNetworkTipsMessage">你已切换到移动网络，是否继续当前下载？</string>
+    <string name="strNetworkTipsTitle">网络提示</string>
+    <string name="strNetworkTipsConfirmBtn">继续下载</string>
+    <string name="strNetworkTipsCancelBtn">取消</string>
+    <string name="strUpgradeDialogVersionLabel">版本</string>
+    <string name="strUpgradeDialogFileSizeLabel">包大小</string>
+    <string name="strUpgradeDialogUpdateTimeLabel">更新时间</string>
+    <string name="strUpgradeDialogFeatureLabel">更新说明</string>
+    <string name="strUpgradeDialogUpgradeBtn">立即更新</string>
+    <string name="strUpgradeDialogInstallBtn">安装</string>
+    <string name="strUpgradeDialogRetryBtn">重试</string>
+    <string name="strUpgradeDialogContinueBtn">继续</string>
+    <string name="strUpgradeDialogCancelBtn">下次再说</string>
+    <string name="home_search">请输入商品名称</string>
+
+    <string name="unknown">未知</string>
+    <string name="shoplist">常购清单</string>
+    <string name="mycollect">我的收藏</string>
+    <string name="removeall">删除全部</string>
+    <string name="highprofit">高毛利商品</string>
+
+    <string name="all">全部</string>
+    <string name="choiceness">精选</string>
+    <string name="video">视频</string>
+
+    <string name="obligation">待付款</string>
+    <string name="overhang">待发货</string>
+    <string name="waitreceiving">待收货</string>
+    <string name="allorder">全部订单</string>
+
+    <string name="mejifen">我的积分</string>
+    <string name="shouhuo_addressv">收货地址</string>
+    <string name="mebaitiao">我的白条</string>
+    <string name="phoneconsult">电话咨询</string>
+    <string name="help">帮助中心</string>
+    <string name="serviceing">在线客服</string>
+    <string name="zhuanpiao">专票资质</string>
+    <string name="numbervip">数字会员</string>
+    <string name="collect">收藏</string>
+    <string name="callphone">电话咨询</string>
+    <string name="callservice">在线客服</string>
+
+    <string name="makerdredge">开通创客</string>
+    <string name="makerqrcode">推广二维码</string>
+    <string name="makerreceiptaccount">收款账号</string>
+    <string name="makerexploitshop">开拓门店</string>
+    <string name="makershoporder">门店订单</string>
+</resources>

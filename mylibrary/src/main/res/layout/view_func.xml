@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <View
+        android:id="@+id/func_separator"
+        android:layout_marginLeft="@dimen/margin_15"
+        android:layout_marginRight="@dimen/margin_15"
+        android:layout_width="match_parent"
+        android:background="@color/line_c3"
+        android:layout_height="1px" />
+
+    <LinearLayout
+        android:id="@+id/func_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50"
+        android:gravity="center"
+        android:background="@color/white"
+        android:orientation="horizontal" >
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/func_icon"
+                android:layout_width="@dimen/height_25"
+                android:layout_height="@dimen/height_25"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="@dimen/margin_15"
+                android:layout_marginRight="@dimen/margin_15"
+                android:contentDescription="@null" />
+
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/func_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:duplicateParentState="true"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@color/black_33"
+            android:textSize="@dimen/textsize_18" />
+        <LinearLayout
+            android:id="@+id/func_custom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:duplicateParentState="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+        </LinearLayout>
+        <!--箭头-->
+        <ImageView
+            android:id="@+id/func_right"
+            android:layout_width="@dimen/margin_15"
+            android:layout_height="@dimen/margin_15"
+            android:layout_marginLeft="@dimen/margin_15"
+            android:layout_marginRight="@dimen/margin_15"
+            android:background="@mipmap/home_top_arrows"
+            android:contentDescription="@null"
+            android:duplicateParentState="true" />
+    </LinearLayout>
+
+</LinearLayout>

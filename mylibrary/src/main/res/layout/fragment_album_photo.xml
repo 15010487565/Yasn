@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <include
+        android:id="@+id/fragment_phpto"
+        layout="@layout/view_simple_topbar"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <GridView
+            android:id="@+id/album_photo_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/red"
+            android:gravity="center"
+            android:horizontalSpacing="@dimen/album_photo_spacing"
+            android:listSelector="@color/transparent"
+            android:numColumns="3"
+            android:paddingLeft="@dimen/album_photo_spacing"
+            android:paddingRight="@dimen/album_photo_spacing"
+            android:scrollbars="none"
+            android:verticalSpacing="@dimen/album_photo_spacing" />
+
+        <View
+            android:id="@+id/album_list_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_album_image_bg"
+            android:visibility="gone" >
+        </View>
+
+        <ListView
+            android:id="@+id/album_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/album_listview_margin_bottom"
+            android:background="@color/white"
+            android:divider="@color/background_f3f3f3"
+            android:dividerHeight="1px"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/black_33" />
+
+    <RelativeLayout
+        android:id="@+id/album_photo_bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_f3f3f3"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/album_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:drawableRight="@drawable/topbar_title_more"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/album_all_photo"
+            android:textColor="@color/black_33"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/album_preview_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="@string/album_preview"
+            android:textColor="@color/black_33"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+</LinearLayout>

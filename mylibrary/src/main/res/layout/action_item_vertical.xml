@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:id="@+id/item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/height_50"
+        android:background="@color/top_bar_background"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/topbar_create_multi_chat_icon_padding_top"
+            android:paddingLeft="@dimen/topbar_create_multi_chat_icon_padding_left"
+            android:paddingRight="@dimen/topbar_create_multi_chat_icon_padding_left"
+            android:paddingTop="@dimen/topbar_create_multi_chat_icon_padding_top"
+            android:layout_gravity="left" >
+
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="@dimen/topbar_create_multi_chat_length"
+                android:layout_height="@dimen/topbar_create_multi_chat_length"
+                android:scaleType="fitCenter"
+                android:contentDescription="@null" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/topbar_create_multi_chat_text_margin_right"
+            android:gravity="left|center_vertical"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_18" />
+    </LinearLayout>
+    <!--<View-->
+        <!--android:id="@+id/bg_view"-->
+        <!--android:background="@color/white"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="1px"/>-->
+</LinearLayout>

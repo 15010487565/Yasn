@@ -1,0 +1,434 @@
+{
+  "goodsDetails": {
+    "page": null,
+    "pageSize": null,
+    "goodsId": 3662,
+    "name": "测试规格",
+    "marketEnable": 1,
+    "brief": null,
+    "price": 4.0,
+    "cost": 0.0,
+    "mktPrice": 12.0,
+    "haveSpec": 1,
+    "totalViewCount": 122,
+    "totalBuyCount": 0,
+    "disabled": 0,
+    "enableStore": 110,
+    "pageTitle": null,
+    "metaKeywords": null,
+    "metaDescription": null,
+    "storeId": 1,
+    "goodsTransfeeCharge": 1,
+    "storeName": "雅森自营",
+    "isDisplay": 1,
+    "advert": "",
+    "subTitle": "",
+    "goodsPoint": 10,
+    "maxCountPerUser": 0,
+    "pointUsable": 1,
+    "publishType": 0,
+    "totalPlayCount": 12,
+    "isGift": null,
+    "videoDetailUrl": null,
+    "isSuccessCase": 0,
+    "haveVoice": 0,
+    "voiceDetailUrl": null,
+    "point": 5,
+    "brandName": "Presta",
+    "typeId": 132,
+    "unit": "",
+    "isBeforeSale": 0,
+    "goodsBeforeSale": null,
+    "isLimitBuy": 0,
+    "goodsLimitBuy": null,
+    "specs": [
+      {
+        "specId": 42,
+        "specName": "型号",
+        "specValues": [
+          {
+            "specValueId": 622,
+            "specValueName": "双灯H13"
+          },
+          {
+            "specValueId": 621,
+            "specValueName": "双灯H4"
+          }
+        ]
+      },
+      {
+        "specId": 26,
+        "specName": "包装规格",
+        "specValues": [
+          {
+            "specValueId": 874,
+            "specValueName": "828ml*4瓶"
+          },
+          {
+            "specValueId": 848,
+            "specValueName": " 1.9L*4桶"
+          }
+        ]
+      },
+      {
+        "specId": 1,
+        "specName": "颜色",
+        "specValues": [
+          {
+            "specValueId": 41,
+            "specValueName": "黄色"
+          },
+          {
+            "specValueId": 42,
+            "specValueName": "绿色"
+          },
+          {
+            "specValueId": 1926,
+            "specValueName": "AAA6款硅胶底黑色"
+          }
+        ]
+      }
+    ],
+    "carTypes": [
+      {
+        "carTypeId": 7881,
+        "goodsId": 3662,
+        "carName": "适用所有车型",
+        "carDepthFirst": 0,
+        "carDepthSecond": null,
+        "carDepthThird": null,
+        "carDepthFourth": null
+      }
+    ],
+    "goodsActity": null,
+    "storeActivity": {
+      "page": null,
+      "pageSize": null,
+      "activityId": 268,
+      "activityName": "包邮活动测试",
+      "startTime": 1515470841,
+      "endTime": 1517371646,
+      "description": "<p>包邮!!!!!!!</p>",
+      "rangeType": 1,
+      "disabled": 0,
+      "type": 0,
+      "storeId": 1
+    },
+    "suit": [],
+    "products": [
+      {
+        "productId": 5577,
+        "goodsId": 3662,
+        "name": "测试规格",
+        "sn": "sn2346-0",
+        "store": 20,
+        "enableStore": 20,
+        "price": 12.0,
+        "cost": null,
+        "weight": null,
+        "specValueIds": [
+          621,
+          848,
+          41
+        ],
+        "step": 1,
+        "smallSale": 1,
+        "goodsLvPrices": null,
+        "ladderPrices": null,
+        "copiedProductId": null,
+        "minReferencePrice": null,
+        "maxReferencePrice": null,
+        "activityPrice": null
+      },
+      {
+        "productId": 5578,
+        "goodsId": 3662,
+        "name": "测试规格",
+        "sn": "sn2346-1",
+        "store": 0,
+        "enableStore": 0,
+        "price": 12.0,
+        "cost": null,
+        "weight": null,
+        "specValueIds": [
+          622,
+          848,
+          41
+        ],
+        "step": 1,
+        "smallSale": 1,
+        "goodsLvPrices": null,
+        "ladderPrices": null,
+        "copiedProductId": null,
+        "minReferencePrice": null,
+        "maxReferencePrice": null,
+        "activityPrice": null
+      },
+      {
+        "productId": 5579,
+        "goodsId": 3662,
+        "name": "测试规格",
+        "sn": "sn2346-2",
+        "store": 0,
+        "enableStore": 0,
+        "price": 12.0,
+        "cost": null,
+        "weight": null,
+        "specValueIds": [
+          621,
+          874,
+          41
+        ],
+        "step": 1,
+        "smallSale": 1,
+        "goodsLvPrices": null,
+        "ladderPrices": null,
+        "copiedProductId": null,
+        "minReferencePrice": null,
+        "maxReferencePrice": null,
+        "activityPrice": null
+      },
+      {
+        "productId": 5580,
+        "goodsId": 3662,
+        "name": "测试规格",
+        "sn": "sn2346-3",
+        "store": 10,
+        "enableStore": 10,
+        "price": 12.0,
+        "cost": null,
+        "weight": null,
+        "specValueIds": [
+          622,
+          874,
+          41
+        ],
+        "step": 1,
+        "smallSale": 1,
+        "goodsLvPrices": null,
+        "ladderPrices": null,
+        "copiedProductId": null,
+        "minReferencePrice": null,
+        "maxReferencePrice": null,
+        "activityPrice": null
+      },
+      {
+        "productId": 5581,
+        "goodsId": 3662,
+        "name": "测试规格",
+        "sn": "sn2346-4",
+        "store": 0,
+        "enableStore": 0,
+        "price": 12.0,
+        "cost": null,
+        "weight": null,
+        "specValueIds": [
+          621,
+          848,
+          42
+        ],
+        "step": 1,
+        "smallSale": 1,
+        "goodsLvPrices": null,
+        "ladderPrices": null,
+        "copiedProductId": null,
+        "minReferencePrice": null,
+        "maxReferencePrice": null,
+        "activityPrice": null
+      },
+      {
+        "productId": 5582,
+        "goodsId": 3662,
+        "name": "测试规格",
+        "sn": "sn2346-5",
+        "store": 30,
+        "enableStore": 30,
+        "price": 5.0,
+        "cost": null,
+        "weight": null,
+        "specValueIds": [
+          622,
+          848,
+          42
+        ],
+        "step": 1,
+        "smallSale": 1,
+        "goodsLvPrices": null,
+        "ladderPrices": null,
+        "copiedProductId": null,
+        "minReferencePrice": null,
+        "maxReferencePrice": null,
+        "activityPrice": null
+      },
+      {
+        "productId": 5583,
+        "goodsId": 3662,
+        "name": "测试规格",
+        "sn": "sn2346-6",
+        "store": 0,
+        "enableStore": 0,
+        "price": 4.0,
+        "cost": null,
+        "weight": null,
+        "specValueIds": [
+          621,
+          874,
+          42
+        ],
+        "step": 1,
+        "smallSale": 1,
+        "goodsLvPrices": null,
+        "ladderPrices": null,
+        "copiedProductId": null,
+        "minReferencePrice": null,
+        "maxReferencePrice": null,
+        "activityPrice": null
+      },
+      {
+        "productId": 5584,
+        "goodsId": 3662,
+        "name": "测试规格",
+        "sn": "sn2346-7",
+        "store": 50,
+        "enableStore": 50,
+        "price": 12.0,
+        "cost": null,
+        "weight": null,
+        "specValueIds": [
+          622,
+          874,
+          42
+        ],
+        "step": 1,
+        "smallSale": 1,
+        "goodsLvPrices": null,
+        "ladderPrices": null,
+        "copiedProductId": null,
+        "minReferencePrice": null,
+        "maxReferencePrice": null,
+        "activityPrice": null
+      },
+      {
+        "productId": 5585,
+        "goodsId": 3662,
+        "name": "测试规格",
+        "sn": "sn2346-8",
+        "store": 0,
+        "enableStore": 0,
+        "price": 12.0,
+        "cost": null,
+        "weight": null,
+        "specValueIds": [
+          621,
+          848,
+          1926
+        ],
+        "step": 1,
+        "smallSale": 1,
+        "goodsLvPrices": null,
+        "ladderPrices": null,
+        "copiedProductId": null,
+        "minReferencePrice": null,
+        "maxReferencePrice": null,
+        "activityPrice": null
+      },
+      {
+        "productId": 5586,
+        "goodsId": 3662,
+        "name": "测试规格",
+        "sn": "sn2346-9",
+        "store": 0,
+        "enableStore": 0,
+        "price": 12.0,
+        "cost": null,
+        "weight": null,
+        "specValueIds": [
+          622,
+          848,
+          1926
+        ],
+        "step": 1,
+        "smallSale": 1,
+        "goodsLvPrices": null,
+        "ladderPrices": null,
+        "copiedProductId": null,
+        "minReferencePrice": null,
+        "maxReferencePrice": null,
+        "activityPrice": null
+      },
+      {
+        "productId": 5587,
+        "goodsId": 3662,
+        "name": "测试规格",
+        "sn": "sn2346-10",
+        "store": 0,
+        "enableStore": 0,
+        "price": 12.0,
+        "cost": null,
+        "weight": null,
+        "specValueIds": [
+          621,
+          874,
+          1926
+        ],
+        "step": 1,
+        "smallSale": 1,
+        "goodsLvPrices": null,
+        "ladderPrices": null,
+        "copiedProductId": null,
+        "minReferencePrice": null,
+        "maxReferencePrice": null,
+        "activityPrice": null
+      },
+      {
+        "productId": 5588,
+        "goodsId": 3662,
+        "name": "测试规格",
+        "sn": "sn2346-11",
+        "store": 0,
+        "enableStore": 0,
+        "price": 12.0,
+        "cost": null,
+        "weight": null,
+        "specValueIds": [
+          622,
+          874,
+          1926
+        ],
+        "step": 1,
+        "smallSale": 1,
+        "goodsLvPrices": null,
+        "ladderPrices": null,
+        "copiedProductId": null,
+        "minReferencePrice": null,
+        "maxReferencePrice": null,
+        "activityPrice": null
+      }
+    ],
+    "goodsGallerys": [
+      {
+        "imgId": 0,
+        "goodsId": 0,
+        "thumbnail": null,
+        "small": null,
+        "big": "shoptt.yasn.com/static/attachment//store/1/goods/2018/1/15/9//57560941_big.png",
+        "original": null,
+        "tiny": null,
+        "isdefault": 0,
+        "sort": 0
+      }
+    ],
+    "attributes": [
+      {
+        "attrValue": "Presta",
+        "attrName": "品牌"
+      }
+    ],
+    "discount": {
+      "discount_price": "0.00",
+      "has_discount": 0
+    }
+  },
+  "member": null,
+  "cartNum": 0
+}

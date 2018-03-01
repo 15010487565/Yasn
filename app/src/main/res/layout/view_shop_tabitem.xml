@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:focusable="false" >
+
+        <LinearLayout
+            android:id="@+id/main_tabitem_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin_10"
+            android:paddingTop="@dimen/margin_10"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/shop_tabitem_icon"
+                android:layout_width="@dimen/main_tabwidget_image_size"
+                android:layout_height="@dimen/main_tabwidget_image_size"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:background="@mipmap/obligation"/>
+
+            <TextView
+                android:id="@+id/shop_tabitem_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_16"
+                android:layout_centerInParent="true"
+                android:text="XXX"/>
+        </LinearLayout>
+
+        <com.yasn.purchase.view.BadgeView
+            android:id="@+id/shop_tabitem_redpoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:layout_marginTop="@dimen/main_tabwidget_redpoint_margin_top"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:minWidth="@dimen/main_tabwidget_redpoint_size"
+            android:minHeight="@dimen/main_tabwidget_redpoint_size"
+            android:textSize="@dimen/main_tabwidget_redpoint_text"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+</RelativeLayout>

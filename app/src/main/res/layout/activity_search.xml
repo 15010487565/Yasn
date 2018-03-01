@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_f7"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.DrawerLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/drawer_layout"
+        android:fitsSystemWindows="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_f7"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <include layout="@layout/view_simple_topbar" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/top_bar_background"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/top_search_padding"
+                android:paddingTop="@dimen/top_search_padding">
+
+                <include layout="@layout/include_search_text_merge" />
+            </LinearLayout>
+
+            <com.yasn.purchase.view.MultiSwipeRefreshLayout
+                android:id="@+id/swipe_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:addStatesFromChildren="true"
+                android:alpha="1"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/black_f7"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tablayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        app:tabIndicatorColor="@color/orange"
+                        app:tabMode="scrollable"
+                        app:tabSelectedTextColor="@color/orange"
+                        app:tabTextAppearance="@style/TabLayoutTextStyle"
+                        app:tabTextColor="@color/black_33">
+
+                    </android.support.design.widget.TabLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_45"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/search_synthesis"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="综合"
+                            android:textColor="@color/black_33"
+                            android:textSize="@dimen/textsize_16" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_centerHorizontal="true"
+                            android:layout_weight="1"
+                            android:background="@color/white">
+
+                            <org.angmarch.views.ArrowsSpinner
+                                android:id="@+id/search_salesvolume"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:text="销量"
+                                android:textColor="@color/black_33"
+                                android:textSize="@dimen/textsize_16"
+                                android:background="@color/white"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_centerHorizontal="true"
+                            android:layout_weight="1"
+                            android:background="@color/white">
+
+                            <org.angmarch.views.ArrowsSpinner
+                                android:id="@+id/search_money"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                android:text="价格"
+                                android:textColor="@color/black_33"
+                                android:textSize="@dimen/textsize_16"
+                                android:background="@color/white"/>
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/search_screen"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="筛选"
+                            android:textColor="@color/black_33"
+                            android:textSize="@dimen/textsize_16" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/selecttype"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_1"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/margin_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="已选："
+                            android:textColor="@color/black_66"
+                            android:textSize="@dimen/textsize_16" />
+
+                        <FrameLayout
+                            android:id="@+id/yasnautofram"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/text_orange_white">
+
+                            <View
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="top|right|end"
+                                android:layout_marginBottom="-30dp"
+                                android:background="@mipmap/triangle_shape"
+                                android:rotation="0" />
+
+                            <TextView
+                                android:id="@+id/yasnautotext"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right|end"
+                                android:layout_margin="@dimen/margin_8"
+                                android:text="雅森自营"
+                                android:textColor="@color/black_66"
+                                android:textSize="@dimen/textsize_16" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/cartypefram"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_10"
+                            android:background="@drawable/text_orange_white">
+
+                            <View
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="top|right|end"
+                                android:layout_marginBottom="-30dp"
+                                android:background="@mipmap/triangle_shape"
+                                android:rotation="0" />
+
+                            <TextView
+                                android:id="@+id/cartypetext"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right|end"
+                                android:layout_margin="@dimen/margin_8"
+                                android:text="车型"
+                                android:textColor="@color/black_66"
+                                android:textSize="16sp" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <!--<android.support.v4.widget.NestedScrollView-->
+                        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:addStatesFromChildren="true"-->
+                        <!--android:id="@+id/nestedScrollView">-->
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recyclerview_serrch"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:nestedScrollingEnabled="false">
+
+                        </android.support.v7.widget.RecyclerView>
+                        <!--</android.support.v4.widget.NestedScrollView>-->
+
+                        <RelativeLayout
+                            android:id="@+id/ungoods_relat"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:alpha="0">
+
+                            <TextView
+                                android:id="@+id/ungoodshint"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="@dimen/margin_10"
+                                android:text="抱歉，暂无相关商品！"
+                                android:textColor="@color/black_66"
+                                android:textSize="@dimen/textsize_16" />
+
+                            <ImageView
+                                android:layout_width="75dp"
+                                android:layout_height="75dp"
+                                android:layout_above="@id/ungoodshint"
+                                android:layout_centerHorizontal="true"
+                                android:background="@mipmap/unlogin" />
+                        </RelativeLayout>
+                    </FrameLayout>
+                </LinearLayout>
+            </com.yasn.purchase.view.MultiSwipeRefreshLayout>
+
+        </LinearLayout>
+
+        <include layout="@layout/menu_layout_right" />
+    </android.support.v4.widget.DrawerLayout>
+</LinearLayout>

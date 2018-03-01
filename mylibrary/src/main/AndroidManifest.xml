@@ -1,0 +1,39 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="www.xcd.com.mylibrary">
+    <uses-feature android:name="android.hardware.camera"></uses-feature>
+    <application android:allowBackup="true"
+        android:supportsRtl="true">
+        <activity android:name=".activity.PermissionsActivity"/>
+        <activity
+            android:name="www.xcd.com.mylibrary.PhotoActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan|stateHidden" />
+        <activity
+            android:name=".activity.AlbumPhotoActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan|stateHidden" />
+        <activity
+            android:name=".activity.CameraEditActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan|stateHidden" />
+        <provider
+            android:name=".PhotoFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

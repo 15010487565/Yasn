@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_1dp"
+    android:background="@color/white"
+    android:gravity="center"
+    android:minHeight="90dp"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_15">
+
+    <ImageView
+        android:id="@+id/titleimage"
+        android:layout_width="60dp"
+        android:layout_height="90dp"
+        android:scaleType="fitXY"
+        android:background="@mipmap/errorimage" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_15"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/margin_5"
+            android:paddingRight="@dimen/margin_10">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Letv/乐视LETV体感-超级枪王 乐视TV超级电视产品玩具体感游戏枪 电玩道具黑色"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_16">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/autotrophy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_5"
+                android:background="@drawable/shape_orange2"
+                android:text="自营"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_14" />
+
+            <TextView
+                android:id="@+id/purchase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_5"
+                android:layout_toRightOf="@id/autotrophy"
+                android:background="@drawable/shape_red2"
+                android:text="限购"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_14" />
+
+            <TextView
+                android:id="@+id/presell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/purchase"
+                android:background="@drawable/shape_blue2"
+                android:text="预售"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_14" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/home_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="XXXX"
+            android:textColor="@color/black_99"
+            android:textSize="@dimen/textsize_14" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/home_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_5"
+                android:text="￥XX.XX"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/textsize_16" />
+
+            <TextView
+                android:id="@+id/home_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_5"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="XXXX"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/textsize_14" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5">
+
+            <include layout="@layout/threelable" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

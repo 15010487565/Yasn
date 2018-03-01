@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="home_merchant_phone" type="id"/>
+    <item name="home_merchant_location" type="id"/>
+    <item name="home_merchant_placelocation" type="id"/>
+    <item name="home_merchant_mainsetting" type="id"/>
+    <item name="home_merchant_mybankcard" type="id"/>
+    <item name="home_merchant_mytwocode" type="id"/>
+    <item name="home_merchant_describe" type="id"/>
+    <item name="topbar_back_or" type="id"/>
+    <item name="topbar_back_Right" type="id"/>
+
+
+    <item name="topbaror_back" type="id"/>
+    <item name="topbar_back" type="id"/>
+    <item name="main_topbar_add" type="id"/>
+    <item name="main_accounttopbar_add" type="id"/>
+    <item name="homeshopintegraldetail_right_screen" type="id"/>
+    <item name="homeshopintegraldetail_right_save" type="id"/>
+    <item name="detail" type="id"/>
+    <item name="setting" type="id"/>
+    <item type="id" name="tag_first"/>
+    <item type="id" name="tag_second"/>
+
+    <item name="account_smsrecharge" type="id"/>
+    <item name="account_integraldetail" type="id"/>
+    <item name="account_myearnings" type="id"/>
+    <item name="account_newsaddvip" type="id"/>
+    <item name="account_myorderfunc" type="id"/>
+    <item name="account_vipexchangefunc" type="id"/>
+    <item name="topbar_album_confirm" type="id"/>
+    <item name="album_photo_left" type="id"/>
+    <item name="topbar_camera_edit_confirm" type="id"/>
+    <item name="topbar_camera_edit_cancel" type="id"/>
+
+    <item name="topbar_left_shouye" type="id"></item>
+    <item name="topbar_right_shouye" type="id"></item>
+    <item name="me_func_drugstoreneedcompile" type="id"/>
+    <item name="me_func_drugstoreinfosave" type="id"/>
+</resources>

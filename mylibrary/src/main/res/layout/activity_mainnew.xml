@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/topbat_parent"
+        layout="@layout/view_simple_topbar"/>
+    <com.github.lzyzsd.jsbridge.BridgeWebView
+        android:id="@+id/mainWebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:overScrollMode="never"
+        android:layout_below="@id/topbat_parent"/>
+    <www.xcd.com.mylibrary.view.NoScrollViewPager
+        android:id="@+id/main_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topbat_parent">
+    </www.xcd.com.mylibrary.view.NoScrollViewPager>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:paddingTop="@dimen/margin_10"
+        android:background="@android:color/transparent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:id="@+id/main_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_50"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+
+            <www.xcd.com.mylibrary.widget.SnsTabWidget
+                android:id="@+id/main_tabwidget"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:showDividers="none" />
+        </LinearLayout>
+        <View
+            android:id="@+id/mian_line"
+            android:layout_above="@id/main_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_1"
+            android:background="@color/line_c3" />
+        <FrameLayout
+            android:id="@+id/main_find_frame"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_alignBaseline="@id/mian_line"
+            android:focusable="false" >
+
+            <RelativeLayout
+                android:id="@+id/main_find_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/main_tabwidget_image_margin"
+                android:layout_marginRight="@dimen/main_tabwidget_image_margin"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/main_tabitem_icon"
+                    android:layout_width="@dimen/main_tabwidget_image_size_60"
+                    android:layout_height="@dimen/main_tabwidget_image_size_60"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/icon_tab_find"/>
+
+                <TextView
+                    android:id="@+id/main_find_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:textColor="@color/black_66"
+                    android:textSize="@dimen/main_tabitem"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:text="@string/find"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/main_find_viewhl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:alpha="0"
+                android:layout_marginLeft="@dimen/main_tabwidget_image_margin"
+                android:layout_marginRight="@dimen/main_tabwidget_image_margin"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/main_find_iconhl"
+                    android:layout_width="@dimen/main_tabwidget_image_size_60"
+                    android:layout_height="@dimen/main_tabwidget_image_size_60"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/icon_tab_find_press"/>
+                <TextView
+                    android:id="@+id/main_find_texthl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/main_tabitem"
+                    android:text="@string/find"/>
+            </RelativeLayout>
+        </FrameLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/popwindow_lin"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="360dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_45"
+        android:gravity="center"
+        android:textSize="@dimen/textsize_14"
+        android:background="@color/white"
+        android:textColor="@color/black_33"
+        android:text="适用车型" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_1"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:background="@color/black_f5" />
+    <ListView
+        android:id="@+id/goodsCarType"
+        android:layout_width="match_parent"
+        android:divider="@color/black_f5"
+        android:dividerHeight="@dimen/margin_1"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/margin_10"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/ok"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_40"
+        android:gravity="center"
+        android:textSize="@dimen/textsize_14"
+        android:background="@color/orange"
+        android:textColor="@color/white"
+        android:text="我知道了" />
+</LinearLayout>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:focusable="false" >
+
+        <RelativeLayout
+            android:id="@+id/main_tabitem_view"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/main_tabwidget_image_margin"
+            android:layout_marginRight="@dimen/main_tabwidget_image_margin"
+            android:paddingTop="@dimen/margin_5"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/main_tabitem_icon"
+                android:layout_width="@dimen/main_tabwidget_image_size"
+                android:layout_height="@dimen/main_tabwidget_image_size"
+                android:layout_gravity="center"
+                android:padding="@dimen/margin_1dp" />
+
+            <TextView
+                android:id="@+id/main_tabitem_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/main_tabitem"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:text=""/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/main_tabitem_viewhl"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/main_tabwidget_image_margin"
+            android:layout_marginRight="@dimen/main_tabwidget_image_margin"
+            android:paddingTop="@dimen/margin_5"
+            android:alpha="0"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/main_tabitem_iconhl"
+                android:layout_width="@dimen/main_tabwidget_image_size"
+                android:layout_height="@dimen/main_tabwidget_image_size"
+                android:padding="@dimen/margin_1dp"
+                android:layout_gravity="center" />
+            <TextView
+                android:id="@+id/main_tabitem_texthl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:padding="0dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/main_tabitem" />
+        </RelativeLayout>
+        <com.yasn.purchase.view.BadgeView
+            android:id="@+id/main_tabitem_redpoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:layout_marginRight="@dimen/main_tabwidget_redpoint_margin_top"
+            android:layout_marginTop="@dimen/main_tabwidget_redpoint_margin_top"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:minWidth="@dimen/main_tabwidget_redpoint_size"
+            android:minHeight="@dimen/main_tabwidget_redpoint_size"
+            android:textSize="@dimen/main_tabwidget_redpoint_text"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+</RelativeLayout>

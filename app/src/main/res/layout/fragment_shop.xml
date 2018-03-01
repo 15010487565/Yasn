@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:addStatesFromChildren="true"
+        android:background="@color/black_f7"
+        android:fitsSystemWindows="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black_f7"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/title"
+                layout="@layout/view_simple_topbar" />
+
+            <include layout="@layout/include_storetabtop" />
+
+            <include layout="@layout/shoptwofunc" />
+
+            <include layout="@layout/shopmyorder" />
+
+            <include layout="@layout/shopmymaker" />
+
+            <include layout="@layout/shopstaffmanage" />
+
+            <include layout="@layout/shopstatistics" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/shop_recy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@color/white"
+                android:paddingLeft="@dimen/margin_10"
+                android:paddingRight="@dimen/margin_10">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <include layout="@layout/footview_listview" />
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>
+

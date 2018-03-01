@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Letv/乐视LETV体感-超级枪王 乐视TV超级电视产品玩具体感游戏枪 电玩道具黑色"
+        android:textColor="@color/black_66"
+        android:textSize="@dimen/textsize_16">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/autotrophy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_5"
+        android:background="@drawable/shape_orange2"
+        android:text="自营"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14" />
+
+    <TextView
+        android:id="@+id/purchase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_5"
+        android:layout_toRightOf="@id/autotrophy"
+        android:background="@drawable/shape_red2"
+        android:text="限购"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14" />
+
+    <TextView
+        android:id="@+id/presell"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/purchase"
+        android:background="@drawable/shape_blue2"
+        android:text="预售"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14" />
+</merge>

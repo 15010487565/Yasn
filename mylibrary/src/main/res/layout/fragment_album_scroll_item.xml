@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <www.xcd.com.mylibrary.view.PhotoView
+        android:id="@+id/zoom_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:background="@color/black" >
+    </www.xcd.com.mylibrary.view.PhotoView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_33"
+        android:gravity="center_vertical" >
+
+        <CheckBox
+            android:id="@+id/original_photo"
+            style="@style/checkbox_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dip"
+            android:paddingLeft="10dp"
+            android:text="@string/camera_original_size"
+            android:textColor="@color/red"
+            android:scaleX="0.7"
+            android:scaleY="0.7" />
+        <CheckBox
+            android:id="@+id/select_photo"
+            style="@style/checkbox_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dip"
+            android:paddingLeft="10dp"
+            android:text="@string/image_preview_select"
+            android:textColor="@color/red"
+            android:scaleX="0.7"
+            android:scaleY="0.7" />
+    </RelativeLayout>
+</LinearLayout>

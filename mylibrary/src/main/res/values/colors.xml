@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/top_bar_background</color>
+    <color name="colorPrimaryDark">@color/black</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="black_wexin">#882A3234</color>
+    <color name="black_33">#333333</color>
+    <color name="black_88">#88888888</color>
+    <color name="black_66">#666666</color>
+    <color name="black_e6">#e6e6e6</color>
+    <color name="black_77">#777777</color>
+    <color name="black_f7">#f7f7f7</color>
+    <color name="black_f5">#f5f5f5</color>
+    <color name="black_4e">#4E4E4E</color>
+    <color name="black_99">#999999</color>
+    <color name="black_D0">#D0D0D0</color>
+    <color name="black_E0">#E0E0E0</color>
+    <color name="background_f3f3f3">#f3f3f3</color>
+    <color name="background_eaeaea">#eaeaea</color>
+    <color name="blue_0d81de">#0d81de</color>
+    <color name="red">#EB2C2B</color>
+    <color name="red_login">#dd1818</color>
+    <color name="line_gray">#EDF2F6</color>
+    <color name="line_c3">#c3c3c3</color>
+    <color name="golden">#FFCD05</color>
+    <color name="golden_vip">#EECC6B</color>
+    <!-- top bar -->
+    <color name="transparent">#00000000</color>
+    <color name="top_bar_background">#3C3C3C</color>
+    <color name="top_bar_title">@color/white</color>
+    <color name="top_bar_icon_background">#00000000</color>
+    <!-- topbar -->
+    <color name="topbar_create_multi_chat_text">@color/white</color>
+    <!--<color name="topbar_create_multi_chat_background">#00b26d</color>&lt;!&ndash;右上角弹出框底色&ndash;&gt;-->
+    <color name="topbar_create_multi_chat_press_background">#14212b</color>
+    <color name="topbar_create_multi_chat_divide">#ff7d767d</color>
+    <color name="gray_aa">#aaaaaa</color>
+    <color name="gray_bg">#cccccc</color>
+    <color name="gray_dark_bg">#666666</color>
+
+    <!--主题颜色-->
+    <color name="top_color">@color/red</color>
+    <color name="image_checked_bg">#66000000</color>
+
+    <!-- 菜单栏 按钮文字颜色 -->
+    <color name="topbar_btn_text_color">#ffffff</color>
+
+    <!-- 返回按钮 字体颜色 -->
+    <color name="back_color_noclick">#ffff</color>
+    <color name="back_color_click">#8fff</color>
+    <color name="transparent_dark_66">#66000000</color>
+    <!-- alert dialog -->
+    <color name="dialog_edit_bg">#E3E4E8</color>
+    <color name="dialog_text">#504A51</color>
+    <color name="dialog_confirm">#3F9CF2</color>
+    <color name="dialog_guide_img_bg">#eaf9fe</color>
+    <color name="dialog_guide_content_txt">#C1C8C9</color>
+    <color name="dialog_guide_button">#00b26d</color>
+    <color name="gray_d">#ffdddddd</color>
+    <color name="blue_normal">#ff00b26d</color>
+    <color name="main_tabwidget_separator">#eae5e5</color>
+    <color name="main_tabwidget_background">#F8F7F7</color>
+    <color name="light_blue">#6593cb</color>
+    !-- 橙色 -->
+    <color name="orange">#ff6600</color>
+    <color name="orange_laba">#fef0d8</color>
+</resources>

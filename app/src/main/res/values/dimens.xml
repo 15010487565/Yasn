@@ -1,0 +1,37 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="post_media_height">200dp</dimen>
+
+    <dimen name="seek_bar_image">150dp</dimen>
+
+    <!-- padding 距离 -->
+    <dimen name="padding_m">12dp</dimen>
+    <dimen name="padding_s">10dp</dimen>
+    <dimen name="padding_mm">8dp</dimen>
+    <!-- margin 距离 -->
+    <dimen name="margin_xl">35dp</dimen>
+    <dimen name="margin_l">20dp</dimen>
+    <dimen name="margin_m">15dp</dimen>
+    <dimen name="margin_s">10dp</dimen>
+    <dimen name="margin_xs">5dp</dimen>
+    <!--
+    TextSize 说明
+    xxl:32px
+    xl:30px
+    l:28px
+    m:26px
+    s:24px
+    xs:22px
+    -->
+    <dimen name="text_size_xxl">16sp</dimen>
+    <dimen name="text_size_xl">15sp</dimen>
+    <dimen name="text_size_l">14sp</dimen>
+    <dimen name="text_size_m">13sp</dimen>
+    <dimen name="text_size_s">12sp</dimen>
+    <dimen name="text_size_xs">11sp</dimen>
+    <!-- 分割线 -->
+    <dimen name="line_width">1dp</dimen>
+
+</resources>
