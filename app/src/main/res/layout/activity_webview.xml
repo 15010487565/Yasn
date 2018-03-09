@@ -7,11 +7,6 @@
     android:fitsSystemWindows="true">
     <include
         layout="@layout/view_simple_topbar"/>
-    <ProgressBar
-        android:id="@+id/myProgressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="5dp" />
 
     <FrameLayout
         android:id="@+id/fragment_layout"

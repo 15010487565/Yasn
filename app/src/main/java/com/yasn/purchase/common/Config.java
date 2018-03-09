@@ -6,12 +6,16 @@ package com.yasn.purchase.common;
  * Email:xcd158454996@163.com
  */
 public class Config {
-    public static final String IP = "http://47.93.44.193:9100/api/composite-service/";//测试
+
+    public static final String IP = "http://shoptest.yasn.com:9100/api/composite-service/";//测试
 //    public static final String IP = "http://shop.yasn.com:9100/api/composite-service/";//正式
 //    public static final String URLCAIGOU = "http://caigou.yasn.com/";//正式服
 //    public static final String URL = "http://shop.yasn.com/";//正式服
     public static final String URLCAIGOU = "http://shoptt.yasn.com/";//测试首服
     public static final String URL = "http://shoptt.yasn.com:81/";//测试首服
+    //搜索页面
+//    public final static String SEARCH = "http://47.93.233.216:9998/search/solr/goods/list?";//正式服
+    public final static String SEARCH = "http://47.93.192.134:9998/search/solr/goods/list?";//测试服
     //欢迎界面图片
     public final static String LAUNCHIMAGE = URL+"api/base/app/geturl.do";
     //首页
@@ -26,12 +30,10 @@ public class Config {
     public final static String OFTENSEARCH = IP+"goods/search/KeyWord";
     //添加搜索字段
     public final static String SYNCHSEARCH = IP+"goods/search/add-search-record/";
-    //搜索页面
-    public final static String SEARCH = "http://47.93.233.216:9998/search/solr/goods/list?";
     //搜索页面筛选车型
     public final static String SEARCHCARTYPE = IP+"goods/list/carTypes/1";
     //教秘买好和成功案例
-    public final static String GOODSDETAILSOTHER = "http://192.168.50.194:10500/goods/intro";
+    public final static String GOODSDETAILSOTHER = IP+"goods/intro/";
     //门店
     public final static String SHOP = IP+"member/index";
     //门店页面统计数据
@@ -40,6 +42,12 @@ public class Config {
     public final static String GETPERSONAGEINFO = IP+"member/memberInfo";
     //获取进货单数量
     public final static String CARTGOODSNUM = IP+"cart/goodsNum/";
+    //加入收藏
+    public final static String ADDCOLLECT = IP+"favorite/saveGoodsFavorite/";
+    //删除收藏
+    public final static String DELETECOLLECT = IP+"/favorite/deleteBygoodsId/";
+    //加入进货单
+    public final static String ADDSHOPCAR = IP+"cart/add-product?";
 
     public final static int TYPE_FOOTVIEW = 10000;
 
@@ -54,7 +62,7 @@ public class Config {
     //登录
     public static final String LOGINWEBVIEW = URLCAIGOU+"login.html";
     //注册
-    public static final String REGISTERWEBVIEW = URLCAIGOU+"login_c.html?changehead";
+    public static final String REGISTERWEBVIEW = URLCAIGOU+"login_c.html?changehead=home";
     //退出登录
     public static final String LOGINOUTWEBVIEW = URLCAIGOU+"memberSet.html";
     //开通雅森帮
@@ -78,8 +86,9 @@ public class Config {
     //首页更多
     public static final String ONCLICKTABMORE =  URL+"subject.html";
     //详情页
-//    public final static String GOODSDETAILS = IP+"goods/details";
-    public final static String GOODSDETAILS = URL+"goods.html?id=";
+    public final static String GOODSDETAILS = IP+"goods/details/";
+    //分享详情页
+    public final static String GOODSDETAILSWEB = URL+"goods.html?id=";
     //积分
     public final static String SHOPINTEGRAL = URLCAIGOU+"member_point.html";
     //统计查看更多
@@ -97,13 +106,13 @@ public class Config {
     //门店管理员工
     public final static String SHOPMEANAGESTAFF  = URL+"staffManage.html";
     //开通创客
-    public final static String MAKERDREDGE  = URL+"staffManage.html";
+    public final static String MAKERDREDGE  = URL+"ck_ck.html";
     //推广二维码
-    public final static String MAKERQRCODE  = URL+"staffManage.html";
+    public final static String MAKERQRCODE  = URL+"ck_wxcode.html";
     //收款账号
-    public final static String MAKERRECEIPTACCOUNT  = URL+"staffManage.html";
+    public final static String MAKERRECEIPTACCOUNT  = URL+"ck_account.html";
     //开拓门店
-    public final static String MAKEREXPLOITSHOP  = URL+"staffManage.html";
+    public final static String MAKEREXPLOITSHOP  = URL+"ck_addshop.html";
     //门店订单
-    public final static String MAKERSHOPORDER  = URL+"staffManage.html";
+    public final static String MAKERSHOPORDER  = URL+"ck_shoporder.html";
 }

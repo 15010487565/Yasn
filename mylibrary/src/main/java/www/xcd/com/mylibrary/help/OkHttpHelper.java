@@ -22,6 +22,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import www.xcd.com.mylibrary.config.HttpConfig;
+import www.xcd.com.mylibrary.utils.HelpUtils;
 
 /**
  * @auther Leo--薛传东
@@ -261,22 +262,9 @@ public class OkHttpHelper {
             } else {
                 result = response.body().string();
             }
-            if (result.length() > 4000) {
-                for (int i = 0; i < result.length(); i += 4000) {
-                    if (i + 4000 < result.length())
-                        Log.e("TAG_result", "result第一段log===" + result.substring(i, i + 4000));
-                    else {
-                        Log.e("TAG_result", "result第二段log===" + result.substring(i, result.length()));
-                    }
-                }
-            } else {
-                Log.e("TAG_result", "result=" + result);
-            }
+            HelpUtils.loge("TAG_result",result);
             JSONObject jsonObject = new JSONObject(result);
-            String returnMsg = null;
-            if (returnCode != 200) {
-                returnMsg = jsonObject.optString("message");
-            }
+            String returnMsg = jsonObject.optString("message");
             String returnData = result;
             Message message = new Message();
             Bundle bundle = new Bundle();

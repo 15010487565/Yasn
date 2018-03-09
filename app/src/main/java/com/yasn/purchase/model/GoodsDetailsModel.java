@@ -12,8 +12,16 @@ public class GoodsDetailsModel implements Serializable {
      */
 
     private GoodsDetailsBean goodsDetails;
-    private Object member;
-    private int cartNum;
+    private MemberBean member;
+    private int isFavorite;
+
+    public int getIsFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(int isFavorite) {
+        this.isFavorite = isFavorite;
+    }
 
     public GoodsDetailsBean getGoodsDetails() {
         return goodsDetails;
@@ -23,20 +31,309 @@ public class GoodsDetailsModel implements Serializable {
         this.goodsDetails = goodsDetails;
     }
 
-    public Object getMember() {
+    public MemberBean getMember() {
         return member;
     }
 
-    public void setMember(Object member) {
+    public void setMember(MemberBean member) {
         this.member = member;
     }
 
-    public int getCartNum() {
-        return cartNum;
-    }
+    public static class MemberBean {
 
-    public void setCartNum(int cartNum) {
-        this.cartNum = cartNum;
+        /**
+         * seePrice : 0
+         * level_id : 2
+         * shopName : 重庆市长寿区易洁洗车服务中心
+         * is_wholesaler : 0
+         * inviteCustomer_code : C1019
+         * lv_id : 6
+         * inWhitelist : 0
+         * memberInProbationStartTime : 0
+         * preOrder : 0
+         * lvName : 单个门店
+         * haveMemberData : 1
+         * member_id : 28
+         * store_id : 171
+         * uname : 123456
+         * is_invite : 0
+         * pointDate : null
+         * is_inviteCustomer : 1
+         * levelName : 普通会员
+         * cartCount : 6
+         * memberInProbation : 0
+         * message : null
+         * digital_member : 0
+         * currentTime : 1520568900
+         * regionId : 0
+         * memberInProbationEndTime : 0
+         * member_admin : 28
+         * priceDisplayMsg : null
+         * probationIsOpen : 0
+         * priceDisplayType : 0
+         */
+
+        private int seePrice;
+        private int level_id;
+        private String shopName;
+        private int is_wholesaler;
+        private String inviteCustomer_code;
+        private int lv_id;
+        private int inWhitelist;
+        private int memberInProbationStartTime;
+        private int preOrder;
+        private String lvName;
+        private int haveMemberData;
+        private int member_id;
+        private int store_id;
+        private String uname;
+        private int is_invite;
+        private Object pointDate;
+        private int is_inviteCustomer;
+        private String levelName;
+        private int cartCount;
+        private int memberInProbation;
+        private Object message;
+        private int digital_member;
+        private int currentTime;
+        private int regionId;
+        private int memberInProbationEndTime;
+        private int member_admin;
+        private Object priceDisplayMsg;
+        private int probationIsOpen;
+        private int priceDisplayType;
+
+        public int getSeePrice() {
+            return seePrice;
+        }
+
+        public void setSeePrice(int seePrice) {
+            this.seePrice = seePrice;
+        }
+
+        public int getLevel_id() {
+            return level_id;
+        }
+
+        public void setLevel_id(int level_id) {
+            this.level_id = level_id;
+        }
+
+        public String getShopName() {
+            return shopName;
+        }
+
+        public void setShopName(String shopName) {
+            this.shopName = shopName;
+        }
+
+        public int getIs_wholesaler() {
+            return is_wholesaler;
+        }
+
+        public void setIs_wholesaler(int is_wholesaler) {
+            this.is_wholesaler = is_wholesaler;
+        }
+
+        public String getInviteCustomer_code() {
+            return inviteCustomer_code;
+        }
+
+        public void setInviteCustomer_code(String inviteCustomer_code) {
+            this.inviteCustomer_code = inviteCustomer_code;
+        }
+
+        public int getLv_id() {
+            return lv_id;
+        }
+
+        public void setLv_id(int lv_id) {
+            this.lv_id = lv_id;
+        }
+
+        public int getInWhitelist() {
+            return inWhitelist;
+        }
+
+        public void setInWhitelist(int inWhitelist) {
+            this.inWhitelist = inWhitelist;
+        }
+
+        public int getMemberInProbationStartTime() {
+            return memberInProbationStartTime;
+        }
+
+        public void setMemberInProbationStartTime(int memberInProbationStartTime) {
+            this.memberInProbationStartTime = memberInProbationStartTime;
+        }
+
+        public int getPreOrder() {
+            return preOrder;
+        }
+
+        public void setPreOrder(int preOrder) {
+            this.preOrder = preOrder;
+        }
+
+        public String getLvName() {
+            return lvName;
+        }
+
+        public void setLvName(String lvName) {
+            this.lvName = lvName;
+        }
+
+        public int getHaveMemberData() {
+            return haveMemberData;
+        }
+
+        public void setHaveMemberData(int haveMemberData) {
+            this.haveMemberData = haveMemberData;
+        }
+
+        public int getMember_id() {
+            return member_id;
+        }
+
+        public void setMember_id(int member_id) {
+            this.member_id = member_id;
+        }
+
+        public int getStore_id() {
+            return store_id;
+        }
+
+        public void setStore_id(int store_id) {
+            this.store_id = store_id;
+        }
+
+        public String getUname() {
+            return uname;
+        }
+
+        public void setUname(String uname) {
+            this.uname = uname;
+        }
+
+        public int getIs_invite() {
+            return is_invite;
+        }
+
+        public void setIs_invite(int is_invite) {
+            this.is_invite = is_invite;
+        }
+
+        public Object getPointDate() {
+            return pointDate;
+        }
+
+        public void setPointDate(Object pointDate) {
+            this.pointDate = pointDate;
+        }
+
+        public int getIs_inviteCustomer() {
+            return is_inviteCustomer;
+        }
+
+        public void setIs_inviteCustomer(int is_inviteCustomer) {
+            this.is_inviteCustomer = is_inviteCustomer;
+        }
+
+        public String getLevelName() {
+            return levelName;
+        }
+
+        public void setLevelName(String levelName) {
+            this.levelName = levelName;
+        }
+
+        public int getCartCount() {
+            return cartCount;
+        }
+
+        public void setCartCount(int cartCount) {
+            this.cartCount = cartCount;
+        }
+
+        public int getMemberInProbation() {
+            return memberInProbation;
+        }
+
+        public void setMemberInProbation(int memberInProbation) {
+            this.memberInProbation = memberInProbation;
+        }
+
+        public Object getMessage() {
+            return message;
+        }
+
+        public void setMessage(Object message) {
+            this.message = message;
+        }
+
+        public int getDigital_member() {
+            return digital_member;
+        }
+
+        public void setDigital_member(int digital_member) {
+            this.digital_member = digital_member;
+        }
+
+        public int getCurrentTime() {
+            return currentTime;
+        }
+
+        public void setCurrentTime(int currentTime) {
+            this.currentTime = currentTime;
+        }
+
+        public int getRegionId() {
+            return regionId;
+        }
+
+        public void setRegionId(int regionId) {
+            this.regionId = regionId;
+        }
+
+        public int getMemberInProbationEndTime() {
+            return memberInProbationEndTime;
+        }
+
+        public void setMemberInProbationEndTime(int memberInProbationEndTime) {
+            this.memberInProbationEndTime = memberInProbationEndTime;
+        }
+
+        public int getMember_admin() {
+            return member_admin;
+        }
+
+        public void setMember_admin(int member_admin) {
+            this.member_admin = member_admin;
+        }
+
+        public Object getPriceDisplayMsg() {
+            return priceDisplayMsg;
+        }
+
+        public void setPriceDisplayMsg(Object priceDisplayMsg) {
+            this.priceDisplayMsg = priceDisplayMsg;
+        }
+
+        public int getProbationIsOpen() {
+            return probationIsOpen;
+        }
+
+        public void setProbationIsOpen(int probationIsOpen) {
+            this.probationIsOpen = probationIsOpen;
+        }
+
+        public int getPriceDisplayType() {
+            return priceDisplayType;
+        }
+
+        public void setPriceDisplayType(int priceDisplayType) {
+            this.priceDisplayType = priceDisplayType;
+        }
     }
 
     public static class GoodsDetailsBean {
@@ -1513,7 +1810,7 @@ public class GoodsDetailsModel implements Serializable {
 
             private int imgId;
             private int goodsId;
-            private Object thumbnail;
+            private String thumbnail;
             private Object small;
             private String big;
             private Object original;
@@ -1537,11 +1834,11 @@ public class GoodsDetailsModel implements Serializable {
                 this.goodsId = goodsId;
             }
 
-            public Object getThumbnail() {
+            public String getThumbnail() {
                 return thumbnail;
             }
 
-            public void setThumbnail(Object thumbnail) {
+            public void setThumbnail(String thumbnail) {
                 this.thumbnail = thumbnail;
             }
 

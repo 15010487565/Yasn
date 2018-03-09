@@ -22,9 +22,9 @@ public class HomeRecyModel implements Serializable {
     private boolean purchase;
     private boolean presell;
 
-    private String button1;
-    private String button2;
-    private String button3;
+    private int button1;
+    private int button2;
+    private int button3;
 
     public int getSubject_id() {
         return subject_id;
@@ -90,27 +90,27 @@ public class HomeRecyModel implements Serializable {
         this.totalBuyCount = totalBuyCount;
     }
 
-    public String getButton1() {
+    public int getButton1() {
         return button1;
     }
 
-    public void setButton1(String button1) {
+    public void setButton1(int button1) {
         this.button1 = button1;
     }
 
-    public String getButton2() {
+    public int getButton2() {
         return button2;
     }
 
-    public void setButton2(String button2) {
+    public void setButton2(int button2) {
         this.button2 = button2;
     }
 
-    public String getButton3() {
+    public int getButton3() {
         return button3;
     }
 
-    public void setButton3(String button3) {
+    public void setButton3(int button3) {
         this.button3 = button3;
     }
 

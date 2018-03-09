@@ -26,33 +26,49 @@
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusable="true"
-            android:padding="0dp"
             android:fitsSystemWindows="true"
-            android:focusableInTouchMode="true">
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="0dp">
 
             <!--AppBarLayout 是继承LinerLayout实现的一个ViewGroup容器组件，它是为了Material Design设计的AppBar，支持手势滑动操作-->
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:fitsSystemWindows="true"
+                app:layout_scrollFlags="scroll"
                 app:elevation="0dp">
 
                 <android.support.design.widget.CollapsingToolbarLayout
                     android:id="@+id/collapsing_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fitsSystemWindows="true"
-                    app:expandedTitleMarginStart="48dp"
+                    app:layout_collapseParallaxMultiplier="0"
                     app:layout_scrollFlags="scroll">
-
-                    <include
-                        layout="@layout/include_hometabtop"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layout_collapseMode="pin" />
+                        android:layout_height="wrap_content"
+                        android:background="@color/black_f7"
+                        android:focusable="true"
+                        app:layout_collapseMode="pin"
+                        android:focusableInTouchMode="true"
+                        android:orientation="vertical">
+                        <include layout="@layout/include_homeinfo" />
+                        <include layout="@layout/include_homeshopandyasn" />
+                        <include layout="@layout/include_homeorderinfo" />
+                        <com.bigkoo.convenientbanner.ConvenientBanner
+                            android:id="@+id/home_convenientBanner"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/height_170"
+                            android:layout_marginBottom="@dimen/margin_10"
+                            android:background="@color/line_c3"
+                            app:layout_collapseMode="pin"
+                            app:canLoop="true">
+                            <!--app:canLoop="true" //控制循环与否-->
+                        </com.bigkoo.convenientbanner.ConvenientBanner>
 
+                    </LinearLayout>
                 </android.support.design.widget.CollapsingToolbarLayout>
 
                 <android.support.design.widget.TabLayout
@@ -60,46 +76,44 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/height_45"
                     android:background="@color/white"
+                    app:layout_collapseMode="pin"
                     app:tabIndicatorColor="@color/orange"
                     app:tabMode="scrollable"
                     app:tabSelectedTextColor="@color/orange"
                     app:tabTextAppearance="@style/TabLayoutTextStyle"
-                    app:tabTextColor="@color/black_33">
+                    app:tabTextColor="@color/black_33"/>
 
-                </android.support.design.widget.TabLayout>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/margin_1"
-                    android:background="@color/line_c3"/>
+                    android:background="@color/line_c3" />
+
             </android.support.design.widget.AppBarLayout>
 
-                <!--<android.support.v4.widget.NestedScrollView-->
-                    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:addStatesFromChildren="true"-->
-                    <!--android:layout_marginLeft="@dimen/height_30"-->
-                    <!--android:id="@+id/nestedScrollView"-->
-                    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
-                    <!--<android.support.v7.widget.RecyclerView-->
-                        <!--android:id="@+id/recyNested"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:nestedScrollingEnabled="false" />-->
-                <!--</android.support.v4.widget.NestedScrollView>-->
-            <LinearLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:orientation="vertical">
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="fill_vertical"
-                    android:nestedScrollingEnabled="false"
-                    />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll"
+                app:layout_anchorGravity="bottom"
+                app:layout_anchor="@id/appbar"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+            <!--<android.support.v4.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/nestedScrollView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:addStatesFromChildren="true"-->
+            <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+            <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/recyclerview"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:nestedScrollingEnabled="false" />-->
+            <!--</android.support.v4.widget.NestedScrollView>-->
+
         </android.support.design.widget.CoordinatorLayout>
     </com.yasn.purchase.view.MultiSwipeRefreshLayout>
 </LinearLayout>

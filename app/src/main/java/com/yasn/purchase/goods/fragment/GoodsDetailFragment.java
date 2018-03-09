@@ -29,6 +29,33 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
 public class GoodsDetailFragment extends BaseFragment implements View.OnClickListener{
 
     private TextView htmlTextView,undata;
+    // 标志位，标志已经初始化完成。
+    private boolean isPrepared;
+
+    protected void OkHttpDemand() {
+        String goodsid = SharePrefHelper.getInstance(getActivity()).getSpString("GOODSID");
+        Map<String, Object> params = new HashMap<String, Object>();
+        okHttpGet(100, Config.GOODSDETAILSOTHER + goodsid, params);
+    }
+    @Override
+    protected void lazyLoad() {
+        if(!isPrepared || !isVisible) {
+            return;
+        }
+        //填充各控件的数据
+        OkHttpDemand();
+    }
+
+    @Override
+    public void setUserVisibleHint(final boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(getUserVisibleHint()) {
+            isVisible = true;
+            onVisible();
+        }else {
+            isVisible = false;
+        }
+    }
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_goods_detail;
@@ -43,9 +70,9 @@ public class GoodsDetailFragment extends BaseFragment implements View.OnClickLis
         htmlTextView = (TextView) view.findViewById(R.id.htmlText);
         htmlTextView.setMovementMethod(ScrollingMovementMethod.getInstance());// 设置可滚动
 //        htmlTextView.setMovementMethod(LinkMovementMethod.getInstance());//设置超链接可以打开网页
-        String goodsid = SharePrefHelper.getInstance(getActivity()).getSpString("GOODSID");
-        Map<String, Object> params = new HashMap<String, Object>();
-        okHttpGet(100, Config.GOODSDETAILSOTHER + "/" + goodsid, params);
+        //XXX初始化view的各控件
+        isPrepared = true;
+        lazyLoad();
     }
 
     @Override
@@ -53,16 +80,16 @@ public class GoodsDetailFragment extends BaseFragment implements View.OnClickLis
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {
-                    HtmlImageGetter htmlImageGetter = new HtmlImageGetter(getActivity(),htmlTextView);
                     GoodsDetailsOtherModel goodsdetailsothermodel = JSON.parseObject(returnData, GoodsDetailsOtherModel.class);
                     GoodsDetailsOtherModel.GoodsIntroBean goodsIntro = goodsdetailsothermodel.getGoodsIntro();
                     String intro = goodsIntro.getIntro();
                     if (intro == null||"".equals(intro)){
+                        undata.setVisibility(View.VISIBLE);
+                    }else {
+                        HtmlImageGetter htmlImageGetter = new HtmlImageGetter(getActivity(),htmlTextView);
                         Spanned spanned = Html.fromHtml(intro, htmlImageGetter, null);
                         htmlTextView.setText(spanned);
                         undata.setVisibility(View.GONE);
-                    }else {
-                        undata.setVisibility(View.VISIBLE);
                     }
                 } else {
                     undata.setVisibility(View.VISIBLE);

@@ -50,7 +50,7 @@ public class FindFragment extends SimpleTopbarFragment implements
 
     @Override
     protected void OkHttpDemand() {
-        Log.e("TAG_initView","FIND");
+        Log.e("TAG_initView","FIND_OkHttp");
         Map<String, Object> params = new HashMap<String, Object>();
         okHttpGet(100, Config.FIND+findId+"/"+pageCount, params);
     }
@@ -69,7 +69,7 @@ public class FindFragment extends SimpleTopbarFragment implements
         super.setUserVisibleHint(isVisibleToUser);
         if(getUserVisibleHint()) {
             isVisible = true;
-//            onVisible();
+            onVisible();
         } else {
             isVisible = false;
 //            onInvisible();
@@ -185,8 +185,8 @@ public class FindFragment extends SimpleTopbarFragment implements
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
         Log.e("TAG_fragment", "find=" + msg);
-        if ("loginSucceed".equals(msg)&&getUserVisibleHint()) {
-            OkHttpDemand();
-        }
+//        if ("loginSucceed".equals(msg)&&getUserVisibleHint()) {
+//            OkHttpDemand();
+//        }
     }
 }

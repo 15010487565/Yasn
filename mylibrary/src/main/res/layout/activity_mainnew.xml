@@ -7,13 +7,6 @@
     <include
         android:id="@+id/topbat_parent"
         layout="@layout/view_simple_topbar"/>
-    <com.github.lzyzsd.jsbridge.BridgeWebView
-        android:id="@+id/mainWebView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:overScrollMode="never"
-        android:layout_below="@id/topbat_parent"/>
     <www.xcd.com.mylibrary.view.NoScrollViewPager
         android:id="@+id/main_viewpager"
         android:layout_width="match_parent"

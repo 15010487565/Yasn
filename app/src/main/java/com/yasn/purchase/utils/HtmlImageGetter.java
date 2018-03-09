@@ -33,6 +33,7 @@ public class HtmlImageGetter implements Html.ImageGetter {
     public HtmlImageGetter(Context context, TextView textView) {
         this.context = context;
         this.textView = textView;
+        Log.e("TAG_H5", "执行");
     }
 
     /**

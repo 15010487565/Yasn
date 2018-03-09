@@ -1,6 +1,7 @@
 package com.yasn.purchase.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activityold.WebViewActivity;
+import com.yasn.purchase.common.Config;
 import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.SearchModel;
 
@@ -37,6 +40,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int TYPE_FOOTER = 1;
     private Context context;
     private List<SearchModel.DataBean> list;
+    private List<SearchModel.DataBean> addList;
     private OnRcItemClickListener onItemClickListener;
     private String loginState;
     private boolean isShowProgressBar;
@@ -61,6 +65,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void addData( List<SearchModel.DataBean> list) {
+        this.addList = list;
         if (this.list != null){
             this.list.addAll(list);
         }else {
@@ -171,6 +176,18 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }else {
                     holderSearch.buyingspreeLinear.setVisibility(View.GONE);
                 }
+                int have_voice = dataBean.getHave_voice();//是否有音频 1：有
+                if (have_voice==1){
+                    holderSearch.button3.setVisibility(View.VISIBLE);
+                }else {
+                    holderSearch.button3.setVisibility(View.GONE);
+                }
+                int is_success_case = dataBean.getIs_success_case(); //是否成功案例 1：有
+                if (is_success_case==1){
+                    holderSearch.button2.setVisibility(View.VISIBLE);
+                }else {
+                    holderSearch.button2.setVisibility(View.GONE);
+                }
                 Glide.with(context)
                         .load(dataBean.getThumbnail())
                         .crossFade()
@@ -186,12 +203,17 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     footviewholder.footView.setVisibility(View.GONE);
                 }else {
                     footviewholder.footView.setVisibility(View.VISIBLE);
-                    if (isShowProgressBar){
-                        footviewholder.progressBar.setVisibility(View.VISIBLE);
-                        footviewholder.footText.setText(context.getResources().getString(R.string.pullup_to_load));
-                    }else {
+                    if (addList == null||addList.size()==0){
                         footviewholder.progressBar.setVisibility(View.GONE);
-                        footviewholder.footText.setText(context.getResources().getString(R.string.pullup_to_load));
+                        footviewholder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
+                    }else {
+                        if (isShowProgressBar){
+                            footviewholder.progressBar.setVisibility(View.VISIBLE);
+                            footviewholder.footText.setText(context.getResources().getString(R.string.pullup_to_load));
+                        }else {
+                            footviewholder.progressBar.setVisibility(View.GONE);
+                            footviewholder.footText.setText(context.getResources().getString(R.string.pullup_to_load));
+                        }
                     }
                 }
                 break;
@@ -217,6 +239,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             super(itemView);
             searchTitle = (TextView) itemView.findViewById(R.id.title);
             searchmoney = (TextView) itemView.findViewById(R.id.search_money);
+            searchmoney.setOnClickListener(this);
             searchAdvert = (TextView) itemView.findViewById(R.id.search_action);
             searchcount = (TextView) itemView.findViewById(R.id.search_count);
 
@@ -250,6 +273,14 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 case addshopcar:
                     onItemClickListener.OnClickRecyButton(4, getLayoutPosition());
                     break;
+                case R.id.search_money:
+                    String trim = searchmoney.getText().toString().trim();
+                    if ("登录看价格".equals(trim)){
+                        startWebViewActivity(Config.LOGINWEBVIEW);
+                    }else if ("认证看价格".equals(trim)){
+                        startWebViewActivity(Config.ATTESTATION);
+                    }
+                    break;
             }
         }
     }
@@ -279,5 +310,10 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return true;
             }
         });
+    }
+    private void startWebViewActivity(String url) {
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra("webViewUrl", url);
+        context.startActivity(intent);
     }
 }

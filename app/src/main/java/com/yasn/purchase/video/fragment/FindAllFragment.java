@@ -64,7 +64,6 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
 
     @Override
     protected void OkHttpDemand() {
-        Log.e("TAG_initView","FINDALL");
         Map<String, Object> params = new HashMap<String, Object>();
         FindModel.TitleBean titleBean = titleList.get(selectPosition);
         findId = String.valueOf(titleBean.getClassifyId());

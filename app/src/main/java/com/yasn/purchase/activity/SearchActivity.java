@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
-import com.yasn.purchase.activityold.WebViewActivity;
 import com.yasn.purchase.adapter.SearchAdapter;
 import com.yasn.purchase.adapter.SortAdapter;
 import com.yasn.purchase.common.Config;
@@ -183,7 +182,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
         //返回按钮
         topbar_left = (LinearLayout) findViewById(R.id.topbar_left);
         topbar_left.setOnClickListener(this);
-        topbar_right = (LinearLayout) findViewById(R.id.topbar_left);
+        topbar_right = (LinearLayout) findViewById(R.id.topbar_right);
         topbar_right.setOnClickListener(this);
         //搜索输入框
         topsearch = (TextView) findViewById(R.id.topsearch);
@@ -519,6 +518,8 @@ public class SearchActivity extends SimpleTopbarActivity implements
     public void onTabSelected(TabLayout.Tab tab) {
         int selectPosition = tab.getPosition();
         Log.e("TAG_", selectPosition + "");
+        int cat_id = cats.get(selectPosition).getCat_id();
+        startSearchGet("", String.valueOf(cat_id), "def_desc");
     }
 
     @Override
@@ -532,7 +533,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
     }
 
     private List<SearchModel.DataBean> data;
-
+    List<SearchCatsModel.CatsBean> cats;
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
@@ -580,9 +581,9 @@ public class SearchActivity extends SimpleTopbarActivity implements
             case 102:
                 if (returnCode == 200) {
                     SearchCatsModel searchCatsModel = JSON.parseObject(returnData, SearchCatsModel.class);
-                    List<SearchCatsModel.CatsBean> cats = searchCatsModel.getCats();
+                    cats = searchCatsModel.getCats();
                     Integer integer = Integer.valueOf(secarchcarid);
-                    //title 赋值
+                    //llTitle 赋值
                     for (int i = 0, j = cats.size(); i < j; i++) {
                         SearchCatsModel.CatsBean catsBean = cats.get(i);
                         String name = catsBean.getName();
@@ -682,9 +683,13 @@ public class SearchActivity extends SimpleTopbarActivity implements
             SearchModel.DataBean dataBean = data.get(position);
             if (dataBean !=null){
                 String id = dataBean.getId();
-                Intent intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra("webViewUrl",Config.GOODSDETAILS+id);
+                SharePrefHelper.getInstance(this).putSpInt("GOODSFRAGMENTID", 0);
+                Intent intent = new Intent(this, GoodsDetailsActivity.class);
+                SharePrefHelper.getInstance(this).putSpString("GOODSID", id);
                 startActivity(intent);
+//                Intent intent = new Intent(this, WebViewActivity.class);
+//                intent.putExtra("webViewUrl",Config.GOODSDETAILS+id);
+//                startActivity(intent);
             }
         }
     }

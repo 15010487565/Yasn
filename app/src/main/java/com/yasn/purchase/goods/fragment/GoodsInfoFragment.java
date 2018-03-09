@@ -6,10 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +15,7 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
@@ -46,6 +45,7 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.GoodsDetailsActivity;
 import com.yasn.purchase.activity.showbig.ShowBigPictrueActivitiy;
+import com.yasn.purchase.activityold.WebViewActivity;
 import com.yasn.purchase.adapter.SimpleRecyclerAdapter;
 import com.yasn.purchase.adapter.TradePriceAdapter;
 import com.yasn.purchase.common.Config;
@@ -84,7 +84,7 @@ import static www.xcd.com.mylibrary.utils.SharePrefHelper.context;
  */
 public class GoodsInfoFragment extends BaseFragment implements
         ShoppingSelectView.OnSelectedListener, OnItemClickListener,
-        SlideDetailsLayout.OnSlideDetailsListener,MediaPlayer.OnPreparedListener{
+        SlideDetailsLayout.OnSlideDetailsListener, MediaPlayer.OnPreparedListener {
 
     private RelativeLayout topbat_parent;
     ConvenientBanner banner;
@@ -110,7 +110,8 @@ public class GoodsInfoFragment extends BaseFragment implements
      *
      * @param context
      */
-    private TextView sellingpoints;
+    private LinearLayout sellinglinear;
+    private TextView sellingpoints,sellingview;
 
     /**
      * 规格
@@ -150,6 +151,7 @@ public class GoodsInfoFragment extends BaseFragment implements
      */
     private TextView tradeprice, minNumber;
     private RecyclerView tradeprice_recy;
+    private LinearLayout llLadderPrices;
 
     /**
      * 建议售价
@@ -164,7 +166,10 @@ public class GoodsInfoFragment extends BaseFragment implements
      *
      * @param context
      */
-    private EditText goodsNum;
+    private EditText etGoodsNum;
+    private LinearLayout ivSubtractNum, ivAddNum;
+    private int smallSale = 0;//最小起订量
+    private int enableStoreNum;//库存
     private TextView enableStore;
     //是否雅森自营提示语
     private TextView storeName;
@@ -177,15 +182,61 @@ public class GoodsInfoFragment extends BaseFragment implements
     private SimpleRecyclerAdapter simpleadapter;
     //商品属性列表
     private RecyclerView attributesList;
-    private TextView htmlTextView,undata;
+    private TextView htmlTextView, undata;
 
     /**
      * 音频布局
+     *
      * @param context
      */
     private RelativeLayout voice;
     private TextView voice_time;
     private ImageView voice_start;
+    // 标志位，标志已经初始化完成。
+    private boolean isPrepared;
+    String goodsidString;
+
+    protected void OkHttpDemand() {
+        goodsidString = SharePrefHelper.getInstance(getActivity()).getSpString("GOODSID");
+        Map<String, Object> params = new HashMap<String, Object>();
+        String token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
+        String resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
+        if (token != null && !"".equals(token)) {
+            params.put("access_token", token);
+        } else if (resetToken != null && !"".equals(resetToken)) {
+            params.put("access_token", resetToken);
+        }
+        okHttpGet(100, Config.GOODSDETAILS + goodsidString, params);
+        //读取临时文件
+//        String goodsdetailsmodel = HelpUtils.getJson(getActivity(), "goods.json");
+        Map<String, Object> params1 = new HashMap<String, Object>();
+        okHttpGet(101, Config.GOODSDETAILSOTHER + goodsidString, params1);
+    }
+
+    @Override
+    protected void lazyLoad() {
+        if (!isPrepared || !isVisible) {
+            return;
+        }
+        //填充各控件的数据
+        OkHttpDemand();
+    }
+
+    @Override
+    public void setUserVisibleHint(final boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getUserVisibleHint()) {
+            isVisible = true;
+//            onVisible();
+        } else {
+            isVisible = false;
+            if (mediaplayer != null) {
+                mediaplayer.pause();
+                flag = false;
+            }
+        }
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -194,16 +245,38 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.fragment_goods_info;
     }
 
     @Override
     protected void initView(LayoutInflater inflater, View view) {
+        init(view);
+        initTradePricePosition(null, -1);
+        //XXX初始化view的各控件
+        isPrepared = true;
+        lazyLoad();
     }
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_goods_info, null);
+
+    private void initSoldNumber(TextView textView, String number, int textColor) {
+        String minNumberString = String.format("已售%s笔", number);
+        SpannableStringBuilder span = new SpannableStringBuilder(minNumberString);
+        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), textColor)), 0, 2,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), textColor)), minNumberString.length() - 1, minNumberString.length(),
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        textView.setText(span);
+    }
+
+    //本数据的代码可以再优化，写到另一个Controller处理
+    private void init(View rootView) {
+        initGoodsView(rootView);
+        initTabView();
+        initGoodsTitleContent(null);
+        initTradePrice();
+        createDialog();
+    }
+
+    private void initGoodsView(View rootView) {
         topbat_parent = (RelativeLayout) rootView.findViewById(R.id.topbat_parent);
         topbat_parent.setVisibility(View.GONE);
         banner = (ConvenientBanner) rootView.findViewById(R.id.banner);
@@ -223,6 +296,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         //正常已售数量
         sold_Linear = (LinearLayout) rootView.findViewById(R.id.sold_Linear);
         originalprice2 = (TextView) rootView.findViewById(R.id.originalprice2);
+        originalprice2.setOnClickListener(this);
         soldOut2 = (TextView) rootView.findViewById(R.id.soldOut2);
         initSoldNumber(soldOut2, "0", R.color.black_66);
         //内容
@@ -239,7 +313,8 @@ public class GoodsInfoFragment extends BaseFragment implements
         SpannableStringBuilder retailPriceString = AlignedTextUtils.justifyString("建议售价", 4);
         retailPriceString.append("：");
         retailPrice.setText(retailPriceString);
-        //批发价
+        //批发价、折扣价
+        llLadderPrices = (LinearLayout) rootView.findViewById(R.id.ll_ladderPrices);
         tradeprice = (TextView) rootView.findViewById(R.id.tradeprice);
         minNumber = (TextView) rootView.findViewById(R.id.minNumber);
 
@@ -249,7 +324,9 @@ public class GoodsInfoFragment extends BaseFragment implements
         tradeprice.setText(tradepriceString);
         tradeprice_recy = (RecyclerView) rootView.findViewById(R.id.tradeprice_recy);
         //卖点
+        sellinglinear = (LinearLayout) rootView.findViewById(R.id.sellinglinear);
         sellingpoints = (TextView) rootView.findViewById(R.id.sellingpoints);
+        sellingview  = (TextView) rootView.findViewById(R.id.sellingview);
 //        SpannableString sellingString = AlignedTextUtils.formatText("卖点:");
         SpannableStringBuilder sellingString = AlignedTextUtils.justifyString("卖点", 4);
         sellingString.append("：");
@@ -275,7 +352,11 @@ public class GoodsInfoFragment extends BaseFragment implements
         promotionString.append("：");
         promotion.setText(promotionString);
         //购买数量
-        goodsNum = (EditText) rootView.findViewById(R.id.goodsNum);
+        etGoodsNum = (EditText) rootView.findViewById(R.id.et_goodsNum);
+        ivSubtractNum = (LinearLayout) rootView.findViewById(R.id.iv_subtractNum);
+        ivSubtractNum.setOnClickListener(this);
+        ivAddNum = (LinearLayout) rootView.findViewById(R.id.iv_addNum);
+        ivAddNum.setOnClickListener(this);
         enableStore = (TextView) rootView.findViewById(R.id.enableStore);
         unpostage = (TextView) rootView.findViewById(R.id.unpostage);
         hot = (TextView) rootView.findViewById(R.id.hot);
@@ -316,34 +397,6 @@ public class GoodsInfoFragment extends BaseFragment implements
         slideDetailsLayout = (SlideDetailsLayout) rootView.findViewById(R.id.slideDetailsLayout);
         slideDetailsLayout.setOnSlideDetailsListener(this);
         scrollView = (ScrollView) rootView.findViewById(R.id.scrollView);
-        init();
-        initTradePricePosition(null, -1);
-        return rootView;
-    }
-
-    private void initSoldNumber(TextView textView, String number, int textColor) {
-        String minNumberString = String.format("已售%s笔", number);
-        SpannableStringBuilder span = new SpannableStringBuilder(minNumberString);
-        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), textColor)), 0, 2,
-                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), textColor)), minNumberString.length() - 1, minNumberString.length(),
-                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        textView.setText(span);
-    }
-
-    //本数据的代码可以再优化，写到另一个Controller处理
-    private void init() {
-        initTabView();
-        initGoodsTitleContent(null);
-        initTradePrice();
-        createDialog();
-        String goodsid = SharePrefHelper.getInstance(getActivity()).getSpString("GOODSID");
-        Map<String, Object> params = new HashMap<String, Object>();
-        okHttpGet(100, Config.GOODSDETAILS + "/" + goodsid, params);
-        //读取临时文件
-//        String goodsdetailsmodel = HelpUtils.getJson(getActivity(), "goods.json");
-        Map<String, Object> params1 = new HashMap<String, Object>();
-        okHttpGet(101, Config.GOODSDETAILSOTHER + "/" + goodsid, params1);
     }
 
     private void initGoodsTitleContent(GoodsDetailsModel.GoodsDetailsBean goodsDetails) {
@@ -396,15 +449,17 @@ public class GoodsInfoFragment extends BaseFragment implements
         span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.white)), 0, goneNum,
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         title.setText(span);
-        Log.e("TAG_", "title=" + title.getText().toString());
+        Log.e("TAG_title", "title=" + title.getText().toString());
     }
 
     private void initTabView() {
         tabTextList.add(goodsDetail);
         tabTextList.add(goodsConfig);
     }
-    private boolean flag=true;
+
+    private boolean flag = true;
     private int duration = 0;
+
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.carTypesLinear:
@@ -413,7 +468,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                 }
                 int size = carTypesList.size();
                 if (size == 1) {
-                   return;
+                    return;
                 }
                 if (size > 1) {
                     showPopwindow(carTypesList);
@@ -423,27 +478,67 @@ public class GoodsInfoFragment extends BaseFragment implements
                 slideDetailsLayout.smoothOpen(true);
                 break;
             case R.id.voice:
-                if (mediaplayer==null){
+                if (mediaplayer == null) {
                     return;
                 }
                 if (!mediaplayer.isPlaying()) {
                     voice_start.setBackgroundResource(R.mipmap.voice_stop);
                     mediaplayer.start();
                     flag = true;
-                    handler.postDelayed(runnableVoice,1000);
-                }else {
+                    handler.postDelayed(runnableVoice, 1000);
+                } else {
                     voice_start.setBackgroundResource(R.mipmap.voice_start);
                     mediaplayer.pause();
                     flag = false;
                 }
                 break;
+            case R.id.iv_subtractNum:
+                int subtractNum = Integer.valueOf(etGoodsNum.getText().toString().trim()) - smallSale;
+                if (subtractNum <= 0) {
+                    etGoodsNum.setText("0");
+                } else {
+                    etGoodsNum.setText(String.valueOf(subtractNum));
+                }
+                break;
+            case R.id.iv_addNum:
+                if (enableStoreNum == 0){
+                    ToastUtil.showToast("库存不足");
+                }else {
+                    int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim()) ;
+                    if (smallSale > 0 ) {
+                        int allAddNum = addNum + smallSale;
+                        if (allAddNum <= enableStoreNum){
+                            etGoodsNum.setText(String.valueOf(allAddNum));
+                        }else {
+                            ToastUtil.showToast("库存不足");
+                        }
+                    } else {
+                        int allAddNum = addNum + 1;
+                        if (allAddNum <= enableStoreNum) {
+                            etGoodsNum.setText(String.valueOf(allAddNum));
+                        } else {
+                            ToastUtil.showToast("库存不足");
+                        }
+                    }
+                }
+
+                break;
+            case R.id.originalprice2:
+                String trim = originalprice2.getText().toString().trim();
+                if ("登录看价格".equals(trim)){
+                    startWebViewActivity(Config.LOGINWEBVIEW);
+                }else if ("认证看价格".equals(trim)){
+                    startWebViewActivity(Config.ATTESTATION);
+                }
+                break;
         }
     }
+
     Runnable runnableVoice = new Runnable() {
         @Override
         public void run() {
-            if (flag){
-                duration-=1000;
+            if (flag) {
+                duration -= 1000;
                 String formatLongToTimeStr = HelpUtils.formatLongToTime((long) duration);
                 voice_time.setText(formatLongToTimeStr);
                 if (duration > 0) {
@@ -454,6 +549,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             }
         }
     };
+
     /**
      * 显示popupWindow
      */
@@ -467,7 +563,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                 WindowManager.LayoutParams.WRAP_CONTENT);
         window.setFocusable(true);
         // 实例化一个ColorDrawable颜色为半透明
-        ColorDrawable dw = new ColorDrawable(ContextCompat.getColor(getActivity(),R.color.white));
+        ColorDrawable dw = new ColorDrawable(ContextCompat.getColor(getActivity(), R.color.white));
         window.setBackgroundDrawable(dw);
         // 设置popWindow的显示和消失动画
         window.setAnimationStyle(R.style.mypopwindow_anim_style);
@@ -549,7 +645,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             time--;
             String formatLongToTimeStr = HelpUtils.formatLongToTimeStr(time);
             int timeLength = formatLongToTimeStr.length();
-            Log.e("TAG_", "时间=" + formatLongToTimeStr);
+            Log.e("TAG_详情", "时间=" + formatLongToTimeStr);
             SpannableStringBuilder style = new SpannableStringBuilder(formatLongToTimeStr);
             int blacktop_bar = ContextCompat.getColor(getActivity(), R.color.top_bar_background);
             style.setSpan(new BackgroundColorSpan(blacktop_bar), 0, timeLength - 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -571,21 +667,10 @@ public class GoodsInfoFragment extends BaseFragment implements
     };
 
     @Override
-    public void setUserVisibleHint(final boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (!isVisibleToUser){
-            if (mediaplayer!=null){
-                mediaplayer.pause();
-                flag = false;
-            }
-        }
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
-        Log.e("TAG_详情","调用onPause");
-        if (mediaplayer!=null){
+        Log.e("TAG_详情", "调用onPause");
+        if (mediaplayer != null) {
             mediaplayer.pause();
             flag = false;
         }
@@ -605,28 +690,33 @@ public class GoodsInfoFragment extends BaseFragment implements
     List<GoodsDetailsModel.GoodsDetailsBean.ProductsBean> products;
     //商品详情数据
     GoodsDetailsModel.GoodsDetailsBean goodsDetails;
+
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {
                     succeedResult(returnData);
-                } else {
+                } else  if (returnCode == 401){
+                    cleanToken();
+                    OkHttpDemand();
+                }else {
+                    ((GoodsDetailsActivity) getActivity()).setViewPagerGone();
                     ToastUtil.showToast(returnMsg);
                 }
                 break;
             case 101:
                 if (returnCode == 200) {
-                    HtmlImageGetter htmlImageGetter = new HtmlImageGetter(getActivity(),htmlTextView);
                     GoodsDetailsOtherModel goodsdetailsothermodel = JSON.parseObject(returnData, GoodsDetailsOtherModel.class);
                     GoodsDetailsOtherModel.GoodsIntroBean goodsIntro = goodsdetailsothermodel.getGoodsIntro();
                     String intro = goodsIntro.getIntro();
-                    if (intro == null||"".equals(intro)){
+                    if (intro == null || "".equals(intro)) {
+                        undata.setVisibility(View.VISIBLE);
+                    } else {
+                        HtmlImageGetter htmlImageGetter = new HtmlImageGetter(getActivity(), htmlTextView);
                         Spanned spanned = Html.fromHtml(intro, htmlImageGetter, null);
                         htmlTextView.setText(spanned);
                         undata.setVisibility(View.GONE);
-                    }else {
-                        undata.setVisibility(View.VISIBLE);
                     }
 
                 } else {
@@ -643,18 +733,34 @@ public class GoodsInfoFragment extends BaseFragment implements
     private void succeedResult(String returnData) {
         GoodsDetailsModel goodsdetailsmodel = JSON.parseObject(returnData, GoodsDetailsModel.class);
         //进货单数量
-        int cartNum = goodsdetailsmodel.getCartNum();
-        if (callBack != null) {
-            callBack.setCartNum(cartNum);
+        GoodsDetailsModel.MemberBean member = goodsdetailsmodel.getMember();
+        if (member !=null&&!"".equals(member)){
+            int cartNum = member.getCartCount();
+            if (callBack != null) {
+                callBack.setCartNum(cartNum);
+            }
         }
+
         goodsDetails = goodsdetailsmodel.getGoodsDetails();
         //音频布局
         initVoice();
         //设置临时价格
-        double price = goodsDetails.getPrice();
-        soldout_money.setText("￥" + String.valueOf(price));
-        originalprice.setText("￥" + String.valueOf(price));
-        originalprice2.setText("￥" + String.valueOf(price));
+        String loginState = SharePrefHelper.getInstance(getActivity()).getSpString("loginState");
+        if ("0".equals(loginState)) {
+            double price = goodsDetails.getPrice();
+            soldout_money.setText("￥" + String.valueOf(price));
+            originalprice.setText("￥" + String.valueOf(price));
+            originalprice2.setText("￥" + String.valueOf(price));
+            //规格数据
+            label_include.setData(goodsDetails);
+            //批发价
+            products = goodsDetails.getProducts();
+            initTradePricePosition(products, 0);
+        } else {
+            soldout_money.setText(loginState);
+            originalprice.setText(loginState);
+            originalprice2.setText(loginState);
+        }
         //
         String advert = goodsDetails.getAdvert();
         if (advert == null || "".equals(advert)) {
@@ -672,8 +778,14 @@ public class GoodsInfoFragment extends BaseFragment implements
         initBannerView(goodsDetails);
         //设置title
         initGoodsTitleContent(goodsDetails);
-        //规格数据
-        label_include.setData(goodsDetails);
+        //卖点
+        String subTitle = goodsDetails.getSubTitle();
+        if (TextUtils.isEmpty(subTitle)){
+            sellinglinear.setVisibility(View.GONE);
+        }else {
+            sellinglinear.setVisibility(View.VISIBLE);
+            sellingview.setText(subTitle);
+        }
         //折扣是否可用
         int pointUsable = goodsDetails.getPointUsable();// 是否可用积分, 0否1是
         if (pointUsable == 1) {
@@ -686,9 +798,6 @@ public class GoodsInfoFragment extends BaseFragment implements
         }
         //促销数据
         initPromotion(goodsDetails);
-        //批发价
-        products = goodsDetails.getProducts();
-        initTradePricePosition(products, 0);
         //车型carTypes
         carTypesList = goodsDetails.getCarTypes();
         if (carTypesList == null || carTypesList.size() == 0) {
@@ -704,6 +813,18 @@ public class GoodsInfoFragment extends BaseFragment implements
         List<GoodsDetailsModel.GoodsDetailsBean.AttributesBean> attributes = goodsDetails.getAttributes();
         if (attributes != null && attributes.size() > 0) {
             initAttributes(attributes);
+        }
+        ((GoodsDetailsActivity) getActivity()).tempSaveFragmentShare(goodsDetails.getName(),
+                Config.GOODSDETAILSWEB + goodsidString,
+                goodsDetails.getGoodsGallerys().get(0).getThumbnail()
+        );
+        int isFavorite = goodsdetailsmodel.getIsFavorite();
+        if (isFavorite == 0) {
+            ((GoodsDetailsActivity) getActivity()).setCollectImage(false);
+        } else if (isFavorite == 1) {
+            ((GoodsDetailsActivity) getActivity()).setCollectImage(true);
+        } else {
+            ((GoodsDetailsActivity) getActivity()).setCollectImage(false);
         }
     }
 
@@ -725,8 +846,10 @@ public class GoodsInfoFragment extends BaseFragment implements
     private TradePriceAdapter adapter;
 
     private void initTradePrice() {
+
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mLinearLayoutManager.setAutoMeasureEnabled(true);
+        mLinearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         tradeprice_recy.setLayoutManager(mLinearLayoutManager);
         //实例化adapter
         adapter = new TradePriceAdapter(getActivity());
@@ -735,32 +858,42 @@ public class GoodsInfoFragment extends BaseFragment implements
         tradeprice_recy.addItemDecoration(rcDecoration);
     }
 
+    private int productId;//商品规格id
+
     private void initTradePricePosition(List<GoodsDetailsModel.GoodsDetailsBean.ProductsBean> products, int position) {
         if (position == -1) {
             enableStore.setVisibility(View.GONE);
             return;
         }
-        enableStore.setVisibility(View.VISIBLE);
         GoodsDetailsModel.GoodsDetailsBean.ProductsBean productsBean;
+        enableStore.setVisibility(View.VISIBLE);
         List<GoodsDetailsModel.GoodsDetailsBean.ProductsBean.LadderPricesBean> ladderPrices;
-        int smallSale = 0;
+
         if (products != null) {
             productsBean = products.get(position);
+            productId = productsBean.getProductId();
             //最小起订量
             smallSale = productsBean.getSmallSale();
-            int enableStoreNum = productsBean.getEnableStore();
+            enableStoreNum = productsBean.getEnableStore();
             if (enableStoreNum > 5) {
                 enableStore.setText("库存:充足");
+                ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true);
             } else {
                 enableStore.setText("库存:" + String.valueOf(enableStoreNum));
+                if (enableStoreNum == 0) {
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false);
+                } else {
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true);
+                }
             }
-            goodsNum.setText(String.valueOf(smallSale));
+//            etGoodsNum.setText(String.valueOf(smallSale));
             //阶梯价
             ladderPrices = productsBean.getLadderPrices();
-            if (ladderPrices != null) {
+            if (ladderPrices != null&&ladderPrices.size()>0) {
+                llLadderPrices.setVisibility(View.VISIBLE);
                 //折扣价数据
                 adapter.setData(ladderPrices);
-                double goodsNumDou = Long.valueOf(goodsNum.getText().toString());
+                double goodsNumDou = Long.valueOf(etGoodsNum.getText().toString());
                 for (int i = 0, k = ladderPrices.size(); i < k; i++) {
                     GoodsDetailsModel.GoodsDetailsBean.ProductsBean.LadderPricesBean ladderPricesBean = ladderPrices.get(i);
                     int minNum = ladderPricesBean.getMinNum();
@@ -781,6 +914,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                     }
                 }
             } else {
+                llLadderPrices.setVisibility(View.GONE);
                 String activityPrice = productsBean.getActivityPrice();
                 if (activityPrice != null && !"".equals(activityPrice) || "0.00".equals(activityPrice)) {
                     soldout_money.setText("￥" + activityPrice);
@@ -795,7 +929,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             }
         } else {
             smallSale = 0;
-            goodsNum.setText(String.valueOf(smallSale));
+//            etGoodsNum.setText(String.valueOf(smallSale));
         }
         String minNumberString = String.format("最小起订量:%s  %s件起批", smallSale, smallSale);
         SpannableStringBuilder span = new SpannableStringBuilder(minNumberString);
@@ -807,6 +941,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     }
 
     private void initBannerView(GoodsDetailsModel.GoodsDetailsBean goodsdetailsmodelData) {
+        banner.setCanLoop(true);
         final List<GoodsDetailsModel.GoodsDetailsBean.GoodsGallerysBean> goodsGallerys = goodsdetailsmodelData.getGoodsGallerys();
         //初始化商品图片轮播
         banner.setPages(new CBViewHolderCreator() {
@@ -818,9 +953,11 @@ public class GoodsInfoFragment extends BaseFragment implements
                 .setOnItemClickListener(this)
 //                .startTurning(2000)
         ;
+        banner.setCanLoop(false);
     }
 
     private int PROMOTIONVISIBILIT = 0;
+    private int activityId;//活动商品id
 
     private void initPromotion(GoodsDetailsModel.GoodsDetailsBean goodsdetailsmodelData) {
         PROMOTIONVISIBILIT = 0;
@@ -833,6 +970,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             unpostage_linear.setVisibility(View.VISIBLE);
             unpostage.setText(activityName);
             PROMOTIONVISIBILIT += 1;
+            activityId = goodsActity.getActivityId();
         }
         GoodsDetailsModel.GoodsDetailsBean.StoreActivityBean storeActivity = goodsdetailsmodelData.getStoreActivity();
         if (storeActivity == null || "".equals(storeActivity)) {//包邮
@@ -843,6 +981,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             String activityName1 = storeActivity.getActivityName();
             hot_linear.setVisibility(View.VISIBLE);
             hot.setText(activityName1);
+            activityId = storeActivity.getActivityId();
         }
         int isLimitBuy = goodsdetailsmodelData.getIsLimitBuy();
         if (isLimitBuy == 1) {// 是否限购 0否1是
@@ -906,7 +1045,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     }
 
     //    //临时储存单个对比id
-    List<Integer> goodsId = new ArrayList<>();
+    List<Integer> goodsIdList = new ArrayList<>();
     //储存选中id
     HashMap<Integer, Integer> hashmapSelect = new HashMap<>();
     //选中的id集合
@@ -990,14 +1129,14 @@ public class GoodsInfoFragment extends BaseFragment implements
             checkedAllMap.clear();
         }
         for (List<Integer> checkedList : checkedAllList) {
-            if (goodsId != null || goodsId.size() > 0) {
-                goodsId.clear();
+            if (goodsIdList != null || goodsIdList.size() > 0) {
+                goodsIdList.clear();
             }
-            goodsId.addAll(checkedList);
+            goodsIdList.addAll(checkedList);
             List<GoodsDetailsModel.GoodsDetailsBean.SpecsBean> specs = goodsDetails.getSpecs();
             List<Map<Integer, Integer>> checkedMapId = new ArrayList<>();
-            for (int i = 0, j = goodsId.size(); i < j; i++) {
-                Integer selectId = goodsId.get(i);
+            for (int i = 0, j = goodsIdList.size(); i < j; i++) {
+                Integer selectId = goodsIdList.get(i);
                 Map<Integer, Integer> map = new HashMap<>();
                 for (int m = 0, n = specs.size(); m < n; m++) {
                     GoodsDetailsModel.GoodsDetailsBean.SpecsBean specsBean = specs.get(m);
@@ -1042,7 +1181,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                                 while (iterator.hasNext()) {
                                     Map.Entry<Integer, Integer> next = iterator.next();
                                     Integer nextKey = next.getKey();
-                                    if (flowlayout1Id!=nextKey){
+                                    if (flowlayout1Id != nextKey) {
                                         mapChangeList.add(map.get(nextKey));
                                     }
                                 }
@@ -1175,6 +1314,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     //轮播图点击事件
     @Override
     public void onItemClick(int position) {
+        Log.e("TAG_详情轮播图", "点击了");
         List<GoodsDetailsModel.GoodsDetailsBean.GoodsGallerysBean> goodsGallerys = goodsDetails.getGoodsGallerys();
         ArrayList<String> imageShowBigList = new ArrayList<String>();
         for (int i = 0, j = goodsGallerys.size(); i < j; i++) {
@@ -1183,7 +1323,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         }
         // 跳到查看大图界面
         Intent intent = new Intent(getActivity(), ShowBigPictrueActivitiy.class);
-        intent.getIntExtra("position",position);
+        intent.getIntExtra("position", position);
         intent.putStringArrayListExtra("ImageList", imageShowBigList);
         startActivity(intent);
     }
@@ -1212,23 +1352,26 @@ public class GoodsInfoFragment extends BaseFragment implements
     public interface CallBack {
         public void setCartNum(int cartnum);
     }
+
     private MediaPlayer mediaplayer;
+
     private void initVoice() {
-        if (goodsDetails==null){
+        if (goodsDetails == null) {
             return;
         }
         int haveVoice = goodsDetails.getHaveVoice();
-        if (haveVoice == 0){
+        if (haveVoice == 1) {
+            voice.setVisibility(View.VISIBLE);
             String voiceDetailUrl = goodsDetails.getVoiceDetailUrl();
-            if (voiceDetailUrl==null){
+            if (voiceDetailUrl == null) {
                 return;
             }
 //            voiceDetailUrl = "http://dl.stream.qqmusic.qq.com/C400000mtPsZ0kRcZi.m4a?vkey=68F79E941D3C7734B04518389C93637BAA1D992BBCCEFCE79E8C9EA7D2D0C4CD448CD355302F5552A845D2D186947ED14AF15BFC6DE46082&guid=9292650742&uin=1657379258&fromtag=66";
             try {
-                if (mediaplayer==null){
+                if (mediaplayer == null) {
                     mediaplayer = new MediaPlayer();
                 }
-                if (mediaplayer.isPlaying()){
+                if (mediaplayer.isPlaying()) {
                     mediaplayer.stop();
                     mediaplayer.release();
                     mediaplayer = null;
@@ -1240,15 +1383,34 @@ public class GoodsInfoFragment extends BaseFragment implements
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             voice.setVisibility(View.GONE);
         }
     }
+
     @Override
     public void onPrepared(MediaPlayer mp) {
         voice.setVisibility(View.VISIBLE);
         duration = mp.getDuration();//总时长
         String formatLongToTimeStr = HelpUtils.formatLongToTime((long) duration);
         voice_time.setText(formatLongToTimeStr);
+    }
+
+    public String getGoodsNum() {
+        return etGoodsNum.getText().toString().trim();
+    }
+
+    public int getActivityId() {
+        return activityId;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    private void startWebViewActivity(String url) {
+        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+        intent.putExtra("webViewUrl", url);
+        getActivity().startActivity(intent);
     }
 }

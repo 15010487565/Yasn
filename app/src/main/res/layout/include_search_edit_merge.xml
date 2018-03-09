@@ -24,6 +24,7 @@
         android:layout_height="@dimen/top_search_height"
         android:layout_weight="1"
         android:background="@drawable/shape_white"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <EditText
@@ -41,7 +42,13 @@
             android:textColor="@color/black_33"
             android:textSize="@dimen/textsize_17"
             android:textColorHint="@color/black_66" />
-
+        <ImageView
+            android:id="@+id/iv_clean"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:layout_marginLeft="@dimen/margin_3"
+            android:layout_marginRight="@dimen/margin_3"
+            android:background="@mipmap/cleantxt"/>
         <TextView
             android:id="@+id/searchbutton"
             android:layout_width="wrap_content"

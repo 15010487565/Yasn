@@ -1,6 +1,7 @@
 package com.yasn.purchase.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activityold.WebViewActivity;
+import com.yasn.purchase.common.Config;
 import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.HomeRecyModel;
 
@@ -113,6 +116,18 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }else {
                     holderRecy.presell.setVisibility(View.GONE);
                 }
+                int button2 = homeRecy.getButton2();
+                if (button2==1){
+                    holderRecy.button2.setVisibility(View.VISIBLE);
+                }else {
+                    holderRecy.button2.setVisibility(View.GONE);
+                }
+                int button3 = homeRecy.getButton3();
+                if (button3==1){
+                    holderRecy.button3.setVisibility(View.VISIBLE);
+                }else {
+                    holderRecy.button3.setVisibility(View.GONE);
+                }
                 SpannableStringBuilder span = new SpannableStringBuilder(sb + homeRecy.getText());
                 span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.white)), 0, goneNum,
                         Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -188,6 +203,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             nameRecy = (TextView) itemView.findViewById(R.id.title);
 //
             moneyRecy = (TextView) itemView.findViewById(R.id.home_money);
+            moneyRecy.setOnClickListener(this);
             advertRecy = (TextView) itemView.findViewById(R.id.home_action);
             countRecy = (TextView) itemView.findViewById(R.id.home_count);
 
@@ -214,6 +230,14 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     break;
                 case R.id.lable_button3:
                     onItemClickListener.OnClickRecyButton(3,getLayoutPosition());
+                    break;
+                case R.id.home_money:
+                    String trim = moneyRecy.getText().toString().trim();
+                    if ("登录看价格".equals(trim)){
+                        startWebViewActivity(Config.LOGINWEBVIEW);
+                    }else if ("认证看价格".equals(trim)){
+                        startWebViewActivity(Config.ATTESTATION);
+                    }
                     break;
             }
         }
@@ -246,6 +270,10 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
     }
-
+    private void startWebViewActivity(String url) {
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra("webViewUrl", url);
+        context.startActivity(intent);
+    }
 }
 

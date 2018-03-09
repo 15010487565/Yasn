@@ -49,7 +49,7 @@
             android:gravity="center"
             android:minWidth="@dimen/main_tabwidget_redpoint_size"
             android:minHeight="@dimen/main_tabwidget_redpoint_size"
-            android:textSize="@dimen/main_tabwidget_redpoint_text"
+            android:textSize="12sp"
             android:visibility="gone"/>
     </FrameLayout>
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.yasn.purchase.R;
 import com.yasn.purchase.adapter.ShopCarAdapter;
+import com.yasn.purchase.common.Config;
 import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.EventBusMsg;
 
@@ -46,14 +47,14 @@ public class ShopCarFragment extends SimpleTopbarFragment implements OnRcItemCli
 
     @Override
     protected void OkHttpDemand() {
-        Log.e("TAG_initView","SHOPCAR");
+        Log.e("TAG_initView","SHOPCAR_OkHttp");
         token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
         resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
         resetTokenTime = SharePrefHelper.getInstance(getActivity()).getSpString("resetTokenTime");
         if ((token != null && !"".equals(token))||(resetToken != null && !"".equals(resetToken))){
-            EventBus.getDefault().post(new EventBusMsg("shopcar"));
+            EventBus.getDefault().post(new EventBusMsg("ShopCar"));
         }else {
-            EventBus.getDefault().post(new EventBusMsg("login"));
+            startWebViewActivity(Config.LOGINWEBVIEW);
         }
     }
 
@@ -78,21 +79,6 @@ public class ShopCarFragment extends SimpleTopbarFragment implements OnRcItemCli
 //            onInvisible();
         }
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
-//        resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
-//        resetTokenTime = SharePrefHelper.getInstance(getActivity()).getSpString("resetTokenTime");
-//        if (token != null && !"".equals(token)) {
-//            EventBus.getDefault().post(new EventBusMsg("webViewHide"));
-//        } else if (resetToken != null && !"".equals(resetToken)) {
-//            EventBus.getDefault().post(new EventBusMsg("webViewHide"));
-//        } else {
-//            EventBus.getDefault().post(new EventBusMsg("webViewShow"));
-//        }
-//    }
 
     @Override
     protected void initView(LayoutInflater inflater, View view) {
@@ -180,8 +166,8 @@ public class ShopCarFragment extends SimpleTopbarFragment implements OnRcItemCli
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
         Log.e("TAG_fragment","shopcar="+msg);
-        if ("loginSucceed".equals(msg)&&getUserVisibleHint()){
-            OkHttpDemand();
-        }
+//        if ("loginSucceed".equals(msg)&&getUserVisibleHint()){
+//            OkHttpDemand();
+//        }
     }
 }

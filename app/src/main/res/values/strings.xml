@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">雅森车品宝</string>
     <string name="data_failure_tip">数据加载失败,请稍后再试或检查网络</string>
     <string name="press_back_again_to_quit">再按一次退出程序</string>
@@ -71,9 +72,12 @@
     <string name="callphone">电话咨询</string>
     <string name="callservice">在线客服</string>
 
+
     <string name="makerdredge">开通创客</string>
     <string name="makerqrcode">推广二维码</string>
     <string name="makerreceiptaccount">收款账号</string>
     <string name="makerexploitshop">开拓门店</string>
     <string name="makershoporder">门店订单</string>
+
+
 </resources>

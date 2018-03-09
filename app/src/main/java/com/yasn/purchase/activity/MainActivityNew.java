@@ -1,10 +1,7 @@
 package com.yasn.purchase.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,9 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -24,13 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.github.lzyzsd.jsbridge.BridgeHandler;
-import com.github.lzyzsd.jsbridge.BridgeWebView;
-import com.github.lzyzsd.jsbridge.CallBackFunction;
-import com.github.lzyzsd.jsbridge.DefaultHandler;
 import com.yasn.purchase.activityold.LoadWebViewErrListener;
-import com.yasn.purchase.activityold.MyWebViewClient;
 import com.yasn.purchase.activityold.WebViewActivity;
 import com.yasn.purchase.application.YasnApplication;
 import com.yasn.purchase.common.Config;
@@ -40,11 +28,7 @@ import com.yasn.purchase.fragment.HomeFragment;
 import com.yasn.purchase.fragment.ShopCarFragment;
 import com.yasn.purchase.fragment.ShopFragment;
 import com.yasn.purchase.model.EventBusMsg;
-import com.yasn.purchase.model.PresonaModel;
-import com.yasn.purchase.utils.MyWebChromeClient2;
-import com.yasn.purchase.utils.SerializableUtil;
 import com.yasn.purchase.view.BadgeView;
-import com.yasn.purchase.wxapi.WXPay;
 import com.yonyou.sns.im.util.common.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -53,15 +37,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.R;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
-import www.xcd.com.mylibrary.config.HttpConfig;
-import www.xcd.com.mylibrary.utils.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 import www.xcd.com.mylibrary.view.NoScrollViewPager;
 import www.xcd.com.mylibrary.widget.SnsTabWidget;
@@ -141,6 +122,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         setContentView(R.layout.activity_mainnew);
         EventBus.getDefault().register(this);
         currentItem = getIntent().getIntExtra("CURRENTITEM", 0);
+        Log.e("TAG_MAIN","onCreate="+currentItem);
         initView();
         // 初始化fragments
         initFragments();
@@ -148,9 +130,6 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         initPager();
         // 初始化Tab
         initTabWidget();
-        //实例化webview
-        initWebView();
-        initData();
         //实例化红点
         resetRedPoint(0, 0);
         resetRedPoint(1, 0);
@@ -160,7 +139,6 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     }
 
     public void setCartNum(int cartnum) {
-        Log.e("TAG_cartnum", "cartnum=" + cartnum);
         resetRedPoint(3, cartnum);
     }
 
@@ -188,8 +166,6 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
                 main_find_view.setAlpha(0);
                 main_find_viewhl.setAlpha(1);
                 viewPager.setCurrentItem(2);
-                webView.setVisibility(View.GONE);
-                viewPager.setVisibility(View.VISIBLE);
                 break;
 
         }
@@ -198,12 +174,15 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     @Override
     protected void onResume() {
         super.onResume();
+        currentItem = getIntent().getIntExtra("CURRENTITEM", 0);
+        viewPager.setCurrentItem(currentItem);
     }
 
     @Override
     protected void onPause() {
         overridePendingTransition(0, 0);
         super.onPause();
+
     }
 
     /**
@@ -391,31 +370,11 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         }
     }
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case HttpConfig.SUCCESSCODE:
-                    Bundle bundle = msg.getData();
-                    String returnData = bundle.getString("returnData");
-                    setCartNum(Integer.valueOf(returnData));
-                    break;
-            }
-        }
-    };
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
-            case 100:
-                PresonaModel presonaModel = JSON.parseObject(returnData, PresonaModel.class);
-                PresonaModel.MemberBean member = presonaModel.getMember();
-                if (member != null) {
-                    int member_id = member.getMember_id();
-                    HelpUtils.getGoodsNum(Config.CARTGOODSNUM + member_id, handler);
-                }
-                break;
+
         }
     }
 
@@ -442,8 +401,6 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     @Override
     public void onLoadWebviewFail(WebView view, int errorCode, String description, String failingUrl) {
         Log.e("TAG_activity", "errorCode=" + errorCode);
-//        webView.setVisibility(View.GONE);
-//        viewPager.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -462,31 +419,21 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
 
         @Override
         public void onTabSelectionChanged(int tabIndex) {
-
+            Log.e("TAG_MAIN","选择tabIndex="+tabIndex);
             if (tabIndex == 3 || tabIndex == 4) {
                 token = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("token");
                 resetToken = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("resetToken");
                 resetTokenTime = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("resetTokenTime");
                 if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
                     if (tabIndex == 3) {
-                        webView.setVisibility(View.GONE);
-                        viewPager.setVisibility(View.VISIBLE);
-                        Intent intent = new Intent(MainActivityNew.this, WebViewActivity.class);
-                        intent.putExtra("webViewUrl", Config.SHOPPCARWEBVIEW);
-                        startActivity(intent);
-                    } else {
-                        webView.setVisibility(View.GONE);
-                        viewPager.setVisibility(View.VISIBLE);
+                        startWebViewActivity(Config.SHOPPCARWEBVIEW);
+                    }  else {
                         viewPager.setCurrentItem(tabIndex, false);
                     }
                 } else {
-                    webView.setVisibility(View.VISIBLE);
-                    viewPager.setVisibility(View.GONE);
-                    viewPager.setCurrentItem(tabIndex, false);
+                    startWebViewActivity(Config.LOGINWEBVIEW);
                 }
             } else {
-                webView.setVisibility(View.GONE);
-                viewPager.setVisibility(View.VISIBLE);
                 viewPager.setCurrentItem(tabIndex, false);
             }
 
@@ -498,6 +445,11 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         }
     }
 
+    private void startWebViewActivity(String url){
+        Intent intent = new Intent(MainActivityNew.this, WebViewActivity.class);
+        intent.putExtra("webViewUrl", url);
+        startActivity(intent);
+    }
     /**
      * pager adapter
      *
@@ -570,6 +522,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
             tabWidget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             // 切换tab
             tabWidget.setCurrentTab(index);
+            Log.e("TAG_Main","tabWidgetSelected="+index);
             // 重设title
 //            resetTitle(index);
             // 变换tab显示
@@ -599,149 +552,22 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         EventBus.getDefault().unregister(this);
     }
 
-    private BridgeWebView webView;
-    MyWebChromeClient2 myWebChromeClient2 = new MyWebChromeClient2(MainActivityNew.this);
-
-    protected void initWebView() {
-        webView = (BridgeWebView) findViewById(R.id.mainWebView);
-    }
-
-    private void initData() {
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        //        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        settings.setDomStorageEnabled(true);
-        settings.setAppCacheEnabled(true);
-        settings.setDatabaseEnabled(true);
-        settings.setUseWideViewPort(false);
-        settings.setGeolocationDatabasePath(MainActivityNew.this.getFilesDir().getPath());
-        settings.setSavePassword(false);
-        webView.addJavascriptInterface(myWebChromeClient2, "android");
-        // 设置WebViewClient
-        webView.setWebChromeClient(myWebChromeClient2 = new MyWebChromeClient2(this) {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-//                try {
-//                    if (newProgress == 100) {
-//                        myProgressBar.setVisibility(View.GONE);
-//                    } else {
-//                        if (View.VISIBLE != myProgressBar.getVisibility()) {
-//                            myProgressBar.setVisibility(View.VISIBLE);
-//                        }
-//                        myProgressBar.setProgress(newProgress);
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-                super.onProgressChanged(view, newProgress);
-            }
-
-        });
-    }
-
-    public void setCookie(Context context, String url, String value) {
-        try {
-            CookieSyncManager.createInstance(context);
-            CookieManager cookieManager = CookieManager.getInstance();
-            cookieManager.setAcceptCookie(true);
-            if (value != null && value.contains(";")) {
-                String[] cookiepart = value.split(";");
-                for (int i = 0; i < cookiepart.length; i++) {
-                    cookieManager.setCookie(url, cookiepart[i]);
-                }
-            } else {
-                cookieManager.setCookie(url, value);
-            }
-            CookieSyncManager.getInstance().sync();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected void setLoadUrl(String webViewUrl) {
-        Log.e("TAG_activity", "webViewUrl=" + webViewUrl);
-        //取得保存的cookie
-        String oldCookie = (String) SerializableUtil.readObject(getFilesDir(), SerializableUtil.COOKIE);
-        setCookie(this, ".yasn.com", oldCookie);
-        //设置android_client,web端根据这个判断是哪个客户端
-        webView.getSettings().setUserAgentString(webView.getSettings().getUserAgentString() + "/android_client");
-        webView.setDefaultHandler(new DefaultHandler());
-        webView.setWebViewClient(new MyWebViewClient(this, webView, this));
-        webView.loadUrl(webViewUrl);
-        webView.registerHandler("YasnWebRespond", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                WXPay wxPay = new WXPay();
-                wxPay.pay(MainActivityNew.this, data);
-
-                function.onCallBack("微信支付中...");
-            }
-        });
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
         Log.e("TAG_activity", "Main=" + msg);
-        if ("login".equals(msg)) {
-            webView.setVisibility(View.VISIBLE);
-            viewPager.setVisibility(View.GONE);
-            setLoadUrl(Config.LOGINWEBVIEW);
-        } else if ("register".equals(msg)) {
-            webView.setVisibility(View.VISIBLE);
-            viewPager.setVisibility(View.GONE);
-            setLoadUrl(Config.REGISTERWEBVIEW);
-        } else if ("loginSucceed".equals(msg)) {
-            webView.setVisibility(View.GONE);
-            viewPager.setVisibility(View.VISIBLE);
-            setLoadUrl(Config.LOGINWEBVIEW);
-            token = SharePrefHelper.getInstance(this).getSpString("token");
-            resetToken = SharePrefHelper.getInstance(this).getSpString("resetToken");
-            if (resetToken != null && !"".equals(resetToken)) {
-                Map<String, Object> paramsToken = new HashMap<String, Object>();
-                paramsToken.put("access_token", resetToken);
-                okHttpGet(100, Config.GETPERSONAGEINFO, paramsToken);
-            }
-        } else if ("shopcar".equals(msg)) {
-            webView.setVisibility(View.VISIBLE);
-            viewPager.setVisibility(View.GONE);
-            Intent intent = new Intent(this, WebViewActivity.class);
-            intent.putExtra("webViewUrl", Config.SHOPPCARWEBVIEW);
-            startActivity(intent);
-        } else if ("loginout".equals(msg)) {
-            removeCookie(this);
-           setCartNum(0);
-            webView.setVisibility(View.GONE);
-            viewPager.setVisibility(View.VISIBLE);
+        if ("loginSucceed".equals(msg)) {
+
+        }else if ("loginout".equals(msg)) {
+            setCartNum(0);
             viewPager.setCurrentItem(0);
-//            setLoadUrl(Config.LOGINWEBVIEW);
-        } else if ("yasnbang".equals(msg)) {
-            removeCookie(this);
-            webView.setVisibility(View.VISIBLE);
-            viewPager.setVisibility(View.GONE);
-            setLoadUrl(Config.YASNBANG);
-        } else if ("webViewShow".equals(msg)) {
-            webView.setVisibility(View.VISIBLE);
-            viewPager.setVisibility(View.GONE);
-        } else if ("webViewHide".equals(msg)) {
-            webView.setVisibility(View.GONE);
-            viewPager.setVisibility(View.VISIBLE);
-        } else {
-            webView.setVisibility(View.GONE);
-            viewPager.setVisibility(View.VISIBLE);
+            SharePrefHelper.getInstance(this).putSpBoolean("isLoginHome", false);
+
+        }else if ("carNum".equals(msg)) {
+            setCartNum(0);
+
+        }else if ("webViewBack".equals(msg)){//返回页
+
         }
-    }
-
-    private void removeCookie(Context context) {
-
-        CookieSyncManager.createInstance(context);
-
-        CookieManager cookieManager = CookieManager.getInstance();
-
-        cookieManager.removeAllCookie();
-
-        CookieSyncManager.getInstance().sync();
-
     }
 }

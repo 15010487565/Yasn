@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -50,6 +51,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
     private LinearLayout cleanhistory;
     private TagsLayout hotlabel;//热门标签
     private LinearLayout hotlableLinear;
+    private ImageView ivClean;
     @Override
     public boolean isTopbarVisibility() {
         return false;
@@ -67,6 +69,9 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
         topsearch = (EditText) findViewById(R.id.topsearch);
         topsearch.setOnFocusChangeListener(this);
         topsearch.addTextChangedListener(this);
+        ivClean = (ImageView) findViewById(R.id.iv_clean);
+        ivClean.setVisibility(View.GONE);
+        ivClean.setOnClickListener(this);
         //搜索按钮
         searchbutton = (TextView) findViewById(R.id.searchbutton);
         searchbutton.setOnClickListener(this);
@@ -146,9 +151,8 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
                 if (!hasData) {
                     insertData(topsearchString);
                     queryData("");
-                }else {
-
                 }
+                topsearch.setText("");
                 startActivity(topsearchString);
                 break;
             case R.id.cleanhistory:
@@ -159,6 +163,9 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
                 break;
             case R.id.topbar_left:
                 finish();
+                break;
+            case R.id.iv_clean:
+                topsearch.setText("");
                 break;
         }
     }
@@ -330,6 +337,13 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         HelpUtils.setEditTextInhibitInputSpeChat(topsearch);
+        String trim = topsearch.getText().toString().trim();
+        Log.e("TAG_模糊","trim="+trim);
+        if (TextUtils.isEmpty(trim)){
+            ivClean.setVisibility(View.GONE);
+        }else {
+            ivClean.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -33,6 +33,7 @@ import www.xcd.com.mylibrary.help.OkHttpHelper;
 import www.xcd.com.mylibrary.http.HttpInterface;
 import www.xcd.com.mylibrary.utils.DialogUtil;
 import www.xcd.com.mylibrary.utils.NetUtil;
+import www.xcd.com.mylibrary.utils.SharePrefHelper;
 import www.xcd.com.mylibrary.utils.ToastUtil;
 
 import static www.xcd.com.mylibrary.utils.ToastUtil.showToast;
@@ -536,5 +537,20 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 				}
 			}
 		});
+	}
+
+	public void cleanToken(){
+		String token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
+		String resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
+		if (token !=null&&!"".equals(token)){
+			SharePrefHelper.getInstance(getActivity()).putSpString("token","");
+		}else if (resetToken !=null&&!"".equals(resetToken)){
+			SharePrefHelper.getInstance(getActivity()).putSpString("token","");
+			SharePrefHelper.getInstance(getActivity()).putSpString("resetToken","");
+			SharePrefHelper.getInstance(getActivity()).putSpString("resetTokenTime","");
+			SharePrefHelper.getInstance(getActivity()).putSpString("priceDisplayMsg","");
+			SharePrefHelper.getInstance(getActivity()).putSpString("regionId", "");
+			ToastUtil.showToast("登录已过期,请重新登录！");
+		}
 	}
 }

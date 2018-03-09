@@ -14,7 +14,6 @@ import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.lzyzsd.jsbridge.BridgeHandler;
@@ -46,7 +45,6 @@ import www.xcd.com.mylibrary.PhotoActivity;
 
 public class WebViewActivity extends PhotoActivity implements View.OnClickListener, LoadWebViewErrListener{
     private BridgeWebView mWebView;
-    private ProgressBar myProgressBar;
     private long curr_time;
     private View errorView;
     private TextView errorText;
@@ -71,6 +69,7 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
         }else {
             webViewUrl = getIntent().getStringExtra("webViewUrl");
         }
+        Log.e("TAG_webViewActivity","webViewUrl="+webViewUrl);
         initView();
         initData();
         if (savedInstanceState != null) {
@@ -80,7 +79,6 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
 
     private void initView() {
         mWebView = (BridgeWebView) findViewById(R.id.bridge_webView);
-        myProgressBar = (ProgressBar) findViewById(R.id.myProgressBar);
         errorView = findViewById(R.id.error_page);
         errorText = (TextView) findViewById(R.id.load_again_web);
         fragment_layout = (FrameLayout) findViewById(R.id.fragment_layout);
@@ -100,29 +98,16 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
         settings.setSavePassword(false);
         mWebView.addJavascriptInterface(myWebChromeClient2, "android");
         // 设置WebViewClient
-        mWebView.setWebChromeClient(myWebChromeClient2 = new MyWebChromeClient2(this) {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                try {
-                    if (newProgress == 100) {
-                        myProgressBar.setVisibility(View.GONE);
-                    } else {
-                        if (View.VISIBLE != myProgressBar.getVisibility()) {
-                            myProgressBar.setVisibility(View.VISIBLE);
-                        }
-                        myProgressBar.setProgress(newProgress);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                super.onProgressChanged(view, newProgress);
-            }
-
-        });
+        mWebView.setWebChromeClient(myWebChromeClient2);
 
         //取得保存的cookie
         String oldCookie = (String) SerializableUtil.readObject(getFilesDir(), SerializableUtil.COOKIE);
-        setCookie(this, webViewUrl, oldCookie);
+        if (resetToken != null && !"".equals(resetToken)){
+            setCookie(this, ".yasn.com", oldCookie);
+        }else {
+            removeCookie(mWebView.getContext());
+        }
+        getCookie(".yasn.com");
         //设置android_client,web端根据这个判断是哪个客户端
         mWebView.getSettings().setUserAgentString(mWebView.getSettings().getUserAgentString() + "/android_client");
         mWebView.setDefaultHandler(new DefaultHandler());
@@ -154,6 +139,7 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
             CookieSyncManager.createInstance(context);
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptCookie(true);
+            cookieManager.removeSessionCookie();//移除
             if (value != null && value.contains(";")) {
                 String[] cookiepart = value.split(";");
                 for (int i = 0; i < cookiepart.length; i++) {
@@ -163,12 +149,19 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
                 cookieManager.setCookie(url, value);
             }
             CookieSyncManager.getInstance().sync();
-            //            Log.e("setCookie()  ", cookieManager.getCookie(url) + "");
+            Log.e("TAG_WEBsetCookie()  ", cookieManager.getCookie(url) + "");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    public void getCookie( String url) {
+        try {
+            CookieManager cookieManager = CookieManager.getInstance();
+            Log.e("TAG_setCookie()","WEB="+cookieManager.getCookie(url));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void onLoadWebviewFail(WebView view, int errorCode, String description, String failingUrl) {
         mWebView.setVisibility(View.GONE);
@@ -439,7 +432,23 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
         String msg = event.getMsg();
         Log.e("TAG_activity","webview="+msg);
         if ("loginout".equals(msg)){
+            removeCookie(mWebView.getContext());
            finish();
+        }else if ("webViewBack".equals(msg)){
+            finish();
         }
+    }
+    private void removeCookie(Context context) {
+        Log.e("TAG_WEBremoveCookie",  "removeCookie");
+        CookieSyncManager.createInstance(context);
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        mWebView.clearHistory();
+        mWebView.clearFormData();
+        mWebView.clearCache(true);
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        cookieManager.removeSessionCookie();
+        cookieManager.removeAllCookie();
+        CookieSyncManager.getInstance().sync();
     }
 }

@@ -59,12 +59,13 @@
                     app:pstsUnderlineHeight="0dp" />
 
                 <LinearLayout
-                    android:id="@+id/title"
+                    android:id="@+id/ll_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
                     android:visibility="gone">
+
                     <RelativeLayout
                         android:id="@+id/titleGoods"
                         android:layout_width="wrap_content"
@@ -73,15 +74,16 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_centerInParent="true"
                             android:layout_height="wrap_content"
-                            android:text="商品详情"
+                            android:layout_centerInParent="true"
                             android:paddingLeft="12dp"
                             android:paddingRight="12dp"
-                            android:textColor="#ffffff"
                             android:singleLine="true"
+                            android:text="商品详情"
+                            android:textColor="#ffffff"
                             android:textSize="15sp" />
                     </RelativeLayout>
+
                     <RelativeLayout
                         android:id="@+id/titleSell"
                         android:layout_width="wrap_content"
@@ -91,22 +93,24 @@
                         <TextView
                             android:id="@+id/sell"
                             android:layout_width="wrap_content"
-                            android:layout_centerInParent="true"
                             android:layout_height="wrap_content"
-                            android:text="教你卖好"
+                            android:layout_centerInParent="true"
                             android:paddingLeft="12dp"
                             android:paddingRight="12dp"
-                            android:textColor="@color/orange"
                             android:singleLine="true"
+                            android:text="教你卖好"
+                            android:textColor="@color/orange"
                             android:textSize="15sp" />
+
                         <View
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/margin_2"
+                            android:layout_alignLeft="@id/sell"
                             android:layout_alignParentBottom="true"
                             android:layout_alignRight="@id/sell"
-                            android:layout_alignLeft="@id/sell"
-                            android:background="@color/orange"/>
+                            android:background="@color/orange" />
                     </RelativeLayout>
+
                     <RelativeLayout
                         android:id="@+id/titleSucceed"
                         android:layout_width="wrap_content"
@@ -115,13 +119,13 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_centerInParent="true"
                             android:layout_height="wrap_content"
-                            android:text="成功案例"
+                            android:layout_centerInParent="true"
                             android:paddingLeft="12dp"
                             android:paddingRight="12dp"
-                            android:textColor="#ffffff"
                             android:singleLine="true"
+                            android:text="成功案例"
+                            android:textColor="#ffffff"
                             android:textSize="15sp" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -171,11 +175,27 @@
 
     </RelativeLayout>
 
-    <com.yasn.purchase.goods.view.NoScrollViewPager
-        android:id="@+id/viewPager"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_undata"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="暂无数据！"
+            android:textColor="@color/black_66"
+            android:textSize="@dimen/textsize_16"
+            android:visibility="gone" />
+
+        <www.xcd.com.mylibrary.view.NoScrollViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
 
     <include layout="@layout/include_goodsdetails_details" />
 </LinearLayout>

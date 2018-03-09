@@ -70,7 +70,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     }
     @Override
     protected void OkHttpDemand() {
-        Log.e("TAG_initView","CLASSFY");
+        Log.e("TAG_initView","CLASSFY_OkHttp");
         token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
         resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
         resetTokenTime = SharePrefHelper.getInstance(getActivity()).getSpString("resetTokenTime");
@@ -92,7 +92,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
         super.setUserVisibleHint(isVisibleToUser);
         if(getUserVisibleHint()) {
             isVisible = true;
-//            onVisible();
+            onVisible();
         } else {
             isVisible = false;
 //            onInvisible();
@@ -100,7 +100,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     }
     @Override
     protected void initView(LayoutInflater inflater, View view) {
-        Log.e("TAG_initView","CLASSIFY");
+        Log.e("TAG_initView","CLASSIFY_initView");
         //搜索输入框
         topsearch = (TextView) view.findViewById(R.id.topsearch);
         topsearch.setOnClickListener(this);
@@ -121,7 +121,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ClassifyRightModel classifyRightModel = rightList.get(position);
-                ToastUtil.showToast(classifyRightModel.getRightClassifyName());
+//                ToastUtil.showToast(classifyRightModel.getRightClassifyName());
                 String rightClassifycatId = classifyRightModel.getRightClassifycatId();
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
                 intent.putExtra("SECARCHCARID",rightClassifycatId);
@@ -321,7 +321,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onItemClick(int position) {
-        ToastUtil.showToast("点击轮播图");
+//        ToastUtil.showToast("点击轮播图");
     }
 
     @Override

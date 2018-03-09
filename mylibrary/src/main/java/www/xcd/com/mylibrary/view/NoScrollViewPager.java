@@ -65,4 +65,8 @@ public class NoScrollViewPager extends ViewPager {
     public void setScroll(boolean scroll) {
         isScroll = scroll;
     }
+
+    public boolean isScroll() {
+        return isScroll;
+    }
 }

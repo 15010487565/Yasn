@@ -171,43 +171,156 @@ public class HomeModel implements Serializable{
     }
     public static class MemberBean {
 
+
         /**
-         * member_id : 22035
-         * store_id : 0
-         * uname : 15222222223
-         * level_id : 2
-         * levelName : 普通会员
-         * cartCount : 0
-         * memberInProbation : 1
-         * digital_member : 0
+         * seePrice : 0
+         * endDate : 1602844185
+         * level_id : 10
+         * shopName : 洗车
          * is_wholesaler : 0
-         * regionId : 0
          * lv_id : 6
          * inWhitelist : 0
+         * memberInProbationStartTime : 0
+         * preOrder : 0
          * lvName : 单个门店
-         * haveMemberData : 0
-         * priceDisplayMsg : 认证看价格
+         * haveMemberData : 1
+         * member_id : 21880
+         * store_id : 0
+         * uname : 13333333333
+         * is_invite : 0
+         * pointDate : null
+         * is_inviteCustomer : 0
+         * levelName : 金宝二星
+         * cartCount : 0
+         * memberInProbation : 0
+         * message : null
+         * digital_member : 1
+         * currentTime : 1520576091
+         * regionId : 0
+         * memberInProbationEndTime : 0
+         * member_admin : 21880
+         * priceDisplayMsg : null
          * probationIsOpen : 0
-         * priceDisplayType : 1
+         * priceDisplayType : 0
          */
 
+        private int seePrice;
+        private int endDate;
+        private int level_id;
+        private String shopName;
+        private int is_wholesaler;
+        private int lv_id;
+        private int inWhitelist;
+        private int memberInProbationStartTime;
+        private int preOrder;
+        private String lvName;
+        private int haveMemberData;
         private int member_id;
         private int store_id;
         private String uname;
-        private int level_id;
+        private int is_invite;
+        private Object pointDate;
+        private int is_inviteCustomer;
         private String levelName;
         private int cartCount;
         private int memberInProbation;
+        private String message;
         private int digital_member;
-        private int is_wholesaler;
+        private int currentTime;
         private int regionId;
-        private int lv_id;
-        private int inWhitelist;
-        private String lvName;
-        private int haveMemberData;
+        private int memberInProbationEndTime;
+        private int member_admin;
         private String priceDisplayMsg;
         private int probationIsOpen;
         private int priceDisplayType;
+
+        public int getSeePrice() {
+            return seePrice;
+        }
+
+        public void setSeePrice(int seePrice) {
+            this.seePrice = seePrice;
+        }
+
+        public int getEndDate() {
+            return endDate;
+        }
+
+        public void setEndDate(int endDate) {
+            this.endDate = endDate;
+        }
+
+        public int getLevel_id() {
+            return level_id;
+        }
+
+        public void setLevel_id(int level_id) {
+            this.level_id = level_id;
+        }
+
+        public String getShopName() {
+            return shopName;
+        }
+
+        public void setShopName(String shopName) {
+            this.shopName = shopName;
+        }
+
+        public int getIs_wholesaler() {
+            return is_wholesaler;
+        }
+
+        public void setIs_wholesaler(int is_wholesaler) {
+            this.is_wholesaler = is_wholesaler;
+        }
+
+        public int getLv_id() {
+            return lv_id;
+        }
+
+        public void setLv_id(int lv_id) {
+            this.lv_id = lv_id;
+        }
+
+        public int getInWhitelist() {
+            return inWhitelist;
+        }
+
+        public void setInWhitelist(int inWhitelist) {
+            this.inWhitelist = inWhitelist;
+        }
+
+        public int getMemberInProbationStartTime() {
+            return memberInProbationStartTime;
+        }
+
+        public void setMemberInProbationStartTime(int memberInProbationStartTime) {
+            this.memberInProbationStartTime = memberInProbationStartTime;
+        }
+
+        public int getPreOrder() {
+            return preOrder;
+        }
+
+        public void setPreOrder(int preOrder) {
+            this.preOrder = preOrder;
+        }
+
+        public String getLvName() {
+            return lvName;
+        }
+
+        public void setLvName(String lvName) {
+            this.lvName = lvName;
+        }
+
+        public int getHaveMemberData() {
+            return haveMemberData;
+        }
+
+        public void setHaveMemberData(int haveMemberData) {
+            this.haveMemberData = haveMemberData;
+        }
 
         public int getMember_id() {
             return member_id;
@@ -233,12 +346,28 @@ public class HomeModel implements Serializable{
             this.uname = uname;
         }
 
-        public int getLevel_id() {
-            return level_id;
+        public int getIs_invite() {
+            return is_invite;
         }
 
-        public void setLevel_id(int level_id) {
-            this.level_id = level_id;
+        public void setIs_invite(int is_invite) {
+            this.is_invite = is_invite;
+        }
+
+        public Object getPointDate() {
+            return pointDate;
+        }
+
+        public void setPointDate(Object pointDate) {
+            this.pointDate = pointDate;
+        }
+
+        public int getIs_inviteCustomer() {
+            return is_inviteCustomer;
+        }
+
+        public void setIs_inviteCustomer(int is_inviteCustomer) {
+            this.is_inviteCustomer = is_inviteCustomer;
         }
 
         public String getLevelName() {
@@ -265,6 +394,14 @@ public class HomeModel implements Serializable{
             this.memberInProbation = memberInProbation;
         }
 
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
         public int getDigital_member() {
             return digital_member;
         }
@@ -273,12 +410,12 @@ public class HomeModel implements Serializable{
             this.digital_member = digital_member;
         }
 
-        public int getIs_wholesaler() {
-            return is_wholesaler;
+        public int getCurrentTime() {
+            return currentTime;
         }
 
-        public void setIs_wholesaler(int is_wholesaler) {
-            this.is_wholesaler = is_wholesaler;
+        public void setCurrentTime(int currentTime) {
+            this.currentTime = currentTime;
         }
 
         public int getRegionId() {
@@ -289,36 +426,20 @@ public class HomeModel implements Serializable{
             this.regionId = regionId;
         }
 
-        public int getLv_id() {
-            return lv_id;
+        public int getMemberInProbationEndTime() {
+            return memberInProbationEndTime;
         }
 
-        public void setLv_id(int lv_id) {
-            this.lv_id = lv_id;
+        public void setMemberInProbationEndTime(int memberInProbationEndTime) {
+            this.memberInProbationEndTime = memberInProbationEndTime;
         }
 
-        public int getInWhitelist() {
-            return inWhitelist;
+        public int getMember_admin() {
+            return member_admin;
         }
 
-        public void setInWhitelist(int inWhitelist) {
-            this.inWhitelist = inWhitelist;
-        }
-
-        public String getLvName() {
-            return lvName;
-        }
-
-        public void setLvName(String lvName) {
-            this.lvName = lvName;
-        }
-
-        public int getHaveMemberData() {
-            return haveMemberData;
-        }
-
-        public void setHaveMemberData(int haveMemberData) {
-            this.haveMemberData = haveMemberData;
+        public void setMember_admin(int member_admin) {
+            this.member_admin = member_admin;
         }
 
         public String getPriceDisplayMsg() {

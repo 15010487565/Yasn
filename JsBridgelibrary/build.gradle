@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 22
+        targetSdkVersion 25
         versionCode 1
         versionName version
     }
@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-compile 'com.android.support:support-v4:24.0.0-alpha2'
+compile 'com.android.support:support-v4:25.0.0'
 }
 
 def siteUrl = 'https://github.com/lzyzsd/JsBridge'

@@ -38,7 +38,7 @@ public class BannerHolderView implements Holder<GoodsDetailsModel.GoodsDetailsBe
 
     @Override
     public void UpdateUI(Context context, int position, GoodsDetailsModel.GoodsDetailsBean.GoodsGallerysBean data) {
-        textView.setText(list == null ?"0/0":((position)+"/"+list.size()));
+        textView.setText(list == null ?"0/0":((position+1)+"/"+list.size()));
         String imageUrl = data.getBig();
         if (imageUrl.indexOf("http://")==-1){
             imageUrl = "http://"+imageUrl;

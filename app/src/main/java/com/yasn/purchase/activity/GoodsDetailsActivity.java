@@ -1,14 +1,25 @@
 package com.yasn.purchase.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,29 +29,39 @@ import com.xyzlf.share.library.bean.ShareEntity;
 import com.xyzlf.share.library.interfaces.ShareConstant;
 import com.xyzlf.share.library.util.ShareUtil;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activityold.WebViewActivity;
+import com.yasn.purchase.common.Config;
 import com.yasn.purchase.func.GoodsDetailsTopBtnFunc;
 import com.yasn.purchase.goods.adapter.ItemTitlePagerAdapter;
 import com.yasn.purchase.goods.fragment.GoodsCommentFragment;
 import com.yasn.purchase.goods.fragment.GoodsDetailFragment;
 import com.yasn.purchase.goods.fragment.GoodsInfoFragment;
-import com.yasn.purchase.goods.view.NoScrollViewPager;
+import com.yasn.purchase.help.SobotUtil;
+import com.yasn.purchase.model.EventBusMsg;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.BadgeView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
+import www.xcd.com.mylibrary.config.HttpConfig;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
+import www.xcd.com.mylibrary.view.NoScrollViewPager;
 
 
-public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsInfoFragment.CallBack{
+public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsInfoFragment.CallBack {
 
     PagerSlidingTabStrip titleTabs;
-    LinearLayout title;
-    RelativeLayout titleGoods,titleSell,titleSucceed;
+    LinearLayout llTitle;
+    RelativeLayout titleGoods, titleSell, titleSucceed;
     NoScrollViewPager viewPager;
     private List<Fragment> fragmentList = new ArrayList<>();
     private GoodsInfoFragment goodsInfoFragment = new GoodsInfoFragment();
@@ -55,6 +76,19 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     private ShareEntity testBean;
     //进货单数量
     private BadgeView main_tabitem_redpoint;
+    TextView tvUndata;
+    //收藏图片、文字
+    private LinearLayout llCollect;
+    private ImageView ivCollect;
+    private TextView tvCollect;
+    private LinearLayout llCallPhone;
+    private LinearLayout llService;
+    //进货单
+    private FrameLayout flShopCar;
+    //加入进货单
+    private TextView tvAddShopCar;
+    private String memberId;
+    private String goodsId;
     /**
      * Topbar功能列表
      */
@@ -69,12 +103,85 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goodsdetails);
+        token = SharePrefHelper.getInstance(this).getSpString("token");
+        resetToken = SharePrefHelper.getInstance(this).getSpString("resetToken");
+        memberId = SharePrefHelper.getInstance(this).getSpString("memberid");
+        goodsId = SharePrefHelper.getInstance(this).getSpString("GOODSID");
         titleTabs = (PagerSlidingTabStrip) findViewById(R.id.title_tabs);
-        title = (LinearLayout) findViewById(R.id.title);
+        llTitle = (LinearLayout) findViewById(R.id.ll_title);
         viewPager = (NoScrollViewPager) findViewById(R.id.viewPager);
+        tvUndata = (TextView) findViewById(R.id.tv_undata);
+        tvUndata.setVisibility(View.GONE);
+        viewPager.setVisibility(View.VISIBLE);
+        viewPager.setScroll(true);
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.e("TAG_详情", "viewPager=" + viewPager.isScroll());
+                return false;
+            }
+        });
         main_tabitem_redpoint = (BadgeView) findViewById(R.id.main_tabitem_redpoint);
         init();
         initTabLayout();
+        initBottomView();
+
+    }
+
+    /**
+     * loginState 状态：0：已登陆
+     */
+    private String loginState;
+
+    private void initBottomView() {
+        //收藏
+        llCollect = (LinearLayout) findViewById(R.id.ll_collect);
+        llCollect.setOnClickListener(this);
+        ivCollect = (ImageView) findViewById(R.id.iv_collect);
+        tvCollect = (TextView) findViewById(R.id.tv_collect);
+        //进货单
+        flShopCar = (FrameLayout) findViewById(R.id.fl_shopCar);
+        flShopCar.setOnClickListener(this);
+        //电话咨询
+        llCallPhone = (LinearLayout) findViewById(R.id.ll_callPhone);
+        llCallPhone.setOnClickListener(this);
+        //在线客服
+        llService = (LinearLayout) findViewById(R.id.ll_service);
+        llService.setOnClickListener(this);
+        //加入进货单
+        tvAddShopCar = (TextView) findViewById(R.id.tv_addShopCar);
+        tvAddShopCar.setOnClickListener(this);
+        loginState = SharePrefHelper.getInstance(this).getSpString("loginState");
+        if ("0".equals(loginState)) {
+            llCollect.setVisibility(View.VISIBLE);
+            flShopCar.setVisibility(View.VISIBLE);
+            llCallPhone.setVisibility(View.VISIBLE);
+            llService.setVisibility(View.VISIBLE);
+            tvAddShopCar.setText("加入进货单");
+        } else if ("登录看价格".equals(loginState)) {
+            llCollect.setVisibility(View.GONE);
+            flShopCar.setVisibility(View.GONE);
+            llCallPhone.setVisibility(View.VISIBLE);
+            llService.setVisibility(View.VISIBLE);
+            tvAddShopCar.setText("去登录");
+        } else {
+            llCollect.setVisibility(View.VISIBLE);
+            flShopCar.setVisibility(View.GONE);
+            llCallPhone.setVisibility(View.VISIBLE);
+            llService.setVisibility(View.VISIBLE);
+            tvAddShopCar.setText("去认证");
+        }
+    }
+
+    private boolean isCollect;
+
+    public void setCollectImage(boolean isCollect) {
+        this.isCollect = isCollect;
+        if (isCollect) {//已收藏
+            ivCollect.setBackgroundResource(R.mipmap.collect_orange_entity);
+        } else {
+            ivCollect.setBackgroundResource(R.mipmap.collect_orange);
+        }
     }
 
     private void initTabLayout() {
@@ -96,20 +203,25 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         titleTabs.setViewPager(viewPager);
         goodsInfoFragment.setsetCartNum(this);
         int goodsfragmentid = SharePrefHelper.getInstance(this).getSpInt("GOODSFRAGMENTID");
-        if (goodsfragmentid == 1){
+        if (goodsfragmentid == 1) {
             viewPager.setCurrentItem(1);
-        }else if (goodsfragmentid == 2){
+        } else if (goodsfragmentid == 2) {
             viewPager.setCurrentItem(2);
-        }else {
+        } else {
             viewPager.setCurrentItem(0);
         }
     }
+
     public void operaTitleBar(boolean scroAble, boolean titleVisiable, boolean tanVisiable) {
-        viewPager.setNoScroll(false);
-        title.setVisibility(titleVisiable? View.VISIBLE:View.GONE);
-        Log.e("TAG_tanVisiable","title="+title.getVisibility());
-        titleTabs.setVisibility(tanVisiable? View.VISIBLE:View.GONE);
-        Log.e("TAG_tanVisiable","titleTabs="+titleTabs.getVisibility());
+        if (titleVisiable) {
+            viewPager.setScroll(false);
+        } else {
+            viewPager.setScroll(true);
+        }
+        llTitle.setVisibility(titleVisiable ? View.VISIBLE : View.GONE);
+        Log.e("TAG_tanVisiable", "llTitle=" + llTitle.getVisibility());
+        titleTabs.setVisibility(tanVisiable ? View.VISIBLE : View.GONE);
+        Log.e("TAG_tanVisiable", "titleTabs=" + titleTabs.getVisibility());
     }
 
     @Override
@@ -128,36 +240,95 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             case R.id.share_wexinfriends:
                 ShareUtil.startShare(this, ShareConstant.SHARE_CHANNEL_WEIXIN_CIRCLE, testBean, ShareConstant.REQUEST_CODE);
                 break;
-            case R.id.titleGoods:
+            case R.id.titleGoods://商品详情
                 goodsInfoFragment.activityChangeFragment();
-                title.setAlpha(0);
-                titleTabs.setAlpha(1);
-                ToastUtil.showToast("点击了商品详情");
-                viewPager.setCurrentItem(0,true);
-                viewPager.setCurrentItem(1,false);
-                viewPager.setCurrentItem(2,false);
+                llTitle.setVisibility(View.GONE);
+                titleTabs.setVisibility(View.VISIBLE);
+                viewPager.setCurrentItem(0, false);
+                viewPager.setScroll(true);
                 break;
-            case R.id.titleSell:
-                title.setVisibility(View.GONE);
+            case R.id.titleSell://教你卖号
+                llTitle.setVisibility(View.GONE);
                 titleTabs.setVisibility(View.VISIBLE);
-                ToastUtil.showToast("点击了教你卖好");
-                titleTabs.setVisibility(View.VISIBLE);
-                viewPager.setCurrentItem(0,false);
-                viewPager.setCurrentItem(1,true);
-                viewPager.setCurrentItem(2,false);
+                viewPager.setCurrentItem(1, false);
+                viewPager.setScroll(true);
                 break;
-            case R.id.titleSucceed:
-                title.setVisibility(View.GONE);
+            case R.id.titleSucceed://成功案例
+                llTitle.setVisibility(View.GONE);
                 titleTabs.setVisibility(View.VISIBLE);
-                viewPager.setCurrentItem(0,false);
-                viewPager.setCurrentItem(1,false);
-                viewPager.setCurrentItem(2,true);
-                ToastUtil.showToast("点击了成功案例");
+                viewPager.setCurrentItem(2, false);
+                viewPager.setScroll(true);
+                break;
+            case R.id.ll_collect://收藏
+                Map<String, Object> params = new HashMap<String, Object>();
+                if (isCollect) {//已收藏
+                    okHttpGet(101, Config.DELETECOLLECT + memberId + "/" + goodsId, params);
+                } else {
+                    okHttpGet(100, Config.ADDCOLLECT + memberId + "/" + goodsId, params);
+                }
+                break;
+            case R.id.ll_callPhone:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        ToastUtil.showToast("没有拨打电话权限");
+                    } else {
+                        Intent telIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:4009973315"));
+                        telIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(telIntent);
+                    }
+                } else {
+                    Intent telIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:4009973315"));
+                    telIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(telIntent);
+                }
+                break;
+            case R.id.ll_service:
+                SobotUtil.startSobot(this, null);
+                break;
+            case R.id.fl_shopCar:
+                startWebViewActivity(Config.SHOPPCARWEBVIEW);
+                break;
+            case R.id.tv_addShopCar:
+                String trim = tvAddShopCar.getText().toString().trim();
+                if ("去登录".equals(trim)) {
+                    startWebViewActivity(Config.LOGINWEBVIEW);
+                } else if ("去认证".equals(trim)) {
+                    startWebViewActivity(Config.ATTESTATION);
+                } else if ("加入进货单".equals(trim)) {
+                    /**
+                     * productId 货品Id
+                     * num 数量
+                     * activityId 促销活动Id(没有就不传)
+                     */
+                    String goodsNum = goodsInfoFragment.getGoodsNum();
+                    int activityId = goodsInfoFragment.getActivityId();
+                    int productId = goodsInfoFragment.getProductId();
+
+                    Log.e("TAG_详情选择","数量="+goodsNum);
+                    Map<String, Object> params1 = new HashMap<String, Object>();
+                    params1.put("productId", String.valueOf(productId));
+                    params1.put("num", goodsNum);
+                    if (activityId!=0){
+                        params1.put("activityId", String.valueOf(activityId));
+                    }
+                    if (token != null && !"".equals(token)) {
+                        params1.put("access_token", token);
+                    } else if (resetToken != null && !"".equals(resetToken)) {
+                        params1.put("access_token", resetToken);
+                    }
+                    okHttpGet(102, Config.ADDSHOPCAR, params1);
+                }
                 break;
         }
         if (mShareDialog != null && mShareDialog.isShowing()) {
             mShareDialog.dismiss();
         }
+    }
+
+    private void startWebViewActivity(String url) {
+        Intent intent = new Intent(GoodsDetailsActivity.this, WebViewActivity.class);
+        intent.putExtra("webViewUrl", url);
+        startActivity(intent);
     }
 
     @Override
@@ -194,12 +365,15 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     }
 
     public void onClickShare() {
-        testBean = new ShareEntity("测试商品", "测试商品===");
-        testBean.setUrl("http://www.baidu.com"); //分享链接
-        testBean.setImgUrl("https://image.baidu.com/search/detail?ct=503316480&z=0&ipn=d&word=%E5%9B%BE%E7%89%87&step_word=&hs=0&pn=0&spn=0&di=53059380110&pi=0&rn=1&tn=baiduimagedetail&is=0%2C0&istype=0&ie=utf-8&oe=utf-8&in=&cl=2&lm=-1&st=undefined&cs=49366202%2C632101467&os=3303681949%2C3335890514&simid=3365052636%2C338127663&adpicid=0&lpn=0&ln=1984&fr=&fmq=1516087811793_R&fm=&ic=undefined&s=undefined&se=&sme=&tab=0&width=undefined&height=undefined&face=undefined&ist=&jit=&cg=&bdtype=0&oriquery=&objurl=http%3A%2F%2Fpic4.nipic.com%2F20091217%2F3885730_124701000519_2.jpg&fromurl=ippr_z2C%24qAzdH3FAzdH3Fooo_z%26e3Bgtrtv_z%26e3Bv54AzdH3Ffi5oAzdH3FnAzdH3F8alAzdH3Fnlwnldjwlwuw8j0k_z%26e3Bip4s&gsm=0&rpstart=0&rpnum=0");
         if (dialogIsActivity()) {
             initShareDialog();
         }
+    }
+
+    public void tempSaveFragmentShare(String title, String url, String imageUrl) {
+        testBean = new ShareEntity(title, "我在车品宝发现了一个不错的商品，赶快来看看吧~");
+        testBean.setUrl(url); //分享链接
+        testBean.setImgUrl(imageUrl);
     }
 
     public void initShareDialog() {
@@ -233,9 +407,54 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-
+        switch (requestCode) {
+            case 100:
+                if (returnCode == 200) {
+                    setCollectImage(true);
+                } else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+            case 101:
+                if (returnCode == 200) {
+                    setCollectImage(false);
+                } else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+            case 102:
+                if (returnCode == 200) {
+                    try {
+                        JSONObject object = new JSONObject(returnData);
+                        int code = object.optInt("code");
+                        if (code == 200){
+                            setCartNum(object.optInt("number"));
+                        }else {
+                            setCartNum(object.optInt("number"));
+                            ToastUtil.showToast(object.optString("message"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+        }
     }
-
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case HttpConfig.SUCCESSCODE:
+                    Bundle bundle = msg.getData();
+                    String returnData = bundle.getString("returnData");
+                    setCartNum(Integer.valueOf(returnData));
+                    break;
+            }
+        }
+    };
     @Override
     public void onCancelResult() {
 
@@ -259,11 +478,28 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     @Override
     public void setCartNum(int cartNum) {
         Log.e("TAG_cartNum", "cartNum=" + cartNum);
-        if (cartNum == 0){
+        EventBusMsg carNum = new EventBusMsg("carNum");
+        carNum.setCarNum(String.valueOf(cartNum));
+        EventBus.getDefault().post(carNum);
+        if (cartNum == 0) {
             main_tabitem_redpoint.setVisibility(View.GONE);
-        }else {
+        } else {
             main_tabitem_redpoint.setVisibility(View.VISIBLE);
-            main_tabitem_redpoint.setText(cartNum);
+            main_tabitem_redpoint.setText(String.valueOf(cartNum));
+        }
+    }
+
+    public void setViewPagerGone() {
+        viewPager.setVisibility(View.GONE);
+        tvUndata.setVisibility(View.VISIBLE);
+    }
+    public void setTvAddShopCar(boolean isOnclick) {
+        if (isOnclick){
+            tvAddShopCar.setEnabled(true);
+            tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this,R.color.orange));
+        }else {
+            tvAddShopCar.setEnabled(false);
+            tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this,R.color.black_99));
         }
     }
 }

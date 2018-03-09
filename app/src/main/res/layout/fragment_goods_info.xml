@@ -209,7 +209,7 @@
                             android:layout_height="wrap_content"
                             android:text="￥00.00"
                             android:textColor="@color/orange"
-                            android:textSize="@dimen/textsize_18" />
+                            android:textSize="@dimen/textsize_16" />
 
                         <TextView
                             android:id="@+id/soldOut2"
@@ -250,7 +250,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tradeprice_linear"
+                        android:id="@+id/ll_ladderPrices"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -275,6 +275,7 @@
 
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/tradeprice_recy"
+                                android:layout_marginBottom="@dimen/margin_5"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
 
@@ -284,7 +285,6 @@
                                 android:id="@+id/minNumber"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/margin_5"
                                 android:layout_marginRight="@dimen/margin_10"
                                 android:lines="1"
                                 android:text="最小起订量：X\t\tX件起批"
@@ -309,16 +309,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:singleLine="true"
                             android:text="卖点:"
                             android:textColor="@color/black_99"
                             android:textSize="@dimen/textsize_14" />
 
                         <TextView
                             android:id="@+id/sellingview"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:text="实打实打算大大是实打实大苏打湿哒哒大大萨达萨达的"
+                            android:text=""
                             android:textColor="@color/black_99"
                             android:textSize="@dimen/textsize_14" />
 
@@ -503,38 +503,52 @@
                             android:layout_height="@dimen/height_40"
                             android:gravity="center_vertical"
                             android:background="@drawable/text_black_white">
-                            <ImageView
-                                android:layout_width="@dimen/height_15"
-                                android:layout_height="@dimen/height_15"
-                                android:layout_marginLeft="@dimen/margin_15"
-                                android:layout_marginRight="@dimen/margin_15"
-                                android:background="@mipmap/subtractimage"/>
+                            <LinearLayout
+                                android:id="@+id/iv_subtractNum"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center">
+                                <ImageView
+                                    android:layout_width="@dimen/height_15"
+                                    android:layout_height="@dimen/height_15"
+                                    android:layout_marginLeft="@dimen/margin_15"
+                                    android:layout_marginRight="@dimen/margin_15"
+                                    android:background="@mipmap/subtractimage"/>
+                            </LinearLayout>
                             <View
                                 android:layout_width="@dimen/margin_1"
                                 android:layout_height="match_parent"
                                 android:background="@color/black_66"/>
                             <EditText
-                                android:id="@+id/goodsNum"
+                                android:id="@+id/et_goodsNum"
                                 android:layout_width="@dimen/height_40"
                                 android:layout_height="@dimen/height_40"
                                 android:textColor="@color/black_66"
-                                android:textSize="@dimen/textsize_26"
+                                android:textSize="@dimen/textsize_20"
                                 android:gravity="center"
                                 android:layout_marginLeft="@dimen/margin_10"
                                 android:layout_marginRight="@dimen/margin_10"
-                                android:textStyle="bold"
+                                android:inputType="number"
+                                android:digits="0123456789"
                                 android:background="@null"
                                 android:text="0"/>
                             <View
                                 android:layout_width="@dimen/margin_1"
                                 android:layout_height="match_parent"
                                 android:background="@color/black_66"/>
-                            <ImageView
-                                android:layout_marginLeft="@dimen/margin_15"
-                                android:layout_marginRight="@dimen/margin_15"
-                                android:layout_width="@dimen/height_15"
-                                android:layout_height="@dimen/height_15"
-                                android:background="@mipmap/addblack"/>
+                            <LinearLayout
+                                android:id="@+id/iv_addNum"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center">
+                                <ImageView
+                                    android:layout_marginLeft="@dimen/margin_15"
+                                    android:layout_marginRight="@dimen/margin_15"
+                                    android:layout_width="@dimen/height_15"
+                                    android:layout_height="@dimen/height_15"
+                                    android:background="@mipmap/addblack"/>
+                            </LinearLayout>
+
                         </LinearLayout>
                         <TextView
                             android:id="@+id/enableStore"

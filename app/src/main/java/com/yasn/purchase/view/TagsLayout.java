@@ -3,6 +3,7 @@ package com.yasn.purchase.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,8 +14,10 @@ import com.yasn.purchase.R;
  */
 
 public class TagsLayout extends ViewGroup {
+
     private int childHorizontalSpace;
     private int childVerticalSpace;
+    private int childLineMumber = 1;
 
 
     public TagsLayout(Context context, AttributeSet attrs, int defStyle) {
@@ -63,8 +66,13 @@ public class TagsLayout extends ViewGroup {
         // 遍历每个子元素
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
-            if (child.getVisibility() == GONE)
+            Log.e("TAG_count","count="+count+";=="+child.getVisibility()+";childLineMumber="+childLineMumber);
+            if (child.getVisibility() == GONE
+//                    ||childLineMumber>=3
+                    ){
+//                child.setVisibility(GONE);
                 continue;
+            }
             // 测量每一个child的宽和高
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
             // 得到child的lp
@@ -77,6 +85,8 @@ public class TagsLayout extends ViewGroup {
              * 如果加入当前child，则超出最大宽度，则的到目前最大宽度给width，类加height 然后开启新行
              */
             if (lineWidth + childWidth > sizeWidth - getPaddingLeft() - getPaddingRight()) {
+                Log.e("TAG_count","换行");
+                childLineMumber++;
                 width = Math.max(lineWidth, childWidth);// 取最大的
                 lineWidth = childWidth; // 重新开启新行，开始记录
                 // 叠加当前高度，
@@ -85,6 +95,7 @@ public class TagsLayout extends ViewGroup {
                 lineHeight = childHeight;
                 child.setTag(new Location(left, top + height, childWidth + left - childHorizontalSpace, height + child.getMeasuredHeight() + top));
             } else {// 否则累加值lineWidth,lineHeight取最大高度
+                Log.e("TAG_count","不换行");
                 child.setTag(new Location(lineWidth + left, top + height, lineWidth + childWidth - childHorizontalSpace + left, height + child.getMeasuredHeight() + top));
                 lineWidth += childWidth;
                 lineHeight = Math.max(lineHeight, childHeight);

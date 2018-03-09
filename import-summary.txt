@@ -11,8 +11,8 @@ the .jar file in your project was of an older version than the
 dependency we picked, which could render the project not compileable.
 You can disable the jar replacement in the import wizard and try again:
 
-android-support-v4.jar => com.android.support:support-v4:23.+
-android-support-v7-appcompat.jar => com.android.support:appcompat-v7:23.+
+android-support-v4.jar => com.android.support:support-v4:25.0.0
+android-support-v7-appcompat.jar => com.android.support:appcompat-v7:25.0.0
 
 Replaced Libraries with Dependencies:
 -------------------------------------
@@ -25,7 +25,7 @@ dependency we picked, which could render the project not compileable.
 You can disable the library replacement in the import wizard and try
 again:
 
-android-support-v7-appcompat => [com.android.support:appcompat-v7:23.+]
+android-support-v7-appcompat => [com.android.support:appcompat-v7:25.0.0]
 
 Moved Files:
 ------------

@@ -29,7 +29,33 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
 public class GoodsCommentFragment extends BaseFragment {
 
     private TextView htmlTextView,undata;
+    // 标志位，标志已经初始化完成。
+    private boolean isPrepared;
 
+    protected void OkHttpDemand() {
+        String goodsid = SharePrefHelper.getInstance(getActivity()).getSpString("GOODSID");
+        Map<String, Object> params = new HashMap<String, Object>();
+        okHttpGet(100, Config.GOODSDETAILSOTHER+ goodsid, params);
+    }
+    @Override
+    protected void lazyLoad() {
+        if(!isPrepared || !isVisible) {
+            return;
+        }
+        //填充各控件的数据
+        OkHttpDemand();
+    }
+
+    @Override
+    public void setUserVisibleHint(final boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(getUserVisibleHint()) {
+            isVisible = true;
+            onVisible();
+        }else{
+            isVisible = false;
+        }
+    }
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_goods_comment;
@@ -45,9 +71,9 @@ public class GoodsCommentFragment extends BaseFragment {
         htmlTextView.setMovementMethod(ScrollingMovementMethod.getInstance());// 设置可滚动
 
         createDialog();
-        String goodsid = SharePrefHelper.getInstance(getActivity()).getSpString("GOODSID");
-        Map<String, Object> params = new HashMap<String, Object>();
-        okHttpGet(100, Config.GOODSDETAILSOTHER + "/" + goodsid, params);
+        //XXX初始化view的各控件
+        isPrepared = true;
+        lazyLoad();
     }
 
     @Override
@@ -55,12 +81,12 @@ public class GoodsCommentFragment extends BaseFragment {
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {
-                    HtmlImageGetter htmlImageGetter = new HtmlImageGetter(getActivity(),htmlTextView);
                     GoodsDetailsOtherModel goodsdetailsothermodel = JSON.parseObject(returnData, GoodsDetailsOtherModel.class);
                     GoodsDetailsOtherModel.GoodsIntroBean goodsIntro = goodsdetailsothermodel.getGoodsIntro();
                     int isSuccessCase = goodsIntro.getIsSuccessCase();
                     if (isSuccessCase ==1){
                         String successCase = goodsIntro.getSuccessCase();
+                        HtmlImageGetter htmlImageGetter = new HtmlImageGetter(getActivity(),htmlTextView);
                         Spanned spanned = Html.fromHtml(successCase, htmlImageGetter, null);
                         htmlTextView.setText(spanned);
                         undata.setVisibility(View.GONE);

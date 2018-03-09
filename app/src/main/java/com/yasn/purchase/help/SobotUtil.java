@@ -65,6 +65,8 @@ public class SobotUtil {
         info.setInitModeType(2);
         //是否使用语音功能 true使用 false不使用   默认为true
         info.setUseVoice(false);
+        //返回时是否弹出满意度评价
+        info.setShowSatisfaction(false);
 //        Map<String, String> customInfo = new HashMap<String, String>();
 //        customInfo.put("appkey", appkey);
 //        //自定义用户资料

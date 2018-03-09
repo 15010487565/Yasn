@@ -10,7 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +30,7 @@ import www.xcd.com.mylibrary.utils.SystemBarTintManager;
  * Created by xcd15 on 2017/5/3.
  */
 
-public abstract class BaseActivity  extends FragmentActivity implements View.OnFocusChangeListener{
+public abstract class BaseActivity  extends AppCompatActivity implements View.OnFocusChangeListener{
 
     private CustomDialog dialog;
     private boolean isActive = true;

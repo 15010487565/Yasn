@@ -12,6 +12,9 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
+import com.yasn.purchase.activity.GoodsDetailsActivity;
+import com.yasn.purchase.activity.MainActivityNew;
+import com.yasn.purchase.activity.SearchActivity;
 import com.yasn.purchase.activityold.WebViewActivity;
 import com.yasn.purchase.model.EventBusMsg;
 
@@ -148,7 +151,6 @@ public class MyWebChromeClient2 extends WebChromeClient {
     @JavascriptInterface
     public void callNativeShareLogic(String name,String subname,String imgUrl,String url) {
         ((WebViewActivity)activity).onClickShare(name,subname,imgUrl,url);
-
     }
     @JavascriptInterface
     public void getToken(String token,String resetToken,String resetTokenTime) {
@@ -160,6 +162,7 @@ public class MyWebChromeClient2 extends WebChromeClient {
         SharePrefHelper.getInstance(activity).putSpString("resetToken", resetToken);
         SharePrefHelper.getInstance(activity).putSpString("resetTokenTime", resetTokenTime);
         EventBus.getDefault().post(new EventBusMsg("loginSucceed"));
+        activity.finish();
     }
     /**
      * 清楚Cookie
@@ -173,8 +176,55 @@ public class MyWebChromeClient2 extends WebChromeClient {
         SharePrefHelper.getInstance(activity).putSpString("regionId", "");
         SharePrefHelper.getInstance(activity).putSpString("priceDisplayMsg", "");
         SharePrefHelper.getInstance(activity).putSpString("priceDisplayMsg", "");
+        SharePrefHelper.getInstance(activity).putSpString("memberid","");
         EventBus.getDefault().post(new EventBusMsg("loginout"));
-//        ((WebViewActivity)activity).removeAllCookie();
     }
-
+    @JavascriptInterface
+    public void webViewBack(String backString) {
+        Log.e("TAG_webViewBack1", "返回按钮backString=" + backString);
+    }
+    @JavascriptInterface
+    public void webViewBack(String backString,String startSourceURL) {
+        Log.e("TAG_webViewBack2", "返回按钮backString=" + backString+";startSourceURL="+startSourceURL);
+    }
+    /**
+     * WebView返回键
+     * @param backString 要返回的原生页面
+     * @param startSourceURL 返回时webview页面
+     */
+    @JavascriptInterface
+    public void webViewBack(String backString,String startSourceURL,String goodsId) {
+        Log.e("TAG_webViewBack3","返回按钮backString="+backString+";startSource="+startSourceURL+";goodsI="+goodsId);
+        if ("Home".equals(backString)){
+            startMainActivity(0);
+        }else if ("Category".equals(backString)){
+            startMainActivity(1);
+        }else if ("Finder".equals(backString)){
+            startMainActivity(2);
+        }else if ("ShopCar".equals(backString)){
+            startMainActivity(3);
+        }else if ("PersonCenter".equals(backString)){
+            startMainActivity(4);
+        }else if ("GoodsDetail".equals(backString)){//商品详情
+//            EventBus.getDefault().post(new EventBusMsg("GoodsDetail"));
+            Intent intent = new Intent(activity, GoodsDetailsActivity.class);
+            intent.putExtra("GOODSID",goodsId);
+            activity.startActivity(intent);
+        }else if ("SearchResultList".equals(backString)){//搜索列表
+//            EventBus.getDefault().post(new EventBusMsg("SearchResultList"));
+            Intent intent = new Intent(activity, SearchActivity.class);
+            activity.startActivity(intent);
+        }else if ("else".equals(backString)){//关闭当前activity
+            activity.finish();
+        }
+        else {
+            activity.finish();
+//            EventBus.getDefault().post(new EventBusMsg("webViewBack"));
+        }
+    }
+    public void startMainActivity(int currentItem){
+        Intent intent = new Intent(activity, MainActivityNew.class);
+        intent.putExtra("CURRENTITEM",currentItem);
+        activity.startActivity(intent);
+    }
 }

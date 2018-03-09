@@ -66,24 +66,28 @@ public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
                         intent = new Intent(getActivity(), MainActivityNew.class);
                         intent.putExtra("CURRENTITEM", 0);
                         getActivity().startActivity(intent);
+                        getActivity().finish();
                         break;
 
                     case 1:
                         intent = new Intent(getActivity(), MainActivityNew.class);
                         intent.putExtra("CURRENTITEM", 1);
                         getActivity().startActivity(intent);
+                        getActivity().finish();
                         break;
 
                     case 2:
                         intent = new Intent(getActivity(), MainActivityNew.class);
-                        intent.putExtra("CURRENTITEM", 4);
+                        intent.putExtra("CURRENTITEM", 3);
                         getActivity().startActivity(intent);
+                        getActivity().finish();
                         break;
 
                     case 3:
                         intent = new Intent(getActivity(), MainActivityNew.class);
-                        intent.putExtra("CURRENTITEM", 5);
+                        intent.putExtra("CURRENTITEM", 4);
                         getActivity().startActivity(intent);
+                        getActivity().finish();
                         break;
 
                     case 4:

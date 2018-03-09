@@ -36,6 +36,7 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.GoodsDetailsActivity;
 import com.yasn.purchase.activity.HotLableActivity;
 import com.yasn.purchase.activity.MainActivityNew;
 import com.yasn.purchase.adapter.HomeRecyclerAdapter;
@@ -45,7 +46,6 @@ import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.EventBusMsg;
 import com.yasn.purchase.model.HomeModel;
 import com.yasn.purchase.model.HomeRecyModel;
-import com.yasn.purchase.model.PresonaModel;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.MultiSwipeRefreshLayout;
 import com.yasn.purchase.view.RecyclerLayoutManager;
@@ -62,7 +62,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import www.xcd.com.mylibrary.config.HttpConfig;
 import www.xcd.com.mylibrary.utils.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
@@ -95,7 +94,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
     private FrameLayout topinfomssage;
     private LinearLayout shoplist, yasnbang, home_collect, home_service;
     private CollapsingToolbarLayout collapsingToolbar;
-    private ImageView func_right;//订单状态箭头
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_home;
@@ -108,49 +107,41 @@ public class HomeFragment extends SimpleTopbarFragment implements
             return;
         }
         //填充各控件的数据
+        isFrist = true;
         OkHttpDemand();
     }
     @Override
     protected void OkHttpDemand() {
-        Log.e("TAG_initView","HOMEFRAGMENT");
+        Log.e("TAG_initView","HOMEFR_AGMENT");
         token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
         resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
         resetTokenTime = SharePrefHelper.getInstance(getActivity()).getSpString("resetTokenTime");
-        isFrist = true;
         Log.e("TAG_TOKEN请求","token="+token);
         Log.e("TAG_TOKEN请求","resetToken="+resetToken);
+        Map<String, Object> params = new HashMap<String, Object>();
         if (token != null&&!"".equals(token)){
-            Map<String, Object> paramsToken = new HashMap<String, Object>();
-            paramsToken.put("access_token", token);
-            okHttpGet(101, Config.GETPERSONAGEINFO, paramsToken);
+            params.put("access_token", token);
         }else if (resetToken != null&&!"".equals(resetToken)){
-            Map<String, Object> paramsToken = new HashMap<String, Object>();
-            paramsToken.put("access_token", resetToken);
-            okHttpGet(102, Config.GETPERSONAGEINFO, paramsToken);
+            params.put("access_token", resetToken);
         } else {
             notLogin.setVisibility(View.VISIBLE);
             home_infomessage.setVisibility(View.GONE);
-            Map<String, Object> params = new HashMap<String, Object>();
-            okHttpGet(100, Config.HOME, params);
             SharePrefHelper.getInstance(getActivity()).putSpString("regionId","");
         }
+        okHttpGet(100, Config.HOME, params);
+        SharePrefHelper.getInstance(getActivity()).putSpBoolean("isLoginHome", true);
     }
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if(getUserVisibleHint()) {
             isVisible = true;
-//            onVisible();
+            onVisible();
         } else {
             isVisible = false;
 //            onInvisible();
         }
     }
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        EventBus.getDefault().post(new EventBusMsg("webViewHide"));
-//    }
     @Override
     protected void initView(LayoutInflater inflater, View view) {
         topbat_parent = (RelativeLayout) view.findViewById(R.id.topbat_parent);
@@ -165,6 +156,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
         //收藏
         home_collect = (LinearLayout) view.findViewById(R.id.home_collect);
         home_collect.setOnClickListener(this);
+        home_collect.setVisibility(View.GONE);
         //客服
         home_service = (LinearLayout) view.findViewById(R.id.home_service);
         home_service.setOnClickListener(this);
@@ -186,24 +178,27 @@ public class HomeFragment extends SimpleTopbarFragment implements
         isPrepared = true;
         lazyLoad();
     }
-    private void initLoginData(String presonaString) {
-        if (presonaString ==null||"".equals(presonaString)){
+    private void initLoginData(HomeModel.MemberBean member) {
+        if (member ==null||"".equals(member)){
             notLogin.setVisibility(View.VISIBLE);
             home_infomessage.setVisibility(View.GONE);
             loginImage.setBackgroundResource(R.mipmap.unlogin);
+            home_collect.setVisibility(View.GONE);
         }else {
             loginImage.setBackgroundResource(R.mipmap.login_n_yasn);
             notLogin.setVisibility(View.GONE);
             home_infomessage.setVisibility(View.VISIBLE);
-            PresonaModel presonaModel = JSON.parseObject(presonaString, PresonaModel.class);
-            PresonaModel.MemberBean member = presonaModel.getMember();
             if (member ==null){
                 notLogin.setVisibility(View.VISIBLE);
                 home_infomessage.setVisibility(View.GONE);
+                home_collect.setVisibility(View.GONE);
             }else {
+                home_collect.setVisibility(View.VISIBLE);
                 //
                 int member_id = member.getMember_id();
-                HelpUtils.getGoodsNum(Config.CARTGOODSNUM+member_id,handler);
+                SharePrefHelper.getInstance(getActivity()).putSpString("memberid",String.valueOf(member_id));
+//                HelpUtils.getGoodsNum(Config.CARTGOODSNUM+member_id,handler);
+                ((MainActivityNew)getActivity()).setCartNum(Integer.valueOf(member.getCartCount()));
                 //账号
                 String uname = member.getUname();
                 homeAccount.setText(uname == null?"未知":uname);
@@ -232,6 +227,11 @@ public class HomeFragment extends SimpleTopbarFragment implements
                         undredgeYsenHelp.setVisibility(View.VISIBLE);
                         homeGrade.setVisibility(View.GONE);
                     }else if (lv_id == 5){
+                        whiteTopText.setText("");
+                        undredgeYsenHelp.setText("去认证");
+                        undredgeYsenHelp.setVisibility(View.VISIBLE);
+                        homeGrade.setVisibility(View.GONE);
+                    }else if (lv_id == 1){
                         whiteTopText.setText("");
                         undredgeYsenHelp.setText("去认证");
                         undredgeYsenHelp.setVisibility(View.VISIBLE);
@@ -297,7 +297,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 //        nestedScrollView.setVisibility(View.VISIBLE);
         recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
 //        nestedScrollView.setVisibility(View.GONE);
-//        recyNested = (RecyclerView) view.findViewById(recyNested);
+//        recyNested = (RecyclerView) view.findViewById(R.id.recyNested);
         mLinearLayoutManager = new RecyclerLayoutManager(getActivity());
         mLinearLayoutManager.setScrollEnabled(true);
         mLinearLayoutManager.setAutoMeasureEnabled(true);
@@ -314,17 +314,17 @@ public class HomeFragment extends SimpleTopbarFragment implements
 //        recyNested.setAdapter(adapter);
         recyclerview.addOnScrollListener(new RecyclerViewListener());
     }
-//    public static int HOMEWEBVIEWCODE = 10000;
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
         Intent intent = null;
         switch (v.getId()) {
             case R.id.login:
-                EventBus.getDefault().post(new EventBusMsg("login"));
+                startWebViewActivity(Config.LOGINWEBVIEW);
                 break;
             case R.id.register:
-                EventBus.getDefault().post(new EventBusMsg("register"));
+                startWebViewActivity(Config.REGISTERWEBVIEW);
                 break;
             case R.id.undredge_YsenHelp:
                 String undredgeYsenHelpContext = undredgeYsenHelp.getText().toString();
@@ -349,8 +349,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 startWebViewActivity(Config.SHOPLIST);
                 break;
             case R.id.yasnbang://雅森帮
-//                startWebViewActivity(Config.YASNBANG);
-                EventBus.getDefault().post(new EventBusMsg("yasnbang"));
+                startWebViewActivity(Config.YASNBANG);
                 break;
             case R.id.home_collect://收藏
 //                startActivity(new Intent(getActivity(), CollectActivity.class));
@@ -359,18 +358,12 @@ public class HomeFragment extends SimpleTopbarFragment implements
             case R.id.home_service://客服
                 SobotUtil.startSobot(getActivity(),null);
                 break;
-            case R.id.func_right:
+            case R.id.orderStateLinear:
                 startWebViewActivity(Config.MEORDER);
                 break;
         }
     }
 
-    @Override
-    public void onPause() {
-        getActivity().overridePendingTransition(0, 0);
-        super.onPause();
-    }
-    private long firstTime;
     private void initSwipeRefreshLayout(View view) {
         mSwipeRefreshLayout = (MultiSwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -387,31 +380,31 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     isOpen = true;
                     mSwipeRefreshLayout.setEnabled(true);
                     //设置不刷新
-////                    mSwipeRefreshLayout.setEnabled(false);
+//                    mSwipeRefreshLayout.setEnabled(false);
 //                    nestedScrollView.setVisibility(View.VISIBLE);
 //                    recyclerview.setVisibility(View.GONE);
                 } else {
                     isOpen = false;
                     mSwipeRefreshLayout.setEnabled(false);
-//                    Log.e("TAG_TAG展开状态","isOnClickTab="+isOnClickTab);
-                    if (System.currentTimeMillis() - firstTime < 500) {//500毫秒记录一次
-                        if (isOnClickTab) {
+//                    if (System.currentTimeMillis() - firstTime < 500) {//500毫秒记录一次
+//                        if (isOnClickTab) {
 //                            nestedScrollView.setVisibility(View.GONE);
 //                            recyclerview.setVisibility(View.VISIBLE);
-                        } else {
+//                        } else {
 //                            nestedScrollView.setVisibility(View.VISIBLE);
 //                            recyclerview.setVisibility(View.GONE);
-                        }
-                        isOnClickTab = false;
-                    } else {
-                        firstTime = System.currentTimeMillis();
-                    }
+//                        }
+//                        isOnClickTab = false;
+//                    } else {
+//                        firstTime = System.currentTimeMillis();
+//                    }
                 }
             }
         });
     }
 
     List<HomeRecyModel> homerecyList = new ArrayList<>();//储存转换后的数据格式
+    List<String> tabTextList = new ArrayList<>();
     //tablayout和Recycler赋值
     private void initTabLayout(List<HomeModel.SubjectsBean> subjects, HomeModel.PriceDataBean priceData, HomeModel.MemberBean member) {
         int tabCount = tablayout.getTabCount();
@@ -429,6 +422,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
             HomeModel.SubjectsBean subjectsBean = subjects.get(i);
             String title = subjectsBean.getTitle();
             if (tabCount<=0){
+                tabTextList.add(title);
                 TabLayout.Tab tab = tablayout.newTab().setText(title);
                 tablayout.addTab(tab);
             }
@@ -457,6 +451,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 homeRecy.setItemType(2);
                 homeRecy.setText(name);
                 homeRecy.setImage(small);
+                homeRecy.setSubject_id(subject_id);
                 if (priceDisplayType == 0) {//取正常价格
                     if (has_discount == 0) {//正常价格
                         homeRecy.setMoney(String.valueOf(price));
@@ -487,6 +482,10 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 } else {
                     homeRecy.setPresell(false);
                 }
+                int have_voice = contentBean.getHave_voice();//是否有音频 1：有
+                homeRecy.setButton3(have_voice);
+                int is_success_case = contentBean.getIs_success_case(); //是否成功案例 1：有
+                homeRecy.setButton2(is_success_case);
                 homerecyList.add(homeRecy);
             }
         }
@@ -507,15 +506,20 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 SharePrefHelper.getInstance(getActivity()).putSpString("loginState",priceDisplayMsg1);
             }
         }
-
+        List<HomeModel.AdvsBean> advs = homemodel.getAdvs();
+        if (advs != null && advs.size() > 0) {
+            //轮播图数据
+            initViewPagerImage(advs);
+        } else {
+            homeConvenientBanner.setVisibility(View.GONE);
+        }
     }
 
     private void initViewPagerImage(List<HomeModel.AdvsBean> advs) {
-        Log.e("TAG_首页轮播图","advs="+advs.size());
         if (advs.size() > 1) {
-            homeConvenientBanner.setPages(new CBViewHolderCreator() {
+            homeConvenientBanner.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
                 @Override
-                public Object createHolder() {
+                public LocalImageHolderView createHolder() {
                     return new LocalImageHolderView();
                 }
             }, advs)
@@ -542,15 +546,23 @@ public class HomeFragment extends SimpleTopbarFragment implements
             ;
         }
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        homeConvenientBanner.startTurning(3000);// 2s 换一张
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        homeConvenientBanner.stopTurning();
+        getActivity().overridePendingTransition(0, 0);
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (handler != null) {
             handler.removeCallbacksAndMessages(null);
-        }
-        if (thread !=null){
-            thread.interrupt();
         }
     }
     private ImageView orderImage,expressStateImage;
@@ -567,13 +579,12 @@ public class HomeFragment extends SimpleTopbarFragment implements
          * 商品图片 image
          */
         orderStateLinear = (LinearLayout) view.findViewById(R.id.orderStateLinear);
+        orderStateLinear.setOnClickListener(this);
         orderImage = (ImageView) view.findViewById(R.id.orderImage);
         expressStateImage = (ImageView) view.findViewById(R.id.express_stateimage);
         expressStateText = (TextView) view.findViewById(R.id.express_stateText);
         orderHint = (TextView) view.findViewById(R.id.orderHint);
         orderTime = (TextView) view.findViewById(R.id.orderTime);
-        func_right = (ImageView) view.findViewById(R.id.func_right);
-        func_right.setOnClickListener(this);
     }
 
     List<HomeModel.SubjectsBean> subjects;
@@ -586,6 +597,9 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 if (returnCode == 200) {
                     homemodel = JSON.parseObject(returnData, HomeModel.class);
                     HomeModel.PlaceBean place = homemodel.getPlace();
+                    //会员信息
+                    HomeModel.MemberBean member1 = homemodel.getMember();
+                    initLoginData(member1);
                     if (place!=null&&!"".equals(place)){
                         String regionName = place.getRegionName();
                         address.setText(regionName==null?"":regionName);
@@ -593,76 +607,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                         address.setText("");
                     }
                     //订单状态
-                    HomeModel.OrderBean order = homemodel.getOrder();
-                    if (order!=null){
-                        orderStateLinear.setVisibility(View.VISIBLE);
-                        int status = order.getStatus();
-                        int createTime = order.getCreateTime();
-                        String createTimeString = HelpUtils.getDateToString(createTime);
-                        int cancelDateTime = order.getCancelDateTime();
-                        String cancelTimeString = HelpUtils.getDateToString(cancelDateTime);
-                        String logiName = order.getLogiName();
-                        String shipNo = order.getShipNo();
-                        if (status == 1){
-                            expressStateImage.setBackgroundResource(R.mipmap.daifukuan);
-                            expressStateText.setText("待付款");
-                            orderHint.setText("请尽快完成付款,否则会取消!");
-                            orderTime.setText(createTimeString+" 下单成功");
-                        }else if (status == 2){
-                            expressStateImage.setBackgroundResource(R.mipmap.daifahuo);
-                            expressStateText.setText("代发货");
-                            orderHint.setText("仓库正在紧急备货中!");
-                            orderTime.setText(createTimeString+" 下单成功");
-                        }if (status == 3){
-                            expressStateImage.setBackgroundResource(R.mipmap.daishouhuo);
-                            expressStateText.setText("待收货");
-                            orderHint.setText("您的订单已发货!");
-                            orderTime.setText(logiName+" "+shipNo);
-                        }if (status == 4){
-                            expressStateImage.setBackgroundResource(R.mipmap.yiwancheng);
-                            expressStateText.setText("已收货");
-                            orderHint.setText("您的订单已收货!");
-                            if (TextUtils.isEmpty(logiName)&&TextUtils.isEmpty(shipNo)){
-                                orderTime.setVisibility(View.GONE);
-                            }else {
-                                orderTime.setVisibility(View.VISIBLE);
-                                orderTime.setText(logiName+" "+shipNo);
-                            }
-                        }if (status == 5){
-                            expressStateImage.setBackgroundResource(R.mipmap.yiwancheng);
-                            expressStateText.setText("已完成");
-                            orderHint.setText("您的订单已完成!");
-                            if (TextUtils.isEmpty(logiName)&&TextUtils.isEmpty(shipNo)){
-                                orderTime.setVisibility(View.GONE);
-                            }else {
-                                orderTime.setVisibility(View.VISIBLE);
-                                orderTime.setText(logiName+" "+shipNo);
-                            }
-                        }if (status == 6){
-                            expressStateImage.setBackgroundResource(R.mipmap.yiquxiao);
-                            expressStateText.setText("已取消");
-                            orderHint.setText("您的订单已取消!");
-                            orderTime.setText(cancelTimeString+" 订单取消");
-                        }
-                        String image = order.getImage();
-                        Glide.with(this)
-                                .load(image)
-                                .centerCrop()
-                                .crossFade()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .placeholder(R.mipmap.ic_launcher)
-                                .error(R.mipmap.ic_launcher)
-                                .into(orderImage);
-                    }else {
-                        orderStateLinear.setVisibility(View.GONE);
-                    }
-                    List<HomeModel.AdvsBean> advs = homemodel.getAdvs();
-                    if (advs != null && advs.size() > 0) {
-                        //轮播图数据
-                        initViewPagerImage(advs);
-                    } else {
-                        homeConvenientBanner.setVisibility(View.GONE);
-                    }
+                    setOrderState();
                     //tablayout和Recycler赋值
                     subjects = homemodel.getSubjects();
                     HomeModel.PriceDataBean priceData = homemodel.getPriceData();
@@ -673,65 +618,81 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     } else {
                         tablayout.setVisibility(View.GONE);
                     }
-                } else {
+                } else if (returnCode == 401) {
+                    cleanToken();
+                    OkHttpDemand();
+                }else {
                     homeConvenientBanner.setVisibility(View.GONE);
-                }
-                break;
-            case 101:
-                if (returnCode==200){
-                    initLoginData(returnData);
-                    Map<String, Object> params = new HashMap<String, Object>();
-                    params.put("access_token", token);
-                    okHttpGet(100, Config.HOME, params);
-                    notLogin.setVisibility(View.GONE);
-                    home_infomessage.setVisibility(View.VISIBLE);
-                }else if (returnCode==401){
-                    SharePrefHelper.getInstance(getActivity()).putSpString("token","");
-                    notLogin.setVisibility(View.VISIBLE);
-                    home_infomessage.setVisibility(View.GONE);
-                    thread = new Thread(networkTask);
-                    thread.start();
-                }else if (returnCode==417){
-                    Map<String, Object> params = new HashMap<String, Object>();
-                    okHttpGet(100, Config.HOME, params);
-                }
-                break;
-            case 102:
-                if (returnCode==200){
-                    notLogin.setVisibility(View.GONE);
-                    home_infomessage.setVisibility(View.VISIBLE);
-                    Map<String, Object> params = new HashMap<String, Object>();
-                    params.put("access_token", resetToken);
-                    okHttpGet(100, Config.HOME, params);
-                    initLoginData(returnData);
-                }else if (returnCode==401){
-                    notLogin.setVisibility(View.VISIBLE);
-                    home_infomessage.setVisibility(View.GONE);
-                    SharePrefHelper.getInstance(getActivity()).putSpString("resetToken","");
-                    SharePrefHelper.getInstance(getActivity()).putSpString("resetTokenTime","");
-                    SharePrefHelper.getInstance(getActivity()).putSpString("regionId", "");
-                    SharePrefHelper.getInstance(getActivity()).putSpString("priceDisplayMsg","");
-                    Map<String, Object> params = new HashMap<String, Object>();
-                    okHttpGet(100, Config.HOME, params);
                 }
                 break;
         }
     }
-    Thread thread;
-    boolean networkTime;
-    /**
-     * 网络操作相关的子线程
-     */
-    Runnable networkTask = new Runnable() {
 
-        @Override
-        public void run() {
-            resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
-            resetTokenTime = SharePrefHelper.getInstance(getActivity()).getSpString("resetTokenTime");
-            networkTime = HelpUtils.getNetworkTime(resetTokenTime);
-            handler.sendEmptyMessage(2);
+    private void setOrderState() {
+        HomeModel.OrderBean order = homemodel.getOrder();
+        if (order!=null){
+            orderStateLinear.setVisibility(View.VISIBLE);
+            int status = order.getStatus();
+            int createTime = order.getCreateTime();
+            String createTimeString = HelpUtils.getDateToString(createTime);
+            int cancelDateTime = order.getCancelDateTime();
+            String cancelTimeString = HelpUtils.getDateToString(cancelDateTime);
+            String logiName = order.getLogiName();
+            String shipNo = order.getShipNo();
+            if (status == 1){
+                expressStateImage.setBackgroundResource(R.mipmap.daifukuan);
+                expressStateText.setText("待付款");
+                orderHint.setText("请尽快完成付款,否则会取消!");
+                orderTime.setText(createTimeString+" 下单成功");
+            }else if (status == 2){
+                expressStateImage.setBackgroundResource(R.mipmap.daifahuo);
+                expressStateText.setText("代发货");
+                orderHint.setText("仓库正在紧急备货中!");
+                orderTime.setText(createTimeString+" 下单成功");
+            }if (status == 3){
+                expressStateImage.setBackgroundResource(R.mipmap.daishouhuo);
+                expressStateText.setText("待收货");
+                orderHint.setText("您的订单已发货!");
+                orderTime.setText(logiName+" "+shipNo);
+            }if (status == 4){
+                expressStateImage.setBackgroundResource(R.mipmap.yiwancheng);
+                expressStateText.setText("已收货");
+                orderHint.setText("您的订单已收货!");
+                if (TextUtils.isEmpty(logiName)&&TextUtils.isEmpty(shipNo)){
+                    orderTime.setVisibility(View.GONE);
+                }else {
+                    orderTime.setVisibility(View.VISIBLE);
+                    orderTime.setText(logiName+" "+shipNo);
+                }
+            }if (status == 5){
+                expressStateImage.setBackgroundResource(R.mipmap.yiwancheng);
+                expressStateText.setText("已完成");
+                orderHint.setText("您的订单已完成!");
+                if (TextUtils.isEmpty(logiName)&&TextUtils.isEmpty(shipNo)){
+                    orderTime.setVisibility(View.GONE);
+                }else {
+                    orderTime.setVisibility(View.VISIBLE);
+                    orderTime.setText(logiName+" "+shipNo);
+                }
+            }if (status == 6){
+                expressStateImage.setBackgroundResource(R.mipmap.yiquxiao);
+                expressStateText.setText("已取消");
+                orderHint.setText("您的订单已取消!");
+                orderTime.setText(cancelTimeString+" 订单取消");
+            }
+            String image = order.getImage();
+            Glide.with(this)
+                    .load(image)
+                    .centerCrop()
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .into(orderImage);
+        }else {
+            orderStateLinear.setVisibility(View.GONE);
         }
-    };
+    }
 
     //viewpager点击事件
     @Override
@@ -777,18 +738,18 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 return;
             }
             //itemPosition 教你卖好、成功案例、语音讲解对应的Position
-//            SharePrefHelper.getInstance(getActivity()).putSpInt("GOODSFRAGMENTID", itemPosition);
+            SharePrefHelper.getInstance(getActivity()).putSpInt("GOODSFRAGMENTID", itemPosition);
             String goodsid = homeRecyModel.getGoodsid();
-//            Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
-//            SharePrefHelper.getInstance(getActivity()).putSpString("GOODSID", goodsid);
-//            startActivity(intent);
-            startWebViewActivity(Config.GOODSDETAILS+goodsid);
+            Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
+            SharePrefHelper.getInstance(getActivity()).putSpString("GOODSID", goodsid);
+            startActivity(intent);
+//            startWebViewActivity(Config.GOODSDETAILS+goodsid);
         }
     }
 
     boolean isFrist = true;
     boolean isOnClickTab = false;
-
+//    boolean isDefaultOnClickTab = false;
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         int selectPosition = tab.getPosition();
@@ -797,9 +758,11 @@ public class HomeFragment extends SimpleTopbarFragment implements
             return;
         }
         isOnClickTab = true;
+        if (isOpen){
+            appBarLayout.setExpanded(false, true);
+        }
 //        nestedScrollView.setVisibility(View.GONE);
 //        recyclerview.setVisibility(View.VISIBLE);
-        appBarLayout.setExpanded(false, false);
         String tabText = tab.getText().toString();
         Log.e("TAG_TAB", "selectPosition=" + selectPosition);
         //定位计算方法
@@ -823,6 +786,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onRefresh() {
+//        isFrist = true;
         OkHttpDemand();
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -849,6 +813,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
         @Override
         public View createView(Context context) {
+//            Log.e("TAG_轮播图","createView");
             imageView = new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             return imageView;
@@ -857,7 +822,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
         @Override
         public void UpdateUI(Context context, int position, HomeModel.AdvsBean advsbean) {
             String atturl = advsbean.getAtturl();
-            Log.e("TAG_首页","atturl="+atturl);
+//            Log.e("TAG_轮播图","atturl="+atturl);
             Glide.with(getActivity().getApplicationContext())
                     .load(atturl)
                     .centerCrop()
@@ -898,28 +863,9 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 case 1:
                     Bundle bundle_car = msg.getData();
                     int position = bundle_car.getInt("position");
-                    ToastUtil.showToast("点击的是第" + position);
                     break;
                 case 0:
                     mSwipeRefreshLayout.setRefreshing(false);
-                    break;
-                case 2:
-                    if (networkTime){
-                        Map<String, Object> params = new HashMap<String, Object>();
-                        params.put("access_token", resetToken);
-                        okHttpGet(102, Config.GETPERSONAGEINFO, params);
-                    }else {
-                        SharePrefHelper.getInstance(getActivity()).putSpString("token","");
-                        SharePrefHelper.getInstance(getActivity()).putSpString("resetToken","");
-                        SharePrefHelper.getInstance(getActivity()).putSpString("resetTokenTime","");
-                        SharePrefHelper.getInstance(getActivity()).putSpString("priceDisplayMsg","");
-                        ToastUtil.showToast("登录已过期,请重新登录！");
-                    }
-                    break;
-                case HttpConfig.SUCCESSCODE:
-                    Bundle bundle = msg.getData();
-                    String returnData = bundle.getString("returnData");
-                    ((MainActivityNew)getActivity()).setCartNum(Integer.valueOf(returnData));
                     break;
             }
         }
@@ -997,22 +943,29 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 }
             }
 //            //表示是否能向上滚动，true表示能滚动，false表示已经滚动到底部
-            boolean canScrollVertically = recyclerview.canScrollVertically(1);
-//            Log.e("TAG_上滚动","canScrollVertically="+canScrollVertically);
-            if (canScrollVertically&&isOpen){
-                mLinearLayoutManager.setScrollEnabled(true);
-            }else {
-                appBarLayout.setExpanded(false, true);
-            }
+//            boolean canScrollVertically = recyclerview.canScrollVertically(1);
+//            if (canScrollVertically&&isOpen){
+//                mLinearLayoutManager.setScrollEnabled(true);
+//            }else {
+//                appBarLayout.setExpanded(false, true);
+//            }
             //表示是否能向下滚动，true表示能滚动，false表示已经滚动到顶部
             boolean scrollVertically = recyclerview.canScrollVertically(-1);
             if (!isOpen && !scrollVertically && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                //设置折叠或展开状态为折叠
-//                nestedScrollView.setVisibility(View.VISIBLE);
-//                recyclerview.setVisibility(View.GONE);
-                //expanded true:展开  false:收缩
-                appBarLayout.setExpanded(true, true);
+                Log.e("TAG_滚动","isOnClickTab="+isOnClickTab);
+                if (isOnClickTab){
+                    isOnClickTab = false;
+                }else {
+                    //设置折叠或展开状态为折叠
+//                    nestedScrollView.setVisibility(View.VISIBLE);
+//                    recyclerview.setVisibility(View.GONE);
+                    //expanded true:展开  false:收缩
+                    appBarLayout.setExpanded(true, true);
+                    return;
+                }
             }
+            Log.e("TAG_滚动","滚动");
+//            appBarLayout.setExpanded(false, true);
         }
 
         @Override
@@ -1044,7 +997,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
         okbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.showToast("点击去认证");
+                startWebViewActivity(Config.ATTESTATION);
             }
         });
         Activity activity = getActivity();
@@ -1076,11 +1029,13 @@ public class HomeFragment extends SimpleTopbarFragment implements
         String msg = event.getMsg();
         Log.e("TAG_fragment","home="+msg);
         if ("loginSucceed".equals(msg)&&getUserVisibleHint()){
+            isFrist = true;
             OkHttpDemand();
         }
         else if ("loginout".equals(msg)){
+            isFrist = true;
+            home_collect.setVisibility(View.GONE);
             OkHttpDemand();
         }
     }
-
 }

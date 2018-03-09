@@ -101,7 +101,7 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
 
             }
         };
-        handler.postDelayed(runnable, 3000);
+        handler.postDelayed(runnable, skipTime);
     }
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
@@ -125,22 +125,22 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
 
     @Override
     public void onCancelResult() {
-        checkForUpdates();
+        isFirstOpen();
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
-        checkForUpdates();
+        isFirstOpen();
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
-        checkForUpdates();
+        isFirstOpen();
     }
 
     @Override
     public void onFinishResult() {
-        checkForUpdates();
+        isFirstOpen();
     }
 
     @Override
@@ -161,28 +161,34 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
         LaunchActivity.this.finish();
     }
     private void checkForUpdates() {
-        UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
-        if (upgradeInfo != null) {
-            try {
-                int versionCode = getVersionCode();
-                if (upgradeInfo.versionCode > versionCode) {
-                    return;
-                }else if (upgradeInfo.versionCode==0){
-                    isFirstOpen();
-                    return;
-                }
-                StringBuilder info = new StringBuilder();
-                info.append("id: ").append(upgradeInfo.id).append("\n");
-                info.append("发布类型（0:测试 1:正式）: ").append(upgradeInfo.publishType).append("\n");
-                info.append("弹窗类型（1:建议 2:强制 3:手工）: ").append(upgradeInfo.upgradeType);
+        try {
+            UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
+            if (upgradeInfo != null) {
+                try {
+                    int versionCode = getVersionCode();
+                    if (upgradeInfo.versionCode > versionCode) {
+                        return;
+                    }else if (upgradeInfo.versionCode==0){
+                        isFirstOpen();
+                        return;
+                    }
+                    StringBuilder info = new StringBuilder();
+                    info.append("id: ").append(upgradeInfo.id).append("\n");
+                    info.append("发布类型（0:测试 1:正式）: ").append(upgradeInfo.publishType).append("\n");
+                    info.append("弹窗类型（1:建议 2:强制 3:手工）: ").append(upgradeInfo.upgradeType);
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return;
             }
-            return;
+            //是否首次打开app
+            isFirstOpen();
+        } catch (Exception e) {
+            e.printStackTrace();
+            //是否首次打开app
+            isFirstOpen();
         }
-        //是否首次打开app
-        isFirstOpen();
     }
 
     private int getVersionCode() throws Exception {

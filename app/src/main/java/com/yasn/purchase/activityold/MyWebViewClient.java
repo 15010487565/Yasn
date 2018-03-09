@@ -16,7 +16,6 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
@@ -50,15 +49,21 @@ public class MyWebViewClient
         }
         //电话
         if (url.startsWith("tel")) {
-            Intent telIntent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
-            telIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(activity, "没有拨打电话权限", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showToast("没有拨打电话权限");
                     return true;
+                }else {
+                    Intent telIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"));
+                    telIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(telIntent);
                 }
+            }else {
+                Intent telIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"));
+                telIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.startActivity(telIntent);
             }
-            activity.startActivity(telIntent);
             return true;
         }
         else {//跳转原生界面

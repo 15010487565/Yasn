@@ -65,10 +65,10 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     private LinearLayout lookall,maker;
     private RecyclerView shoprecy;
     private MultiSwipeRefreshLayout mSwipeRefreshLayout;
-    private int imageUrl[] = {R.mipmap.jifen, R.mipmap.shouhuo_address, R.mipmap.baitiao, R.mipmap.help
-            , R.mipmap.phoneconsult, R.mipmap.serviceing, R.mipmap.zhuanpiao, R.mipmap.numbervip};
-    private int nameTitle[] = {R.string.mejifen, R.string.shouhuo_addressv, R.string.mebaitiao, R.string.help
-            , R.string.phoneconsult, R.string.serviceing, R.string.zhuanpiao, R.string.numbervip};
+    private int imageUrl[] = {R.mipmap.jifen, R.mipmap.shouhuo_address, R.mipmap.numbervip, R.mipmap.help
+            , R.mipmap.phoneconsult, R.mipmap.serviceing, R.mipmap.zhuanpiao};
+    private int nameTitle[] = {R.string.mejifen, R.string.shouhuo_addressv, R.string.numbervip, R.string.help
+            , R.string.phoneconsult, R.string.serviceing, R.string.zhuanpiao};
     private SnsTabWidget tabWidget,makertabwidget;
     private static int[] ORDER_TAB_TEXT = new int[]{
             R.string.obligation, R.string.overhang, R.string.waitreceiving, R.string.allorder
@@ -108,24 +108,22 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
 
     @Override
     protected void OkHttpDemand() {
-        Log.e("TAG_initView","SHOP");
+        Log.e("TAG_initView","SHOP_OkHttp");
         token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
         resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
         resetTokenTime = SharePrefHelper.getInstance(getActivity()).getSpString("resetTokenTime");
         if (token != null && !"".equals(token)) {
-            EventBus.getDefault().post(new EventBusMsg("webViewHide"));
             //门店个人信息
             Map<String, Object> paramsShop = new HashMap<String, Object>();
             paramsShop.put("access_token", token);
             okHttpGet(101, Config.SHOP, paramsShop);
         } else if (resetToken != null && !"".equals(resetToken)) {
-            EventBus.getDefault().post(new EventBusMsg("webViewHide"));
             //门店个人信息
             Map<String, Object> paramsShop = new HashMap<String, Object>();
             paramsShop.put("access_token", resetToken);
             okHttpGet(102, Config.SHOP, paramsShop);
         } else {
-            EventBus.getDefault().post(new EventBusMsg("login"));
+            startWebViewActivity(Config.LOGINWEBVIEW);
         }
     }
 
@@ -314,7 +312,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     SharePrefHelper.getInstance(getActivity()).putSpString("resetTokenTime", "");
                     SharePrefHelper.getInstance(getActivity()).putSpString("regionId", "");
                     SharePrefHelper.getInstance(getActivity()).putSpString("priceDisplayMsg", "");
-                    EventBus.getDefault().post(new EventBusMsg("login"));
+                    startWebViewActivity(Config.LOGINWEBVIEW);
                 }
                 break;
         }
@@ -338,7 +336,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                         SharePrefHelper.getInstance(getActivity()).putSpString("resetTokenTime", "");
                         SharePrefHelper.getInstance(getActivity()).putSpString("regionId", "");
                         SharePrefHelper.getInstance(getActivity()).putSpString("priceDisplayMsg", "");
-                        EventBus.getDefault().post(new EventBusMsg("login"));
+                        startWebViewActivity(Config.LOGINWEBVIEW);
                         ToastUtil.showToast("登录已过期,请重新登录！");
                     }
                     break;
@@ -379,7 +377,12 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                         account.setText(uname == null ? "未知" : uname);
                         SharePrefHelper.getInstance(getActivity()).putSpString("uname",uname == null?"游客":uname);
                         String shopName = member.getShopName();
-                        companyName.setText(shopName == null ? "未知" : shopName);
+                        if (shopName == null){
+                            String lvName = member.getLvName();
+                            companyName.setText(lvName);
+                        }else {
+                            companyName.setText(shopName);
+                        }
                         String levelName = member.getLevelName();
                         shopGrade.setText(levelName == null ? "未知" : levelName);
                         int digital_member = member.getDigital_member();
@@ -396,7 +399,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                             okdredgeYsenHelp.setText(span);
                             shopImage.setBackgroundResource(R.mipmap.login_y_yasn);
                             int lv_id = member.getLv_id();
-                            if (lv_id >= 6) {
+                            if (lv_id == 6) {
                                 meanage.setVisibility(View.VISIBLE);
                             }else {
                                 meanage.setVisibility(View.GONE);
@@ -418,6 +421,12 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                                 undredgeYsenHelp.setVisibility(View.VISIBLE);
                                 gradeLinear.setVisibility(View.GONE);
                             } else if (lv_id == 5) {
+                                whiteTopText.setText("");
+                                undredgeYsenHelp.setText("去认证");
+                                meanage.setVisibility(View.GONE);
+                                undredgeYsenHelp.setVisibility(View.VISIBLE);
+                                gradeLinear.setVisibility(View.GONE);
+                            }else if (lv_id == 1) {
                                 whiteTopText.setText("");
                                 undredgeYsenHelp.setText("去认证");
                                 meanage.setVisibility(View.GONE);
@@ -613,13 +622,13 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
 
         @Override
         public void onTabSelectionChanged(int tabIndex) {
-            if (makerType == 1){
+            if (makerType == 2){
                 switch (tabIndex){
                     case 0://开通创客
                         startWebViewActivity(Config.MAKERDREDGE);
                         break;
                 }
-            }else if (makerType == 2){
+            }else if (makerType == 1){
                 switch (tabIndex){
                     case 0://推广二维码
                         startWebViewActivity(Config.MAKERQRCODE);
@@ -741,7 +750,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         okbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.showToast("点击去认证");
+                startWebViewActivity(Config.ATTESTATION);
             }
         });
         Activity activity = getActivity();
