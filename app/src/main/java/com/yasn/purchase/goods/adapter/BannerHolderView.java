@@ -1,6 +1,7 @@
 package com.yasn.purchase.goods.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,6 +44,7 @@ public class BannerHolderView implements Holder<GoodsDetailsModel.GoodsDetailsBe
         if (imageUrl.indexOf("http://")==-1){
             imageUrl = "http://"+imageUrl;
         }
+        Log.e("TAG_详情页轮播图","imageUrl="+imageUrl);
         Glide.with(context)
                 .load(imageUrl)
                 .centerCrop()

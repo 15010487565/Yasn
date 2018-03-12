@@ -7,23 +7,22 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/view_simple_topbar" />
-    <RelativeLayout
+    <include layout="@layout/view_simple_topbar" />
+
+    <www.xcd.com.mylibrary.base.view.XListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <www.xcd.com.mylibrary.base.view.XListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:dividerHeight="@dimen/margin_3"
-            android:divider="@color/black_f7" />
-        <FrameLayout
-            android:id="@+id/video_full_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:divider="@color/black_f7"
+        android:dividerHeight="@dimen/margin_3"
+        android:fastScrollAlwaysVisible="false"
+        android:fastScrollEnabled="false" />
+    <!--<FrameLayout-->
+    <!--android:id="@+id/video_full_container"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+
 
 </LinearLayout>
 

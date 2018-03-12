@@ -174,8 +174,8 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     @Override
     protected void onResume() {
         super.onResume();
-        currentItem = getIntent().getIntExtra("CURRENTITEM", 0);
-        viewPager.setCurrentItem(currentItem);
+//        currentItem = getIntent().getIntExtra("CURRENTITEM", 0);
+//        viewPager.setCurrentItem(currentItem);
     }
 
     @Override
@@ -233,7 +233,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
             // 实例化tabitem
             View view = inflater.inflate(R.layout.view_main_tabitem, null);
             // 为每一个Tab按钮设置图标、文字和内容
-            setTextViewStyle(view, i, (i == 0));
+            setTextViewStyle(view, i, (i == currentItem));
             tabWidget.addView(view);
         }
         tabWidget.setCurrentTab(currentItem);
@@ -500,6 +500,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         @Override
         public void onPageScrolled(int paramInt1, float paramFloat, int paramInt2) {
             int curIndex = tabWidget.getCurIndex();
+            Log.e("TAG_Main","onPageScrolled="+curIndex);
             // 向右滑
             if (curIndex == paramInt1) {
                 resetTextViewAlpha(tabWidget.getChildAt(curIndex), 1 - paramFloat);
@@ -512,17 +513,20 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
                 resetTextViewAlpha(tabWidget.getChildAt(paramInt1), 1 - paramFloat);
                 resetFragmentAlpha(paramInt1, 1 - paramFloat);
             }
+            token = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("token");
+            resetToken = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("resetToken");
+            resetTokenTime = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("resetTokenTime");
         }
 
         @Override
         public void onPageSelected(int index) {
+            Log.e("TAG_Main","tabWidgetSelected="+index);
             // tabWidget焦点策略
             int oldFocusability = tabWidget.getDescendantFocusability();
             // 阻止冒泡
             tabWidget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             // 切换tab
             tabWidget.setCurrentTab(index);
-            Log.e("TAG_Main","tabWidgetSelected="+index);
             // 重设title
 //            resetTitle(index);
             // 变换tab显示
@@ -536,7 +540,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
 
         @Override
         public void onPageScrollStateChanged(int paramInt) {
-
+            Log.e("TAG_Main","onPageScrollStateChanged="+paramInt);
         }
 
     }

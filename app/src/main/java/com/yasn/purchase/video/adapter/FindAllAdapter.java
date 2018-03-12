@@ -164,7 +164,13 @@ public class FindAllAdapter  extends BaseAdapter {
 
         switch (itemType){
             case TYPE_IMAGE:
-                imageHolder.mainBody.setText(contentString == null?"":contentString);
+                if (contentString == null||"".equals(contentString)){
+                    imageHolder.mainBody.setText("");
+                    imageHolder.mainBody.setVisibility(View.GONE);
+                }else {
+                    imageHolder.mainBody.setText(contentString);
+                    imageHolder.mainBody.setVisibility(View.VISIBLE);
+                }
                 imageHolder.time_findtxt.setText(dateToString);
                 List<String> fileUrlMin = dataBean.getFileUrlMin();
                 GridViewAdapter gridViewAdapter=new GridViewAdapter(context, fileUrlMin);
@@ -176,17 +182,29 @@ public class FindAllAdapter  extends BaseAdapter {
                         // 跳到查看大图界面
                         Intent intent = new Intent(context, ShowBigPictrueActivitiy.class);
                         intent.putStringArrayListExtra("ImageList", fileUrlMax);
-                        intent.getIntExtra("position",position);
+                        intent.putExtra("position",position);
                         context.startActivity(intent);
                     }
                 });
                 break;
             case TYPE_TXT:
-                txtHolder.mainBody.setText(contentString == null?"":contentString);
                 txtHolder.time_findtxt.setText(dateToString);
+                if (contentString == null||"".equals(contentString)){
+                    imageHolder.mainBody.setText("");
+                    imageHolder.mainBody.setVisibility(View.GONE);
+                }else {
+                    imageHolder.mainBody.setText(contentString);
+                    imageHolder.mainBody.setVisibility(View.VISIBLE);
+                }
                 break;
             case TYPE_VIDEO:
-                videoHolder.mainBody.setText(contentString == null?"":contentString);
+                if (contentString == null||"".equals(contentString)){
+                    imageHolder.mainBody.setText("");
+                    imageHolder.mainBody.setVisibility(View.GONE);
+                }else {
+                    imageHolder.mainBody.setText(contentString);
+                    imageHolder.mainBody.setVisibility(View.VISIBLE);
+                }
                 videoHolder.time_findtxt.setText(dateToString);
                 //增加封面
                 videoHolder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);

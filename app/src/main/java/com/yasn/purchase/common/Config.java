@@ -45,7 +45,7 @@ public class Config {
     //加入收藏
     public final static String ADDCOLLECT = IP+"favorite/saveGoodsFavorite/";
     //删除收藏
-    public final static String DELETECOLLECT = IP+"/favorite/deleteBygoodsId/";
+    public final static String DELETECOLLECT = IP+"favorite/deleteBygoodsId/";
     //加入进货单
     public final static String ADDSHOPCAR = IP+"cart/add-product?";
 

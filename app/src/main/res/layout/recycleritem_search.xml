@@ -8,13 +8,22 @@
     android:minHeight="90dp"
     android:orientation="horizontal"
     android:padding="@dimen/margin_15">
-
-    <ImageView
-        android:id="@+id/titleimage"
-        android:layout_width="60dp"
-        android:layout_height="90dp"
-        android:scaleType="fitXY"
-        android:src="@mipmap/errorimage" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/titleimage"
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size"
+            android:scaleType="fitXY"
+            android:src="@mipmap/errorimage" />
+        <ImageView
+            android:id="@+id/iv_shroud"
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size"
+            android:scaleType="fitXY"
+            android:background="@mipmap/soldout" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="0dp"

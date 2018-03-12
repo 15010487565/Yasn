@@ -8,10 +8,13 @@ import android.view.View;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.GoodsDetailsActivity;
 import com.yasn.purchase.activity.MainActivityNew;
+import com.yasn.purchase.activityold.WebViewActivity;
+import com.yasn.purchase.common.Config;
 
 import www.xcd.com.mylibrary.action.QuickAction;
 import www.xcd.com.mylibrary.entity.BaseActionItem;
 import www.xcd.com.mylibrary.func.BaseTopImageBtnFunc;
+import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
 
@@ -60,6 +63,8 @@ public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
 
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
+                String token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
+                String resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
                 Intent intent;
                 switch (actionId) {
                     case 0:
@@ -76,18 +81,27 @@ public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
                         getActivity().finish();
                         break;
 
-                    case 2:
-                        intent = new Intent(getActivity(), MainActivityNew.class);
-                        intent.putExtra("CURRENTITEM", 3);
-                        getActivity().startActivity(intent);
-                        getActivity().finish();
+                    case 2://进货单
+//                        intent = new Intent(getActivity(), MainActivityNew.class);
+//                        intent.putExtra("CURRENTITEM", 3);
+//                        getActivity().startActivity(intent);
+//                        getActivity().finish();
+                        if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
+                            startWebViewActivity(Config.SHOPPCARWEBVIEW);
+                        } else {
+                            startWebViewActivity(Config.LOGINWEBVIEW);
+                        }
                         break;
 
-                    case 3:
-                        intent = new Intent(getActivity(), MainActivityNew.class);
-                        intent.putExtra("CURRENTITEM", 4);
-                        getActivity().startActivity(intent);
-                        getActivity().finish();
+                    case 3://门店
+                        if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
+                            intent = new Intent(getActivity(), MainActivityNew.class);
+                            intent.putExtra("CURRENTITEM", 4);
+                            getActivity().startActivity(intent);
+                            getActivity().finish();
+                        } else {
+                            startWebViewActivity(Config.LOGINWEBVIEW);
+                        }
                         break;
 
                     case 4:
@@ -101,5 +115,10 @@ public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
         });
         quickAction.show(view);
         quickAction.setAnimStyle(QuickAction.ANIM_AUTO);
+    }
+    private void startWebViewActivity(String url){
+        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+        intent.putExtra("webViewUrl", url);
+        getActivity().startActivity(intent);
     }
 }

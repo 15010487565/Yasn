@@ -2,6 +2,7 @@ package com.yasn.purchase.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -154,6 +155,13 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 holderRecy.countRecy.setText(countRecySpan);
 
                 holderRecy.advertRecy.setText(homeRecy.getAdvert());
+                int market_enable = homeRecy.getMarket_enable();
+                if (market_enable == 0){//上架1, 下架0
+
+                    holderRecy.iv_shroud.setVisibility(View.VISIBLE);
+                }else {
+                    holderRecy.iv_shroud.setVisibility(View.GONE);
+                }
                 Glide.with(context.getApplicationContext())
                         .load(homeRecy.getImage()==null?"":homeRecy.getImage())
                         .crossFade()
@@ -191,7 +199,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     class ViewHolderTwo extends RecyclerView.ViewHolder implements View.OnClickListener{
-        ImageView imageView;
+        ImageView imageView,iv_shroud;
         TextView nameRecy;
         TextView moneyRecy, advertRecy, countRecy;
         TextView  button1,button2,button3;
@@ -199,6 +207,9 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public ViewHolderTwo(View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.titleimage);
+            iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
+            Drawable background = iv_shroud.getBackground();
+            background.setAlpha(255);
 
             nameRecy = (TextView) itemView.findViewById(R.id.title);
 //

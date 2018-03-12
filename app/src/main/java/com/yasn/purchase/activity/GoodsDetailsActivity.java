@@ -7,8 +7,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -52,7 +50,6 @@ import java.util.List;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-import www.xcd.com.mylibrary.config.HttpConfig;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 import www.xcd.com.mylibrary.view.NoScrollViewPager;
 
@@ -87,7 +84,6 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     private FrameLayout flShopCar;
     //加入进货单
     private TextView tvAddShopCar;
-    private String memberId;
     private String goodsId;
     /**
      * Topbar功能列表
@@ -105,7 +101,6 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         setContentView(R.layout.activity_goodsdetails);
         token = SharePrefHelper.getInstance(this).getSpString("token");
         resetToken = SharePrefHelper.getInstance(this).getSpString("resetToken");
-        memberId = SharePrefHelper.getInstance(this).getSpString("memberid");
         goodsId = SharePrefHelper.getInstance(this).getSpString("GOODSID");
         titleTabs = (PagerSlidingTabStrip) findViewById(R.id.title_tabs);
         llTitle = (LinearLayout) findViewById(R.id.ll_title);
@@ -219,9 +214,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             viewPager.setScroll(true);
         }
         llTitle.setVisibility(titleVisiable ? View.VISIBLE : View.GONE);
-        Log.e("TAG_tanVisiable", "llTitle=" + llTitle.getVisibility());
         titleTabs.setVisibility(tanVisiable ? View.VISIBLE : View.GONE);
-        Log.e("TAG_tanVisiable", "titleTabs=" + titleTabs.getVisibility());
     }
 
     @Override
@@ -260,12 +253,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                 viewPager.setScroll(true);
                 break;
             case R.id.ll_collect://收藏
-                Map<String, Object> params = new HashMap<String, Object>();
-                if (isCollect) {//已收藏
-                    okHttpGet(101, Config.DELETECOLLECT + memberId + "/" + goodsId, params);
-                } else {
-                    okHttpGet(100, Config.ADDCOLLECT + memberId + "/" + goodsId, params);
-                }
+                collectRequest();
                 break;
             case R.id.ll_callPhone:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -300,28 +288,46 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                      * num 数量
                      * activityId 促销活动Id(没有就不传)
                      */
-                    String goodsNum = goodsInfoFragment.getGoodsNum();
-                    int activityId = goodsInfoFragment.getActivityId();
-                    int productId = goodsInfoFragment.getProductId();
-
-                    Log.e("TAG_详情选择","数量="+goodsNum);
-                    Map<String, Object> params1 = new HashMap<String, Object>();
-                    params1.put("productId", String.valueOf(productId));
-                    params1.put("num", goodsNum);
-                    if (activityId!=0){
-                        params1.put("activityId", String.valueOf(activityId));
-                    }
-                    if (token != null && !"".equals(token)) {
-                        params1.put("access_token", token);
-                    } else if (resetToken != null && !"".equals(resetToken)) {
-                        params1.put("access_token", resetToken);
-                    }
-                    okHttpGet(102, Config.ADDSHOPCAR, params1);
+                    addShopCarRequest();
                 }
                 break;
         }
         if (mShareDialog != null && mShareDialog.isShowing()) {
             mShareDialog.dismiss();
+        }
+    }
+
+    private void addShopCarRequest() {
+        String goodsNum = goodsInfoFragment.getGoodsNum();
+        int activityId = goodsInfoFragment.getActivityId();
+        int productId = goodsInfoFragment.getProductId();
+
+        Log.e("TAG_详情选择","数量="+goodsNum);
+        Map<String, Object> params1 = new HashMap<String, Object>();
+        params1.put("productId", String.valueOf(productId));
+        params1.put("num", goodsNum);
+        if (activityId!=0){
+            params1.put("activityId", String.valueOf(activityId));
+        }
+        if (token != null && !"".equals(token)) {
+            params1.put("access_token", token);
+        } else if (resetToken != null && !"".equals(resetToken)) {
+            params1.put("access_token", resetToken);
+        }
+        okHttpGet(102, Config.ADDSHOPCAR, params1);
+    }
+
+    private void collectRequest() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        if (token != null && !"".equals(token)) {
+            params.put("access_token", token);
+        } else if (resetToken != null && !"".equals(resetToken)) {
+            params.put("access_token", resetToken);
+        }
+        if (isCollect) {//已收藏
+            okHttpGet(101, Config.DELETECOLLECT + goodsId, params);
+        } else {
+            okHttpGet(100, Config.ADDCOLLECT + goodsId, params);
         }
     }
 
@@ -411,6 +417,9 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             case 100:
                 if (returnCode == 200) {
                     setCollectImage(true);
+                }else if (returnCode == 401) {
+                    cleanToken();
+                    collectRequest();
                 } else {
                     ToastUtil.showToast(returnMsg);
                 }
@@ -418,7 +427,10 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             case 101:
                 if (returnCode == 200) {
                     setCollectImage(false);
-                } else {
+                } else if (returnCode == 401) {
+                    cleanToken();
+                    collectRequest();
+                }else {
                     ToastUtil.showToast(returnMsg);
                 }
                 break;
@@ -436,25 +448,16 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }else if (returnCode == 401) {
+                    cleanToken();
+                    addShopCarRequest();
                 } else {
                     ToastUtil.showToast(returnMsg);
                 }
                 break;
         }
     }
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case HttpConfig.SUCCESSCODE:
-                    Bundle bundle = msg.getData();
-                    String returnData = bundle.getString("returnData");
-                    setCartNum(Integer.valueOf(returnData));
-                    break;
-            }
-        }
-    };
+
     @Override
     public void onCancelResult() {
 

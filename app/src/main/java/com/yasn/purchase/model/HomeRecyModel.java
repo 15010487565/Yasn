@@ -21,6 +21,15 @@ public class HomeRecyModel implements Serializable {
     private boolean autotrophy;
     private boolean purchase;
     private boolean presell;
+    private int market_enable;//上下架, 上架1, 下架0
+
+    public int getMarket_enable() {
+        return market_enable;
+    }
+
+    public void setMarket_enable(int market_enable) {
+        this.market_enable = market_enable;
+    }
 
     private int button1;
     private int button2;

@@ -682,14 +682,16 @@ public class SearchActivity extends SimpleTopbarActivity implements
         if (data!=null&&data.size()>0){
             SearchModel.DataBean dataBean = data.get(position);
             if (dataBean !=null){
+                int market_enable = dataBean.getMarket_enable();
+                if (market_enable == 0) {
+                    ToastUtil.showToast("亲，该商品已经下架了哦~");
+                    return;
+                }
                 String id = dataBean.getId();
                 SharePrefHelper.getInstance(this).putSpInt("GOODSFRAGMENTID", 0);
                 Intent intent = new Intent(this, GoodsDetailsActivity.class);
                 SharePrefHelper.getInstance(this).putSpString("GOODSID", id);
                 startActivity(intent);
-//                Intent intent = new Intent(this, WebViewActivity.class);
-//                intent.putExtra("webViewUrl",Config.GOODSDETAILS+id);
-//                startActivity(intent);
             }
         }
     }

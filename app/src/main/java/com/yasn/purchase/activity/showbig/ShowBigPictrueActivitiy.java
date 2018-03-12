@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 import android.view.Window;
 
 import com.yasn.purchase.R;
@@ -43,6 +44,7 @@ public class ShowBigPictrueActivitiy extends FragmentActivity{
 		viewPager.setAdapter(adapter);
 		//跳转到第几个界面
 		viewPager.setCurrentItem(position);
+		Log.e("TAG_showbig", "点击了"+position);
 	}
 
 	private class ViewPagerAdapter extends FragmentStatePagerAdapter{
@@ -53,6 +55,7 @@ public class ShowBigPictrueActivitiy extends FragmentActivity{
 
 		@Override
 		public Fragment getItem(int position) {
+			Log.e("TAG_showbig", "getItem="+position);
 			String imageUrl = imageList.get(position);
 			return new PictrueFragment(imageUrl);
 		}

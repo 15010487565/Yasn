@@ -53,7 +53,6 @@ public class PictrueFragment extends Fragment{
 		}
 		Glide.with(getActivity())
 				.load(imageUrl)
-				.centerCrop()
 				.crossFade()
 				.placeholder(R.mipmap.login_n_yasn)
 				.error(R.mipmap.login_n_yasn)

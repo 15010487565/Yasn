@@ -482,6 +482,8 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 } else {
                     homeRecy.setPresell(false);
                 }
+                int market_enable = contentBean.getMarket_enable();
+                homeRecy.setMarket_enable(market_enable);
                 int have_voice = contentBean.getHave_voice();//是否有音频 1：有
                 homeRecy.setButton3(have_voice);
                 int is_success_case = contentBean.getIs_success_case(); //是否成功案例 1：有
@@ -735,6 +737,11 @@ public class HomeFragment extends SimpleTopbarFragment implements
             HomeRecyModel homeRecyModel = homerecyList.get(listPosition);
             int itemType = homeRecyModel.getItemType();
             if (itemType == 0) {
+                return;
+            }
+            int market_enable = homeRecyModel.getMarket_enable();
+            if (market_enable == 0) {
+                ToastUtil.showToast("亲，该商品已经下架了哦~");
                 return;
             }
             //itemPosition 教你卖好、成功案例、语音讲解对应的Position

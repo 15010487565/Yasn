@@ -2,6 +2,7 @@ package com.yasn.purchase.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -188,6 +189,12 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }else {
                     holderSearch.button2.setVisibility(View.GONE);
                 }
+                int market_enable = dataBean.getMarket_enable();
+                if (market_enable == 0){//上架1, 下架0
+                    holderSearch.iv_shroud.setVisibility(View.VISIBLE);
+                }else {
+                    holderSearch.iv_shroud.setVisibility(View.GONE);
+                }
                 Glide.with(context)
                         .load(dataBean.getThumbnail())
                         .crossFade()
@@ -232,7 +239,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         TextView searchmoney, searchAdvert, searchcount;
         TextView button1, button2, button3;
         TextView autotrophy, purchase,presell;
-        ImageView titleimage;
+        ImageView titleimage,iv_shroud;
         LinearLayout buyingspreeLinear;
         TextView buyingspreeMoney;
         public ViewHolderSearch(View itemView) {
@@ -254,6 +261,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             purchase = (TextView) itemView.findViewById(R.id.purchase);
             presell = (TextView) itemView.findViewById(R.id.presell);
             titleimage = (ImageView) itemView.findViewById(R.id.titleimage);
+            iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
+            Drawable background = iv_shroud.getBackground();
+            background.setAlpha(255);
             buyingspreeLinear = (LinearLayout) itemView.findViewById(R.id.buyingspreeLinear);
             buyingspreeMoney = (TextView) itemView.findViewById(R.id.buyingspreeMoney);
         }

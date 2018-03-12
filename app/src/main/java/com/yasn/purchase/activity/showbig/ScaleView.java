@@ -42,7 +42,7 @@ public class ScaleView extends ImageView implements IScaleView {
 
 	public ScaleView(Context context, AttributeSet attr, int defStyle) {
 		super(context, attr, defStyle);
-		super.setScaleType(ScaleType.MATRIX);
+		super.setScaleType(ScaleType.FIT_CENTER);
 		mAttacher = new ScaleViewAttacher(this);
 
 		if (null != mPendingScaleType) {

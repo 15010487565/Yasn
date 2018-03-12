@@ -641,6 +641,7 @@ public class HomeModel implements Serializable{
              * has_discount : 0
              * is_limit_buy : 0
              * is_success_case : 0
+             * market_enable 上下架, 上架1, 下架0
              */
 
             private String small;
@@ -660,6 +661,15 @@ public class HomeModel implements Serializable{
             private int itemType;
             private int id;
             private int total_buy_count;
+            private int market_enable;
+
+            public int getMarket_enable() {
+                return market_enable;
+            }
+
+            public void setMarket_enable(int market_enable) {
+                this.market_enable = market_enable;
+            }
 
             public int getId() {
                 return id;

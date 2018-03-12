@@ -29,6 +29,7 @@ import www.xcd.com.mylibrary.help.OkHttpHelper;
 import www.xcd.com.mylibrary.http.HttpInterface;
 import www.xcd.com.mylibrary.utils.DialogUtil;
 import www.xcd.com.mylibrary.utils.NetUtil;
+import www.xcd.com.mylibrary.utils.SharePrefHelper;
 import www.xcd.com.mylibrary.utils.ToastUtil;
 
 import static www.xcd.com.mylibrary.utils.ToastUtil.showToast;
@@ -526,5 +527,18 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 			}
 		});
 	}
-
+	public void cleanToken(){
+		String token = SharePrefHelper.getInstance(this).getSpString("token");
+		String resetToken = SharePrefHelper.getInstance(this).getSpString("resetToken");
+		if (token !=null&&!"".equals(token)){
+			SharePrefHelper.getInstance(this).putSpString("token","");
+		}else if (resetToken !=null&&!"".equals(resetToken)){
+			SharePrefHelper.getInstance(this).putSpString("token","");
+			SharePrefHelper.getInstance(this).putSpString("resetToken","");
+			SharePrefHelper.getInstance(this).putSpString("resetTokenTime","");
+			SharePrefHelper.getInstance(this).putSpString("priceDisplayMsg","");
+			SharePrefHelper.getInstance(this).putSpString("regionId", "");
+			ToastUtil.showToast("登录已过期,请重新登录！");
+		}
+	}
 }

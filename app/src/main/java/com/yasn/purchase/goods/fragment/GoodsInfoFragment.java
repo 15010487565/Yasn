@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -26,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -84,20 +84,18 @@ import static www.xcd.com.mylibrary.utils.SharePrefHelper.context;
  */
 public class GoodsInfoFragment extends BaseFragment implements
         ShoppingSelectView.OnSelectedListener, OnItemClickListener,
-        SlideDetailsLayout.OnSlideDetailsListener, MediaPlayer.OnPreparedListener {
+        SlideDetailsLayout.OnSlideDetailsListener, MediaPlayer.OnPreparedListener,
+        ViewPager.OnPageChangeListener {
 
     private RelativeLayout topbat_parent;
     ConvenientBanner banner;
     TextView goodsDetail;
     TextView goodsConfig;
-    View tabCursor;
     SlideDetailsLayout slideDetailsLayout;
     ScrollView scrollView;
 
     private List<TextView> tabTextList = new ArrayList<>();
-    private int currIndex = 0;
     public GoodsDetailsActivity activity;
-    private float fromX;
     private TextView autotrophy, purchase, presell, title;
     private TextView viewpage_number;
     private long time = 2592000;
@@ -111,7 +109,7 @@ public class GoodsInfoFragment extends BaseFragment implements
      * @param context
      */
     private LinearLayout sellinglinear;
-    private TextView sellingpoints,sellingview;
+    private TextView sellingpoints, sellingview;
 
     /**
      * 规格
@@ -280,6 +278,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         topbat_parent = (RelativeLayout) rootView.findViewById(R.id.topbat_parent);
         topbat_parent.setVisibility(View.GONE);
         banner = (ConvenientBanner) rootView.findViewById(R.id.banner);
+        banner.setOnPageChangeListener(this);
         viewpage_number = (TextView) rootView.findViewById(R.id.viewpage_number);
         //音频布局
         voice = (RelativeLayout) rootView.findViewById(R.id.voice);
@@ -326,7 +325,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         //卖点
         sellinglinear = (LinearLayout) rootView.findViewById(R.id.sellinglinear);
         sellingpoints = (TextView) rootView.findViewById(R.id.sellingpoints);
-        sellingview  = (TextView) rootView.findViewById(R.id.sellingview);
+        sellingview = (TextView) rootView.findViewById(R.id.sellingview);
 //        SpannableString sellingString = AlignedTextUtils.formatText("卖点:");
         SpannableStringBuilder sellingString = AlignedTextUtils.justifyString("卖点", 4);
         sellingString.append("：");
@@ -501,15 +500,15 @@ public class GoodsInfoFragment extends BaseFragment implements
                 }
                 break;
             case R.id.iv_addNum:
-                if (enableStoreNum == 0){
+                if (enableStoreNum == 0) {
                     ToastUtil.showToast("库存不足");
-                }else {
-                    int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim()) ;
-                    if (smallSale > 0 ) {
+                } else {
+                    int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
+                    if (smallSale > 0) {
                         int allAddNum = addNum + smallSale;
-                        if (allAddNum <= enableStoreNum){
+                        if (allAddNum <= enableStoreNum) {
                             etGoodsNum.setText(String.valueOf(allAddNum));
-                        }else {
+                        } else {
                             ToastUtil.showToast("库存不足");
                         }
                     } else {
@@ -525,9 +524,9 @@ public class GoodsInfoFragment extends BaseFragment implements
                 break;
             case R.id.originalprice2:
                 String trim = originalprice2.getText().toString().trim();
-                if ("登录看价格".equals(trim)){
+                if ("登录看价格".equals(trim)) {
                     startWebViewActivity(Config.LOGINWEBVIEW);
-                }else if ("认证看价格".equals(trim)){
+                } else if ("认证看价格".equals(trim)) {
                     startWebViewActivity(Config.ATTESTATION);
                 }
                 break;
@@ -620,18 +619,6 @@ public class GoodsInfoFragment extends BaseFragment implements
         return params.height;
     }
 
-    private void scrollCursor() {
-        TranslateAnimation anim = new TranslateAnimation(fromX, currIndex * tabCursor.getWidth(), 0, 0);
-        anim.setFillAfter(true);
-        anim.setDuration(50);
-        fromX = currIndex * tabCursor.getWidth();
-        tabCursor.startAnimation(anim);
-
-        for (int i = 0; i < tabTextList.size(); i++) {
-            tabTextList.get(i).setTextColor(i == currIndex ? getResources().getColor(R.color.red) : getResources().getColor(R.color.black));
-        }
-    }
-
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -697,10 +684,10 @@ public class GoodsInfoFragment extends BaseFragment implements
             case 100:
                 if (returnCode == 200) {
                     succeedResult(returnData);
-                } else  if (returnCode == 401){
+                } else if (returnCode == 401) {
                     cleanToken();
                     OkHttpDemand();
-                }else {
+                } else {
                     ((GoodsDetailsActivity) getActivity()).setViewPagerGone();
                     ToastUtil.showToast(returnMsg);
                 }
@@ -734,7 +721,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         GoodsDetailsModel goodsdetailsmodel = JSON.parseObject(returnData, GoodsDetailsModel.class);
         //进货单数量
         GoodsDetailsModel.MemberBean member = goodsdetailsmodel.getMember();
-        if (member !=null&&!"".equals(member)){
+        if (member != null && !"".equals(member)) {
             int cartNum = member.getCartCount();
             if (callBack != null) {
                 callBack.setCartNum(cartNum);
@@ -780,9 +767,9 @@ public class GoodsInfoFragment extends BaseFragment implements
         initGoodsTitleContent(goodsDetails);
         //卖点
         String subTitle = goodsDetails.getSubTitle();
-        if (TextUtils.isEmpty(subTitle)){
+        if (TextUtils.isEmpty(subTitle)) {
             sellinglinear.setVisibility(View.GONE);
-        }else {
+        } else {
             sellinglinear.setVisibility(View.VISIBLE);
             sellingview.setText(subTitle);
         }
@@ -889,7 +876,7 @@ public class GoodsInfoFragment extends BaseFragment implements
 //            etGoodsNum.setText(String.valueOf(smallSale));
             //阶梯价
             ladderPrices = productsBean.getLadderPrices();
-            if (ladderPrices != null&&ladderPrices.size()>0) {
+            if (ladderPrices != null && ladderPrices.size() > 0) {
                 llLadderPrices.setVisibility(View.VISIBLE);
                 //折扣价数据
                 adapter.setData(ladderPrices);
@@ -939,10 +926,10 @@ public class GoodsInfoFragment extends BaseFragment implements
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         minNumber.setText(span);
     }
-
+    List<GoodsDetailsModel.GoodsDetailsBean.GoodsGallerysBean> goodsGallerys;
     private void initBannerView(GoodsDetailsModel.GoodsDetailsBean goodsdetailsmodelData) {
         banner.setCanLoop(true);
-        final List<GoodsDetailsModel.GoodsDetailsBean.GoodsGallerysBean> goodsGallerys = goodsdetailsmodelData.getGoodsGallerys();
+       goodsGallerys = goodsdetailsmodelData.getGoodsGallerys();
         //初始化商品图片轮播
         banner.setPages(new CBViewHolderCreator() {
             @Override
@@ -1314,7 +1301,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     //轮播图点击事件
     @Override
     public void onItemClick(int position) {
-        Log.e("TAG_详情轮播图", "点击了");
+        Log.e("TAG_详情轮播图", "点击了"+position);
         List<GoodsDetailsModel.GoodsDetailsBean.GoodsGallerysBean> goodsGallerys = goodsDetails.getGoodsGallerys();
         ArrayList<String> imageShowBigList = new ArrayList<String>();
         for (int i = 0, j = goodsGallerys.size(); i < j; i++) {
@@ -1323,7 +1310,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         }
         // 跳到查看大图界面
         Intent intent = new Intent(getActivity(), ShowBigPictrueActivitiy.class);
-        intent.getIntExtra("position", position);
+        intent.putExtra("position", position);
         intent.putStringArrayListExtra("ImageList", imageShowBigList);
         startActivity(intent);
     }
@@ -1347,6 +1334,21 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     public void setsetCartNum(CallBack callBack) {
         this.callBack = callBack;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        Log.e("TAG_轮播","onPageSelected="+position);
+        viewpage_number.setText(goodsGallerys == null ?"0/0":((position+1)+"/"+goodsGallerys.size()));
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
     }
 
     public interface CallBack {

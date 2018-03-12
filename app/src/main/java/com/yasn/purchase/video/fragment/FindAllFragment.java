@@ -101,7 +101,7 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
         listView.setXListViewListener(this);
         listView.setPullRefreshEnable(true);
 
-        videoFullContainer = (FrameLayout) view.findViewById(R.id.video_full_container);
+//        videoFullContainer = (FrameLayout) view.findViewById(R.id.video_full_container);
         activityListVideo = (LinearLayout) view.findViewById(R.id.activity_list_video);
 
         listVideoUtil = new ListVideoUtil(getActivity());
@@ -219,7 +219,7 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
     @Override
     public void onFinishResult() {
        listView.stopLoadMore();
-        listView.stopRefresh();;
+        listView.stopRefresh();
     }
     private Handler handler = new Handler(){
         @Override
