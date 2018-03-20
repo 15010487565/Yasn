@@ -8,6 +8,7 @@
         android:id="@+id/xlistview_footer_content"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -16,14 +17,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/xlistview_footer_hint_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/xlistview_footer_hint_normal" />
+            android:text="@string/xlistview_footer_hint_ready" />
     </LinearLayout>
     <include
         layout="@layout/footview_listview"/>

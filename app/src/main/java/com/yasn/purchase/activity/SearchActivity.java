@@ -242,12 +242,25 @@ public class SearchActivity extends SimpleTopbarActivity implements
                     swipe_layout.setEnabled(true);
                 }
                 boolean isBottom = recyclerView.canScrollVertically(1);//返回false表示不能往上滑动，即代表到底部了；
-                if (isBottom){
+                //屏幕中最后一个可见子项的position
+//                int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
+                //当前屏幕所看到的子项个数
+                int visibleItemCount = mLinearLayoutManager.getChildCount();
+                //当前RecyclerView的所有子项个数
+                int totalItemCount = mLinearLayoutManager.getItemCount();
+//                && visibleItemCount == totalItemCount
+                Log.e("TAG_底部","isBottom="+isBottom+"visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
+                if (isBottom ){
                     swipe_layout.setBottom(false);
                     adapter.setShowProgressBar(false);
                 }else {
-                    swipe_layout.setBottom(true);
-                    adapter.setShowProgressBar(true);
+                    if (visibleItemCount == totalItemCount){
+                        swipe_layout.setBottom(false);
+                        adapter.setShowProgressBar(false);
+                    }else {
+                        swipe_layout.setBottom(true);
+                        adapter.setShowProgressBar(true);
+                    }
                 }
             }
         });

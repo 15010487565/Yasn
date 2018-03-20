@@ -6,7 +6,7 @@
     <string name="xlistview_header_hint_loading">正在加载...</string>
     <string name="xlistview_header_last_time"></string>
     <string name="xlistview_footer_hint_normal"></string>
-    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    <string name="xlistview_footer_hint_ready">继续上拉加载更多</string>
 
     <string name="state_pull_refresh">下拉刷新</string>
     <string name="state_release_refresh">松开刷新数据</string>

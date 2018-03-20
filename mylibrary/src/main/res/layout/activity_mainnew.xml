@@ -7,12 +7,12 @@
     <include
         android:id="@+id/topbat_parent"
         layout="@layout/view_simple_topbar"/>
-    <www.xcd.com.mylibrary.view.NoScrollViewPager
+    <www.xcd.com.mylibrary.view.NoScrollPreloadViewPager
         android:id="@+id/main_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/topbat_parent">
-    </www.xcd.com.mylibrary.view.NoScrollViewPager>
+    </www.xcd.com.mylibrary.view.NoScrollPreloadViewPager>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"

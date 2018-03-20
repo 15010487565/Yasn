@@ -29,6 +29,7 @@ public class FindPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int paramInt) {
+
         return new FindAllFragment(list,paramInt);
     }
     @Override

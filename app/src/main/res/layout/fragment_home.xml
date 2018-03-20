@@ -51,23 +51,27 @@
                         android:layout_height="wrap_content"
                         android:background="@color/black_f7"
                         android:focusable="true"
-                        app:layout_collapseMode="pin"
                         android:focusableInTouchMode="true"
                         android:orientation="vertical">
                         <include layout="@layout/include_homeinfo" />
                         <include layout="@layout/include_homeshopandyasn" />
                         <include layout="@layout/include_homeorderinfo" />
-                        <com.bigkoo.convenientbanner.ConvenientBanner
-                            android:id="@+id/home_convenientBanner"
+                        <!--<com.bigkoo.convenientbanner.ConvenientBanner-->
+                            <!--android:id="@+id/home_convenientBanner"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="@dimen/height_200"-->
+                            <!--android:layout_marginBottom="@dimen/margin_10"-->
+                            <!--android:background="@color/line_c3"-->
+                            <!--app:canLoop="true">-->
+                            <!--&lt;!&ndash;app:canLoop="true" //控制循环与否&ndash;&gt;-->
+                        <!--</com.bigkoo.convenientbanner.ConvenientBanner>-->
+                        <com.youth.banner.Banner
+                            android:id="@+id/home_banner"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/height_170"
-                            android:layout_marginBottom="@dimen/margin_10"
-                            android:background="@color/line_c3"
-                            app:layout_collapseMode="pin"
-                            app:canLoop="true">
-                            <!--app:canLoop="true" //控制循环与否-->
-                        </com.bigkoo.convenientbanner.ConvenientBanner>
-
+                            app:indicator_drawable_selected="@drawable/unnormal"
+                            app:indicator_drawable_unselected="@drawable/normal"
+                            app:image_scale_type="fit_xy"
+                            android:layout_height="200dp"/>
                     </LinearLayout>
                 </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -98,21 +102,6 @@
                 app:layout_anchorGravity="bottom"
                 app:layout_anchor="@id/appbar"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-
-            <!--<android.support.v4.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-            <!--android:id="@+id/nestedScrollView"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:addStatesFromChildren="true"-->
-            <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
-
-            <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@+id/recyclerview"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:nestedScrollingEnabled="false" />-->
-            <!--</android.support.v4.widget.NestedScrollView>-->
 
         </android.support.design.widget.CoordinatorLayout>
     </com.yasn.purchase.view.MultiSwipeRefreshLayout>

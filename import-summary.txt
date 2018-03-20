@@ -25,7 +25,7 @@ dependency we picked, which could render the project not compileable.
 You can disable the library replacement in the import wizard and try
 again:
 
-android-support-v7-appcompat => [com.android.support:appcompat-v7:25.0.0]
+android-support-v7-appcompat => [com.android.support:appcompat-v7:25.3.2]
 
 Moved Files:
 ------------

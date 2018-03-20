@@ -8,8 +8,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -56,7 +54,7 @@ public abstract class BaseActivity  extends AppCompatActivity implements View.On
             //透明导航栏
 //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintColor(R.color.top_bar_background);
+            tintManager.setStatusBarTintColor(R.color.black);
             // 激活状态栏
             tintManager.setStatusBarTintEnabled(true);
             // enable navigation bar tint 激活导航栏
@@ -221,16 +219,4 @@ public abstract class BaseActivity  extends AppCompatActivity implements View.On
         }
 
     }
-
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case 1:
-                    showKickDialog();
-                    break;
-            }
-        }
-    };
 }

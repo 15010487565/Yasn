@@ -185,8 +185,6 @@ public class FindFragment extends SimpleTopbarFragment implements
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
         Log.e("TAG_fragment", "find=" + msg);
-//        if ("loginSucceed".equals(msg)&&getUserVisibleHint()) {
-//            OkHttpDemand();
-//        }
+
     }
 }

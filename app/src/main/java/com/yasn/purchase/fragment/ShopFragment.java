@@ -65,9 +65,13 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     private LinearLayout lookall,maker;
     private RecyclerView shoprecy;
     private MultiSwipeRefreshLayout mSwipeRefreshLayout;
-    private int imageUrl[] = {R.mipmap.jifen, R.mipmap.shouhuo_address, R.mipmap.numbervip, R.mipmap.help
+    private int imageUrl[] = {R.mipmap.jifen, R.mipmap.numbervip, R.mipmap.help
             , R.mipmap.phoneconsult, R.mipmap.serviceing, R.mipmap.zhuanpiao};
-    private int nameTitle[] = {R.string.mejifen, R.string.shouhuo_addressv, R.string.numbervip, R.string.help
+    private int nameTitle[] = {R.string.mejifen, R.string.numbervip, R.string.help
+            , R.string.phoneconsult, R.string.serviceing, R.string.zhuanpiao};
+    private int imageUrlAuth[] = {R.mipmap.jifen, R.mipmap.shouhuo_address, R.mipmap.numbervip, R.mipmap.help
+            , R.mipmap.phoneconsult, R.mipmap.serviceing, R.mipmap.zhuanpiao};
+    private int nameTitleAuth[] = {R.string.mejifen, R.string.shouhuo_addressv, R.string.numbervip, R.string.help
             , R.string.phoneconsult, R.string.serviceing, R.string.zhuanpiao};
     private SnsTabWidget tabWidget,makertabwidget;
     private static int[] ORDER_TAB_TEXT = new int[]{
@@ -143,10 +147,10 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         super.setUserVisibleHint(isVisibleToUser);
         if(getUserVisibleHint()) {
             isVisible = true;
-            onVisible();
+//            onVisible();
         } else {
             isVisible = false;
-            onInvisible();
+//            onInvisible();
         }
     }
 
@@ -190,8 +194,6 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         //订单数
         orderNum = (TextView) view.findViewById(R.id.orderNum);
         orderNum.setOnClickListener(this);
-        //实例化功能列表
-        initFuncData();
         //统计查看更多
         lookall = (LinearLayout) view.findViewById(R.id.lookall);
         lookall.setOnClickListener(this);
@@ -200,6 +202,8 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         createstaff.setOnClickListener(this);
         meanagestaff = (LinearLayout) view.findViewById(R.id.meanagestaff);
         meanagestaff.setOnClickListener(this);
+        //实例化功能列表
+        initFuncData(imageUrl,nameTitle);
         //XXX初始化view的各控件
         isPrepared = true;
         lazyLoad();
@@ -225,7 +229,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         whiteTopText = (TextView) view.findViewById(R.id.whiteTopText);
     }
 
-    private void initFuncData() {
+    private void initFuncData(int imageUrl[],int nameTitle[]) {
         List<Map<String, Integer>> list = new ArrayList<>();
         for (int i = 0; i < imageUrl.length; i++) {
             Map<String, Integer> map = new HashMap<>();
@@ -386,6 +390,14 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                         String levelName = member.getLevelName();
                         shopGrade.setText(levelName == null ? "未知" : levelName);
                         int digital_member = member.getDigital_member();
+                        int lv_id = member.getLv_id();
+                        if (lv_id>5){
+                            //实例化功能列表
+                            initFuncData(imageUrlAuth,nameTitleAuth);
+                        }else {
+                            //实例化功能列表
+                            initFuncData(imageUrl,nameTitle);
+                        }
                         if (digital_member == 1) {//是数字会员
                             undredgeYsenHelp.setVisibility(View.GONE);
                             okdredgeYsenHelp.setVisibility(View.VISIBLE);
@@ -398,7 +410,6 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                                     Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                             okdredgeYsenHelp.setText(span);
                             shopImage.setBackgroundResource(R.mipmap.login_y_yasn);
-                            int lv_id = member.getLv_id();
                             if (lv_id == 6) {
                                 meanage.setVisibility(View.VISIBLE);
                             }else {
@@ -409,7 +420,6 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                             undredgeYsenHelp.setVisibility(View.GONE);
                             okdredgeYsenHelp.setVisibility(View.GONE);
                             gradeLinear.setVisibility(View.VISIBLE);
-                            int lv_id = member.getLv_id();
                             if (lv_id == 2) {
                                 whiteTopText.setText("认证审核中");
                                 meanage.setVisibility(View.GONE);
@@ -655,23 +665,6 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
             thread.interrupt();
         }
     }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == Activity.RESULT_OK) {
-//            // 根据上面发送过去的请求吗来区别
-//            if (requestCode == SHOPWEBVIEWCODE) {
-//                token = data.getStringExtra("token");
-//                resetToken = data.getStringExtra("resetToken");
-//                resetTokenTime = data.getStringExtra("resetTokenTime");
-//                Map<String, Object> params = new HashMap<String, Object>();
-//                params.put("access_token", token);
-//                okHttpGet(101, Config.GETPERSONAGEINFO, params);
-//
-//            }
-//        }
-//    }
 
     @Override
     public void onCancelResult() {

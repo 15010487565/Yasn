@@ -26,6 +26,7 @@ import com.yasn.purchase.view.NoScrollGridView;
 import java.util.ArrayList;
 import java.util.List;
 
+import www.xcd.com.mylibrary.base.view.XListViewFooter;
 import www.xcd.com.mylibrary.utils.HelpUtils;
 
 /**
@@ -47,6 +48,7 @@ public class FindAllAdapter  extends BaseAdapter {
 
     private ListVideoUtil listVideoUtil;
 
+    public static final int TYPE_FOOTER = 3;
     public static final int TYPE_TXT = 2;
     public static final int TYPE_IMAGE = 0;
     public static final int TYPE_VIDEO = 1;
@@ -71,36 +73,40 @@ public class FindAllAdapter  extends BaseAdapter {
     }
     @Override
     public int getViewTypeCount() {
-        return 3;
+        return 4;
     }
     @Override
     public int getItemViewType(int position) {
-        FindAllModel.DataBean dataBean = list.get(position);
-        int type = dataBean.getFileType();
-        if(type==2){
-            return TYPE_TXT;
-        }else if(type==0){
-            return TYPE_IMAGE;
-        }else if(type==1){
-            return TYPE_VIDEO;
+        if (position + 1 == getCount()) {
+            return TYPE_FOOTER;
         }else {
-            return TYPE_TXT;
+            FindAllModel.DataBean dataBean = list.get(position);
+            int type = dataBean.getFileType();
+            if(type==2){
+                return TYPE_TXT;
+            }else if(type==0){
+                return TYPE_IMAGE;
+            }else if(type==1){
+                return TYPE_VIDEO;
+            }else {
+                return TYPE_FOOTER;
+            }
         }
     }
 
     @Override
     public int getCount() {
-        return list ==null?0:list.size();
+        return list ==null?0:list.size()+1;
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -108,6 +114,7 @@ public class FindAllAdapter  extends BaseAdapter {
         VideoViewHolder videoHolder = null;
         TxtViewHolder txtHolder = null;
         ImageViewHolder imageHolder = null;
+        FooterHolder footerholder = null;
         int itemType = getItemViewType(position);
         if (convertView == null) {
             switch (itemType){
@@ -142,6 +149,13 @@ public class FindAllAdapter  extends BaseAdapter {
                     videoHolder.imageView = new ImageView(context);
                     convertView.setTag(videoHolder);
                     break;
+                case TYPE_FOOTER:
+                    footerholder = new FooterHolder();
+                    convertView = inflater.inflate(R.layout.xlistview_footer, parent,
+                            false);
+                    footerholder.mFooterView.setState(XListViewFooter.STATE_NORMAL);
+                    convertView.setTag(footerholder);
+                    break;
             }
 
         } else {
@@ -155,87 +169,93 @@ public class FindAllAdapter  extends BaseAdapter {
                 case TYPE_VIDEO:
                     videoHolder = (VideoViewHolder) convertView.getTag();
                     break;
+                case TYPE_FOOTER:
+                    footerholder = (FooterHolder) convertView.getTag();
+                    break;
             }
         }
-        final FindAllModel.DataBean dataBean = list.get(position);
-        String contentString = dataBean.getContent();//内容
-        int modifyTime = dataBean.getModifyTime();
-        String dateToString = HelpUtils.getDateToString(modifyTime);//时间
+        if (position != list.size()){
+            final FindAllModel.DataBean dataBean = list.get(position);
+            String contentString = dataBean.getContent();//内容
+            int modifyTime = dataBean.getModifyTime();
+            String dateToString = HelpUtils.getDateToString(modifyTime);//时间
 
-        switch (itemType){
-            case TYPE_IMAGE:
-                if (contentString == null||"".equals(contentString)){
-                    imageHolder.mainBody.setText("");
-                    imageHolder.mainBody.setVisibility(View.GONE);
-                }else {
-                    imageHolder.mainBody.setText(contentString);
-                    imageHolder.mainBody.setVisibility(View.VISIBLE);
-                }
-                imageHolder.time_findtxt.setText(dateToString);
-                List<String> fileUrlMin = dataBean.getFileUrlMin();
-                GridViewAdapter gridViewAdapter=new GridViewAdapter(context, fileUrlMin);
-                imageHolder.iamge_gridview.setAdapter(gridViewAdapter);
-                imageHolder.iamge_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        ArrayList<String> fileUrlMax = (ArrayList<String>) dataBean.getFileUrlMax();
-                        // 跳到查看大图界面
-                        Intent intent = new Intent(context, ShowBigPictrueActivitiy.class);
-                        intent.putStringArrayListExtra("ImageList", fileUrlMax);
-                        intent.putExtra("position",position);
-                        context.startActivity(intent);
+            switch (itemType){
+                case TYPE_IMAGE:
+                    if (contentString == null||"".equals(contentString)){
+                        imageHolder.mainBody.setText("");
+                        imageHolder.mainBody.setVisibility(View.GONE);
+                    }else {
+                        imageHolder.mainBody.setText(contentString);
+                        imageHolder.mainBody.setVisibility(View.VISIBLE);
                     }
-                });
-                break;
-            case TYPE_TXT:
-                txtHolder.time_findtxt.setText(dateToString);
-                if (contentString == null||"".equals(contentString)){
-                    imageHolder.mainBody.setText("");
-                    imageHolder.mainBody.setVisibility(View.GONE);
-                }else {
-                    imageHolder.mainBody.setText(contentString);
-                    imageHolder.mainBody.setVisibility(View.VISIBLE);
-                }
-                break;
-            case TYPE_VIDEO:
-                if (contentString == null||"".equals(contentString)){
-                    imageHolder.mainBody.setText("");
-                    imageHolder.mainBody.setVisibility(View.GONE);
-                }else {
-                    imageHolder.mainBody.setText(contentString);
-                    imageHolder.mainBody.setVisibility(View.VISIBLE);
-                }
-                videoHolder.time_findtxt.setText(dateToString);
-                //增加封面
-                videoHolder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                Glide.with(context.getApplicationContext())
-                        .load(dataBean.getVideoShowImg())
-                        .centerCrop()
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(videoHolder.imageView);
-                listVideoUtil.addVideoPlayer(position, videoHolder.imageView, TAG, videoHolder.videoContainer, videoHolder.playerBtn);
-                final String fileUrl = dataBean.getFileUrl();
-                videoHolder.playerBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        notifyDataSetChanged();
-                        Log.e("TAG_视频播放3","position="+position);
-                        //listVideoUtil.setLoop(true);
-                        listVideoUtil.setPlayPositionAndTag(position, TAG);
-                        listVideoUtil.setTitle("title " + position);
-                        //listVideoUtil.setCachePath(new File(FileUtils.getPath()));
-                        if (fileUrl==null||"".equals(fileUrl)){
-                            ToastUtil.showToast("暂无视频链接！");
-                        }else {
-                            listVideoUtil.startPlay(fileUrl);
+                    imageHolder.time_findtxt.setText(dateToString);
+                    List<String> fileUrlMin = dataBean.getFileUrlMin();
+                    GridViewAdapter gridViewAdapter=new GridViewAdapter(context, fileUrlMin);
+                    imageHolder.iamge_gridview.setAdapter(gridViewAdapter);
+                    imageHolder.iamge_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            ArrayList<String> fileUrlMax = (ArrayList<String>) dataBean.getFileUrlMax();
+                            // 跳到查看大图界面
+                            Intent intent = new Intent(context, ShowBigPictrueActivitiy.class);
+                            intent.putStringArrayListExtra("ImageList", fileUrlMax);
+                            intent.putExtra("position",position);
+                            context.startActivity(intent);
                         }
-                        //必须在startPlay之后设置才能生效
-                        //listVideoUtil.getGsyVideoPlayer().getTitleTextView().setVisibility(View.VISIBLE);
+                    });
+                    break;
+                case TYPE_TXT:
+                    txtHolder.time_findtxt.setText(dateToString);
+                    if (contentString == null||"".equals(contentString)){
+                        txtHolder.mainBody.setText("");
+                        txtHolder.mainBody.setVisibility(View.GONE);
+                    }else {
+                        txtHolder.mainBody.setText(contentString);
+                        txtHolder.mainBody.setVisibility(View.VISIBLE);
                     }
-                });
+                    break;
+                case TYPE_VIDEO:
+                    if (contentString == null||"".equals(contentString)){
+                        videoHolder.mainBody.setText("");
+                        videoHolder.mainBody.setVisibility(View.GONE);
+                    }else {
+                        videoHolder.mainBody.setText(contentString);
+                        videoHolder.mainBody.setVisibility(View.VISIBLE);
+                    }
+                    videoHolder.time_findtxt.setText(dateToString);
+                    //增加封面
+                    videoHolder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    Glide.with(context.getApplicationContext())
+                            .load(dataBean.getVideoShowImg())
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(videoHolder.imageView);
+                    listVideoUtil.addVideoPlayer(position, videoHolder.imageView, TAG, videoHolder.videoContainer, videoHolder.playerBtn);
+                    final String fileUrl = dataBean.getFileUrl();
+                    videoHolder.playerBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            notifyDataSetChanged();
+                            Log.e("TAG_视频播放3","position="+position);
+                            //listVideoUtil.setLoop(true);
+                            listVideoUtil.setPlayPositionAndTag(position, TAG);
+                            listVideoUtil.setTitle("title " + position);
+                            //listVideoUtil.setCachePath(new File(FileUtils.getPath()));
+                            if (fileUrl==null||"".equals(fileUrl)){
+                                ToastUtil.showToast("暂无视频链接！");
+                            }else {
+                                listVideoUtil.startPlay(fileUrl);
+                            }
+                            //必须在startPlay之后设置才能生效
+                            //listVideoUtil.getGsyVideoPlayer().getTitleTextView().setVisibility(View.VISIBLE);
+                        }
+                    });
 
-                break;
+                    break;
+            }
+        }else {
+            footerholder.mFooterView.setState(XListViewFooter.STATE_NORMAL);
         }
 
         return convertView;
@@ -262,7 +282,15 @@ public class FindAllAdapter  extends BaseAdapter {
         ImageView imageView;
     }
 
+    class FooterHolder {
+        XListViewFooter mFooterView = new XListViewFooter(context);
+    }
     public void setRootView(ViewGroup rootView) {
+
         this.rootView = rootView;
+    }
+    public void setFooterHolderState(FooterHolder mFooterView) {
+
+//        mFooterView.setState(XListViewFooter.STATE_NORMAL);
     }
 }

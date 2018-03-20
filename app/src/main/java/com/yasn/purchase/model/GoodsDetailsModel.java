@@ -1229,10 +1229,20 @@ public class GoodsDetailsModel implements Serializable {
             /**
              * discount_price : 9.80
              * has_discount : 1
+             * remainingTime
              */
 
             private String discount_price;
             private int has_discount;
+            private long remainingTime;
+
+            public long getRemainingTime() {
+                return remainingTime;
+            }
+
+            public void setRemainingTime(long remainingTime) {
+                this.remainingTime = remainingTime;
+            }
 
             public String getDiscount_price() {
                 return discount_price;

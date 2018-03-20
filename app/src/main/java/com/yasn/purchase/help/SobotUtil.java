@@ -10,6 +10,7 @@ import com.sobot.chat.api.enumtype.SobotChatTitleDisplayMode;
 import com.sobot.chat.api.model.ConsultingContent;
 import com.sobot.chat.api.model.Information;
 import com.yasn.purchase.R;
+import com.yasn.purchase.model.SobotModel;
 import com.yasn.purchase.utils.ToastUtil;
 
 import java.security.MessageDigest;
@@ -27,10 +28,10 @@ public class SobotUtil {
      * @param context
      * @param goodInfo 商品信息
      */
-    public static void startSobot(Context context,String goodInfo) {
+    public static void startSobot(Context context,SobotModel goodInfo) {
         Information info = new Information();
         if (goodInfo != null){
-            setGoodsInfo(context, info);
+            setGoodsInfo(goodInfo, info);
         }
         setSobotClickListener(context, info);
     }
@@ -89,19 +90,28 @@ public class SobotUtil {
         }
     }
 
-    private static void setGoodsInfo(Context context, Information info) {
+    private static void setGoodsInfo(SobotModel goodInfo, Information info) {
         //咨询内容
         ConsultingContent consultingContent = new ConsultingContent();
         //咨询内容标题，必填
-        consultingContent.setSobotGoodsTitle("XXX超级电视50英寸2D智能LED黑色");
+        consultingContent.setSobotGoodsTitle(goodInfo.getSobotGoodsTitle());
         //咨询内容图片，选填 但必须是图片地址
-        consultingContent.setSobotGoodsImgUrl("http://www.li7.jpg");
+        String sobotGoodsImgUrl = goodInfo.getSobotGoodsImgUrl();
+        if (sobotGoodsImgUrl !=null&&!"".equals(sobotGoodsImgUrl)){
+            consultingContent.setSobotGoodsImgUrl(sobotGoodsImgUrl);
+        }
         //咨询来源页，必填
         consultingContent.setSobotGoodsFromUrl("www.sobot.com");
         //描述，选填
-        consultingContent.setSobotGoodsDescribe("XXX超级电视 S5");
+        String sobotGoodsDescribe = goodInfo.getSobotGoodsDescribe();
+        if (sobotGoodsDescribe !=null&&!"".equals(sobotGoodsDescribe)){
+            consultingContent.setSobotGoodsDescribe(sobotGoodsDescribe);
+        }
         //标签，选填
-        consultingContent.setSobotGoodsLable("￥2150");
+        String sobotGoodsLable = goodInfo.getSobotGoodsLable();
+        if (sobotGoodsLable !=null&&!"".equals(sobotGoodsLable)){
+            consultingContent.setSobotGoodsLable(sobotGoodsLable);
+        }
         //可以设置为null
         info.setConsultingContent(consultingContent);
     }

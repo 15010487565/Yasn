@@ -162,7 +162,6 @@ public class MyWebChromeClient2 extends WebChromeClient {
         SharePrefHelper.getInstance(activity).putSpString("resetToken", resetToken);
         SharePrefHelper.getInstance(activity).putSpString("resetTokenTime", resetTokenTime);
         EventBus.getDefault().post(new EventBusMsg("loginSucceed"));
-        activity.finish();
     }
     /**
      * 清楚Cookie

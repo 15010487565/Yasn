@@ -47,7 +47,6 @@ public class BannerHolderView implements Holder<GoodsDetailsModel.GoodsDetailsBe
         Log.e("TAG_详情页轮播图","imageUrl="+imageUrl);
         Glide.with(context)
                 .load(imageUrl)
-                .centerCrop()
                 .fitCenter()
                 .error(R.mipmap.default_icon)
                 .into(bannerImg);

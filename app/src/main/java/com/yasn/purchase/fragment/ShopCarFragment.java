@@ -166,8 +166,6 @@ public class ShopCarFragment extends SimpleTopbarFragment implements OnRcItemCli
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
         Log.e("TAG_fragment","shopcar="+msg);
-//        if ("loginSucceed".equals(msg)&&getUserVisibleHint()){
-//            OkHttpDemand();
-//        }
+
     }
 }

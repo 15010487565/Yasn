@@ -36,6 +36,7 @@ import com.yasn.purchase.goods.fragment.GoodsDetailFragment;
 import com.yasn.purchase.goods.fragment.GoodsInfoFragment;
 import com.yasn.purchase.help.SobotUtil;
 import com.yasn.purchase.model.EventBusMsg;
+import com.yasn.purchase.model.SobotModel;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.BadgeView;
 
@@ -117,6 +118,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             }
         });
         main_tabitem_redpoint = (BadgeView) findViewById(R.id.main_tabitem_redpoint);
+        main_tabitem_redpoint.setVisibility(View.GONE);
         init();
         initTabLayout();
         initBottomView();
@@ -271,7 +273,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                 }
                 break;
             case R.id.ll_service:
-                SobotUtil.startSobot(this, null);
+                SobotUtil.startSobot(this, getSobotModel());
                 break;
             case R.id.fl_shopCar:
                 startWebViewActivity(Config.SHOPPCARWEBVIEW);
@@ -299,14 +301,31 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
 
     private void addShopCarRequest() {
         String goodsNum = goodsInfoFragment.getGoodsNum();
+        if (goodsNum == null || "".equals(goodsNum)) {
+            goodsNum = "0";
+        }
+        Integer integerGoodsNum = Integer.valueOf(goodsNum);
+        int smallSale = goodsInfoFragment.getSmallSale();
+        Log.e("TAG_activity", "加入进货单goodsNum=" + goodsNum + ";smallSale=" + smallSale);
+        if (smallSale > 0) {
+            int remainder = Integer.valueOf(goodsNum) % smallSale;
+            if (remainder > 0) {
+                ToastUtil.showToast("请输入正确数量！");
+                return;
+            }
+        }
+        if (integerGoodsNum == 0) {
+            ToastUtil.showToast("请输入正确数量！");
+            return;
+        }
         int activityId = goodsInfoFragment.getActivityId();
         int productId = goodsInfoFragment.getProductId();
 
-        Log.e("TAG_详情选择","数量="+goodsNum);
+        Log.e("TAG_详情选择", "数量=" + goodsNum);
         Map<String, Object> params1 = new HashMap<String, Object>();
         params1.put("productId", String.valueOf(productId));
         params1.put("num", goodsNum);
-        if (activityId!=0){
+        if (activityId != 0) {
             params1.put("activityId", String.valueOf(activityId));
         }
         if (token != null && !"".equals(token)) {
@@ -417,7 +436,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             case 100:
                 if (returnCode == 200) {
                     setCollectImage(true);
-                }else if (returnCode == 401) {
+                } else if (returnCode == 401) {
                     cleanToken();
                     collectRequest();
                 } else {
@@ -430,7 +449,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                 } else if (returnCode == 401) {
                     cleanToken();
                     collectRequest();
-                }else {
+                } else {
                     ToastUtil.showToast(returnMsg);
                 }
                 break;
@@ -439,18 +458,19 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                     try {
                         JSONObject object = new JSONObject(returnData);
                         int code = object.optInt("code");
-                        if (code == 200){
+                        if (code == 200) {
                             setCartNum(object.optInt("number"));
-                        }else {
+                            ToastUtil.showToast(object.optString("message"));
+                        } else {
                             setCartNum(object.optInt("number"));
                             ToastUtil.showToast(object.optString("message"));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else if (returnCode == 401) {
+                } else if (returnCode == 401) {
                     cleanToken();
-                    addShopCarRequest();
+                    collectRequest();
                 } else {
                     ToastUtil.showToast(returnMsg);
                 }
@@ -496,13 +516,30 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         viewPager.setVisibility(View.GONE);
         tvUndata.setVisibility(View.VISIBLE);
     }
+
     public void setTvAddShopCar(boolean isOnclick) {
-        if (isOnclick){
+        if ("0".equals(loginState)) {
+            if (isOnclick) {
+                tvAddShopCar.setEnabled(true);
+                tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
+            } else {
+                tvAddShopCar.setEnabled(false);
+                tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.black_99));
+            }
+        } else {
             tvAddShopCar.setEnabled(true);
-            tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this,R.color.orange));
-        }else {
-            tvAddShopCar.setEnabled(false);
-            tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this,R.color.black_99));
+            tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
         }
+
     }
+    public SobotModel sobotModel;
+
+    public SobotModel getSobotModel() {
+        return sobotModel;
+    }
+
+    public void setSobotModel(SobotModel sobotModel) {
+        this.sobotModel = sobotModel;
+    }
+
 }

@@ -2,12 +2,12 @@ package com.yasn.purchase.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +61,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void setData( List<SearchModel.DataBean> list) {
+        this.addList = list;
         this.list = list;
         notifyDataSetChanged();
     }
@@ -156,11 +157,6 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     holderSearch.searchAdvert.setVisibility(View.VISIBLE);
                 }
 
-                if ("0".equals(loginState)){
-                    holderSearch.searchmoney.setText(String.valueOf("￥"+dataBean.getPrice()));
-                }else {
-                    holderSearch.searchmoney.setText(loginState == null?"登录看价格":loginState);
-                }
 
                 String minNumberString = String.format("已售%s笔", String.valueOf(dataBean.getTotal_buy_count()));
                 SpannableStringBuilder countRecySpan = new SpannableStringBuilder(minNumberString);
@@ -171,10 +167,24 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 holderSearch.searchcount.setText(countRecySpan);
 
                 String has_discount = dataBean.getHas_discount();
+                Log.e("TAG_has_discount","has_discount="+has_discount+";loginState="+loginState);
                 if ("1".equals(has_discount)){
                     holderSearch.buyingspreeLinear.setVisibility(View.VISIBLE);
                     holderSearch.buyingspreeMoney.setText(dataBean.getDiscount_price());
+                    if ("0".equals(loginState)){
+                        holderSearch.searchmoney.setText(String.valueOf("￥"+dataBean.getPrice()));
+                        holderSearch.buyingspreeLinear.setVisibility(View.VISIBLE);
+                    }else {
+                        holderSearch.searchmoney.setText(loginState == null?"登录看价格":loginState);
+                        holderSearch.buyingspreeLinear.setVisibility(View.GONE);
+                    }
                 }else {
+                    if ("0".equals(loginState)){
+                        holderSearch.searchmoney.setText(String.valueOf("￥"+dataBean.getPrice()));
+                    }else {
+                        holderSearch.searchmoney.setText(loginState == null?"登录看价格":loginState);
+                    }
+                    holderSearch.buyingspreeMoney.setText("");
                     holderSearch.buyingspreeLinear.setVisibility(View.GONE);
                 }
                 int have_voice = dataBean.getHave_voice();//是否有音频 1：有
@@ -189,12 +199,13 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }else {
                     holderSearch.button2.setVisibility(View.GONE);
                 }
-                int market_enable = dataBean.getMarket_enable();
-                if (market_enable == 0){//上架1, 下架0
-                    holderSearch.iv_shroud.setVisibility(View.VISIBLE);
-                }else {
-                    holderSearch.iv_shroud.setVisibility(View.GONE);
-                }
+//                int market_enable = dataBean.getMarket_enable();
+//                if (market_enable == 0){//上架1, 下架0
+//                    holderSearch.iv_shroud.setVisibility(View.VISIBLE);
+//                }else {
+//                    holderSearch.iv_shroud.setVisibility(View.GONE);
+//                }
+
                 Glide.with(context)
                         .load(dataBean.getThumbnail())
                         .crossFade()
@@ -219,7 +230,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             footviewholder.footText.setText(context.getResources().getString(R.string.pullup_to_load));
                         }else {
                             footviewholder.progressBar.setVisibility(View.GONE);
-                            footviewholder.footText.setText(context.getResources().getString(R.string.pullup_to_load));
+                            footviewholder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
                         }
                     }
                 }
@@ -261,9 +272,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             purchase = (TextView) itemView.findViewById(R.id.purchase);
             presell = (TextView) itemView.findViewById(R.id.presell);
             titleimage = (ImageView) itemView.findViewById(R.id.titleimage);
-            iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
-            Drawable background = iv_shroud.getBackground();
-            background.setAlpha(255);
+//            iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
+//            Drawable background = iv_shroud.getBackground();
+//            background.setAlpha(255);
             buyingspreeLinear = (LinearLayout) itemView.findViewById(R.id.buyingspreeLinear);
             buyingspreeMoney = (TextView) itemView.findViewById(R.id.buyingspreeMoney);
         }

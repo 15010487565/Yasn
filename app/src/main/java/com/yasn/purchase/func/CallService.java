@@ -5,7 +5,6 @@ import android.view.View;
 
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.OftenShopActivity;
-import com.yasn.purchase.utils.ToastUtil;
 
 import www.xcd.com.mylibrary.func.BaseTopImageBtnFunc;
 
@@ -31,7 +30,7 @@ public class CallService extends BaseTopImageBtnFunc {
 
     @Override
     public void onclick(View v) {
-		ToastUtil.showToast("点击联系客服");
+
         ( (OftenShopActivity)getActivity()).callService();
     }
 }

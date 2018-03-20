@@ -22,11 +22,10 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
-    buildToolsVersion '25.0.0'
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     def viewDependencies = rootProject.ext.viewDependencies
     def dataDependencies = rootProject.ext.dataDependencies
     compile viewDependencies.ijkplayer_java

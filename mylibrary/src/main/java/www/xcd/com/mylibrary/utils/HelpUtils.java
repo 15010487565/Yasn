@@ -355,13 +355,21 @@ public class HelpUtils {
             minute = second / 60;         //取整
             second = second % 60;         //取余
             if (second < 10) {
-                secondCov = "0" + String.valueOf(second);
+                if (second<0){
+                    secondCov = "00";
+                }else {
+                    secondCov = "0" + String.valueOf(second);
+                }
             } else {
                 secondCov = String.valueOf(second);
             }
         } else {
             if (second < 10) {
-                secondCov = "0" + String.valueOf(second);
+                if (second<0){
+                    secondCov = "00";
+                }else {
+                    secondCov = "0" + String.valueOf(second);
+                }
             } else {
                 secondCov = String.valueOf(second);
             }

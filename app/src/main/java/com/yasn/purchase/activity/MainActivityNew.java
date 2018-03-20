@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -44,7 +43,8 @@ import www.xcd.com.mylibrary.R;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
-import www.xcd.com.mylibrary.view.NoScrollViewPager;
+import www.xcd.com.mylibrary.view.NoPreloadViewPager;
+import www.xcd.com.mylibrary.view.NoScrollPreloadViewPager;
 import www.xcd.com.mylibrary.widget.SnsTabWidget;
 
 public class MainActivityNew extends SimpleTopbarActivity implements LoadWebViewErrListener {
@@ -100,7 +100,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
      */
     private List<BaseFragment> fragmentList = new ArrayList<BaseFragment>();
 
-    private NoScrollViewPager viewPager;
+    private NoScrollPreloadViewPager viewPager;
     private SnsTabWidget tabWidget;
     private LinearLayout main_bottom;
     private RelativeLayout main_find_view, main_find_viewhl;
@@ -143,7 +143,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     }
 
     private void initView() {
-        viewPager = (NoScrollViewPager) findViewById(R.id.main_viewpager);
+        viewPager = (NoScrollPreloadViewPager) findViewById(R.id.main_viewpager);
         tabWidget = (SnsTabWidget) findViewById(R.id.main_tabwidget);
         main_bottom = (LinearLayout) findViewById(R.id.main_bottom);
         viewPager.setOnTouchListener(new View.OnTouchListener() {
@@ -495,7 +495,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
      * @version 1.0
      * @date 2014年9月23日
      */
-    private class MainPageChangeListener implements ViewPager.OnPageChangeListener {
+    private class MainPageChangeListener implements NoPreloadViewPager.OnPageChangeListener {
 
         @Override
         public void onPageScrolled(int paramInt1, float paramFloat, int paramInt2) {
@@ -560,9 +560,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
         Log.e("TAG_activity", "Main=" + msg);
-        if ("loginSucceed".equals(msg)) {
-
-        }else if ("loginout".equals(msg)) {
+       if ("loginout".equals(msg)) {
             setCartNum(0);
             viewPager.setCurrentItem(0);
             SharePrefHelper.getInstance(this).putSpBoolean("isLoginHome", false);

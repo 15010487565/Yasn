@@ -278,10 +278,8 @@ public class BannerView extends FrameLayout implements ViewPager.OnPageChangeLis
                 imageListener.OnLoadImage(iv,url);
             }else{
                 if (defaultImage!=-1){
-//                    Glide.with(context).load(url).centerCrop().crossFade().into(iv);
                     Glide.with(context).load(url).into(iv);
                 } else{
-//                    Glide.with(context).load(url).centerCrop().crossFade().placeholder(defaultImage).into(iv);
                     Glide.with(context).load(url).placeholder(defaultImage).into(iv);
                 }
             }

@@ -65,7 +65,6 @@ public class GridViewAdapter extends BaseAdapter {
             if (holder.imageView != null) {
                 Glide.with(mContext)
                         .load(imageUrl)
-                        .centerCrop()
                         .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.imageView);

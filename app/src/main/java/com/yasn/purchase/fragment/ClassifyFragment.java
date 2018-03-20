@@ -121,7 +121,6 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ClassifyRightModel classifyRightModel = rightList.get(position);
-//                ToastUtil.showToast(classifyRightModel.getRightClassifyName());
                 String rightClassifycatId = classifyRightModel.getRightClassifycatId();
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
                 intent.putExtra("SECARCHCARID",rightClassifycatId);
@@ -270,14 +269,6 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     public void OnClickRecyButton(int itemPosition, int listPosition) {
 
     }
-//    @Override
-//    public void OnRightItemClick(View view, int position) {
-//        ClassifyRightModel classifyRightModel = rightList.get(position);
-//        if (classifyRightModel !=null){
-//            String rightClassifycatId = classifyRightModel.getRightClassifycatId();
-//            ToastUtil.showToast("点击了"+ classifyRightModel.getRightClassifyName());
-//        }
-//    }
 
     private List<ClassifyModel.CatsBean> classifyModelCats;
 
@@ -321,7 +312,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onItemClick(int position) {
-//        ToastUtil.showToast("点击轮播图");
+
     }
 
     @Override

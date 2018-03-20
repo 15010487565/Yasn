@@ -35,7 +35,7 @@ import www.xcd.com.mylibrary.base.view.XListView;
 /**
  * Created by Android on 2017/9/5.
  */
-public class FindAllFragment extends SimpleTopbarFragment implements AbsListView.OnScrollListener,XListView.IXListViewListener {
+public class FindAllFragment extends SimpleTopbarFragment implements AbsListView.OnScrollListener, XListView.IXListViewListener {
 
 
     XListView listView;
@@ -67,22 +67,25 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
         Map<String, Object> params = new HashMap<String, Object>();
         FindModel.TitleBean titleBean = titleList.get(selectPosition);
         findId = String.valueOf(titleBean.getClassifyId());
-        okHttpGet(100, Config.FIND+findId+"/"+pageCount, params);
+        okHttpGet(100, Config.FIND + findId + "/" + pageCount, params);
     }
+
     // 标志位，标志已经初始化完成。
     private boolean isPrepared;
+
     @Override
     protected void lazyLoad() {
-        if(!isPrepared || !isVisible) {
+        if (!isPrepared || !isVisible) {
             return;
         }
         //填充各控件的数据
         OkHttpDemand();
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(getUserVisibleHint()) {
+        if (getUserVisibleHint()) {
             isVisible = true;
             onVisible();
         } else {
@@ -113,7 +116,7 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
         listView.setOnScrollListener(this);
 //        initFootView();
         //小窗口关闭被点击的时候回调处理回复页面
-        listVideoUtil.setVideoAllCallBack(new SampleListener(){
+        listVideoUtil.setVideoAllCallBack(new SampleListener() {
             @Override
             public void onPrepared(String url, Object... objects) {
                 super.onPrepared(url, objects);
@@ -145,6 +148,7 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
         isPrepared = true;
         lazyLoad();
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -161,6 +165,7 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
             handler.removeCallbacksAndMessages(null);
         }
     }
+
     List<FindAllModel.DataBean> list;
 
     @Override
@@ -168,31 +173,30 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
 
         switch (requestCode) {
             case 100:
-                if (returnCode == 200){
+                if (returnCode == 200) {
                     FindAllModel findallmodel = JSON.parseObject(returnData, FindAllModel.class);
-                    if (findallmodel!=null){
+                    if (findallmodel != null) {
                         list = findallmodel.getData();
-                        if (list == null||list.size()==0){
+                        if (list == null || list.size() == 0) {
                             ToastUtil.showToast("暂无更多数据！");
                             listView.setPullLoadEnable(false);
-                        }else {
-                            if (onRefresh){
+                        } else {
+                            if (onRefresh) {
                                 adapter.setData(list);
                                 onRefresh = false;
-                            }else if (onLoadMore){
+                            } else if (onLoadMore) {
                                 adapter.addData(list);
                                 onLoadMore = false;
-                            }else{
+                            } else {
                                 adapter.setData(list);
                             }
                         }
                         listView.stopLoadMore();
                         listView.stopRefresh();
                     }
-                }else {
+                } else {
                     ToastUtil.showToast(returnMsg);
                 }
-
                 break;
         }
 
@@ -207,25 +211,26 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
         listView.stopLoadMore();
-        listView.stopRefresh();;
+        listView.stopRefresh();
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
         listView.stopLoadMore();
-        listView.stopRefresh();;
+        listView.stopRefresh();
     }
 
     @Override
     public void onFinishResult() {
-       listView.stopLoadMore();
+        listView.stopLoadMore();
         listView.stopRefresh();
     }
-    private Handler handler = new Handler(){
+
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
 
             }
         }
@@ -242,13 +247,13 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
         this.firstVisibleItem = firstVisibleItem;
 //        lastVisibleItem = firstVisibleItem + visibleItemCount;
         lastVisibleItem = listView.getLastVisiblePosition();
-        if (list!=null){
-            if(firstVisibleItem>0&&totalItemCount > visibleItemCount){
+        if (list != null) {
+            if (firstVisibleItem > 0 && totalItemCount > visibleItemCount) {
                 listView.setPullLoadEnable(true);
-            }else {
+            } else {
                 listView.setPullLoadEnable(false);
             }
-        }else {
+        } else {
             listView.setPullLoadEnable(false);
         }
         //大于0说明有播放,//对应的播放列表TAG
@@ -257,7 +262,7 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
         if (position >= 0 && listVideoUtil.getPlayTAG().equals(FindAllAdapter.TAG)) {
             //不可视的是时候
             if ((position < firstVisibleItem || position > lastVisibleItem)) {
-                Log.e("TAG_视频播放==","刷新");
+                Log.e("TAG_视频播放==", "刷新");
 //                //如果是小窗口就不需要处理
 //                if (!listVideoUtil.isSmall()) {
 //                    //小窗口
@@ -272,20 +277,24 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
             }
         }
     }
+
     boolean onRefresh = false;
+
     @Override
     public void onRefresh() {
         onRefresh = true;
         pageCount = 1;
         Map<String, Object> params = new HashMap<String, Object>();
-        okHttpGet(100, Config.FIND+findId+"/"+pageCount, params);
+        okHttpGet(100, Config.FIND + findId + "/" + pageCount, params);
     }
+
     boolean onLoadMore = false;
+
     @Override
     public void onLoadMore() {
         onLoadMore = true;
         pageCount++;
         Map<String, Object> params = new HashMap<String, Object>();
-        okHttpGet(100, Config.FIND+findId+"/"+pageCount, params);
+        okHttpGet(100, Config.FIND + findId + "/" + pageCount, params);
     }
 }

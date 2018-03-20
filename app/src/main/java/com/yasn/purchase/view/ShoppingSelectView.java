@@ -142,7 +142,7 @@ public class ShoppingSelectView extends LinearLayout {
                 int specValueId = smallAttr.getSpecValueId();
                 button.setId(specValueId);//设置规格ID
                 //默认选中第一个specsChecked
-                if (specs.size() == 1||(checkboxNum/specs.size())==1) {
+                if (specs.size() == 1&&(checkboxNum/specs.size())==1) {
                     isSelectFirst = true;
                     button.setChecked(true);
                     button.setBackgroundResource(R.drawable.text_orange_blackf7);
@@ -158,10 +158,12 @@ public class ShoppingSelectView extends LinearLayout {
                 for (int j = 0, k = products.size(); j < k; j++) {
                     GoodsDetailsModel.GoodsDetailsBean.ProductsBean productsBean = products.get(j);
                     int enableStore = productsBean.getEnableStore();
+                    Log.e("TAG_false1", "j="+j+"；enableStore=" + enableStore+";ProductId="+productsBean.getProductId());
                     if (enableStore != 0) {
                         List<Integer> specValueIds = productsBean.getSpecValueIds();
                         for (int l = 0, m = specValueIds.size(); l < m; l++) {
                             Integer specId = specValueIds.get(l);
+                            Log.e("TAG_false2", "specId=" + specId+";specValueId="+specValueId);
                             if (specId == specValueId) {
                                 isChecked = true;
                             }
@@ -169,7 +171,7 @@ public class ShoppingSelectView extends LinearLayout {
                     }
                 }
                 if (!isSelectFirst){
-                    Log.e("TAG_false", "button=" + button.getText().toString()+";isChecked="+isChecked);
+                    Log.e("TAG_false3", "button=" + button.getText().toString()+";isChecked="+isChecked);
                     if (isChecked){
                         button.setEnabled(true);
                         button.setBackgroundResource(R.drawable.text_black_blackf7);

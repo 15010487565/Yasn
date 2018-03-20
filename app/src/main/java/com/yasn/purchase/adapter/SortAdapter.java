@@ -53,7 +53,6 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.ViewHolder> {
         }
         Glide.with(mContext.getApplicationContext())
                 .load(sortModel.getLogo())
-                .centerCrop()
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into( holder.sortlogo);

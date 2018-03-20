@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.lzyzsd.jsbridge.BridgeHandler;
@@ -50,6 +52,11 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
     private TextView errorText;
     private FrameLayout fragment_layout;
 
+    private ImageView clear_cache;
+    private ImageView refresh_view;
+//    private ImageView check_version;
+    private DrawerLayout drawer_layout;
+
     public String payHtmlUrl = null;
     MyWebChromeClient2 myWebChromeClient2 = new MyWebChromeClient2(this);
     private String webViewUrl;
@@ -83,6 +90,16 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
         errorText = (TextView) findViewById(R.id.load_again_web);
         fragment_layout = (FrameLayout) findViewById(R.id.fragment_layout);
         errorText.setOnClickListener(this);
+
+        fragment_layout = (FrameLayout) findViewById(R.id.fragment_layout);
+        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        clear_cache = (ImageView) findViewById(R.id.clear_cache);
+        refresh_view = (ImageView) findViewById(R.id.refresh_view);
+//        check_version = (ImageView) findViewById(R.id.check_version);
+        errorText.setOnClickListener(this);
+        clear_cache.setOnClickListener(this);
+        refresh_view.setOnClickListener(this);
+//        check_version.setOnClickListener(this);
     }
 
     private void initData() {
@@ -205,7 +222,19 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
                     ToastUtil.show(this, getResources().getString(R.string.data_failure_tip));
                 }
                 break;
-
+            case R.id.clear_cache:
+                clearWebViewCache();
+                drawer_layout.closeDrawers();
+                break;
+            case R.id.refresh_view:
+                mWebView.reload();
+                ToastUtil.show(this, getResources().getString(R.string.refresh_sucess));
+                drawer_layout.closeDrawers();
+                break;
+//            case R.id.check_version:
+//                checkNewVersion();
+//                drawer_layout.closeDrawers();
+//                break;
             case R.id.share_qq:
                 ShareUtil.startShare(this, ShareConstant.SHARE_CHANNEL_QQ, testBean, ShareConstant.REQUEST_CODE);
                 break;
@@ -222,6 +251,36 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
         if (mShareDialog != null && mShareDialog.isShowing()) {
             mShareDialog.dismiss();
         }
+    }
+    /**
+     * 清除WebView缓存
+     */
+    public void clearWebViewCache() {
+
+        //清理Webview缓存数据库
+        try {
+            deleteDatabase("webview.db");
+            deleteDatabase("webviewCache.db");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //WebView 缓存文件
+        File appCacheDir = new File(getFilesDir().getAbsolutePath() + "/webcache");
+        //        Log.e(TAG, "appCacheDir path=" + appCacheDir.getAbsolutePath());
+
+        File webviewCacheDir = new File(getCacheDir().getAbsolutePath() + "/webviewCache");
+        //        Log.e(TAG, "webviewCacheDir path=" + webviewCacheDir.getAbsolutePath());
+
+        //删除webview 缓存目录
+        if (webviewCacheDir.exists()) {
+            deleteFile(webviewCacheDir);
+        }
+        //删除webview 缓存 缓存目录
+        if (appCacheDir.exists()) {
+            deleteFile(appCacheDir);
+        }
+        ToastUtil.showToast(getResources().getString(R.string.clear_sucess));
     }
 
     @Override
