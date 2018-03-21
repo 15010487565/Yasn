@@ -18,6 +18,8 @@ import java.security.NoSuchAlgorithmException;
 
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
+import static www.xcd.com.mylibrary.utils.SharePrefHelper.context;
+
 /**
  * Created by gs on 2018/2/28.
  */
@@ -109,7 +111,8 @@ public class SobotUtil {
         }
         //标签，选填
         String sobotGoodsLable = goodInfo.getSobotGoodsLable();
-        if (sobotGoodsLable !=null&&!"".equals(sobotGoodsLable)){
+        String loginState = SharePrefHelper.getInstance(context).getSpString("loginState");
+        if (sobotGoodsLable !=null&&!"".equals(sobotGoodsLable)&&!"￥0.00".equals(sobotGoodsLable)&&!"￥00.00".equals(sobotGoodsLable)&&"0".equals(loginState)){
             consultingContent.setSobotGoodsLable(sobotGoodsLable);
         }
         //可以设置为null

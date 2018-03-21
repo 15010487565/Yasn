@@ -392,6 +392,11 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                         int digital_member = member.getDigital_member();
                         int lv_id = member.getLv_id();
                         if (lv_id>5){
+                            if (lv_id == 6) {
+                                meanage.setVisibility(View.VISIBLE);
+                            }else {
+                                meanage.setVisibility(View.GONE);
+                            }
                             //实例化功能列表
                             initFuncData(imageUrlAuth,nameTitleAuth);
                         }else {
@@ -410,11 +415,6 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                                     Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                             okdredgeYsenHelp.setText(span);
                             shopImage.setBackgroundResource(R.mipmap.login_y_yasn);
-                            if (lv_id == 6) {
-                                meanage.setVisibility(View.VISIBLE);
-                            }else {
-                                meanage.setVisibility(View.GONE);
-                            }
                         } else {
                             shopImage.setBackgroundResource(R.mipmap.login_n_yasn);
                             undredgeYsenHelp.setVisibility(View.GONE);

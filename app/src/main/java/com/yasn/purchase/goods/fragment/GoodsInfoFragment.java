@@ -1444,6 +1444,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         if (products != null) {
             productsBean = products.get(position);
             productId = productsBean.getProductId();
+            Log.e("TAG_库存规格id","productId="+productId);
             enableStoreNum = productsBean.getEnableStore();
             Log.e("TAG_库存","position="+position+";enableStoreNum="+enableStoreNum);
             if (enableStoreNum >= 10) {
