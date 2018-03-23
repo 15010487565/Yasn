@@ -37,7 +37,7 @@ public class HtmlImageGetter implements Html.ImageGetter {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 urlDrawable.bitmap = resource;
-                Log.e("TAG_加载的图片","Width：" + resource.getWidth() + "，Height：" + resource.getHeight());
+//                Log.e("TAG_加载的图片","Width：" + resource.getWidth() + "，Height：" + resource.getHeight());
                 urlDrawable.setBounds(0, 0, resource.getWidth(), resource.getHeight());
                 textView.invalidate();
                 textView.setText(textView.getText());//不加这句显示不出来图片，原因不详

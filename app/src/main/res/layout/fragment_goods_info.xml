@@ -221,6 +221,7 @@
                             android:textSize="@dimen/textsize_14" />
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/ll_retailPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -245,7 +246,7 @@
                             android:singleLine="true"
                             android:text="￥00.00-￥00.00"
                             android:textColor="@color/orange"
-                            android:textSize="@dimen/textsize_18" />
+                            android:textSize="@dimen/textsize_14" />
 
                     </LinearLayout>
 

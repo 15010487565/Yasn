@@ -131,7 +131,8 @@ public class OkHttpHelper {
                     Request.Builder builder = new Request.Builder();
                     builder.url(requestUrl);
                     if (token != null && !"".equals(token)) {
-                        builder.addHeader("Authorization", "Bearer " + token);
+                        builder.addHeader("Authorization", "Bearer" +
+                                "" + token);
                     }
                     Request request = builder.build();
                     Call callRequest = client.newCall(request);

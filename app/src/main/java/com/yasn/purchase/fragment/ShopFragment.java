@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -27,6 +28,7 @@ import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
 import com.yasn.purchase.adapter.ShopFuncAdapter;
 import com.yasn.purchase.common.Config;
+import com.yasn.purchase.help.LoginOut;
 import com.yasn.purchase.help.SobotUtil;
 import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.EventBusMsg;
@@ -47,6 +49,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import www.xcd.com.mylibrary.utils.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
@@ -57,7 +61,7 @@ import www.xcd.com.mylibrary.widget.SnsTabWidget;
  * Created by Android on 2017/9/5.
  * 门店
  */
-public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickListener {
+public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickListener ,SwipeRefreshLayout.OnRefreshListener {
 
     private RelativeLayout title;
     private LinearLayout integral, feedback, callservice, collect;
@@ -158,6 +162,8 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     protected void initView(LayoutInflater inflater, View view) {
         title = (RelativeLayout) view.findViewById(R.id.title);
         title.setVisibility(View.GONE);
+        //下拉刷新
+        initSwipeRefreshLayout(view);
         initTopShopInfo(view);
         //设置
         setting = (ImageView) view.findViewById(R.id.setting);
@@ -208,7 +214,14 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         isPrepared = true;
         lazyLoad();
     }
+    private void initSwipeRefreshLayout(View view) {
+        mSwipeRefreshLayout = (MultiSwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        //设置样式刷新显示的位置
+        mSwipeRefreshLayout.setProgressViewOffset(true, -20, 100);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.orange, R.color.blue, R.color.black);
 
+    }
     private TextView account, companyName, department, shopGrade;
     private TextView undredgeYsenHelp, okdredgeYsenHelp;
     private ImageView shopImage;
@@ -259,7 +272,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     startWebViewActivity(Config.DREDGEYASNHELP);
                 } else if ("查看原因".equals(undredgeYsenHelpContext)) {
                     String memssage = SharePrefHelper.getInstance(getActivity()).getSpString("memssage");
-                    showUpgradeDialog(memssage);
+                    showAuthDialog(memssage);
                 }
                 break;
             case R.id.setting:
@@ -297,7 +310,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-
+        mSwipeRefreshLayout.setRefreshing(false);
         switch (requestCode) {
             case 101:
                 if (returnCode == 200) {
@@ -318,6 +331,28 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     SharePrefHelper.getInstance(getActivity()).putSpString("priceDisplayMsg", "");
                     startWebViewActivity(Config.LOGINWEBVIEW);
                 }
+                break;
+            case 103:
+                if (returnCode == 200){
+                    if (isInvite == 1){//新用户
+                        mInviteNotifyDialog.dismiss();
+                    }else {
+                        LoginOut.loginOut(getActivity());
+                        mInviteNotifyDialog.dismiss();
+                    }
+                }
+                ToastUtil.showToast(returnMsg);
+                break;
+            case 104:
+                if (returnCode == 200){
+                    if (isInvite == 1){//新用户
+                        LoginOut.loginOut(getActivity());
+                        mInviteNotifyDialog.dismiss();
+                    }else {
+                        mInviteNotifyDialog.dismiss();
+                    }
+                }
+                ToastUtil.showToast(returnMsg);
                 break;
         }
 
@@ -343,6 +378,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                         startWebViewActivity(Config.LOGINWEBVIEW);
                         ToastUtil.showToast("登录已过期,请重新登录！");
                     }
+                    break;
+                case 1:
+                    mSwipeRefreshLayout.setRefreshing(false);
                     break;
             }
         }
@@ -373,12 +411,18 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                 ShopInfoModel shopinfomodel = JSON.parseObject(returnData, ShopInfoModel.class);
                 if (shopinfomodel != null) {
                     ShopInfoModel.MemberBean member = shopinfomodel.getMember();
+                    int lv_id = 0;
                     if (member != null) {
                         //创客
                         makerType = member.getIs_inviteCustomer();
                         initShopMaker();
                         String uname = member.getUname();
-                        account.setText(uname == null ? "未知" : uname);
+                        if (uname == null){
+                            uname = "";
+                            account.setText("");
+                        }else {
+                            account.setText(uname);
+                        }
                         SharePrefHelper.getInstance(getActivity()).putSpString("uname",uname == null?"游客":uname);
                         String shopName = member.getShopName();
                         if (shopName == null){
@@ -390,13 +434,8 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                         String levelName = member.getLevelName();
                         shopGrade.setText(levelName == null ? "未知" : levelName);
                         int digital_member = member.getDigital_member();
-                        int lv_id = member.getLv_id();
+                        lv_id = member.getLv_id();
                         if (lv_id>5){
-                            if (lv_id == 6) {
-                                meanage.setVisibility(View.VISIBLE);
-                            }else {
-                                meanage.setVisibility(View.GONE);
-                            }
                             //实例化功能列表
                             initFuncData(imageUrlAuth,nameTitleAuth);
                         }else {
@@ -459,26 +498,48 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     }
                     ShopInfoModel.StoreBean store = shopinfomodel.getStore();
                     if (store != null) {
+                        String employeeAuth = store.getEmployeeAuth();
+                        String  dutyAuth = "";
+                        if (employeeAuth != null) {//0:经理,1:采购 ,2:财务 1,2采购+财务
+                            if ("0".equals(employeeAuth)){
+                                department.setText("(经理)");
+                                dutyAuth = "经理";
+                                if (lv_id == 6) {
+                                    meanage.setVisibility(View.VISIBLE);
+                                }else {
+                                    meanage.setVisibility(View.GONE);
+                                }
+                            }else if ("1".equals(employeeAuth)){
+                                department.setText("(采购)");
+                                dutyAuth = "采购";
+                            }else if ("2".equals(employeeAuth)){
+                                department.setText("(财务)");
+                                dutyAuth = "财务";
+                            }else {
+                                int i = employeeAuth.indexOf("2");
+                                if (i != -1) {
+                                    dutyAuth = "采购+财务";
+                                    goodsNum.setText("￥" + String.valueOf(statistics.getGoodsNum()));
+                                    goodsHint.setText("待支付金额");
+                                    department.setText("(采购+财务)");
+                                } else {
+                                    if ("0".equals(employeeAuth)) {
+                                        goodsNum.setText("￥" + String.valueOf(statistics.getGoodsNum()));
+                                        goodsHint.setText("待支付金额");
+                                    } else {
+                                        goodsNum.setText(String.valueOf(statistics.getGoodsNum()) + "件");
+                                        goodsHint.setText("采购商品数");
+                                    }
+                                }
+                            }
+                        }
                         int isInvite = store.getIsInvite();
                         if (isInvite == 1 || isInvite == 2) {
                             String shopName = store.getShopName();
-                            companyName.setText((shopName == null || "".equals(shopName) || "无".equals(shopName)) ? "暂无" : shopName);
-                        }
-                        String employeeAuth = store.getEmployeeAuth();
-                        if (employeeAuth != null) {
-                            int i = employeeAuth.indexOf("2");
-                            if (i != -1) {
-                                goodsNum.setText("￥" + String.valueOf(statistics.getGoodsNum()));
-                                goodsHint.setText("待支付金额");
-                            } else {
-                                if ("0".equals(employeeAuth)) {
-                                    goodsNum.setText("￥" + String.valueOf(statistics.getGoodsNum()));
-                                    goodsHint.setText("待支付金额");
-                                } else {
-                                    goodsNum.setText(String.valueOf(statistics.getGoodsNum()) + "件");
-                                    goodsHint.setText("采购商品数");
-                                }
-                            }
+                            String admin = store.getAdmin();
+
+                            companyName.setText((shopName == null || "".equals(shopName) || "无".equals(shopName)) ? "" : shopName);
+                            showInviteDialog(admin,dutyAuth,isInvite);
                         }
                     }
                 }
@@ -605,6 +666,23 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         }
 
     }
+
+    @Override
+    public void onRefresh() {
+        OkHttpDemand();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                Message msg = handler.obtainMessage();
+                msg.what = 1;
+                msg.obj = getActivity();
+                handler.sendMessage(msg);
+//                swipeRefreshLayout.setRefreshing(false);
+            }
+        };
+        new Timer().schedule(timerTask, 2000);
+    }
+
     //我的订单
     private class OrderTabSelectionListener implements SnsTabWidget.ITabSelectionListener {
 
@@ -727,10 +805,10 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     public void OnClickRecyButton(int itemPosition, int listPosition) {
 
     }
+    //认证弹窗
+    protected AlertDialog mAuthNotifyDialog;
 
-    protected AlertDialog mUpgradeNotifyDialog;
-
-    private void showUpgradeDialog(String reasonString) {
+    private void showAuthDialog(String reasonString) {
         LayoutInflater factor = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.reason_dialog, null);
         TextView reason = (TextView) serviceView.findViewById(R.id.reason);
@@ -751,14 +829,78 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
             activity = activity.getParent();
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        mUpgradeNotifyDialog = builder.create();
-        mUpgradeNotifyDialog.show();
-        mUpgradeNotifyDialog.setContentView(serviceView);
+        mAuthNotifyDialog = builder.create();
+        mAuthNotifyDialog.show();
+        mAuthNotifyDialog.setContentView(serviceView);
         FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.WRAP_CONTENT);
         //layout.setMargins(WallspaceUtil.dip2px(this, 10), 0, FeatureFunction.dip2px(this, 10), 0);
         serviceView.setLayoutParams(layout);
     }
-
+    //邀请弹窗
+    protected AlertDialog mInviteNotifyDialog;
+    /**
+     * 1未注册用户被邀请 2已注册用户被邀请
+     */
+    private int isInvite = 0;
+    private void showInviteDialog(String admin,String dutyAuth,int isInvite) {
+        this.isInvite = isInvite;
+        LayoutInflater factor = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View serviceView = factor.inflate(R.layout.dialog_invite, null);
+        TextView tvInvitehint = (TextView) serviceView.findViewById(R.id.tv_invitehint);
+        String invitehint = "";
+        if (isInvite == 1){//新用户
+            invitehint = getActivity().getResources().getString(R.string.newinvitehint);
+        }else if (isInvite == 2){
+            invitehint = getActivity().getResources().getString(R.string.oldinvitehint);
+        }
+        invitehint = String.format(invitehint, admin,dutyAuth);
+        SpannableStringBuilder span = new SpannableStringBuilder(invitehint);
+        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(),R.color.orange)), 6,6+admin.length() ,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(),R.color.orange)), 27+admin.length(),27+admin.length()+dutyAuth.length() ,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        tvInvitehint.setText(span);
+        Log.e("TAG_邀请","tvInvitehint="+tvInvitehint.getText().toString());
+        TextView agree = (TextView) serviceView.findViewById(R.id.agree);
+        agree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, Object> paramsShop = new HashMap<String, Object>();
+                if (token != null && !"".equals(token)) {
+                    paramsShop.put("access_token", token);
+                } else if (resetToken != null && !"".equals(resetToken)) {
+                    paramsShop.put("access_token", resetToken);
+                }
+                okHttpGet(103, Config.AGREEINVITE, paramsShop);
+            }
+        });
+        TextView refuse = (TextView) serviceView.findViewById(R.id.refuse);
+        refuse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, Object> paramsShop = new HashMap<String, Object>();
+                if (token != null && !"".equals(token)) {
+                    paramsShop.put("access_token", token);
+                } else if (resetToken != null && !"".equals(resetToken)) {
+                    paramsShop.put("access_token", resetToken);
+                }
+                okHttpGet(104, Config.REFUSEINVITE, paramsShop);
+            }
+        });
+        Activity activity = getActivity();
+        while (activity.getParent() != null) {
+            activity = activity.getParent();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        mInviteNotifyDialog = builder.create();
+        mInviteNotifyDialog.setCancelable(false);
+        mInviteNotifyDialog.setCanceledOnTouchOutside(false);
+        mInviteNotifyDialog.show();
+        mInviteNotifyDialog.setContentView(serviceView);
+//        FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.WRAP_CONTENT);
+        //layout.setMargins(WallspaceUtil.dip2px(this, 10), 0, FeatureFunction.dip2px(this, 10), 0);
+//        serviceView.setLayoutParams(layout);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         EventBus.getDefault().register(this);

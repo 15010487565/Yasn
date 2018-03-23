@@ -16,6 +16,7 @@ import com.yasn.purchase.activity.GoodsDetailsActivity;
 import com.yasn.purchase.activity.MainActivityNew;
 import com.yasn.purchase.activity.SearchActivity;
 import com.yasn.purchase.activityold.WebViewActivity;
+import com.yasn.purchase.help.LoginOut;
 import com.yasn.purchase.model.EventBusMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -63,6 +64,7 @@ public class MyWebChromeClient2 extends WebChromeClient {
     // For Android  > 4.1.1
     public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
         mUploadMessage = uploadMsg;
+        Log.e("TAG)WEVVIEW","调用4.1.1");
         take(imagename);
     }
 
@@ -169,14 +171,7 @@ public class MyWebChromeClient2 extends WebChromeClient {
     @JavascriptInterface
     public void clearCookie() {
         Log.e("TAG_Cookie","removeAllCookie");
-        SharePrefHelper.getInstance(activity).putSpString("token", "");
-        SharePrefHelper.getInstance(activity).putSpString("resetToken", "");
-        SharePrefHelper.getInstance(activity).putSpString("resetTokenTime", "");
-        SharePrefHelper.getInstance(activity).putSpString("regionId", "");
-        SharePrefHelper.getInstance(activity).putSpString("priceDisplayMsg", "");
-        SharePrefHelper.getInstance(activity).putSpString("priceDisplayMsg", "");
-        SharePrefHelper.getInstance(activity).putSpString("memberid","");
-        EventBus.getDefault().post(new EventBusMsg("loginout"));
+        LoginOut.loginOut(activity);
     }
     @JavascriptInterface
     public void webViewBack(String backString) {

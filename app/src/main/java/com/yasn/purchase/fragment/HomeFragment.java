@@ -29,7 +29,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -117,12 +116,9 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     protected void OkHttpDemand() {
-        Log.e("TAG_initView", "HOMEFR_AGMENT");
         token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
         resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
         resetTokenTime = SharePrefHelper.getInstance(getActivity()).getSpString("resetTokenTime");
-        Log.e("TAG_TOKEN请求", "token=" + token);
-        Log.e("TAG_TOKEN请求", "resetToken=" + resetToken);
         Map<String, Object> params = new HashMap<String, Object>();
         if (token != null && !"".equals(token)) {
             params.put("access_token", token);
@@ -134,7 +130,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
             SharePrefHelper.getInstance(getActivity()).putSpString("regionId", "");
         }
         okHttpGet(100, Config.HOME, params);
-        SharePrefHelper.getInstance(getActivity()).putSpBoolean("isLoginHome", true);
     }
 
     @Override
@@ -514,37 +509,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
     private void initViewPagerImage() {
         List<HomeModel.AdvsBean> advs = homemodel.getAdvs();
         if (advs != null && advs.size() > 0) {
-
-            //轮播图数据
-//            if (advs.size() > 1) {
-//                homeConvenientBanner.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
-//                    @Override
-//                    public LocalImageHolderView createHolder() {
-//                        return new LocalImageHolderView();
-//                    }
-//                }, advs)
-//                        .setPointViewVisible(true)    //设置指示器是否可见
-//                        //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
-//                        .setPageIndicator(new int[]{R.mipmap.normal, R.mipmap.unnormal})
-//                        //设置指示器位置（左、中、右）
-//                        .setOnItemClickListener(this)
-//                        //设置指示器的方向
-//                        .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
-//                        .startTurning(3000)
-//                        .setManualPageable(true)  //设置手动影响（设置了该项无法手动切换）
-//                ;
-//            } else {
-//                homeConvenientBanner.setPages(new CBViewHolderCreator() {
-//                    @Override
-//                    public Object createHolder() {
-//                        return new LocalImageHolderView();
-//                    }
-//                }, advs)
-//                        .setPointViewVisible(false)    //设置指示器是否可见
-//                        .setOnItemClickListener(this)
-//                        .setManualPageable(false)  //设置手动影响（设置了该项无法手动切换）
-//                ;
-//            }
             home_banner.setImages(advs)
                     .setImageLoader(new GlideImageLoader())
                     .setOnBannerListener(this)
@@ -840,34 +804,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
 //        onFocusChange(topsearch,false);
     }
 
-    public class LocalImageHolderView implements Holder<HomeModel.AdvsBean> {
-
-        private ImageView imageView;
-
-        @Override
-        public View createView(Context context) {
-
-            imageView = new ImageView(context);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-
-            return imageView;
-        }
-
-        @Override
-        public void UpdateUI(Context context, int position, HomeModel.AdvsBean advsbean) {
-            String atturl = advsbean.getAtturl();
-
-            Glide.with(getActivity().getApplicationContext())
-                    .load(atturl)
-                    .fitCenter()
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.mipmap.errorimage)
-                    .error(R.mipmap.errorimage)
-                    .into(imageView);
-        }
-    }
-
     @Override
     public void onCancelResult() {
 
@@ -893,10 +829,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case 1:
-                    Bundle bundle_car = msg.getData();
-                    int position = bundle_car.getInt("position");
-                    break;
                 case 0:
                     mSwipeRefreshLayout.setRefreshing(false);
                     break;

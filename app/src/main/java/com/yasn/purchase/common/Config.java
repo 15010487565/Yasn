@@ -29,6 +29,8 @@ public class Config {
     public final static String FIND = IP+"discovery/get-discovery-list/";
     //进货单WEB页面
     public final static String SHOPPCARWEBVIEW = URLCAIGOU+"cart.html";
+    //进货单
+    public final static String SHOPPCAR = IP+"cart/get-cart-list";
     //热门搜索
     public final static String OFTENSEARCH = IP+"goods/search/KeyWord";
     //添加搜索字段
@@ -51,6 +53,10 @@ public class Config {
     public final static String DELETECOLLECT = IP+"favorite/deleteBygoodsId/";
     //加入进货单
     public final static String ADDSHOPCAR = IP+"cart/add-product?";
+    //同意邀请
+    public final static String AGREEINVITE = IP+"employee/agree";
+    //拒绝邀请
+    public final static String REFUSEINVITE = IP+"employee/refuse";
 
     public final static int TYPE_FOOTVIEW = 10000;
 

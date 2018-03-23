@@ -426,7 +426,9 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
                 resetTokenTime = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("resetTokenTime");
                 if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
                     if (tabIndex == 3) {
-                        startWebViewActivity(Config.SHOPPCARWEBVIEW);
+//                        startWebViewActivity(Config.SHOPPCARWEBVIEW);
+                        //原声进货单
+                        viewPager.setCurrentItem(tabIndex, false);
                     }  else {
                         viewPager.setCurrentItem(tabIndex, false);
                     }
@@ -563,8 +565,6 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
        if ("loginout".equals(msg)) {
             setCartNum(0);
             viewPager.setCurrentItem(0);
-            SharePrefHelper.getInstance(this).putSpBoolean("isLoginHome", false);
-
         }else if ("carNum".equals(msg)) {
             setCartNum(0);
 

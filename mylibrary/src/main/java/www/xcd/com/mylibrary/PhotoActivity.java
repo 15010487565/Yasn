@@ -222,10 +222,10 @@ public class PhotoActivity extends SimpleTopbarActivity {
         return dlgChoice;
     }
     /**
-     * 是否显示更改头像后的dialog,默认显示
+     * 是否显示更改头像后的dialog,默认不显示
      */
     public boolean getIsShowChoiceDialog(){
-        return true;
+        return false;
     }
     /**
      * 关闭对话框
@@ -239,7 +239,7 @@ public class PhotoActivity extends SimpleTopbarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("TAG_", "requestCode=" + requestCode + ";resultCode=" + resultCode);
+        Log.e("TAG_相机", "requestCode=" + requestCode + ";resultCode=" + resultCode);
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CODE_HEAD_ALBUM:

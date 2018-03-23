@@ -160,7 +160,7 @@ public class GoodsInfoFragment extends BaseFragment implements
      * @param context
      */
     private TextView retailPrice, retailPriceView;
-
+    private LinearLayout llRetailPrice;
     /**
      * 购买数量
      * 剩余库存
@@ -312,6 +312,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         //零售价
         retailPrice = (TextView) rootView.findViewById(R.id.retailPrice);
         retailPriceView = (TextView) rootView.findViewById(R.id.retailPriceView);
+        llRetailPrice = (LinearLayout) rootView.findViewById(R.id.ll_retailPrice);
 //        SpannableString retailPriceString = AlignedTextUtils.formatText("建议售价:");
         SpannableStringBuilder retailPriceString = AlignedTextUtils.justifyString("建议售价", 4);
         retailPriceString.append("：");
@@ -702,6 +703,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                         soldout_money.setText(loginState);
                         originalprice.setText(loginState);
                         originalprice2.setText(loginState);
+                        llRetailPrice.setVisibility(View.GONE);
                     }
                 } else if (returnCode == 401) {
                     cleanToken();
@@ -762,7 +764,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         if (specs ==null||specs.size()==0){
             ll_specs.setVisibility(View.GONE);
         }else {
-           if (specs.size()==1){
+           if (specs.size()==1&&"默认".equals(specs.get(0).getSpecName())){
                ll_specs.setVisibility(View.GONE);
            }else {
                ll_specs.setVisibility(View.VISIBLE);
@@ -895,6 +897,15 @@ public class GoodsInfoFragment extends BaseFragment implements
 
         if (products != null) {
             productsBean = products.get(position);
+            //建议零售价
+            String minReferencePrice = productsBean.getMinReferencePrice();
+            String maxReferencePrice = productsBean.getMaxReferencePrice();
+            if (minReferencePrice !=null&&maxReferencePrice !=null){
+                llRetailPrice.setVisibility(View.VISIBLE);
+                retailPriceView.setText("￥"+minReferencePrice+"-￥"+maxReferencePrice);
+            }else {
+                llRetailPrice.setVisibility(View.GONE);
+            }
             productId = productsBean.getProductId();
             //最小起订量
             smallSale = productsBean.getSmallSale();
@@ -947,7 +958,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                 llLadderPrices.setVisibility(View.GONE);
                 tradeprice_recy.setVisibility(View.GONE);
                 String activityPrice = productsBean.getActivityPrice();
-                if (activityPrice != null && !"".equals(activityPrice) || "0.00".equals(activityPrice)) {
+                if (activityPrice != null && !"".equals(activityPrice) && !"0.00".equals(activityPrice)) {
                     soldout_money.setText("￥" + activityPrice);
                     originalprice.setText("￥" + activityPrice);
                     originalprice2.setText("￥" + activityPrice);
@@ -960,6 +971,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             }
         } else {
             smallSale = 0;
+            llRetailPrice.setVisibility(View.GONE);
 //            etGoodsNum.setText(String.valueOf(smallSale));
         }
         String minNumberString = String.format("最小起订量:%s  %s件起批", smallSale, smallSale);

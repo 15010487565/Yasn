@@ -33,7 +33,6 @@
 -keep public class * extends android.app.backup.BackupAgentHelper # 保持哪些类不被混淆
 -keep public class * extends android.preference.Preference        # 保持哪些类不被混淆
 -keep public class com.android.vending.licensing.ILicensingService    # 保持哪些类不被混淆
--keep public class com.yasn.purchase.utils.MyWebChromeClient{*;}
 #----------------保护指定的类和类的成员，但条件是所有指定的类和类成员是要存在------------------------------------
 -keepclasseswithmembernames class * {
     public <init>(android.content.Context, android.util.AttributeSet);

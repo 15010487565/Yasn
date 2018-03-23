@@ -124,7 +124,7 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
         }else {
             removeCookie(mWebView.getContext());
         }
-        getCookie(".yasn.com");
+//        getCookie(".yasn.com");
         //设置android_client,web端根据这个判断是哪个客户端
         mWebView.getSettings().setUserAgentString(mWebView.getSettings().getUserAgentString() + "/android_client");
         mWebView.setDefaultHandler(new DefaultHandler());
@@ -155,6 +155,10 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
         try {
             CookieSyncManager.createInstance(context);
             CookieManager cookieManager = CookieManager.getInstance();
+            String cookies = cookieManager.getCookie(url);
+            if (cookies != null && (value == null || !value.equals(cookies))) {
+                SerializableUtil.saveObject(cookies, context.getFilesDir(), SerializableUtil.COOKIE);
+            }
             cookieManager.setAcceptCookie(true);
             cookieManager.removeSessionCookie();//移除
             if (value != null && value.contains(";")) {
@@ -171,14 +175,14 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
             e.printStackTrace();
         }
     }
-    public void getCookie( String url) {
-        try {
-            CookieManager cookieManager = CookieManager.getInstance();
-            Log.e("TAG_setCookie()","WEB="+cookieManager.getCookie(url));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public void getCookie( String url) {
+//        try {
+//            CookieManager cookieManager = CookieManager.getInstance();
+//            Log.e("TAG_setCookie()","WEB="+cookieManager.getCookie(url));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
     @Override
     public void onLoadWebviewFail(WebView view, int errorCode, String description, String failingUrl) {
         mWebView.setVisibility(View.GONE);

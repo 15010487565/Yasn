@@ -73,7 +73,7 @@ public class MainActivity extends PhotoActivity
     private static final int SHOW_IS_NEW_VERSION = 1;
 
 
-    //    MyWebChromeClient
+    //    MyWebChromeClient2
 //        wcc;
     MyWebChromeClient2 myWebChromeClient2 = new MyWebChromeClient2(this);
 
@@ -401,22 +401,6 @@ public class MainActivity extends PhotoActivity
             e.printStackTrace();
         }
     }
-
-    // --------------------- by fanjl 2016.12.15
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-//    {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == MyWebChromeClient.FILECHOOSER_RESULTCODE)
-//        {
-//            Uri uri = data == null || resultCode != RESULT_OK ? null : data.getData();
-//            if(wcc != null)
-//            {
-//                wcc.onResult(uri);
-//            }
-//        }
-//    }
-    // ------------------ end
 
     @Override
     protected void onStart() {

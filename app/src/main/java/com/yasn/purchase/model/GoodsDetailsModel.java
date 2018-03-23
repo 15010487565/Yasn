@@ -1568,8 +1568,8 @@ public class GoodsDetailsModel implements Serializable {
             private int smallSale;
             private Object goodsLvPrices;
             private Object copiedProductId;
-            private Object minReferencePrice;
-            private Object maxReferencePrice;
+            private String minReferencePrice;
+            private String maxReferencePrice;
             private String activityPrice;
             private List<Integer> specValueIds;
             private List<LadderPricesBean> ladderPrices;
@@ -1678,19 +1678,19 @@ public class GoodsDetailsModel implements Serializable {
                 this.copiedProductId = copiedProductId;
             }
 
-            public Object getMinReferencePrice() {
+            public String getMinReferencePrice() {
                 return minReferencePrice;
             }
 
-            public void setMinReferencePrice(Object minReferencePrice) {
+            public void setMinReferencePrice(String minReferencePrice) {
                 this.minReferencePrice = minReferencePrice;
             }
 
-            public Object getMaxReferencePrice() {
+            public String getMaxReferencePrice() {
                 return maxReferencePrice;
             }
 
-            public void setMaxReferencePrice(Object maxReferencePrice) {
+            public void setMaxReferencePrice(String maxReferencePrice) {
                 this.maxReferencePrice = maxReferencePrice;
             }
 

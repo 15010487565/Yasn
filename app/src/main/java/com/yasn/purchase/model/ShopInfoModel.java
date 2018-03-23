@@ -381,11 +381,21 @@ public class ShopInfoModel implements Serializable {
          * employeeAuth : 0
          * shopName : 无
          * isInvite : 0
+         * admin;
          */
 
         private String employeeAuth;
         private String shopName;
         private int isInvite;
+        private String admin;
+
+        public String getAdmin() {
+            return admin;
+        }
+
+        public void setAdmin(String admin) {
+            this.admin = admin;
+        }
 
         public String getEmployeeAuth() {
             return employeeAuth;

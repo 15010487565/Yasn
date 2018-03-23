@@ -29,7 +29,6 @@
             android:padding="@dimen/margin_20"
             android:gravity="center|left"
             android:text="未获取到详细原因！"
-            android:maxLines="4"
             android:textColor="@color/black_66"
             android:textSize="@dimen/textsize_16" />
 

@@ -27,17 +27,20 @@ public class SerializableUtil {
     public static void saveObject(Object obj, File filesDir, String saveName) {
         // File filesDir = getFilesDir();
         try {
-            filesDir = new File(filesDir, saveName);
-            if (filesDir.exists()) {
-                filesDir.delete();
+            if (!filesDir.exists()){
+                filesDir.mkdirs();
             }
-            FileOutputStream os = new FileOutputStream(filesDir);
+            File files = new File(filesDir, saveName);
+            if (!files.exists()){
+                files.createNewFile();
+            }
+            FileOutputStream os = new FileOutputStream(files);
             ObjectOutputStream oos = new ObjectOutputStream(os);
             oos.writeObject(obj);
             oos.close();
             os.close();
         } catch (Exception e) {
-            SerializableUtil.deleObj(filesDir);
+//            SerializableUtil.deleObj(filesDir);
             e.printStackTrace();
         }
 
@@ -56,7 +59,7 @@ public class SerializableUtil {
                 return null;
             }
         } catch (Exception e) {
-            SerializableUtil.deleObj(filesDir);
+//            SerializableUtil.deleObj(filesDir);
             e.printStackTrace();
         }
         return null;

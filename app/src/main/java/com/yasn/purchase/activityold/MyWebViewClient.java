@@ -129,8 +129,9 @@ public class MyWebViewClient
         CookieManager cookieManager = CookieManager.getInstance();
         String cookies = cookieManager.getCookie(url);
         String oldCookie = (String) SerializableUtil.readObject(activity.getFilesDir(), SerializableUtil.COOKIE);
+        Log.e("TAG_CookieSave","oldCookie="+oldCookie);
+        Log.e("TAG_CookieSave() ","cookies="+cookies);
         if (cookies != null && (oldCookie == null || !oldCookie.equals(cookies))) {
-//            YasnApplication.getInstance().setUserTag(cookies.substring(cookies.lastIndexOf("=") + 1));
             SerializableUtil.saveObject(cookies, activity.getFilesDir(), SerializableUtil.COOKIE);
         }
 
