@@ -3,6 +3,7 @@ package com.yasn.purchase.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -44,14 +45,17 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<SearchModel.DataBean> addList;
     private OnRcItemClickListener onItemClickListener;
     private String loginState;
-    private boolean isShowProgressBar;
+    private LinearLayoutManager linearLayoutManager;
+//    private boolean isShowProgressBar;
+//
+//    public void setShowProgressBar(boolean isShowProgressBar) {
+//        this.isShowProgressBar = isShowProgressBar;
+//        Log.e("TAG_底部adapter1","isShowProgressBar="+isShowProgressBar);
+//    }
 
-    public void setShowProgressBar(boolean isShowProgressBar) {
-        this.isShowProgressBar = isShowProgressBar;
-    }
-
-    public SearchAdapter(Context context) {
+    public SearchAdapter(Context context,LinearLayoutManager linearLayoutManager) {
         super();
+        this.linearLayoutManager = linearLayoutManager;
         this.context = context;
         loginState = SharePrefHelper.getInstance(context).getSpString("loginState");
     }
@@ -225,8 +229,10 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         footviewholder.progressBar.setVisibility(View.GONE);
                         footviewholder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
                     }else {
-                        if (isShowProgressBar){
-                            footviewholder.progressBar.setVisibility(View.VISIBLE);
+                        int visibleItemCount = linearLayoutManager.getChildCount();
+                        Log.e("TAG_底部adapter2","visibleItemCount="+visibleItemCount);
+                        if (visibleItemCount != list.size()){
+                            footviewholder.progressBar.setVisibility(View.GONE);
                             footviewholder.footText.setText(context.getResources().getString(R.string.pullup_to_load));
                         }else {
                             footviewholder.progressBar.setVisibility(View.GONE);
@@ -234,6 +240,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         }
                     }
                 }
+
                 break;
         }
 

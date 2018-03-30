@@ -427,8 +427,8 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
                 if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
                     if (tabIndex == 3) {
 //                        startWebViewActivity(Config.SHOPPCARWEBVIEW);
-                        //原声进货单
-                        viewPager.setCurrentItem(tabIndex, false);
+                        //原生进货单
+                        startActivity(new Intent(MainActivityNew.this,ShopCarActivity.class));
                     }  else {
                         viewPager.setCurrentItem(tabIndex, false);
                     }

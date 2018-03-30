@@ -2,24 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/line_c3">
     <LinearLayout
-        android:id="@+id/storename_linear"
+        android:id="@+id/ll_StoreName"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_45"
         android:gravity="center_vertical"
         android:background="@color/black_f5">
         <ImageView
-            android:id="@+id/storename_select"
+            android:id="@+id/iv_StoreNameSelect"
             android:layout_width="@dimen/height_20"
             android:layout_height="@dimen/height_20"
-            android:layout_marginLeft="@dimen/margin_20"
-            android:layout_marginRight="@dimen/margin_10"
-            android:background="@mipmap/checkbox_checked"/>
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10" />
         <TextView
-            android:id="@+id/storename"
+            android:id="@+id/tv_StoreName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/textsize_16"
@@ -27,26 +26,28 @@
             android:text="店铺名称：雅森自营"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/ll_mail"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_45"
+        android:layout_height="@dimen/height_40"
         android:layout_marginTop="@dimen/margin_1"
         android:background="@color/white"
         android:gravity="center_vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginLeft="@dimen/margin_10"
             android:layout_marginRight="@dimen/margin_10"
             android:background="@drawable/text_red_white"
             android:textColor="@color/red"
             android:textSize="@dimen/textsize_14"
             android:paddingLeft="@dimen/margin_5"
             android:paddingRight="@dimen/margin_5"
-            android:paddingTop="@dimen/margin_3"
-            android:paddingBottom="@dimen/margin_3"
+            android:paddingTop="@dimen/margin_2"
+            android:paddingBottom="@dimen/margin_2"
             android:text="包邮"/>
         <TextView
+            android:id="@+id/tv_mailHint"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -54,17 +55,17 @@
             android:textColor="@color/black_66"
             android:singleLine="true"
             android:ellipsize="end"
-            android:text="全场商品满199包邮，还差XX元免运费"/>
+            android:text="@string/shopcartitlemail"/>
         <LinearLayout
-            android:id="@+id/addgoods"
-            android:layout_marginLeft="@dimen/height_30"
+            android:id="@+id/ll_addgoods"
+            android:layout_marginLeft="@dimen/margin_10"
             android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/textsize_14"
+                android:textSize="@dimen/textsize_12"
                 android:textColor="@color/orange"
                 android:text="去凑单"/>
             <ImageView
@@ -77,10 +78,4 @@
 
         </LinearLayout>
     </LinearLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/orderitem_recy"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

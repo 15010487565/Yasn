@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/orange"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_shopcarSpec"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_white"
+        android:paddingLeft="@dimen/margin_3"
+        android:paddingRight="@dimen/margin_3"
+        android:paddingTop="@dimen/margin_1"
+        android:paddingBottom="@dimen/margin_1"
+        android:textColor="@color/black_66"
+        android:singleLine="true"
+        android:text="xxxx"/>
+</LinearLayout>

@@ -93,7 +93,6 @@ public class SearchActivity extends SimpleTopbarActivity implements
     private String sortOld;
     private boolean isDownPull = false;//下拉刷新
     private boolean isUpPull = false;//上拉加载
-    private boolean isShowProgressBar = false;//底部加载更多
     private ImageView backDrawer;
     @Override
     public boolean isTopbarVisibility() {
@@ -173,8 +172,9 @@ public class SearchActivity extends SimpleTopbarActivity implements
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setAutoMeasureEnabled(true);
         recyclerview_serrch.setLayoutManager(mLinearLayoutManager);
-        adapter = new SearchAdapter(this);
+        adapter = new SearchAdapter(this,mLinearLayoutManager);
         adapter.setOnItemClickListener(this);
+        //当前屏幕所看到的子项个数
         recyclerview_serrch.setAdapter(adapter);
     }
 
@@ -243,23 +243,19 @@ public class SearchActivity extends SimpleTopbarActivity implements
                 }
                 boolean isBottom = recyclerView.canScrollVertically(1);//返回false表示不能往上滑动，即代表到底部了；
                 //屏幕中最后一个可见子项的position
-//                int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
+                int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
                 //当前屏幕所看到的子项个数
                 int visibleItemCount = mLinearLayoutManager.getChildCount();
                 //当前RecyclerView的所有子项个数
                 int totalItemCount = mLinearLayoutManager.getItemCount();
-//                && visibleItemCount == totalItemCount
                 Log.e("TAG_底部","isBottom="+isBottom+"visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
                 if (isBottom ){
                     swipe_layout.setBottom(false);
-                    adapter.setShowProgressBar(false);
                 }else {
                     if (visibleItemCount == totalItemCount){
                         swipe_layout.setBottom(false);
-                        adapter.setShowProgressBar(false);
                     }else {
                         swipe_layout.setBottom(true);
-                        adapter.setShowProgressBar(true);
                     }
                 }
             }
@@ -307,10 +303,10 @@ public class SearchActivity extends SimpleTopbarActivity implements
         drawlayoutsearch_rv.setLayoutManager(manager);
         mAdapter = new SortAdapter(this);
         mAdapter.setOnItemClickListener(this);
-        drawlayoutsearch_rv.setAdapter(mAdapter);
         //自定义的分隔线
         drawlayoutsearch_rv.addItemDecoration(new RcDecoration(this,RcDecoration.VERTICAL_LIST));
         mAdapter.notifyDataSetChanged();
+        drawlayoutsearch_rv.setAdapter(mAdapter);
         //设置右侧SideBar触摸监听
         mSideBar.setOnTouchLetterChangeListener(new WaveSideBar.OnTouchLetterChangeListener() {
             @Override

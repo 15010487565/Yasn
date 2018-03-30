@@ -900,7 +900,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             //建议零售价
             String minReferencePrice = productsBean.getMinReferencePrice();
             String maxReferencePrice = productsBean.getMaxReferencePrice();
-            if (minReferencePrice !=null&&maxReferencePrice !=null){
+            if (minReferencePrice !=null&&maxReferencePrice !=null&&!"0".equals(minReferencePrice)&&!"0".equals(maxReferencePrice)){
                 llRetailPrice.setVisibility(View.VISIBLE);
                 retailPriceView.setText("￥"+minReferencePrice+"-￥"+maxReferencePrice);
             }else {

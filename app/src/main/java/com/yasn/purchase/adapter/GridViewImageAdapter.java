@@ -17,11 +17,11 @@ import java.util.List;
  * Created by gs on 2018/1/8.
  */
 
-public class GridViewAdapter extends BaseAdapter {
+public class GridViewImageAdapter extends BaseAdapter {
     private Context mContext;
     private   List<String> listFindImage;
 
-    public GridViewAdapter(Context mContext, List<String> listFindImage) {
+    public GridViewImageAdapter(Context mContext, List<String> listFindImage) {
         super();
         this.mContext = mContext;
         this.listFindImage = listFindImage;
@@ -68,7 +68,7 @@ public class GridViewAdapter extends BaseAdapter {
                         .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.imageView);
-//                holder.imageView.setOnClickListener(new View.OnClickListener() {
+//                holder.tv_spec.setOnClickListener(new View.OnClickListener() {
 //                    @Override
 //                    public void onClick(View v) {
 //                        Toast.makeText(mContext, "第"+(position+1)+"个", Toast.LENGTH_SHORT).show();

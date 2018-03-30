@@ -76,7 +76,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
         OnRcItemClickListener, OnBannerListener {
 
     private HomeRecyclerAdapter adapter;
-//    private ConvenientBanner homeConvenientBanner;
+    //    private ConvenientBanner homeConvenientBanner;
     private Banner home_banner;
     private TabLayout tablayout;
     private LinearLayout notLogin, linearLayout2, orderStateLinear;
@@ -196,75 +196,70 @@ public class HomeFragment extends SimpleTopbarFragment implements
             loginImage.setBackgroundResource(R.mipmap.login_n_yasn);
             notLogin.setVisibility(View.GONE);
             home_infomessage.setVisibility(View.VISIBLE);
-            if (member == null) {
-                notLogin.setVisibility(View.VISIBLE);
-                home_infomessage.setVisibility(View.GONE);
-                home_collect.setVisibility(View.GONE);
-            } else {
-                home_collect.setVisibility(View.VISIBLE);
-                //
-                int member_id = member.getMember_id();
-                SharePrefHelper.getInstance(getActivity()).putSpString("memberid", String.valueOf(member_id));
-//                HelpUtils.getGoodsNum(Config.CARTGOODSNUM+member_id,handler);
-                ((MainActivityNew) getActivity()).setCartNum(Integer.valueOf(member.getCartCount()));
-                //账号
-                String uname = member.getUname();
-                homeAccount.setText(uname == null ? "未知" : uname);
-                SharePrefHelper.getInstance(getActivity()).putSpString("uname", uname == null ? "游客" : uname);
-                //星级
-                String levelName = member.getLevelName();
-                homeGrade.setText((levelName == null || "".equals(levelName)) ? "未知" : levelName);
-                //地方站ID
-                int regionId = member.getRegionId();
-                SharePrefHelper.getInstance(getActivity()).putSpString("regionId", String.valueOf(regionId));
-                int digital_member = member.getDigital_member();
-                if (digital_member == 0) {//未开通雅森帮
-                    undredgeYsenHelp.setVisibility(View.GONE);
-                    okdredgeYsenHelp.setVisibility(View.GONE);
-                    homeGrade.setVisibility(View.VISIBLE);
-                    int lv_id = member.getLv_id();
-                    if (lv_id == 2) {
-                        whiteTopText.setText("认证审核中");
-                        homeGrade.setVisibility(View.GONE);
-                    } else if (lv_id == 3) {
-                        whiteTopText.setText("审核未通过  ");
-                        undredgeYsenHelp.setText("查看原因");
-                        String memssage = member.getMessage();//审核未通过原因
-                        Log.e("TAG_原因", "memssage=" + memssage);
-                        SharePrefHelper.getInstance(getActivity()).putSpString("memssage", memssage);
-                        undredgeYsenHelp.setVisibility(View.VISIBLE);
-                        homeGrade.setVisibility(View.GONE);
-                    } else if (lv_id == 5) {
-                        whiteTopText.setText("");
-                        undredgeYsenHelp.setText("去认证");
-                        undredgeYsenHelp.setVisibility(View.VISIBLE);
-                        homeGrade.setVisibility(View.GONE);
-                    } else if (lv_id == 1) {
-                        whiteTopText.setText("");
-                        undredgeYsenHelp.setText("去认证");
-                        undredgeYsenHelp.setVisibility(View.VISIBLE);
-                        homeGrade.setVisibility(View.GONE);
-                    } else {
-                        whiteTopText.setText("");
-                        undredgeYsenHelp.setVisibility(View.VISIBLE);
-                        undredgeYsenHelp.setText("开通雅森帮");
-                        homeGrade.setVisibility(View.VISIBLE);
-                        okdredgeYsenHelp.setVisibility(View.GONE);
-                    }
-                } else if (digital_member == 1) {//已开通雅森帮
-                    loginImage.setBackgroundResource(R.mipmap.login_y_yasn);
-                    undredgeYsenHelp.setVisibility(View.INVISIBLE);
-                    okdredgeYsenHelp.setVisibility(View.VISIBLE);
-                    int endDate = member.getEndDate();
-                    String expireTime = HelpUtils.getDateToString(endDate);
-                    String minNumberString = String.format("会员有效期 %s", expireTime);
-                    SpannableStringBuilder span = new SpannableStringBuilder(minNumberString);
-                    span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.orange)), 0, 5,
-                            Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    okdredgeYsenHelp.setText(span);
-                }
-            }
 
+            home_collect.setVisibility(View.VISIBLE);
+            //
+            int member_id = member.getMember_id();
+            SharePrefHelper.getInstance(getActivity()).putSpString("memberid", String.valueOf(member_id));
+//                HelpUtils.getGoodsNum(Config.CARTGOODSNUM+member_id,handler);
+            ((MainActivityNew) getActivity()).setCartNum(Integer.valueOf(member.getCartCount()));
+            //账号
+            String uname = member.getUname();
+            homeAccount.setText(uname == null ? "未知" : uname);
+            SharePrefHelper.getInstance(getActivity()).putSpString("uname", uname == null ? "游客" : uname);
+            //星级
+            String levelName = member.getLevelName();
+            homeGrade.setText((levelName == null || "".equals(levelName)) ? "未知" : levelName);
+            //地方站ID
+            int regionId = member.getRegionId();
+            SharePrefHelper.getInstance(getActivity()).putSpString("regionId", String.valueOf(regionId));
+            int digital_member = member.getDigital_member();
+            if (digital_member == 0) {//未开通雅森帮
+                undredgeYsenHelp.setVisibility(View.GONE);
+                okdredgeYsenHelp.setVisibility(View.GONE);
+                homeGrade.setVisibility(View.VISIBLE);
+                int lv_id = member.getLv_id();
+                if (lv_id == 2) {
+                    whiteTopText.setText("认证审核中");
+                    homeGrade.setVisibility(View.GONE);
+                } else if (lv_id == 3) {
+                    whiteTopText.setText("审核未通过  ");
+                    undredgeYsenHelp.setText("查看原因");
+                    String memssage = member.getMessage();//审核未通过原因
+                    Log.e("TAG_原因", "memssage=" + memssage);
+                    SharePrefHelper.getInstance(getActivity()).putSpString("memssage", memssage);
+                    undredgeYsenHelp.setVisibility(View.VISIBLE);
+                    homeGrade.setVisibility(View.GONE);
+                } else if (lv_id == 5) {
+                    whiteTopText.setText("");
+                    undredgeYsenHelp.setText("去认证");
+                    undredgeYsenHelp.setVisibility(View.VISIBLE);
+                    homeGrade.setVisibility(View.GONE);
+                } else if (lv_id == 1) {
+                    whiteTopText.setText("");
+                    undredgeYsenHelp.setText("去认证");
+                    undredgeYsenHelp.setVisibility(View.VISIBLE);
+                    homeGrade.setVisibility(View.GONE);
+                } else {
+                    whiteTopText.setText("");
+                    undredgeYsenHelp.setVisibility(View.VISIBLE);
+                    undredgeYsenHelp.setText("开通雅森帮");
+                    homeGrade.setVisibility(View.VISIBLE);
+                    okdredgeYsenHelp.setVisibility(View.GONE);
+                }
+            } else if (digital_member == 1) {//已开通雅森帮
+                loginImage.setBackgroundResource(R.mipmap.login_y_yasn);
+                undredgeYsenHelp.setVisibility(View.INVISIBLE);
+                okdredgeYsenHelp.setVisibility(View.VISIBLE);
+                homeGrade.setVisibility(View.VISIBLE);
+                int endDate = member.getEndDate();
+                String expireTime = HelpUtils.getDateToString(endDate);
+                String minNumberString = String.format("会员有效期 %s", expireTime);
+                SpannableStringBuilder span = new SpannableStringBuilder(minNumberString);
+                span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.orange)), 0, 5,
+                        Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                okdredgeYsenHelp.setText(span);
+            }
         }
     }
 
@@ -518,6 +513,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
         }
 
     }
+
     //轮播图点击事件
     @Override
     public void OnBannerClick(int position) {

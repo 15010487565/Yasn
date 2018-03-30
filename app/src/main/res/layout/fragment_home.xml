@@ -56,15 +56,6 @@
                         <include layout="@layout/include_homeinfo" />
                         <include layout="@layout/include_homeshopandyasn" />
                         <include layout="@layout/include_homeorderinfo" />
-                        <!--<com.bigkoo.convenientbanner.ConvenientBanner-->
-                            <!--android:id="@+id/home_convenientBanner"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="@dimen/height_200"-->
-                            <!--android:layout_marginBottom="@dimen/margin_10"-->
-                            <!--android:background="@color/line_c3"-->
-                            <!--app:canLoop="true">-->
-                            <!--&lt;!&ndash;app:canLoop="true" //控制循环与否&ndash;&gt;-->
-                        <!--</com.bigkoo.convenientbanner.ConvenientBanner>-->
                         <com.youth.banner.Banner
                             android:id="@+id/home_banner"
                             android:layout_width="match_parent"

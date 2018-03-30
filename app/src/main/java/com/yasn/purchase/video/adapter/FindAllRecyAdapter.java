@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.shuyu.gsyvideoplayer.utils.ListVideoUtil;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.yasn.purchase.R;
-import com.yasn.purchase.adapter.GridViewAdapter;
+import com.yasn.purchase.adapter.GridViewImageAdapter;
 import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.FindAllModel;
 import com.yasn.purchase.view.NoScrollGridView;
@@ -132,7 +132,7 @@ public class FindAllRecyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 holderImage.find_time.setText(HelpUtils.getDateToString(modifyTime));
 
                 List<String> fileUrlMin = dataBean.getFileUrlMin();
-                GridViewAdapter gridViewAdapter = new GridViewAdapter(context, fileUrlMin);
+                GridViewImageAdapter gridViewAdapter = new GridViewImageAdapter(context, fileUrlMin);
                 holderImage.iamge_gridview.setAdapter(gridViewAdapter);
 //                Glide.with(context.getApplicationContext())
 //                        .load(fileUrl)

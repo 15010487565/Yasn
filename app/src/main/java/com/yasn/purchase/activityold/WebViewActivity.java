@@ -27,6 +27,7 @@ import com.xyzlf.share.library.interfaces.ShareConstant;
 import com.xyzlf.share.library.util.ShareUtil;
 import com.yasn.purchase.R;
 import com.yasn.purchase.common.Config;
+import com.yasn.purchase.help.LoginOut;
 import com.yasn.purchase.model.EventBusMsg;
 import com.yasn.purchase.utils.CommonHelper;
 import com.yasn.purchase.utils.MyWebChromeClient2;
@@ -166,6 +167,7 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
                 for (int i = 0; i < cookiepart.length; i++) {
                     cookieManager.setCookie(url, cookiepart[i]);
                 }
+
             } else {
                 cookieManager.setCookie(url, value);
             }
@@ -227,6 +229,7 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
                 }
                 break;
             case R.id.clear_cache:
+                LoginOut.loginOut(this);
                 clearWebViewCache();
                 drawer_layout.closeDrawers();
                 break;

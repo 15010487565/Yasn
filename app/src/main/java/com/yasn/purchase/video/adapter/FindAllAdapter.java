@@ -18,7 +18,7 @@ import com.shuyu.gsyvideoplayer.utils.ListVideoUtil;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.showbig.ShowBigPictrueActivitiy;
-import com.yasn.purchase.adapter.GridViewAdapter;
+import com.yasn.purchase.adapter.GridViewImageAdapter;
 import com.yasn.purchase.model.FindAllModel;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.NoScrollGridView;
@@ -191,7 +191,7 @@ public class FindAllAdapter  extends BaseAdapter {
                     }
                     imageHolder.time_findtxt.setText(dateToString);
                     List<String> fileUrlMin = dataBean.getFileUrlMin();
-                    GridViewAdapter gridViewAdapter=new GridViewAdapter(context, fileUrlMin);
+                    GridViewImageAdapter gridViewAdapter=new GridViewImageAdapter(context, fileUrlMin);
                     imageHolder.iamge_gridview.setAdapter(gridViewAdapter);
                     imageHolder.iamge_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override

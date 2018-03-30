@@ -72,6 +72,8 @@ public class SobotUtil {
 //        customInfo.put("appkey", appkey);
 //        //自定义用户资料
 //        info.setCustomInfo(customInfo);
+        //设置标题栏的背景颜色，如果背景颜色和背景图片都设置，则以背景图片为准，选填
+        info.setColor("#3C3C3C");
         //启动参数设置结束
         String appkey = context.getResources().getString(R.string.zhichi_key);
         if (!TextUtils.isEmpty(appkey)) {

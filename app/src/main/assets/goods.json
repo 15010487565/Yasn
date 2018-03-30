@@ -1,434 +1,319 @@
 {
-  "goodsDetails": {
-    "page": null,
-    "pageSize": null,
-    "goodsId": 3662,
-    "name": "测试规格",
-    "marketEnable": 1,
-    "brief": null,
-    "price": 4.0,
-    "cost": 0.0,
-    "mktPrice": 12.0,
-    "haveSpec": 1,
-    "totalViewCount": 122,
-    "totalBuyCount": 0,
-    "disabled": 0,
-    "enableStore": 110,
-    "pageTitle": null,
-    "metaKeywords": null,
-    "metaDescription": null,
-    "storeId": 1,
-    "goodsTransfeeCharge": 1,
-    "storeName": "雅森自营",
-    "isDisplay": 1,
-    "advert": "",
-    "subTitle": "",
-    "goodsPoint": 10,
-    "maxCountPerUser": 0,
-    "pointUsable": 1,
-    "publishType": 0,
-    "totalPlayCount": 12,
-    "isGift": null,
-    "videoDetailUrl": null,
-    "isSuccessCase": 0,
-    "haveVoice": 0,
-    "voiceDetailUrl": null,
-    "point": 5,
-    "brandName": "Presta",
-    "typeId": 132,
-    "unit": "",
-    "isBeforeSale": 0,
-    "goodsBeforeSale": null,
-    "isLimitBuy": 0,
-    "goodsLimitBuy": null,
-    "specs": [
-      {
-        "specId": 42,
-        "specName": "型号",
-        "specValues": [
-          {
-            "specValueId": 622,
-            "specValueName": "双灯H13"
-          },
-          {
-            "specValueId": 621,
-            "specValueName": "双灯H4"
-          }
-        ]
+  "code": 200,
+  "message": null,
+  "data": [
+    {
+      "store_id": 1,
+      "activity_name": "200包邮",
+      "activity_id": 272,
+      "store_name": "雅森自营",
+      "storeprice": {
+        "goodsPrice": 13441,
+        "orderPrice": 13441,
+        "shippingPrice": 0,
+        "needPayMoney": 13441,
+        "discountPrice": 0,
+        "weight": 27100,
+        "point": 0,
+        "discountItem": {},
+        "actDiscount": 0,
+        "giftId": 0,
+        "bonusId": 0,
+        "isFreeShip": 0,
+        "freeShipMoney": 200,
+        "actFreeShip": null,
+        "exchangePoint": null,
+        "activityPoint": null,
+        "usePoint": null,
+        "deductMoney": null,
+        "moreBuyToSend": null,
+        "activityGoods": [],
+        "activity": [],
+        "productId": [],
+        "goodsNum": [],
+        "goodsGiftId": [],
+        "goodsGiftNum": [],
+        "goodsBonusId": [],
+        "goodsBonusNum": [],
+        "points": [],
+        "pointsNum": [],
+        "act_free_ship": 0
       },
-      {
-        "specId": 26,
-        "specName": "包装规格",
-        "specValues": [
-          {
-            "specValueId": 874,
-            "specValueName": "828ml*4瓶"
+      "goodslist": [
+        {
+          "id": 58322,
+          "productId": 1528,
+          "goodsId": 933,
+          "name": "拉力 特级速 全合成机油润滑油 SN 5W30/原装进口 1箱（4L*4桶）",
+          "mktprice": 659,
+          "price": 659,
+          "coupPrice": 659,
+          "subtotal": null,
+          "num": 1,
+          "limitnum": null,
+          "imageDefault": "http://shoptt.yasn.com/static/attachment//store/1/goods/2017/2/19/9//37269508_thumbnail.jpg",
+          "point": 0,
+          "itemtype": 0,
+          "sn": "ZC1706030077",
+          "addon": "[{\"name\":\"容量\",\"value\":\"4L\"}]",
+          "specs": "4L",
+          "catid": 498,
+          "others": {
+            "specList": [
+              {
+                "name": "容量",
+                "value": "4L"
+              }
+            ]
           },
-          {
-            "specValueId": 848,
-            "specValueName": " 1.9L*4桶"
-          }
-        ]
-      },
-      {
-        "specId": 1,
-        "specName": "颜色",
-        "specValues": [
-          {
-            "specValueId": 41,
-            "specValueName": "黄色"
+          "exchange": null,
+          "unit": "箱",
+          "goodsType": 0,
+          "pmtList": null,
+          "weight": 5000,
+          "activityId": 0,
+          "isCheck": 1,
+          "sendNum": null,
+          "usePoint": null,
+          "deductMoney": null,
+          "storeId": 1,
+          "storeName": "雅森自营",
+          "goodsTransfeeCharge": 0,
+          "isExist": 1,
+          "enableStore": 11,
+          "step": 1,
+          "smallSale": 1,
+          "isBeforeSale": 0,
+          "goodsOff": 0,
+          "beforeSale": null
+        },
+        {
+          "id": 58442,
+          "productId": 2604,
+          "goodsId": 1713,
+          "name": "青继阳无耗材多功能氧吧（负离子氧吧+臭氧消毒+行车记录三合一）",
+          "mktprice": 580,
+          "price": 580,
+          "coupPrice": 580,
+          "subtotal": null,
+          "num": 22,
+          "limitnum": null,
+          "imageDefault": "http://shoptt.yasn.com/static/attachment//store/1/goods/2017/5/2/9//28122451_thumbnail.jpg",
+          "point": 0,
+          "itemtype": 0,
+          "sn": "9980001030002",
+          "addon": "[{\"name\":\"型号\",\"value\":\"A002\"}]",
+          "specs": "A002",
+          "catid": 507,
+          "others": {
+            "specList": [
+              {
+                "name": "型号",
+                "value": "A002"
+              }
+            ]
           },
-          {
-            "specValueId": 42,
-            "specValueName": "绿色"
+          "exchange": null,
+          "unit": "台",
+          "goodsType": 0,
+          "pmtList": null,
+          "weight": 1000,
+          "activityId": 0,
+          "isCheck": 1,
+          "sendNum": null,
+          "usePoint": null,
+          "deductMoney": null,
+          "storeId": 1,
+          "storeName": "雅森自营",
+          "goodsTransfeeCharge": 0,
+          "isExist": 1,
+          "enableStore": 22,
+          "step": 1,
+          "smallSale": 1,
+          "isBeforeSale": 0,
+          "goodsOff": 0,
+          "beforeSale": null
+        },
+        {
+          "id": 58449,
+          "productId": 2178,
+          "goodsId": 520,
+          "name": "锦兴 多功能后视镜雨刮杆 JX-001",
+          "mktprice": 22,
+          "price": 22,
+          "coupPrice": 22,
+          "subtotal": null,
+          "num": 1,
+          "limitnum": null,
+          "imageDefault": "http://shoptt.yasn.com/static/attachment//store/1/goods/2017/2/18/11//21416695_thumbnail.jpeg",
+          "point": 0,
+          "itemtype": 0,
+          "sn": "1800000000001",
+          "addon": "[{\"name\":\"颜色\",\"value\":\"颜色随机\"}]",
+          "specs": "颜色随机",
+          "catid": 535,
+          "others": {
+            "specList": [
+              {
+                "name": "颜色",
+                "value": "颜色随机"
+              }
+            ]
           },
-          {
-            "specValueId": 1926,
-            "specValueName": "AAA6款硅胶底黑色"
-          }
-        ]
-      }
-    ],
-    "carTypes": [
-      {
-        "carTypeId": 7881,
-        "goodsId": 3662,
-        "carName": "适用所有车型",
-        "carDepthFirst": 0,
-        "carDepthSecond": null,
-        "carDepthThird": null,
-        "carDepthFourth": null
-      }
-    ],
-    "goodsActity": null,
-    "storeActivity": {
-      "page": null,
-      "pageSize": null,
-      "activityId": 268,
-      "activityName": "包邮活动测试",
-      "startTime": 1515470841,
-      "endTime": 1517371646,
-      "description": "<p>包邮!!!!!!!</p>",
-      "rangeType": 1,
-      "disabled": 0,
-      "type": 0,
-      "storeId": 1
+          "exchange": null,
+          "unit": "支",
+          "goodsType": 0,
+          "pmtList": null,
+          "weight": 100,
+          "activityId": 0,
+          "isCheck": 1,
+          "sendNum": null,
+          "usePoint": null,
+          "deductMoney": null,
+          "storeId": 1,
+          "storeName": "雅森自营",
+          "goodsTransfeeCharge": 0,
+          "isExist": 1,
+          "enableStore": 85,
+          "step": 1,
+          "smallSale": 1,
+          "isBeforeSale": 0,
+          "goodsOff": 0,
+          "beforeSale": null
+        }
+      ]
     },
-    "suit": [],
-    "products": [
-      {
-        "productId": 5577,
-        "goodsId": 3662,
-        "name": "测试规格",
-        "sn": "sn2346-0",
-        "store": 20,
-        "enableStore": 20,
-        "price": 12.0,
-        "cost": null,
-        "weight": null,
-        "specValueIds": [
-          621,
-          848,
-          41
-        ],
-        "step": 1,
-        "smallSale": 1,
-        "goodsLvPrices": null,
-        "ladderPrices": null,
-        "copiedProductId": null,
-        "minReferencePrice": null,
-        "maxReferencePrice": null,
-        "activityPrice": null
+    {
+      "store_id": 99,
+      "store_name": "厂家直发",
+      "storeprice": {
+        "goodsPrice": 5958,
+        "orderPrice": 5958,
+        "shippingPrice": 0,
+        "needPayMoney": 5958,
+        "discountPrice": 0,
+        "weight": 97600,
+        "point": 0,
+        "discountItem": {},
+        "actDiscount": 0,
+        "giftId": 0,
+        "bonusId": 0,
+        "isFreeShip": 0,
+        "freeShipMoney": -1,
+        "actFreeShip": null,
+        "exchangePoint": null,
+        "activityPoint": null,
+        "usePoint": null,
+        "deductMoney": null,
+        "moreBuyToSend": null,
+        "activityGoods": [],
+        "activity": [],
+        "productId": [],
+        "goodsNum": [],
+        "goodsGiftId": [],
+        "goodsGiftNum": [],
+        "goodsBonusId": [],
+        "goodsBonusNum": [],
+        "points": [],
+        "pointsNum": [],
+        "act_free_ship": 0
       },
-      {
-        "productId": 5578,
-        "goodsId": 3662,
-        "name": "测试规格",
-        "sn": "sn2346-1",
-        "store": 0,
-        "enableStore": 0,
-        "price": 12.0,
-        "cost": null,
-        "weight": null,
-        "specValueIds": [
-          622,
-          848,
-          41
-        ],
-        "step": 1,
-        "smallSale": 1,
-        "goodsLvPrices": null,
-        "ladderPrices": null,
-        "copiedProductId": null,
-        "minReferencePrice": null,
-        "maxReferencePrice": null,
-        "activityPrice": null
-      },
-      {
-        "productId": 5579,
-        "goodsId": 3662,
-        "name": "测试规格",
-        "sn": "sn2346-2",
-        "store": 0,
-        "enableStore": 0,
-        "price": 12.0,
-        "cost": null,
-        "weight": null,
-        "specValueIds": [
-          621,
-          874,
-          41
-        ],
-        "step": 1,
-        "smallSale": 1,
-        "goodsLvPrices": null,
-        "ladderPrices": null,
-        "copiedProductId": null,
-        "minReferencePrice": null,
-        "maxReferencePrice": null,
-        "activityPrice": null
-      },
-      {
-        "productId": 5580,
-        "goodsId": 3662,
-        "name": "测试规格",
-        "sn": "sn2346-3",
-        "store": 10,
-        "enableStore": 10,
-        "price": 12.0,
-        "cost": null,
-        "weight": null,
-        "specValueIds": [
-          622,
-          874,
-          41
-        ],
-        "step": 1,
-        "smallSale": 1,
-        "goodsLvPrices": null,
-        "ladderPrices": null,
-        "copiedProductId": null,
-        "minReferencePrice": null,
-        "maxReferencePrice": null,
-        "activityPrice": null
-      },
-      {
-        "productId": 5581,
-        "goodsId": 3662,
-        "name": "测试规格",
-        "sn": "sn2346-4",
-        "store": 0,
-        "enableStore": 0,
-        "price": 12.0,
-        "cost": null,
-        "weight": null,
-        "specValueIds": [
-          621,
-          848,
-          42
-        ],
-        "step": 1,
-        "smallSale": 1,
-        "goodsLvPrices": null,
-        "ladderPrices": null,
-        "copiedProductId": null,
-        "minReferencePrice": null,
-        "maxReferencePrice": null,
-        "activityPrice": null
-      },
-      {
-        "productId": 5582,
-        "goodsId": 3662,
-        "name": "测试规格",
-        "sn": "sn2346-5",
-        "store": 30,
-        "enableStore": 30,
-        "price": 5.0,
-        "cost": null,
-        "weight": null,
-        "specValueIds": [
-          622,
-          848,
-          42
-        ],
-        "step": 1,
-        "smallSale": 1,
-        "goodsLvPrices": null,
-        "ladderPrices": null,
-        "copiedProductId": null,
-        "minReferencePrice": null,
-        "maxReferencePrice": null,
-        "activityPrice": null
-      },
-      {
-        "productId": 5583,
-        "goodsId": 3662,
-        "name": "测试规格",
-        "sn": "sn2346-6",
-        "store": 0,
-        "enableStore": 0,
-        "price": 4.0,
-        "cost": null,
-        "weight": null,
-        "specValueIds": [
-          621,
-          874,
-          42
-        ],
-        "step": 1,
-        "smallSale": 1,
-        "goodsLvPrices": null,
-        "ladderPrices": null,
-        "copiedProductId": null,
-        "minReferencePrice": null,
-        "maxReferencePrice": null,
-        "activityPrice": null
-      },
-      {
-        "productId": 5584,
-        "goodsId": 3662,
-        "name": "测试规格",
-        "sn": "sn2346-7",
-        "store": 50,
-        "enableStore": 50,
-        "price": 12.0,
-        "cost": null,
-        "weight": null,
-        "specValueIds": [
-          622,
-          874,
-          42
-        ],
-        "step": 1,
-        "smallSale": 1,
-        "goodsLvPrices": null,
-        "ladderPrices": null,
-        "copiedProductId": null,
-        "minReferencePrice": null,
-        "maxReferencePrice": null,
-        "activityPrice": null
-      },
-      {
-        "productId": 5585,
-        "goodsId": 3662,
-        "name": "测试规格",
-        "sn": "sn2346-8",
-        "store": 0,
-        "enableStore": 0,
-        "price": 12.0,
-        "cost": null,
-        "weight": null,
-        "specValueIds": [
-          621,
-          848,
-          1926
-        ],
-        "step": 1,
-        "smallSale": 1,
-        "goodsLvPrices": null,
-        "ladderPrices": null,
-        "copiedProductId": null,
-        "minReferencePrice": null,
-        "maxReferencePrice": null,
-        "activityPrice": null
-      },
-      {
-        "productId": 5586,
-        "goodsId": 3662,
-        "name": "测试规格",
-        "sn": "sn2346-9",
-        "store": 0,
-        "enableStore": 0,
-        "price": 12.0,
-        "cost": null,
-        "weight": null,
-        "specValueIds": [
-          622,
-          848,
-          1926
-        ],
-        "step": 1,
-        "smallSale": 1,
-        "goodsLvPrices": null,
-        "ladderPrices": null,
-        "copiedProductId": null,
-        "minReferencePrice": null,
-        "maxReferencePrice": null,
-        "activityPrice": null
-      },
-      {
-        "productId": 5587,
-        "goodsId": 3662,
-        "name": "测试规格",
-        "sn": "sn2346-10",
-        "store": 0,
-        "enableStore": 0,
-        "price": 12.0,
-        "cost": null,
-        "weight": null,
-        "specValueIds": [
-          621,
-          874,
-          1926
-        ],
-        "step": 1,
-        "smallSale": 1,
-        "goodsLvPrices": null,
-        "ladderPrices": null,
-        "copiedProductId": null,
-        "minReferencePrice": null,
-        "maxReferencePrice": null,
-        "activityPrice": null
-      },
-      {
-        "productId": 5588,
-        "goodsId": 3662,
-        "name": "测试规格",
-        "sn": "sn2346-11",
-        "store": 0,
-        "enableStore": 0,
-        "price": 12.0,
-        "cost": null,
-        "weight": null,
-        "specValueIds": [
-          622,
-          874,
-          1926
-        ],
-        "step": 1,
-        "smallSale": 1,
-        "goodsLvPrices": null,
-        "ladderPrices": null,
-        "copiedProductId": null,
-        "minReferencePrice": null,
-        "maxReferencePrice": null,
-        "activityPrice": null
-      }
-    ],
-    "goodsGallerys": [
-      {
-        "imgId": 0,
-        "goodsId": 0,
-        "thumbnail": null,
-        "small": null,
-        "big": "shoptt.yasn.com/static/attachment//store/1/goods/2018/1/15/9//57560941_big.png",
-        "original": null,
-        "tiny": null,
-        "isdefault": 0,
-        "sort": 0
-      }
-    ],
-    "attributes": [
-      {
-        "attrValue": "Presta",
-        "attrName": "品牌"
-      }
-    ],
-    "discount": {
-      "discount_price": "0.00",
-      "has_discount": 0
+      "goodslist": [
+        {
+          "id": 58448,
+          "productId": 4269,
+          "goodsId": 2527,
+          "name": "亿连无线OBD胎压监测系统 汽车轮胎检测监测仪通用报警器 内置/外置",
+          "mktprice": 399,
+          "price": 369,
+          "coupPrice": 369,
+          "subtotal": null,
+          "num": 2,
+          "limitnum": null,
+          "imageDefault": "http://shoptt.yasn.com/static/attachment//store/99/goods/2017/6/13/15//41349394_thumbnail.png",
+          "point": 0,
+          "itemtype": 0,
+          "sn": "9980011030002",
+          "addon": "[{\"name\":\"型号\",\"value\":\"外置\"}]",
+          "specs": "",
+          "catid": 571,
+          "others": {
+            "specList": [
+              {
+                "name": "型号",
+                "value": "外置"
+              }
+            ]
+          },
+          "exchange": null,
+          "unit": "",
+          "goodsType": 0,
+          "pmtList": null,
+          "weight": 200,
+          "activityId": 0,
+          "isCheck": 1,
+          "sendNum": null,
+          "usePoint": null,
+          "deductMoney": null,
+          "storeId": 99,
+          "storeName": "厂家直发",
+          "goodsTransfeeCharge": 1,
+          "isExist": 1,
+          "enableStore": 100,
+          "step": 1,
+          "smallSale": 1,
+          "isBeforeSale": 0,
+          "goodsOff": 0,
+          "beforeSale": null
+        },
+        {
+          "id": 58451,
+          "productId": 2162,
+          "goodsId": 1459,
+          "name": "博聪儿童安全座椅E076（9个月～12岁）",
+          "mktprice": 290,
+          "price": 290,
+          "coupPrice": 290,
+          "subtotal": null,
+          "num": 18,
+          "limitnum": null,
+          "imageDefault": "http://shoptt.yasn.com/static/attachment//store/99/goods/2017/2/17/17//30429776_thumbnail.jpg",
+          "point": 0,
+          "itemtype": 0,
+          "sn": "ysbc0003bg",
+          "addon": "[{\"name\":\"颜色\",\"value\":\"黑绿\"}]",
+          "specs": "黑绿",
+          "catid": 582,
+          "others": {
+            "specList": [
+              {
+                "name": "颜色",
+                "value": "黑绿"
+              }
+            ]
+          },
+          "exchange": null,
+          "unit": "座",
+          "goodsType": 0,
+          "pmtList": null,
+          "weight": 5400,
+          "activityId": 0,
+          "isCheck": 1,
+          "sendNum": null,
+          "usePoint": null,
+          "deductMoney": null,
+          "storeId": 99,
+          "storeName": "厂家直发",
+          "goodsTransfeeCharge": 1,
+          "isExist": 1,
+          "enableStore": 498,
+          "step": 1,
+          "smallSale": 1,
+          "isBeforeSale": 0,
+          "goodsOff": 0,
+          "beforeSale": null
+        }
+      ]
     }
-  },
-  "member": null,
-  "cartNum": 0
+  ]
 }

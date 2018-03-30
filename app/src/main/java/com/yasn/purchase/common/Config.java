@@ -31,6 +31,8 @@ public class Config {
     public final static String SHOPPCARWEBVIEW = URLCAIGOU+"cart.html";
     //进货单
     public final static String SHOPPCAR = IP+"cart/get-cart-list";
+    //进货单选择
+    public final static String SHOPPCARCHECK = IP+"cart/check-product?";
     //热门搜索
     public final static String OFTENSEARCH = IP+"goods/search/KeyWord";
     //添加搜索字段
