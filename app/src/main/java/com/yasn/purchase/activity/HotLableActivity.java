@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-import www.xcd.com.mylibrary.utils.HelpUtils;
+import www.xcd.com.mylibrary.help.HelpUtils;
 
 import static com.yasn.purchase.R.id.recyclerview;
 

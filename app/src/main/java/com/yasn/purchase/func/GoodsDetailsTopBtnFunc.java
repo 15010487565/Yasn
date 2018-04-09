@@ -8,6 +8,7 @@ import android.view.View;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.GoodsDetailsActivity;
 import com.yasn.purchase.activity.MainActivityNew;
+import com.yasn.purchase.activity.ShopCarActivity;
 import com.yasn.purchase.activityold.WebViewActivity;
 import com.yasn.purchase.common.Config;
 
@@ -87,7 +88,8 @@ public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
 //                        getActivity().startActivity(intent);
 //                        getActivity().finish();
                         if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
-                            startWebViewActivity(Config.SHOPPCARWEBVIEW);
+//                            startWebViewActivity(Config.SHOPPCARWEBVIEW);
+                            getActivity().startActivity(new Intent(getActivity(), ShopCarActivity.class));
                         } else {
                             startWebViewActivity(Config.LOGINWEBVIEW);
                         }

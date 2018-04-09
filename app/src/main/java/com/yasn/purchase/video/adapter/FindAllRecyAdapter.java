@@ -20,7 +20,7 @@ import com.yasn.purchase.view.NoScrollGridView;
 
 import java.util.List;
 
-import www.xcd.com.mylibrary.utils.HelpUtils;
+import www.xcd.com.mylibrary.help.HelpUtils;
 
 import static com.yasn.purchase.common.Config.TYPE_FOOTVIEW;
 

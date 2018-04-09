@@ -12,7 +12,55 @@
 
         <include
             layout="@layout/view_simple_topbar" />
+        <LinearLayout
+            android:id="@+id/ll_shopcarNodata"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_f7"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingTop="@dimen/height_30"
+                android:paddingBottom="@dimen/height_15"
+                android:background="@color/white">
+                <View
+                    android:layout_width="@dimen/height_70"
+                    android:layout_height="2dp"
+                    android:background="@color/black_D0"/>
+                <ImageView
+                    android:layout_width="@dimen/height_70"
+                    android:layout_height="@dimen/height_70"
+                    android:background="@mipmap/shoplistnullcar"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"/>
+                <View
+                    android:layout_width="@dimen/height_70"
+                    android:layout_height="1dp"
+                    android:background="@color/black_D0"/>
 
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_66"
+                android:gravity="center"
+                android:textSize="@dimen/textsize_16"
+                android:background="@color/white"
+                android:text="进货单还是空的"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_66"
+                android:paddingBottom="@dimen/margin_20"
+                android:gravity="center"
+                android:paddingTop="@dimen/margin_5"
+                android:textSize="@dimen/textsize_16"
+                android:background="@color/white"
+                android:text="去挑选几件中意的产品吧~"/>
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_announcement"
             android:layout_width="match_parent"

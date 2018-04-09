@@ -1,5 +1,9 @@
 package com.yasn.purchase.activity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -7,14 +11,22 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activityold.WebViewActivity;
 import com.yasn.purchase.adapter.ShopCarAdapter;
 import com.yasn.purchase.common.Config;
+import com.yasn.purchase.help.ShopCarUtils;
 import com.yasn.purchase.listener.OnShopCarClickListener;
 import com.yasn.purchase.model.ShopCarAdapterModel;
 import com.yasn.purchase.model.ShopCarModel;
@@ -22,7 +34,11 @@ import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.MultiSwipeRefreshLayout;
 import com.yasn.purchase.view.RcDecoration;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,36 +47,64 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
+import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 
-public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarClickListener
+        , SwipeRefreshLayout.OnRefreshListener {
 
     private MultiSwipeRefreshLayout mSwipeRefreshLayout;
     private LinearLayout llAnnouncement;
     private TextView tvAnnouncement;
     private RecyclerView rcShopCar;
-    private  ShopCarAdapter adapter;
-    private  LinearLayout llPayorder;
-    private TextView tvNeedPayMoney;
-    private void OkHttpDemand() {
-        token = SharePrefHelper.getInstance(ShopCarActivity.this).getSpString("token");
-        resetToken = SharePrefHelper.getInstance(ShopCarActivity.this).getSpString("resetToken");
-        resetTokenTime = SharePrefHelper.getInstance(ShopCarActivity.this).getSpString("resetTokenTime");
-        Map<String, Object> params = new HashMap<String, Object>();
-        if (token != null && !"".equals(token)) {
-            params.put("access_token", token);
-            okHttpGet(100, "http://192.168.50.166:9100/api/composite-service/cart/get-cart-list", params);
-//            okHttpGet(100, Config.SHOPPCAR, params);
-        } else if (resetToken != null && !"".equals(resetToken)) {
-            params.put("access_token", resetToken);
-            okHttpGet(100, "http://192.168.50.166:9100/api/composite-service/cart/get-cart-list", params);
-//            okHttpGet(100, Config.SHOPPCAR, params);
-        } else {
-            ToastUtil.showToast("登录过期，请重新登录");
-        }
-    }
+    private ShopCarAdapter adapter;
+    private LinearLayout llPayorder;
+    private TextView tvNeedPayMoney, tvAddShopCar;
+    private ImageView ivStoreNameSelect;
+    private LinearLayout llShopcarNodata;
 
+//    private void OkHttpDemand() {
+//        dialogshow();
+//        token = SharePrefHelper.getInstance(ShopCarActivity.this).getSpString("token");
+//        resetToken = SharePrefHelper.getInstance(ShopCarActivity.this).getSpString("resetToken");
+//        resetTokenTime = SharePrefHelper.getInstance(ShopCarActivity.this).getSpString("resetTokenTime");
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        if (token != null && !"".equals(token)) {
+//            params.put("access_token", token);
+//            //请求数据
+////            okHttpGet(100, Config.SHOPPCAR, params);
+//
+//        } else if (resetToken != null && !"".equals(resetToken)) {
+//            params.put("access_token", resetToken);
+////            okHttpGet(100, Config.SHOPPCAR, params);
+//        } else {
+//            ToastUtil.showToast("登录过期，请重新登录");
+//        }
+//    }
+    private Thread thread;
+    private void OkHttpDemand() {
+        if (thread!=null){
+            thread.interrupt();
+            Log.e("TAG_请求终端","thread="+(thread!=null));
+        }
+        if (progressTxt!=null){
+            progressTxt.setVisibility(View.VISIBLE);
+        }
+        thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                String shopCar = ShopCarUtils.getShopCar(Config.SHOPPCAR_1, token);
+                Message msg = handler.obtainMessage();
+                msg.what = 1;
+                msg.obj = shopCar;
+                handler.sendMessage(msg);
+            }
+        };
+
+        thread.start();;
+    }
     @Override
     protected Object getTopbarTitle() {
         return R.string.order;
@@ -93,15 +137,24 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         adapter = new ShopCarAdapter(this);
         adapter.setOnItemClickListener(this);
         //自定义的分隔线
-        rcShopCar.addItemDecoration(new RcDecoration(this,RcDecoration.VERTICAL_LIST));
+        rcShopCar.addItemDecoration(new RcDecoration(this, RcDecoration.VERTICAL_LIST));
         adapter.notifyDataSetChanged();
         rcShopCar.setAdapter(adapter);
         //底部提交订单
         llPayorder = (LinearLayout) findViewById(R.id.ll_Payorder);
         llPayorder.setVisibility(View.GONE);
+        tvAddShopCar = (TextView) findViewById(R.id.tv_addShopCar);
+        tvAddShopCar.setOnClickListener(this);
         //总价格
         tvNeedPayMoney = (TextView) findViewById(R.id.tv_needPayMoney);
+        //全选
+        ivStoreNameSelect = (ImageView) findViewById(R.id.iv_StoreNameSelect);
+        ivStoreNameSelect.setOnClickListener(this);
+        //无数据
+        llShopcarNodata = (LinearLayout) findViewById(R.id.ll_shopcarNodata);
+        llShopcarNodata.setVisibility(View.INVISIBLE);
     }
+
     private void initSwipeRefreshLayout() {
         mSwipeRefreshLayout = (MultiSwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -110,119 +163,262 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.orange, R.color.blue, R.color.black);
     }
 
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.iv_StoreNameSelect:
+                StringBuffer tag = (StringBuffer) ivStoreNameSelect.getTag();
+                int first = 0;
+                StringBuffer sb = new StringBuffer();
+                for (int i = 0, j = shopCarAdapterList.size(); i < j; i++) {
+                    ShopCarAdapterModel shopCarAdapterGood = shopCarAdapterList.get(i);
+                    int productId = shopCarAdapterGood.getProductId();
+                    int enableStore = shopCarAdapterGood.getEnableStore();
+                    int goodsOff = shopCarAdapterGood.getGoodsOff();
+                    int itmeType = shopCarAdapterGood.getItmeType();
+                    if (productId > 0 && itmeType == 2 && enableStore > 0 && goodsOff != 1) {
+                        first++;
+                        if (first == 1) {
+                            sb.append(String.valueOf(productId));
+                        } else {
+                            sb.append(",");
+                            sb.append(String.valueOf(productId));
+                        }
+                    }
+                    if (tag != null) {//已全选，设置全部未选
+                        shopCarAdapterGood.setIsCheck(0);
+                    } else {
+                        shopCarAdapterGood.setIsCheck(1);
+                    }
+                }
+                productId = sb.toString();
+                if (tag != null) {//已全选，设置全部未选
+                    isSelected(0, String.valueOf(productId));
+                    ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_unchecked);
+                    ivStoreNameSelect.setTag(null);
+                } else {
+                    isSelected(1, String.valueOf(productId));
+                    ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_checked);
+                    ivStoreNameSelect.setTag(sb);
+                }
+                adapter.notifyDataSetChanged();
+                break;
+            case R.id.tv_addShopCar:
+                startWebViewActivity(Config.CHECKOUTSHOPCAR);
+                break;
+        }
+    }
+
+    private void startWebViewActivity(String url) {
+
+        if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
+            Intent intent = new Intent(ShopCarActivity.this, WebViewActivity.class);
+            intent.putExtra("webViewUrl", url);
+            startActivity(intent);
+        }
+    }
+
     private List<ShopCarAdapterModel> shopCarAdapterList;
+
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
             case 100:
                 mSwipeRefreshLayout.setRefreshing(false);
                 if (returnCode == 200) {
-                   shopCarAdapterList = new ArrayList<>();
-                    ShopCarModel shopCarModel = JSON.parseObject(returnData, ShopCarModel.class);
-                    List<ShopCarModel.DataBean> data = shopCarModel.getData();
-                    if (data!=null&&data.size()>0){
-                        for (int i = 0,j = data.size(); i < j; i++) {
-                            ShopCarAdapterModel shopCarTitleModel = new ShopCarAdapterModel();
-                            ShopCarModel.DataBean dataBean = data.get(i);
-                            //店铺id
-                            int store_id = dataBean.getStore_id();
-                            shopCarTitleModel.setStore_id(store_id);
-                            //店铺名称
-                            String store_name = dataBean.getStore_name();
-                            shopCarTitleModel.setItmeType(1);
-                            shopCarTitleModel.setStoreName("店铺名称："+store_name);
-                            ShopCarModel.DataBean.StorepriceBean storeprice = dataBean.getStoreprice();
-                            //总价格
-                            double needPayMoney = storeprice.getNeedPayMoney();
-                            tvNeedPayMoney.setText("￥"+String.valueOf(needPayMoney));
-                            //包邮价格
-                            double freeShipMoney = storeprice.getFreeShipMoney();
-                            shopCarTitleModel.setFreeShipMoney(String.valueOf(freeShipMoney));
-                            shopCarAdapterList.add(shopCarTitleModel);
-                            //店铺商品列表
-                            List<ShopCarModel.DataBean.GoodslistBean> goodslist = dataBean.getGoodslist();
-                            if (goodslist !=null&&goodslist.size()>0){
-                                //相同店铺是否全部选中
-                                int typeIsCheck = 0;
-                                //相同店铺选中总价
-                                double storeCheckPrice = 0;
-                                for (int k = 0,l = goodslist.size(); k < l; k++) {
-                                    ShopCarAdapterModel shopCarAdapterModel = new ShopCarAdapterModel();
-                                    ShopCarModel.DataBean.GoodslistBean goodslistBean = goodslist.get(k);
-                                    shopCarAdapterModel.setStore_id(store_id);
-                                    //商品名字
-                                    String name = goodslistBean.getName();
-                                    shopCarAdapterModel.setName(name);
-                                    ShopCarModel.DataBean.GoodslistBean.OthersBean others = goodslistBean.getOthers();
-                                    //商品规格
-                                    List<ShopCarModel.DataBean.GoodslistBean.OthersBean.SpecListBean> specList = others.getSpecList();
-                                    if (specList !=null&&specList.size()>0){
-                                        List<String> specListValue =new ArrayList();
-                                        for (int m = 0,n = specList.size(); m < n; m++) {
-                                            ShopCarModel.DataBean.GoodslistBean.OthersBean.SpecListBean specListBean = specList.get(m);
-                                            String value = specListBean.getValue();
-                                            Log.e("TAG_进货单标签Activity","value="+value);
-                                            specListValue.add(value);
-                                        }
-                                        shopCarAdapterModel.setSpecList(specListValue);
-                                    }
-                                    //图片
-                                    String imageDefault = goodslistBean.getImageDefault();
-                                    shopCarAdapterModel.setImageDefault(imageDefault);
-                                    //价格
-                                    double price = goodslistBean.getPrice();
-                                    shopCarAdapterModel.setPrice(price);
-                                    //数量
-                                    int num = goodslistBean.getNum();
-                                    shopCarAdapterModel.setNum(num);
-                                    //是否选中
-                                    int isCheck = goodslistBean.getIsCheck();
-                                    Log.e("TAG_进货单标签Activity","isCheck="+isCheck);
-                                    shopCarAdapterModel.setIsCheck(isCheck);
-                                    //相同店铺是否全部选中
-                                    if (isCheck==1){
-                                        typeIsCheck++;
-                                        storeCheckPrice=storeCheckPrice+price;
-                                    }
-                                    //库存
-                                    int enableStore = goodslistBean.getEnableStore();
-                                    shopCarAdapterModel.setEnableStore(enableStore);
-                                    //规格id
-                                    int productId = goodslistBean.getProductId();
-                                    shopCarAdapterModel.setProductId(productId);
-                                    shopCarAdapterModel.setItmeType(2);
-                                    shopCarAdapterList.add(shopCarAdapterModel);
-                                }
-                                if (typeIsCheck==goodslist.size()){
-                                    shopCarTitleModel.setIsCheck(1);
-                                }else {
-                                    shopCarTitleModel.setIsCheck(0);
-                                }
-                                shopCarTitleModel.setStoreCheckPrice(storeCheckPrice);
-                            }
-                        }
+                    int storeprice1 = returnData.indexOf("storeprice");
+                    if (storeprice1 == -1) {//空购物车
+                        initShopCarNoData();
+                    } else {
+                        initShopCarData(returnData);
                     }
-                    adapter.setData(shopCarAdapterList);
-                    llPayorder.setVisibility(View.VISIBLE);
-                }else if (returnCode == 401) {
+
+                } else if (returnCode == 401) {
                     cleanToken();
                     OkHttpDemand();
-                }else {
+                } else {
                     ToastUtil.showToast(returnMsg);
                 }
                 break;
             case 101:
                 if (returnCode == 200) {
-                    OkHttpDemand();
+                    JSONObject object = null;
+                    try {
+                        object = new JSONObject(returnData);
+                        int code = object.optInt("code");
+                        if (code == 200) {
+                            OkHttpDemand();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     ToastUtil.showToast(returnMsg);
-                }else if (returnCode == 401) {
+                } else if (returnCode == 401) {
                     cleanToken();
-                    isSelected(isCheck==1?0:1,productId);
-                }else {
+                    isSelected(isCheck == 1 ? 0 : 1, productId);
+                } else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+            case 102:
+                if (returnCode == 200) {
+                    JSONObject object = null;
+                    try {
+                        object = new JSONObject(returnData);
+                        int code = object.optInt("code");
+                        if (code == 200) {
+                            OkHttpDemand();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    ToastUtil.showToast(returnMsg);
+                } else if (returnCode == 401) {
+                    cleanToken();
+                    deleteCart(id);
+                } else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+            case 104:
+                if (returnCode == 200) {
+                    JSONObject object = null;
+                    try {
+                        object = new JSONObject(returnData);
+                        int code = object.optInt("code");
+                        if (code == 200) {
+                            OkHttpDemand();
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else if (returnCode == 401) {
+                    cleanToken();
+                    OkHttpDemand();
+                } else {
                     ToastUtil.showToast(returnMsg);
                 }
                 break;
         }
+    }
+
+    private void initShopCarNoData() {
+        llShopcarNodata.setVisibility(View.VISIBLE);
+    }
+
+    //购物车数据
+    private void initShopCarData(String returnData) {
+        shopCarAdapterList = new ArrayList<>();
+        ShopCarModel shopCarModel = JSON.parseObject(returnData, ShopCarModel.class);
+        List<ShopCarModel.DataBean> data = shopCarModel.getData();
+        if (data != null && data.size() > 0) {
+            for (int i = 0, j = data.size(); i < j; i++) {
+                ShopCarAdapterModel shopCarTitleModel = new ShopCarAdapterModel();
+                ShopCarModel.DataBean dataBean = data.get(i);
+                //店铺id
+                int store_id = dataBean.getStore_id();
+                shopCarTitleModel.setStore_id(store_id);
+                //店铺名称
+                String store_name = dataBean.getStore_name();
+
+                shopCarTitleModel.setItmeType(1);
+                shopCarTitleModel.setStoreName("店铺名称：" + store_name);
+                ShopCarModel.DataBean.StorepriceBean storeprice = dataBean.getStoreprice();
+                double needPayMoney = storeprice.getNeedPayMoney();
+                shopCarTitleModel.setNeedPayMoney(needPayMoney);
+                //包邮价格
+                double freeShipMoney = storeprice.getFreeShipMoney();
+                shopCarTitleModel.setFreeShipMoney(String.valueOf(freeShipMoney));
+                shopCarAdapterList.add(shopCarTitleModel);
+                //店铺商品列表
+                List<ShopCarModel.DataBean.GoodslistBean> goodslist = dataBean.getGoodslist();
+                if (goodslist != null && goodslist.size() > 0) {
+                    //相同店铺是否全部选中
+                    int typeIsCheck = 0;
+                    //相同店铺选中总价
+                    double storeCheckPrice = 0;
+                    for (int k = 0, l = goodslist.size(); k < l; k++) {
+                        ShopCarAdapterModel shopCarAdapterModel = new ShopCarAdapterModel();
+                        ShopCarModel.DataBean.GoodslistBean goodslistBean = goodslist.get(k);
+                        //id
+                        int id = goodslistBean.getId();
+                        shopCarAdapterModel.setId(id);
+                        //Store_id
+                        shopCarAdapterModel.setStore_id(store_id);
+                        //商品id
+                        int goodsId = goodslistBean.getGoodsId();
+                        shopCarAdapterModel.setGoodsId(goodsId);
+                        //商品名字
+                        String name = goodslistBean.getName();
+                        shopCarAdapterModel.setName(name);
+                        ShopCarModel.DataBean.GoodslistBean.OthersBean others = goodslistBean.getOthers();
+                        //商品规格
+                        List<ShopCarModel.DataBean.GoodslistBean.OthersBean.SpecListBean> specList = others.getSpecList();
+                        if (specList != null && specList.size() > 0) {
+                            List<String> specListValue = new ArrayList();
+                            for (int m = 0, n = specList.size(); m < n; m++) {
+                                ShopCarModel.DataBean.GoodslistBean.OthersBean.SpecListBean specListBean = specList.get(m);
+                                String value = specListBean.getValue();
+                                specListValue.add(value);
+                            }
+                            shopCarAdapterModel.setSpecList(specListValue);
+                        }
+                        //图片
+                        String imageDefault = goodslistBean.getImageDefault();
+                        shopCarAdapterModel.setImageDefault(imageDefault);
+                        //价格
+                        double price = goodslistBean.getPrice();
+                        shopCarAdapterModel.setPrice(price);
+                        //数量
+                        int num = goodslistBean.getNum();
+                        shopCarAdapterModel.setNum(num);
+                        //是否选中
+                        int isCheck = goodslistBean.getIsCheck();
+                        shopCarAdapterModel.setIsCheck(isCheck);
+                        //相同店铺是否全部选中
+                        if (isCheck == 1) {
+                            typeIsCheck++;
+                            storeCheckPrice = storeCheckPrice + price;
+                        }
+                        //库存
+                        int enableStore = goodslistBean.getEnableStore();
+                        shopCarAdapterModel.setEnableStore(enableStore);
+                        //规格id
+                        int productId = goodslistBean.getProductId();
+                        shopCarAdapterModel.setProductId(productId);
+                        //是否下架 1下架 0上架
+                        int goodsOff = goodslistBean.getGoodsOff();
+                        shopCarAdapterModel.setGoodsOff(goodsOff);
+                        //是否预售 0不是  1是
+                        int isBeforeSale = goodslistBean.getIsBeforeSale();
+                        shopCarAdapterModel.setIsBeforeSale(isBeforeSale);
+                        //商品是否存在 0不存   1存在
+                        int isExist = goodslistBean.getIsExist();
+                        shopCarAdapterModel.setIsExist(isExist);
+                        //最小起订量
+                        int smallSale = goodslistBean.getSmallSale();
+                        shopCarAdapterModel.setSmallSale(smallSale);
+                        //步长
+                        int step = goodslistBean.getStep();
+                        shopCarAdapterModel.setStep(step);
+                        shopCarAdapterModel.setItmeType(2);
+                        shopCarAdapterList.add(shopCarAdapterModel);
+                    }
+                    if (typeIsCheck == goodslist.size()) {
+                        shopCarTitleModel.setIsCheck(1);
+                    } else {
+                        shopCarTitleModel.setIsCheck(0);
+                    }
+                    shopCarTitleModel.setStoreCheckPrice(storeCheckPrice);
+                }
+            }
+        }
+        adapter.setData(shopCarAdapterList);
+        llPayorder.setVisibility(View.VISIBLE);
+        llShopcarNodata.setVisibility(View.GONE);
+        upDataMoney();
     }
 
     @Override
@@ -268,59 +464,262 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                 case 0:
                     mSwipeRefreshLayout.setRefreshing(false);
                     break;
+                case 1:
+                    String returnData = (String) msg.obj;
+                    HelpUtils.loge("TAG_列表","returnData="+returnData);
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    if (returnData !=null&&!"".equals(returnData)){
+                        int storeprice1 = returnData.indexOf("storeprice");
+                        if (storeprice1 == -1) {//空购物车
+                            initShopCarNoData();
+                        } else {
+                            initShopCarData(returnData);
+                        }
+                    }
+                    if (progressTxt!=null){
+                        progressTxt.setVisibility(View.GONE);
+                    }
+                    if (upDataNumNotifyDialog!=null&&upDataNumNotifyDialog.isShowing()){
+                        upDataNumNotifyDialog.dismiss();
+                    }
+                    break;
             }
         }
     };
 
+    //item点击事件
+    @Override
+    public void OnItemClick(View view, int position) {
+
+        ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(position);
+        if (shopCarAdapterModel != null) {
+            int goodsOff = shopCarAdapterModel.getGoodsOff();
+            if (goodsOff == 1) {
+                ToastUtil.showToast("亲，该商品已经下架了哦~");
+                return;
+            }
+            int id = shopCarAdapterModel.getGoodsId();
+            SharePrefHelper.getInstance(this).putSpInt("GOODSFRAGMENTID", 0);
+            Intent intent = new Intent(this, GoodsDetailsActivity.class);
+            SharePrefHelper.getInstance(this).putSpString("GOODSID", String.valueOf(id));
+            startActivity(intent);
+        }
+    }
 
     @Override
     public void OnClickMore(int listPosition) {
-        ToastUtil.showToast("调转去凑单"+listPosition);
+        ToastUtil.showToast("调转去凑单" + listPosition);
     }
+
+    private int id;
 
     @Override
     public void OnClickClean(int listPosition) {
-        ToastUtil.showToast("点击删除"+listPosition);
+        ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(listPosition);
+        id = shopCarAdapterModel.getId();
+        showDeleteDialog(id);
     }
+
     private int isCheck;
-    private int productId;
+    private String productId;
+
     @Override
     public void OnClickSelected(int listPosition) {
-        ToastUtil.showToast("点击选中"+listPosition);
         ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(listPosition);
         int itmeType = shopCarAdapterModel.getItmeType();
         isCheck = shopCarAdapterModel.getIsCheck();
-        if (itmeType == 1){
+        int storeId = shopCarAdapterModel.getStore_id();
+        if (itmeType == 1) {
+            int first = 0;
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0, j = shopCarAdapterList.size(); i < j; i++) {
+                ShopCarAdapterModel shopCarAdapterGood = shopCarAdapterList.get(i);
+                int productId = shopCarAdapterGood.getProductId();
+                int goodId = shopCarAdapterGood.getStore_id();
+                int enableStore = shopCarAdapterGood.getEnableStore();
+                int goodsOff = shopCarAdapterGood.getGoodsOff();
 
-        }else {
-            productId = shopCarAdapterModel.getProductId();
-            isSelected(isCheck==1?0:1,productId);
+                if (productId > 0 && goodId == storeId && enableStore > 0 && goodsOff != 1) {
+                    first++;
+                    if (first == 1) {
+                        sb.append(String.valueOf(productId));
+                    } else {
+                        sb.append(",");
+                        sb.append(String.valueOf(productId));
+                    }
+                }
+                if (goodId == storeId) {
+                    shopCarAdapterGood.setIsCheck(isCheck == 1 ? 0 : 1);
+                }
+            }
+            productId = sb.toString();
+            isSelected(isCheck == 1 ? 0 : 1, String.valueOf(productId));
+        } else {
+            shopCarAdapterModel.setIsCheck(isCheck == 1 ? 0 : 1);
+            productId = String.valueOf(shopCarAdapterModel.getProductId());
+            isSelected(isCheck == 1 ? 0 : 1, productId);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    //删除
+    private void deleteCart(int id) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        if (token != null && !"".equals(token)) {
+            params.put("access_token", token);
+            params.put("cartId", String.valueOf(id));
+            okHttpGet(102, Config.SHOPPCARDELETECART, params);
+        } else if (resetToken != null && !"".equals(resetToken)) {
+            params.put("access_token", resetToken);
+            params.put("cartId", String.valueOf(id));
+            okHttpGet(102, Config.SHOPPCARDELETECART, params);
+        } else {
+            ToastUtil.showToast("登录过期，请重新登录");
         }
     }
-    private void isSelected(int isCheck,int productId){
+
+    //选择
+    private void isSelected(int isCheck, String productId) {
         Map<String, Object> params = new HashMap<String, Object>();
         if (token != null && !"".equals(token)) {
             params.put("access_token", token);
             params.put("checked", String.valueOf(isCheck));
-            params.put("productIds",  String.valueOf(productId));
+            params.put("productIds", productId);
             okHttpGet(101, Config.SHOPPCARCHECK, params);
         } else if (resetToken != null && !"".equals(resetToken)) {
             params.put("access_token", resetToken);
             params.put("checked", String.valueOf(isCheck));
-            params.put("productIds",  String.valueOf(productId));
+            params.put("productIds", productId);
             okHttpGet(101, Config.SHOPPCARCHECK, params);
         } else {
             ToastUtil.showToast("登录过期，请重新登录");
         }
     }
+
+    private void upDataMoney() {
+        double allNeedPayMoney = 0;
+        for (int i = 0, j = shopCarAdapterList.size(); i < j; i++) {
+            ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(i);
+            int itmeType = shopCarAdapterModel.getItmeType();
+            if (itmeType == 1) {
+                double needPayMoney = shopCarAdapterModel.getNeedPayMoney();
+                BigDecimal b1 = new BigDecimal(Double.toString(allNeedPayMoney));
+                BigDecimal b2 = new BigDecimal(Double.toString(needPayMoney));
+                allNeedPayMoney = b1.add(b2).doubleValue();
+            }
+
+        }
+        //总价格
+        tvNeedPayMoney.setText("￥" + String.valueOf(allNeedPayMoney));
+    }
+
     @Override
     public void OnClickAdd(int listPosition) {
-        ToastUtil.showToast("点击添加"+listPosition);
+        Log.e("TAG_shopcar", "点击添加");
+        ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(listPosition);
+        int addIsCheck = shopCarAdapterModel.getIsCheck();
+        if (addIsCheck == 1) {//选中
+            int enableStore = shopCarAdapterModel.getEnableStore();
+            int id = shopCarAdapterModel.getId();
+            int step = shopCarAdapterModel.getStep();
+            int num = shopCarAdapterModel.getNum();
+            int sumNum = num + step;
+            if (sumNum > enableStore) {
+                if (updateNumNotifyDialog ==null){
+                    showLazyWeightDialog(enableStore);
+                }else {
+                    updateNumNotifyDialog.dismiss();
+                    showLazyWeightDialog(enableStore);
+                }
+
+            } else {
+                shopCarAdapterModel.setNum(sumNum);
+                adapter.notifyItemChanged(listPosition);
+                Log.e("TAG_shopcar", "shopCarAdapterModel=" + shopCarAdapterModel.toString());
+                updateNum(id, sumNum, step);
+            }
+        } else {
+            ToastUtil.showToast("请选选中该商品！");
+        }
+    }
+
+    protected AlertDialog updateNumNotifyDialog;
+
+    private void showLazyWeightDialog(int residueNum) {
+        Log.e("TAG_更新数量","调用");
+        LayoutInflater factor = (LayoutInflater) ShopCarActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View serviceView = factor.inflate(R.layout.dialog_shopcarlazyweight, null);
+
+        TextView agree = (TextView) serviceView.findViewById(R.id.agree);
+        agree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateNumNotifyDialog.dismiss();
+            }
+        });
+        TextView tvUpdataNum = (TextView) serviceView.findViewById(R.id.et_dialoglazyweight);
+        tvUpdataNum.setText("库存剩余" + residueNum + "件");
+        Activity activity = ShopCarActivity.this;
+        while (activity.getParent() != null) {
+            activity = activity.getParent();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        updateNumNotifyDialog = builder.create();
+        updateNumNotifyDialog.setCancelable(false);
+        updateNumNotifyDialog.setCanceledOnTouchOutside(false);
+        updateNumNotifyDialog.show();
+        updateNumNotifyDialog.setContentView(serviceView);
+    }
+
+    /**
+     * 修改购物项数量
+     *
+     * @param cartId id
+     * @param num    修改数量
+     * @param step   步长，对应做小起订量
+     */
+    private void updateNum(int cartId, int num, int step) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        if (token != null && !"".equals(token)) {
+            params.put("access_token", token);
+        } else if (resetToken != null && !"".equals(resetToken)) {
+            params.put("access_token", resetToken);
+        } else {
+            ToastUtil.showToast("登录过期，请重新登录");
+            return;
+        }
+        params.put("cartId", String.valueOf(cartId));
+        params.put("num", String.valueOf(num));
+        params.put("step", String.valueOf(step));
+        okHttpGet(104, Config.SHOPPCARUPDATENUM, params);
     }
 
     @Override
     public void OnClickSubtract(int listPosition) {
-        ToastUtil.showToast("点击删除"+listPosition);
+        Log.e("TAG_shopcar", "点击删除");
+        ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(listPosition);
+        int addIsCheck = shopCarAdapterModel.getIsCheck();
+        if (addIsCheck == 1) {//选中
+            int id = shopCarAdapterModel.getId();
+            int step = shopCarAdapterModel.getStep();
+            int num = shopCarAdapterModel.getNum();
+            int sumNum = num - step;
+            if (sumNum > 0) {
+                shopCarAdapterModel.setNum(sumNum);
+                adapter.notifyItemChanged(listPosition);
+                updateNum(id, sumNum, step);
+            }
+        } else {
+            ToastUtil.showToast("请选选中该商品！");
+        }
+    }
+
+    @Override
+    public void setOnTouchListener(int listPosition) {
+        ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(listPosition);
+        int num = shopCarAdapterModel.getNum();
+        upDataNumDialog(num, listPosition);
+
     }
 
     @Override
@@ -329,5 +728,150 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         if (handler != null) {
             handler.removeCallbacksAndMessages(null);
         }
+        if (thread!=null){
+            thread.interrupt();
+        }
+    }
+
+    protected AlertDialog deleteNotifyDialog;
+
+    private void showDeleteDialog(final int id) {
+
+        LayoutInflater factor = (LayoutInflater) ShopCarActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View serviceView = factor.inflate(R.layout.dialog_shopcardelete, null);
+
+        TextView agree = (TextView) serviceView.findViewById(R.id.agree);
+        agree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteNotifyDialog.dismiss();
+                deleteCart(id);
+            }
+        });
+        TextView refuse = (TextView) serviceView.findViewById(R.id.refuse);
+        refuse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteNotifyDialog.dismiss();
+            }
+        });
+        Activity activity = ShopCarActivity.this;
+        while (activity.getParent() != null) {
+            activity = activity.getParent();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        deleteNotifyDialog = builder.create();
+        deleteNotifyDialog.setCancelable(false);
+        deleteNotifyDialog.setCanceledOnTouchOutside(false);
+        deleteNotifyDialog.show();
+        deleteNotifyDialog.setContentView(serviceView);
+    }
+
+    protected AlertDialog upDataNumNotifyDialog;
+    private LinearLayout llDialogSubtractNum, llDialogAddNum;
+    private EditText etDialogGoodsNum;
+    private ProgressBar progressTxt;
+    private void upDataNumDialog(int num, final int position) {
+        LayoutInflater factor = (LayoutInflater) ShopCarActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View serviceView = factor.inflate(R.layout.dialog_shopcarupdatanum, null);
+        progressTxt = (ProgressBar) serviceView.findViewById(R.id.progress_txt);
+        progressTxt.setVisibility(View.GONE);
+        llDialogSubtractNum = (LinearLayout) serviceView.findViewById(R.id.ll_dialogSubtractNum);
+        llDialogSubtractNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String etNum = etDialogGoodsNum.getText().toString();
+                ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(position);
+                int step = shopCarAdapterModel.getStep();
+                int rema = Integer.valueOf(etNum)%step;
+                if (rema==0){
+                    int etSubtractNum = Integer.valueOf(etNum)-step;
+                    if (etSubtractNum>0){
+                        etDialogGoodsNum.setText(String.valueOf(etSubtractNum));
+                    }
+                }else {
+                    int etSubtractNum = Integer.valueOf(etNum)-rema;
+                    if (etSubtractNum>0){
+                        etDialogGoodsNum.setText(String.valueOf(etSubtractNum));
+                    }
+                }
+            }
+        });
+        llDialogAddNum = (LinearLayout) serviceView.findViewById(R.id.ll_dialogAddNum);
+        llDialogAddNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String etNum = etDialogGoodsNum.getText().toString();
+                ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(position);
+                int step = shopCarAdapterModel.getStep();
+                int enableStore = shopCarAdapterModel.getEnableStore();
+                int rema = Integer.valueOf(etNum)%step;
+                if (rema==0){
+                    int etAddNum = Integer.valueOf(etNum)+step;
+                    if (etAddNum>enableStore){
+                        ToastUtil.showToast("剩余库存已到上限！");
+                    }else {
+                        etDialogGoodsNum.setText(String.valueOf(etAddNum));
+                    }
+                }else {
+                    int etAddNum = Integer.valueOf(etNum)-rema+step;
+                    if (etAddNum>enableStore){
+                        ToastUtil.showToast("剩余库存已到上限！");
+                    }else {
+                        etDialogGoodsNum.setText(String.valueOf(etAddNum));
+                    }
+                }
+            }
+        });
+        etDialogGoodsNum = (EditText) serviceView.findViewById(R.id.et_dialogGoodsNum);
+        etDialogGoodsNum.setText(String.valueOf(num));
+        TextView agree = (TextView) serviceView.findViewById(R.id.agree);
+        agree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                dialogshow();
+                String etNum = etDialogGoodsNum.getText().toString();
+                dialogUpdataNum(position, etNum);
+            }
+        });
+        TextView refuse = (TextView) serviceView.findViewById(R.id.refuse);
+        refuse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                upDataNumNotifyDialog.dismiss();
+            }
+        });
+        Activity activity = ShopCarActivity.this;
+        while (activity.getParent() != null) {
+            activity = activity.getParent();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        upDataNumNotifyDialog = builder.create();
+        upDataNumNotifyDialog.setCancelable(false);
+        upDataNumNotifyDialog.setCanceledOnTouchOutside(false);
+        upDataNumNotifyDialog.show();
+        //只用下面这一行弹出对话框时需要点击输入框才能弹出软键盘
+        Window window = upDataNumNotifyDialog.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        //加上下面这一行弹出对话框时软键盘随之弹出
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        upDataNumNotifyDialog.setContentView(serviceView);
+    }
+
+    private void dialogUpdataNum(int position, String editNum) {
+        ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(position);
+        int id = shopCarAdapterModel.getId();
+        int step = shopCarAdapterModel.getStep();
+        int enableStore = shopCarAdapterModel.getEnableStore();
+        //输入商品数量
+        Integer integer = Integer.valueOf(editNum);
+        Log.e("TAG_软键盘num", "integer=" + integer+";step="+step + ";position=" + position+";enableStore"+enableStore);
+        if (integer > 0 && enableStore >= integer && integer % step == 0) {
+            shopCarAdapterModel.setNum(integer);
+            updateNum(id, integer, step);
+        } else {
+            ToastUtil.showToast("请输入正确数量");
+        }
+
     }
 }

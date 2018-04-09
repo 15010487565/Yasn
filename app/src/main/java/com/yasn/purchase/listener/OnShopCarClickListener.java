@@ -1,11 +1,14 @@
 package com.yasn.purchase.listener;
 
+import android.view.View;
+
 /**
  * Created by gs on 2017/12/29.
  */
 
 public interface OnShopCarClickListener {
 
+    void OnItemClick(View view, int position);
     //布局Title去凑单点击事件
     void OnClickMore(int listPosition);
     //删除
@@ -16,4 +19,6 @@ public interface OnShopCarClickListener {
     void OnClickAdd(int listPosition);
     //减点击事件
     void OnClickSubtract(int listPosition);
+    //EditText点击事件
+    void setOnTouchListener(int listPosition);
 }

@@ -25,7 +25,7 @@ import com.yasn.purchase.view.NoScrollGridView;
 import java.util.ArrayList;
 import java.util.List;
 
-import www.xcd.com.mylibrary.utils.HelpUtils;
+import www.xcd.com.mylibrary.help.HelpUtils;
 
 /**
  * Created by shuyu on 2016/11/11.

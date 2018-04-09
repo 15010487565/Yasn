@@ -1,125 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:lee="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:minHeight="90dp"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/margin_20"
     android:paddingLeft="@dimen/margin_10"
     android:paddingRight="@dimen/margin_10"
-    android:paddingTop="@dimen/margin_20"
-    android:paddingBottom="@dimen/margin_20"
-    android:gravity="center">
-    <ImageView
-        android:id="@+id/iv_orderListSelect"
-        android:layout_width="@dimen/height_20"
-        android:layout_height="@dimen/height_20" />
-    <ImageView
-        android:id="@+id/iv_orderListImage"
+    android:paddingTop="@dimen/margin_20">
+
+    <LinearLayout
+        android:id="@+id/ll_orderListSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingLeft="@dimen/margin_10"
+        android:paddingRight="@dimen/margin_10">
+
+        <ImageView
+            android:id="@+id/iv_orderListSelect"
+            android:layout_width="@dimen/height_20"
+            android:layout_height="@dimen/height_20" />
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="@dimen/image_size"
         android:layout_height="@dimen/image_size"
         android:layout_marginLeft="@dimen/margin_10"
-        android:layout_marginRight="@dimen/margin_10" />
+        android:layout_marginRight="@dimen/margin_10">
+
+        <ImageView
+            android:id="@+id/iv_orderListImage"
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size"
+            />
+
+        <TextView
+            android:id="@+id/tv_orderListHintNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:background="@color/transparent"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_12" />
+
+        <ImageView
+            android:id="@+id/iv_shroud"
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size"
+            android:background="@mipmap/soldout"
+            android:scaleType="fitXY" />
+    </RelativeLayout>
+
     <RelativeLayout
-        android:id="@+id/ll_orderListName"
-        android:orientation="horizontal"
+        android:id="@+id/rl_orderListName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/iv_orderListClean"
             android:layout_width="@dimen/height_15"
             android:layout_height="@dimen/height_15"
-            android:layout_marginRight="@dimen/margin_10"
             android:layout_alignParentRight="true"
-            android:background="@mipmap/cleanhistory"/>
+            android:layout_marginRight="@dimen/margin_10"
+            android:background="@mipmap/cleanhistory" />
+
         <TextView
             android:id="@+id/tv_orderListName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/iv_orderListClean"
             android:layout_marginRight="@dimen/margin_10"
-            android:textSize="@dimen/textsize_14"
+            android:layout_toLeftOf="@id/iv_orderListClean"
+            android:text="XXXXXXXX"
             android:textColor="@color/black_66"
-            android:text="XXXXXXXX"/>
+            android:textSize="@dimen/textsize_14" />
+
         <com.yasn.purchase.view.TagsLayout
             android:id="@+id/shopcarLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
             android:layout_below="@id/tv_orderListName"
+            android:background="#ffffff"
             android:paddingRight="@dimen/margin_10"
             lee:tagHorizontalSpace="10dp"
             lee:tagVerticalSpace="10dp" />
+
         <LinearLayout
-            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/shopcarLabel"
             android:gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/tv_orderListPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="@dimen/textsize_14"
+                android:text="￥XXXX"
                 android:textColor="@color/orange"
-                android:text="￥XXXX"/>
+                android:textSize="@dimen/textsize_14" />
+
             <LinearLayout
+                android:id="@+id/ll_Num"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/height_30"
+                android:background="@drawable/text_black_white"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:background="@drawable/text_black_white">
+                android:orientation="horizontal">
+
                 <LinearLayout
-                    android:id="@+id/iv_subtractNum"
+                    android:id="@+id/ll_subtractNum"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center">
+
                     <ImageView
+                        android:id="@+id/iv_subtractNum"
                         android:layout_width="@dimen/height_15"
                         android:layout_height="@dimen/height_15"
                         android:layout_marginLeft="@dimen/margin_8"
                         android:layout_marginRight="@dimen/margin_8"
-                        android:background="@mipmap/subtractimage"/>
+                        android:background="@mipmap/subtractimage" />
                 </LinearLayout>
+
                 <View
                     android:layout_width="@dimen/margin_1"
                     android:layout_height="match_parent"
-                    android:background="@color/black_66"/>
-                <EditText
+                    android:background="@color/black_66" />
+
+                <TextView
                     android:id="@+id/et_goodsNum"
                     android:layout_width="@dimen/height_30"
                     android:layout_height="match_parent"
-                    android:textColor="@color/black_66"
-                    android:textSize="@dimen/textsize_20"
-                    android:gravity="center"
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5"
-                    android:inputType="number"
-                    android:digits="0123456789"
                     android:background="@null"
+                    android:textCursorDrawable="@null"
+                    android:digits="0123456789"
+                    android:gravity="center"
+                    android:hint="0"
+                    android:inputType="number"
                     android:singleLine="true"
                     android:text="0"
-                    android:hint="0"/>
+                    android:textColor="@color/black_66"
+                    android:textSize="@dimen/textsize_14" />
+
                 <View
                     android:layout_width="@dimen/margin_1"
                     android:layout_height="match_parent"
-                    android:background="@color/black_66"/>
+                    android:background="@color/black_66" />
+
                 <LinearLayout
-                    android:id="@+id/iv_addNum"
+                    android:id="@+id/ll_addNum"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center">
+
                     <ImageView
-                        android:layout_marginLeft="@dimen/margin_8"
-                        android:layout_marginRight="@dimen/margin_8"
+                        android:id="@+id/iv_addNum"
                         android:layout_width="@dimen/height_15"
                         android:layout_height="@dimen/height_15"
-                        android:background="@mipmap/addblack"/>
+                        android:layout_marginLeft="@dimen/margin_8"
+                        android:layout_marginRight="@dimen/margin_8"
+                        android:background="@mipmap/addblack" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
     </RelativeLayout>
 </LinearLayout>

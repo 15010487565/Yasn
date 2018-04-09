@@ -54,6 +54,7 @@
     <color name="back_color_noclick">#ffff</color>
     <color name="back_color_click">#8fff</color>
     <color name="transparent_dark_66">#66000000</color>
+    <color name="transparent_80">#80000000</color>
     <!-- alert dialog -->
     <color name="dialog_edit_bg">#E3E4E8</color>
     <color name="dialog_text">#504A51</color>
@@ -67,6 +68,8 @@
     <color name="main_tabwidget_background">#F8F7F7</color>
     <color name="light_blue">#6593cb</color>
     !-- 橙色 -->
+
+    <color name="orange_un">#F9C7A1</color>
     <color name="orange">#ff6600</color>
     <color name="orange_laba">#fef0d8</color>
 </resources>

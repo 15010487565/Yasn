@@ -10,6 +10,7 @@ import java.util.List;
 public class ShopCarAdapterModel implements Serializable {
 
     private int itmeType;//布局类型
+    private int id;
     private int store_id;
     private String storeName;//店铺名称
     private String freeShipMoney;//包邮
@@ -22,6 +23,77 @@ public class ShopCarAdapterModel implements Serializable {
     private double storeCheckPrice;
     private int enableStore;
     private int productId;
+    private int goodsOff;
+    private int isBeforeSale;
+    private int isExist;
+    private int smallSale;
+    private int step;
+    private int goodsId;
+    private double needPayMoney;
+
+    public double getNeedPayMoney() {
+        return needPayMoney;
+    }
+
+    public void setNeedPayMoney(double needPayMoney) {
+        this.needPayMoney = needPayMoney;
+    }
+
+    public int getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(int goodsId) {
+        this.goodsId = goodsId;
+    }
+
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
+    }
+
+    public int getSmallSale() {
+        return smallSale;
+    }
+
+    public void setSmallSale(int smallSale) {
+        this.smallSale = smallSale;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIsExist() {
+        return isExist;
+    }
+
+    public void setIsExist(int isExist) {
+        this.isExist = isExist;
+    }
+
+    public int getIsBeforeSale() {
+        return isBeforeSale;
+    }
+
+    public void setIsBeforeSale(int isBeforeSale) {
+        this.isBeforeSale = isBeforeSale;
+    }
+
+    public int getGoodsOff() {
+        return goodsOff;
+    }
+
+    public void setGoodsOff(int goodsOff) {
+        this.goodsOff = goodsOff;
+    }
 
     public int getProductId() {
         return productId;
@@ -134,6 +206,7 @@ public class ShopCarAdapterModel implements Serializable {
     public String toString() {
         return "ShopCarAdapterModel{" +
                 "itmeType=" + itmeType +
+                ", id=" + id +
                 ", store_id=" + store_id +
                 ", storeName='" + storeName + '\'' +
                 ", freeShipMoney='" + freeShipMoney + '\'' +
@@ -143,6 +216,14 @@ public class ShopCarAdapterModel implements Serializable {
                 ", num=" + num +
                 ", isCheck=" + isCheck +
                 ", storeCheckPrice=" + storeCheckPrice +
+                ", enableStore=" + enableStore +
+                ", productId=" + productId +
+                ", goodsOff=" + goodsOff +
+                ", isBeforeSale=" + isBeforeSale +
+                ", isExist=" + isExist +
+                ", smallSale=" + smallSale +
+                ", step=" + step +
+                ", goodsId=" + goodsId +
                 ", specList=" + specList +
                 '}';
     }

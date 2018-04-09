@@ -1,4 +1,4 @@
-package www.xcd.com.mylibrary.utils;
+package www.xcd.com.mylibrary.help;
 
 import android.Manifest;
 import android.app.Activity;
@@ -60,6 +60,7 @@ public class HelpUtils {
 
         return m.matches();
     }
+
     //保留两位小数
     public static String doubledigit(String reString) {
         Double d = Double.valueOf(reString);
@@ -67,7 +68,8 @@ public class HelpUtils {
         reString = f1.format(d);
         return reString;
     }
-//    public static boolean cleanCatchDisk(Context context) {
+
+    //    public static boolean cleanCatchDisk(Context context) {
 //        String cachePath = YYStorageUtil.getSystemDisCachePath(context);
 //        boolean deleteFolderFile = deleteFolderFile(cachePath, true);
 //        boolean deleteFolderFile1 = deleteFolderFile(XCDApplication.getApp().getCacheDir() + "/" + Config.GLIDE_CARCH_DIR, true);
@@ -99,7 +101,7 @@ public class HelpUtils {
         }
     }
 
-//    public static String getCacheSize() {
+    //    public static String getCacheSize() {
 //        try {
 //            return getFormatSize(getFolderSize(
 //                    new File(XCDApplication.getApp().getCacheDir()
@@ -133,6 +135,7 @@ public class HelpUtils {
         BigDecimal result4 = new BigDecimal(teraBytes);
         return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "TB";
     }
+
     // 获取指定文件夹内所有文件大小的和
     private static long getFolderSize(File file) throws Exception {
         long size = 0;
@@ -152,59 +155,61 @@ public class HelpUtils {
     }
 
     /**
-     *
      * @param context
      * @param mobile  手机号
      * @param isDialInterface 是否跳转本地拨号界面
      */
     public final static int REQUEST_CODE_ASK_CALL_PHONE = 123;
-    public static void call(Context context,String mobile,boolean isDialInterface) {
-        Log.e("TAG_拨打电话","isDialInterface="+isDialInterface);
+
+    public static void call(Context context, String mobile, boolean isDialInterface) {
+        Log.e("TAG_拨打电话", "isDialInterface=" + isDialInterface);
         if (Build.VERSION.SDK_INT >= 23) {
             int checkCallPhonePermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
-            if(checkCallPhonePermission != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.CALL_PHONE},REQUEST_CODE_ASK_CALL_PHONE);
+            if (checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE_ASK_CALL_PHONE);
                 return;
-            }else{
+            } else {
                 //上面已经写好的拨号方法
-                callDirectly(context,mobile,isDialInterface);
+                callDirectly(context, mobile, isDialInterface);
             }
         } else {
             //上面已经写好的拨号方法
-            callDirectly(context,mobile,isDialInterface);
+            callDirectly(context, mobile, isDialInterface);
         }
 
     }
-    public static void callDirectly(Context context,String mobile,boolean isDialInterface){
+
+    public static void callDirectly(Context context, String mobile, boolean isDialInterface) {
         Intent intent = new Intent();
-        if (isDialInterface){
+        if (isDialInterface) {
             intent.setAction("android.intent.action.DIAL");
-        }else {
+        } else {
             intent.setAction("android.intent.action.CALL");
         }
         intent.setData(Uri.parse("tel:" + mobile));
         context.startActivity(intent);
     }
-    public static String getDeviceId(Context context){
-        TelephonyManager TelephonyMgr = (TelephonyManager)context.getSystemService(TELEPHONY_SERVICE);
+
+    public static String getDeviceId(Context context) {
+        TelephonyManager TelephonyMgr = (TelephonyManager) context.getSystemService(TELEPHONY_SERVICE);
         String szImei = TelephonyMgr.getDeviceId();
-        if (szImei ==null || "".equals(szImei)){
+        if (szImei == null || "".equals(szImei)) {
             String serial = null;
 
             String m_szDevIDShort = "35" +
-                    Build.BOARD.length()%10+ Build.BRAND.length()%10 +
+                    Build.BOARD.length() % 10 + Build.BRAND.length() % 10 +
 
-                    Build.CPU_ABI.length()%10 + Build.DEVICE.length()%10 +
+                    Build.CPU_ABI.length() % 10 + Build.DEVICE.length() % 10 +
 
-                    Build.DISPLAY.length()%10 + Build.HOST.length()%10 +
+                    Build.DISPLAY.length() % 10 + Build.HOST.length() % 10 +
 
-                    Build.ID.length()%10 + Build.MANUFACTURER.length()%10 +
+                    Build.ID.length() % 10 + Build.MANUFACTURER.length() % 10 +
 
-                    Build.MODEL.length()%10 + Build.PRODUCT.length()%10 +
+                    Build.MODEL.length() % 10 + Build.PRODUCT.length() % 10 +
 
-                    Build.TAGS.length()%10 + Build.TYPE.length()%10 +
+                    Build.TAGS.length() % 10 + Build.TYPE.length() % 10 +
 
-                    Build.USER.length()%10 ; //13 位
+                    Build.USER.length() % 10; //13 位
 
             try {
                 serial = android.os.Build.class.getField("SERIAL").get(null).toString();
@@ -216,12 +221,13 @@ public class HelpUtils {
             }
             //使用硬件信息拼凑出来的15位号码
             return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
-        }else {
+        } else {
             return szImei;
         }
     }
-    public static void setHintSize(String hintstring,EditText editText){
-        if (hintstring==null||"".equals(hintstring)){
+
+    public static void setHintSize(String hintstring, EditText editText) {
+        if (hintstring == null || "".equals(hintstring)) {
             return;
         }
         SpannableString ss = new SpannableString(hintstring);
@@ -233,6 +239,7 @@ public class HelpUtils {
         // 设置hint
         editText.setHint(new SpannedString(ss)); // 一定要进行转换,否则属性会消失
     }
+
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      */
@@ -248,10 +255,11 @@ public class HelpUtils {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
+
     /**
      * 根据手机的分辨率从 sp 的单位 转成为 px(像素)
      */
-    private float sp2px(Context context,float spValue) {
+    private float sp2px(Context context, float spValue) {
         final float scale = context.getResources().getDisplayMetrics().scaledDensity;
         return spValue * scale;
     }
@@ -275,6 +283,7 @@ public class HelpUtils {
         }
         return new String(c);
     }
+
     /**
      * 去除特殊字符或将所有中文标号替换为英文标号
      *
@@ -289,18 +298,20 @@ public class HelpUtils {
         Matcher m = p.matcher(str);
         return m.replaceAll("").trim();
     }
+
     /**
      * 时间戳转换成字符窜
      * yyyy-MM-dd HH:mm:ss 年于日时分秒
      */
     public static String getDateToString(long time) {
-       if ( String.valueOf(time).length()<13){
-           time = time*1000;
-       }
+        if (String.valueOf(time).length() < 13) {
+            time = time * 1000;
+        }
         Date d = new Date(time);
-        SimpleDateFormat sf  = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         return sf.format(d);
     }
+
     //获取网络时间
     public static boolean getNetworkTime(String time) {
         try {
@@ -308,13 +319,13 @@ public class HelpUtils {
             URLConnection conn = url.openConnection();
             conn.connect();
             long nowTime = conn.getDate();
-            Log.e("TAG_js","resetTokenTime="+time+"nowTime="+nowTime);
-            if (time == null||"".equals(time)){
+            Log.e("TAG_js", "resetTokenTime=" + time + "nowTime=" + nowTime);
+            if (time == null || "".equals(time)) {
                 return false;
-            }else {
-                if (Long.valueOf(time)*1000>nowTime){
+            } else {
+                if (Long.valueOf(time) * 1000 > nowTime) {
                     return true;
-                }else {
+                } else {
                     return false;
                 }
             }
@@ -323,24 +334,27 @@ public class HelpUtils {
         }
         return false;
     }
+
     /**
      * 禁止EditText输入特殊字符
+     *
      * @param editText
      */
-    public static void setEditTextInhibitInputSpeChat(EditText editText){
+    public static void setEditTextInhibitInputSpeChat(EditText editText) {
 
-        InputFilter filter=new InputFilter() {
+        InputFilter filter = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                String speChat="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                String speChat = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
-                if(matcher.find())return "";
+                if (matcher.find()) return "";
                 else return null;
             }
         };
         editText.setFilters(new InputFilter[]{filter});
     }
+
     public static String formatLongToTimeStr(Long l) {
         int days = 0;
         String daysCov = "00";
@@ -355,9 +369,9 @@ public class HelpUtils {
             minute = second / 60;         //取整
             second = second % 60;         //取余
             if (second < 10) {
-                if (second<0){
+                if (second < 0) {
                     secondCov = "00";
-                }else {
+                } else {
                     secondCov = "0" + String.valueOf(second);
                 }
             } else {
@@ -365,9 +379,9 @@ public class HelpUtils {
             }
         } else {
             if (second < 10) {
-                if (second<0){
+                if (second < 0) {
                     secondCov = "00";
-                }else {
+                } else {
                     secondCov = "0" + String.valueOf(second);
                 }
             } else {
@@ -414,6 +428,7 @@ public class HelpUtils {
         return strtime;
 
     }
+
     public static String formatLongToTime(Long l) {
         int hour = 0;
         int minute = 0;
@@ -429,30 +444,32 @@ public class HelpUtils {
             hour = minute / 60;
             minute = minute % 60;
         }
-        return (getTwoLength(hour) + ":" + getTwoLength(minute)  + ":"  + getTwoLength(second));
+        return (getTwoLength(hour) + ":" + getTwoLength(minute) + ":" + getTwoLength(second));
     }
 
     private static String getTwoLength(final int data) {
-        if(data < 10) {
+        if (data < 10) {
             return "0" + data;
         } else {
             return "" + data;
         }
     }
+
     /**
      * 得到json文件中的内容
+     *
      * @param context
      * @param fileName
      * @return
      */
-    public static String getJson(Context context,String fileName){
+    public static String getJson(Context context, String fileName) {
         StringBuilder stringBuilder = new StringBuilder();
         //获得assets资源管理器
         AssetManager assetManager = context.getAssets();
         //使用IO流读取json文件内容
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
-                    assetManager.open(fileName),"utf-8"));
+                    assetManager.open(fileName), "utf-8"));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
@@ -465,6 +482,7 @@ public class HelpUtils {
 
     /**
      * 获取屏幕宽高
+     *
      * @param context
      * @return
      */
@@ -474,6 +492,7 @@ public class HelpUtils {
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return new int[]{outMetrics.widthPixels, outMetrics.heightPixels};
     }
+
     public static void getGoodsNum(final String path, final Handler handler) {
         Runnable runnablePost = new Runnable() {
             @Override
@@ -503,7 +522,8 @@ public class HelpUtils {
         Thread thread = new Thread(runnablePost);
         thread.start();
     }
-    public static void loge(String tag,String result){
+
+    public static void loge(String tag, String result) {
         if (result.length() > 3000) {
             for (int i = 0; i < result.length(); i += 3000) {
                 if (i + 3000 < result.length())
@@ -516,4 +536,6 @@ public class HelpUtils {
             Log.e(tag, "result=" + result);
         }
     }
+
+
 }

@@ -351,9 +351,14 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     }
 
     private void startWebViewActivity(String url) {
-        Intent intent = new Intent(GoodsDetailsActivity.this, WebViewActivity.class);
-        intent.putExtra("webViewUrl", url);
-        startActivity(intent);
+
+        if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
+            startActivity(new Intent(GoodsDetailsActivity.this, ShopCarActivity.class));
+        } else {
+            Intent intent = new Intent(GoodsDetailsActivity.this, WebViewActivity.class);
+            intent.putExtra("webViewUrl", url);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -532,6 +537,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         }
 
     }
+
     public SobotModel sobotModel;
 
     public SobotModel getSobotModel() {

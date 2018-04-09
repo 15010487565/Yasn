@@ -75,10 +75,10 @@ import java.util.Map;
 import java.util.Set;
 
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
-import www.xcd.com.mylibrary.utils.HelpUtils;
+import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
-import static www.xcd.com.mylibrary.utils.HelpUtils.getDateToString;
+import static www.xcd.com.mylibrary.help.HelpUtils.getDateToString;
 
 
 /**

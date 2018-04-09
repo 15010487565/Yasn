@@ -201,7 +201,7 @@ public abstract class BaseActivity  extends AppCompatActivity implements View.On
             return;
         }
         String hint = textView.getHint().toString();
-
+        Log.e("TAG_键盘","hasFocus="+hasFocus);
         if (hasFocus) {
             textView.setTag(hint);
             textView.setHint("");

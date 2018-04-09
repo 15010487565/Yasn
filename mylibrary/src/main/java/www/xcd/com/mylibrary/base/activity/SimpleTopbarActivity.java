@@ -355,6 +355,10 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 	public void dialogshow() {
 		if (loginDialog != null && !loginDialog.isShowing()) {
 			loginDialog.show();
+			Log.e("TAG_显示显dialog",(loginDialog != null) +"==="+!loginDialog.isShowing());
+		}else if (loginDialog == null){
+			createDialog();
+			dialogshow();
 		}
 	}
 	/* 动态设置ListView的高度
@@ -442,7 +446,7 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 			showToast("请检查网络。。。");
 			return;
 		}
-		dialogshow();
+//		dialogshow();
 		OkHttpHelper.getInstance().getAsyncHttp(requestCode, url, paramsMaps, new Handler() {
 			@Override
 			public void handleMessage(Message msg) {

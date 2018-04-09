@@ -14,6 +14,7 @@ public class Config {
     public static final String IP = "http://shoptest.yasn.com:9100/api/composite-service/";//测试
     public static final String URLCAIGOU = "http://shoptt.yasn.com/";//测试首服
     public static final String URL = "http://shoptt.yasn.com:81/";//测试首服
+    public final static String SHOPPCAR_1 = "http://192.168.50.166:9100/api/composite-service/cart/get-cart-list";//号哥本地
     //欢迎界面图片
     public static final String url = "http://caigou.yasn.com/";//正式服
     //搜索页面
@@ -33,6 +34,12 @@ public class Config {
     public final static String SHOPPCAR = IP+"cart/get-cart-list";
     //进货单选择
     public final static String SHOPPCARCHECK = IP+"cart/check-product?";
+    //进货单删除
+    public final static String SHOPPCARDELETECART = IP+"cart/delete-cart?";
+    //进货单总价
+    public final static String SHOPPCARTOTALPRICE = IP+"cart/get-total-price";
+    //进货单修改购物项数量
+    public final static String SHOPPCARUPDATENUM = IP+"cart/update-num?";
     //热门搜索
     public final static String OFTENSEARCH = IP+"goods/search/KeyWord";
     //添加搜索字段
@@ -126,4 +133,6 @@ public class Config {
     public final static String MAKEREXPLOITSHOP  = URL+"ck_addshop.html";
     //门店订单
     public final static String MAKERSHOPORDER  = URL+"ck_shoporder.html";
+    //确认订单
+    public final static String CHECKOUTSHOPCAR  = URLCAIGOU+"checkout.html";
 }
