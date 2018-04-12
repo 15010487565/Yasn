@@ -79,6 +79,7 @@ import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 import static www.xcd.com.mylibrary.help.HelpUtils.getDateToString;
+import static www.xcd.com.mylibrary.utils.SharePrefHelper.context;
 
 
 /**
@@ -87,7 +88,7 @@ import static www.xcd.com.mylibrary.help.HelpUtils.getDateToString;
 public class GoodsInfoFragment extends BaseFragment implements
         ShoppingSelectView.OnSelectedListener, OnItemClickListener,
         SlideDetailsLayout.OnSlideDetailsListener, MediaPlayer.OnPreparedListener,
-        ViewPager.OnPageChangeListener ,TextWatcher{
+        ViewPager.OnPageChangeListener, TextWatcher {
 
     private RelativeLayout topbat_parent;
     ConvenientBanner banner;
@@ -420,12 +421,28 @@ public class GoodsInfoFragment extends BaseFragment implements
         int storeId = goodsDetails.getStoreId();
         if (storeId == 1) {
             autotrophy.setVisibility(View.VISIBLE);
+           autotrophy.setText("自营");
             goneNum += 3;
             sb.append("自营 ");
             storeNameString = " 雅森 ";
             salesReturn.setVisibility(View.VISIBLE);
         } else {
-            autotrophy.setVisibility(View.GONE);
+            if (storeId != 99) {
+                String regionName = SharePrefHelper.getInstance(context).getSpString("regionName");
+                if (regionName == null || "".equals(regionName)) {
+                    autotrophy.setVisibility(View.GONE);
+                    autotrophy.setText("");
+                } else {
+                    autotrophy.setVisibility(View.VISIBLE);
+                    autotrophy.setText(regionName + "直供");
+                    sb.append(regionName + "直供 ");
+                    goneNum = goneNum + regionName.length() + 3;
+                }
+            } else {
+                autotrophy.setVisibility(View.GONE);
+                autotrophy.setText("");
+            }
+
             storeNameString = " 厂家 ";
             salesReturn.setVisibility(View.GONE);
         }
@@ -691,6 +708,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     //商品详情数据
     GoodsDetailsModel.GoodsDetailsBean goodsDetails;
     String loginState;//账号状态
+
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
@@ -761,15 +779,15 @@ public class GoodsInfoFragment extends BaseFragment implements
 
         //规格数据
         List<GoodsDetailsModel.GoodsDetailsBean.SpecsBean> specs = goodsDetails.getSpecs();
-        if (specs ==null||specs.size()==0){
+        if (specs == null || specs.size() == 0) {
             ll_specs.setVisibility(View.GONE);
-        }else {
-           if (specs.size()==1&&"默认".equals(specs.get(0).getSpecName())){
-               ll_specs.setVisibility(View.GONE);
-           }else {
-               ll_specs.setVisibility(View.VISIBLE);
-               label_include.setData(goodsDetails);
-           }
+        } else {
+            if (specs.size() == 1 && "默认".equals(specs.get(0).getSpecName())) {
+                ll_specs.setVisibility(View.GONE);
+            } else {
+                ll_specs.setVisibility(View.VISIBLE);
+                label_include.setData(goodsDetails);
+            }
         }
         //批发价
         products = goodsDetails.getProducts();
@@ -844,9 +862,9 @@ public class GoodsInfoFragment extends BaseFragment implements
         //描述，选填
         sobotModel.setSobotGoodsDescribe(goodsDetails.getAdvert());
         //咨询内容图片，选填 但必须是图片地址
-        if (goodsGallerys !=null&&goodsGallerys.size()>0){
+        if (goodsGallerys != null && goodsGallerys.size() > 0) {
             GoodsDetailsModel.GoodsDetailsBean.GoodsGallerysBean goodsGallerysBean = goodsGallerys.get(0);
-            sobotModel.setSobotGoodsImgUrl( goodsGallerysBean.getThumbnail());
+            sobotModel.setSobotGoodsImgUrl(goodsGallerysBean.getThumbnail());
         }
         sobotModel.setSobotGoodsLable(soldout_money.getText().toString().trim());
         ((GoodsDetailsActivity) getActivity()).setSobotModel(sobotModel);
@@ -884,6 +902,7 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     private int productId;//商品规格id
     private int typeLadderPricesposition;//临时选中的规格对应折扣价的position
+
     private void initTradePricePosition(List<GoodsDetailsModel.GoodsDetailsBean.ProductsBean> products, int position) {
         etGoodsNum.removeTextChangedListener(this);
         typeLadderPricesposition = position;
@@ -900,17 +919,17 @@ public class GoodsInfoFragment extends BaseFragment implements
             //建议零售价
             String minReferencePrice = productsBean.getMinReferencePrice();
             String maxReferencePrice = productsBean.getMaxReferencePrice();
-            if (minReferencePrice !=null&&maxReferencePrice !=null&&!"0".equals(minReferencePrice)&&!"0".equals(maxReferencePrice)){
+            if (minReferencePrice != null && maxReferencePrice != null && !"0".equals(minReferencePrice) && !"0".equals(maxReferencePrice)) {
                 llRetailPrice.setVisibility(View.VISIBLE);
-                retailPriceView.setText("￥"+minReferencePrice+"-￥"+maxReferencePrice);
-            }else {
+                retailPriceView.setText("￥" + minReferencePrice + "-￥" + maxReferencePrice);
+            } else {
                 llRetailPrice.setVisibility(View.GONE);
             }
             productId = productsBean.getProductId();
             //最小起订量
             smallSale = productsBean.getSmallSale();
             enableStoreNum = productsBean.getEnableStore();
-            Log.e("TAG_库存","position="+position+";enableStoreNum="+enableStoreNum);
+            Log.e("TAG_库存", "position=" + position + ";enableStoreNum=" + enableStoreNum);
             if (enableStoreNum >= 10) {
                 enableStore.setText("库存:充足");
                 etGoodsNum.setText(String.valueOf(smallSale));
@@ -931,8 +950,8 @@ public class GoodsInfoFragment extends BaseFragment implements
                 llLadderPrices.setVisibility(View.VISIBLE);
                 //折扣价数据
 
-                    tradeprice_recy.setVisibility(View.VISIBLE);
-                    adapter.setData(ladderPrices);
+                tradeprice_recy.setVisibility(View.VISIBLE);
+                adapter.setData(ladderPrices);
 
                 double goodsNumDou = Long.valueOf(etGoodsNum.getText().toString());
                 for (int i = 0, k = ladderPrices.size(); i < k; i++) {
@@ -1053,9 +1072,11 @@ public class GoodsInfoFragment extends BaseFragment implements
             presell_promotion.setText(saleEndTime + "截止，预计" + saleSendTime + "发货");
             presell_linear.setVisibility(View.VISIBLE);
             PROMOTIONVISIBILIT += 1;
+//            ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true);
         } else {
             presell_promotion.setText("XXXX");
             presell_linear.setVisibility(View.GONE);
+//            ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false);
         }
         if (PROMOTIONVISIBILIT > 0) {
             promotionlinear.setVisibility(View.VISIBLE);
@@ -1063,21 +1084,21 @@ public class GoodsInfoFragment extends BaseFragment implements
             promotionlinear.setVisibility(View.GONE);
         }
         GoodsDetailsModel.GoodsDetailsBean.DiscountBean discount = goodsdetailsmodelData.getDiscount();
-        if (discount == null){
+        if (discount == null) {
             top_purchasepromotion.setVisibility(View.GONE);
             sold_Linear.setVisibility(View.VISIBLE);
 
-        }else {
+        } else {
             int has_discount = discount.getHas_discount();
-            if (has_discount == 0){
+            if (has_discount == 0) {
                 top_purchasepromotion.setVisibility(View.GONE);
                 sold_Linear.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 top_purchasepromotion.setVisibility(View.VISIBLE);
                 sold_Linear.setVisibility(View.GONE);
                 //限时抢购价
                 String discount_price = discount.getDiscount_price();
-                originalprice.setText(discount_price==null?"":discount_price);
+                originalprice.setText(discount_price == null ? "" : discount_price);
                 //限时抢购倒计时
                 time = discount.getRemainingTime();
                 handler.postDelayed(runnable, 1000);
@@ -1431,9 +1452,9 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        Log.e("TAG_TextChanged","trim="+charSequence.toString()+";typeLadderPricesposition="+typeLadderPricesposition);
+        Log.e("TAG_TextChanged", "trim=" + charSequence.toString() + ";typeLadderPricesposition=" + typeLadderPricesposition);
         String textChanged = charSequence.toString();
-        if (textChanged !=null&&!"".equals(textChanged)){
+        if (textChanged != null && !"".equals(textChanged)) {
             initTradePricePositionTextChanged(products, typeLadderPricesposition);
         }
     }
@@ -1442,6 +1463,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     public void afterTextChanged(Editable editable) {
 
     }
+
     //文本输入查询价格
     private void initTradePricePositionTextChanged(List<GoodsDetailsModel.GoodsDetailsBean.ProductsBean> products, int position) {
         etGoodsNum.removeTextChangedListener(this);
@@ -1456,9 +1478,9 @@ public class GoodsInfoFragment extends BaseFragment implements
         if (products != null) {
             productsBean = products.get(position);
             productId = productsBean.getProductId();
-            Log.e("TAG_库存规格id","productId="+productId);
+            Log.e("TAG_库存规格id", "productId=" + productId);
             enableStoreNum = productsBean.getEnableStore();
-            Log.e("TAG_库存","position="+position+";enableStoreNum="+enableStoreNum);
+            Log.e("TAG_库存", "position=" + position + ";enableStoreNum=" + enableStoreNum);
             if (enableStoreNum >= 10) {
                 enableStore.setText("库存:充足");
                 ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true);
@@ -1475,9 +1497,9 @@ public class GoodsInfoFragment extends BaseFragment implements
             if (ladderPrices != null && ladderPrices.size() > 0) {
                 llLadderPrices.setVisibility(View.VISIBLE);
                 //折扣价数据
-                if (ladderPrices==null||ladderPrices.size()==0){
+                if (ladderPrices == null || ladderPrices.size() == 0) {
                     tradeprice_recy.setVisibility(View.GONE);
-                }else {
+                } else {
                     tradeprice_recy.setVisibility(View.VISIBLE);
                     adapter.setData(ladderPrices);
                 }

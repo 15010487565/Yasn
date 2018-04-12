@@ -479,7 +479,7 @@ public class ShopCarModel implements Serializable {
             private double coupPrice;
             private Object subtotal;
             private int num;
-            private Object limitnum;
+            private int limitnum;
             private String imageDefault;
             private int point;
             private int itemtype;
@@ -507,7 +507,7 @@ public class ShopCarModel implements Serializable {
             private int smallSale;
             private int isBeforeSale;
             private int goodsOff;
-            private Object beforeSale;
+            private String beforeSale;
 
             public int getId() {
                 return id;
@@ -581,11 +581,11 @@ public class ShopCarModel implements Serializable {
                 this.num = num;
             }
 
-            public Object getLimitnum() {
+            public int getLimitnum() {
                 return limitnum;
             }
 
-            public void setLimitnum(Object limitnum) {
+            public void setLimitnum(int limitnum) {
                 this.limitnum = limitnum;
             }
 
@@ -805,11 +805,11 @@ public class ShopCarModel implements Serializable {
                 this.goodsOff = goodsOff;
             }
 
-            public Object getBeforeSale() {
+            public String getBeforeSale() {
                 return beforeSale;
             }
 
-            public void setBeforeSale(Object beforeSale) {
+            public void setBeforeSale(String beforeSale) {
                 this.beforeSale = beforeSale;
             }
 

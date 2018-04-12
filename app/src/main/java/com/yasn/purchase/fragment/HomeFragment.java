@@ -179,7 +179,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
         home_banner = (Banner) view.findViewById(R.id.home_banner);
         //初始化tab
         tablayout = (TabLayout) view.findViewById(R.id.tablayout);
-        tablayout.addOnTabSelectedListener(this);
         initRecyclerView(view);
         //XXX初始化view的各控件
         isPrepared = true;
@@ -397,7 +396,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     //tablayout和Recycler赋值
     private void initTabLayout(List<HomeModel.SubjectsBean> subjects, HomeModel.PriceDataBean priceData, HomeModel.MemberBean member) {
-        int tabCount = tablayout.getTabCount();
         if (homerecyList != null) {
             homerecyList.clear();
         }
@@ -407,16 +405,19 @@ public class HomeFragment extends SimpleTopbarFragment implements
             priceDisplayType = priceData.getPriceDisplayType();
             priceDisplayMsg = priceData.getPriceDisplayMsg();
         }
+        tablayout.removeAllTabs();
+        tablayout.addOnTabSelectedListener(this);
         for (int i = 0, j = subjects.size(); i < j; i++) {
 
             HomeModel.SubjectsBean subjectsBean = subjects.get(i);
             String title = subjectsBean.getTitle();
-            if (tabCount <= 0) {
-                tabTextList.add(title);
-                TabLayout.Tab tab = tablayout.newTab().setText(title);
-                tablayout.addTab(tab);
+            tabTextList.add(title);
+            TabLayout.Tab tab = tablayout.newTab().setText(title);
+            if (i==0){
+                tablayout.addTab(tab,true);
+            }else {
+                tablayout.addTab(tab,false);
             }
-
             HomeRecyModel homerecyTab = new HomeRecyModel();
             homerecyTab.setItemType(1);
             homerecyTab.setText(title);
@@ -459,6 +460,12 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     homeRecy.setAutotrophy(true);
                 } else {
                     homeRecy.setAutotrophy(false);
+                    int region_id = subjectsBean.getRegion_id();
+                    if (store_id != 99 && region_id > 0) {//地方站、非自营、非脱商品====直供
+                        homeRecy.setRegionName(true);
+                    } else {
+                        homeRecy.setRegionName(false);
+                    }
                 }
                 int is_limit_buy = contentBean.getIs_limit_buy();
                 if (is_limit_buy == 1) {//限购
@@ -586,8 +593,10 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     if (place != null && !"".equals(place)) {
                         String regionName = place.getRegionName();
                         address.setText(regionName == null ? "" : regionName);
+                        SharePrefHelper.getInstance(getActivity()).putSpString("regionName", regionName);
                     } else {
                         address.setText("");
+                        SharePrefHelper.getInstance(getActivity()).putSpString("regionName", "");
                     }
                     //订单状态
                     setOrderState();
@@ -746,6 +755,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         int selectPosition = tab.getPosition();
+        Log.e("TAG_TabSelected","次数");
         if (isFrist) {
             isFrist = false;
             return;

@@ -22,6 +22,15 @@ public class HomeRecyModel implements Serializable {
     private boolean purchase;
     private boolean presell;
     private int market_enable;//上下架, 上架1, 下架0
+    private boolean isRegionName;//是否直供
+
+    public boolean isRegionName() {
+        return isRegionName;
+    }
+
+    public void setRegionName(boolean regionName) {
+        isRegionName = regionName;
+    }
 
     public int getMarket_enable() {
         return market_enable;

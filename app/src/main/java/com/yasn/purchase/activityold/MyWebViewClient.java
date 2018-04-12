@@ -20,11 +20,13 @@ import android.webkit.WebView;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
 import com.yasn.purchase.activity.ImgTextDetTXTActivity;
+import com.yasn.purchase.help.LoginOut;
 import com.yasn.purchase.superfileview.FileDisplayActivity;
 import com.yasn.purchase.utils.SerializableUtil;
 import com.yasn.purchase.utils.ToastUtil;
 
 import pub.devrel.easypermissions.EasyPermissions;
+import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 public class MyWebViewClient
         extends BridgeWebViewClient
@@ -134,7 +136,13 @@ public class MyWebViewClient
         if (cookies != null && (oldCookie == null || !oldCookie.equals(cookies))) {
             SerializableUtil.saveObject(cookies, activity.getFilesDir(), SerializableUtil.COOKIE);
         }
-
+        if ((cookies.indexOf("token")==-1)&&(cookies.indexOf("refresh_token")==-1)){
+            String token = SharePrefHelper.getInstance(activity).getSpString("token");
+            String resetToken = SharePrefHelper.getInstance(activity).getSpString("resetToken");
+            if ((token==null)&&(resetToken==null)){
+                LoginOut.loginOut(activity);
+            }
+        }
         if (!webView.getSettings().getLoadsImagesAutomatically()) {
             webView.getSettings().setLoadsImagesAutomatically(true);
         }

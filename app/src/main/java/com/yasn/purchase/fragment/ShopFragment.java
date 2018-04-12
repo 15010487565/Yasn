@@ -413,6 +413,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     ShopInfoModel.MemberBean member = shopinfomodel.getMember();
                     int lv_id = 0;
                     if (member != null) {
+                        //地方站名字
+                        String regionName = member.getRegionName();
+                        SharePrefHelper.getInstance(getActivity()).putSpString("regionName",(regionName==null?"":regionName));
                         //创客
                         makerType = member.getIs_inviteCustomer();
                         initShopMaker();

@@ -229,7 +229,7 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
                 }
                 break;
             case R.id.clear_cache:
-                LoginOut.loginOut(this);
+                LoginOut.startLoginOut(this);
                 clearWebViewCache();
                 drawer_layout.closeDrawers();
                 break;

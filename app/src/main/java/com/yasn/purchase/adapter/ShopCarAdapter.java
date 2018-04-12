@@ -154,6 +154,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
 
                 //规格
+                listViewHolder.shopcarLabel.removeAllViews();
                 List<String> specList = shopCarAdapterModel.getSpecList();
                 if (specList != null && specList.size() > 0) {
                     ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -172,8 +173,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         tvSprc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                         tvSprc.setGravity(Gravity.CENTER);
                         tvSprc.setTag(list.get(i));
-                        lp.setMargins(10, 10, 10, 0);
-                        listViewHolder.shopcarLabel.removeAllViews();
+                        lp.setMargins(10, 10, 10,0);
                         listViewHolder.shopcarLabel.addView(tvSprc, lp);
 
                     }
@@ -211,6 +211,12 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     listViewHolder.etGoodsNum.setEnabled(false);
                     listViewHolder.etGoodsNum.setTextColor(ContextCompat.getColor(context, R.color.black_99));
                     listViewHolder.etGoodsNum.setText(String.valueOf(num));
+                }
+                String beforeSale = shopCarAdapterModel.getBeforeSale();
+                if (beforeSale==null||"".equals(beforeSale)){
+                    listViewHolder.tvPresellHint.setVisibility(View.GONE);
+                }else {
+                    listViewHolder.tvPresellHint.setVisibility(View.VISIBLE);
                 }
                 String imageDefault = shopCarAdapterModel.getImageDefault();
                 Glide.with(context.getApplicationContext())
@@ -272,11 +278,12 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private TagsLayout shopcarLabel;
         private LinearLayout llSubtractNum, llAddNum, llOorderListSelect;
         private ImageView ivSubtractNum, ivAddNum;
-        private TextView etGoodsNum;
+        private TextView etGoodsNum,tvPresellHint;
         private LinearLayout llNum;
         public ListViewHolder(View itemView) {
             super(itemView);
             llNum = (LinearLayout) itemView.findViewById(R.id.ll_Num);
+            tvPresellHint = (TextView) itemView.findViewById(R.id.tv_PresellHint);
             //列表商品名称
             tvOrderListName = (TextView) itemView.findViewById(R.id.tv_orderListName);
             ivOrderListImage = (ImageView) itemView.findViewById(R.id.iv_orderListImage);

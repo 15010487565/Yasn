@@ -23,7 +23,7 @@ public class Config {
     //欢迎界面图片
     public final static String LAUNCHIMAGE = url+"api/base/app/geturl.do";
     //首页
-    public static final String HOME = IP+"home/index";
+            public static final String HOME = IP+"home/index";
     //分类页面
     public final static String CLASSIFY = IP+"goods/cat/list";
     //发现页面
@@ -32,8 +32,10 @@ public class Config {
     public final static String SHOPPCARWEBVIEW = URLCAIGOU+"cart.html";
     //进货单
     public final static String SHOPPCAR = IP+"cart/get-cart-list";
-    //进货单选择
-    public final static String SHOPPCARCHECK = IP+"cart/check-product?";
+    //进货单单择
+    public final static String SHOPPCARONECHECK = IP+"cart/check-product?";
+    //进货单全部选择
+    public final static String SHOPPCARCHECK = IP+"cart/check-all?";
     //进货单删除
     public final static String SHOPPCARDELETECART = IP+"cart/delete-cart?";
     //进货单总价

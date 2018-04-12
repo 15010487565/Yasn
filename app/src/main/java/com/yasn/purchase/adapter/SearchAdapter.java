@@ -46,18 +46,14 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private OnRcItemClickListener onItemClickListener;
     private String loginState;
     private LinearLayoutManager linearLayoutManager;
-//    private boolean isShowProgressBar;
-//
-//    public void setShowProgressBar(boolean isShowProgressBar) {
-//        this.isShowProgressBar = isShowProgressBar;
-//        Log.e("TAG_底部adapter1","isShowProgressBar="+isShowProgressBar);
-//    }
+    String regionName;
 
     public SearchAdapter(Context context,LinearLayoutManager linearLayoutManager) {
         super();
         this.linearLayoutManager = linearLayoutManager;
         this.context = context;
         loginState = SharePrefHelper.getInstance(context).getSpString("loginState");
+        regionName = SharePrefHelper.getInstance(context).getSpString("regionName");
     }
 
     public void setOnItemClickListener(OnRcItemClickListener onItemClickListener) {
@@ -128,8 +124,22 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     sb.append("自营 ");
                     goneNum += 3;
                     holderSearch.autotrophy.setVisibility(View.VISIBLE);
+                    holderSearch.autotrophy.setText("自营");
                 }else {
-                    holderSearch.autotrophy.setVisibility(View.GONE);
+                    if (store_id!=99){
+                        if (regionName==null||"".equals(regionName)){
+                            holderSearch.autotrophy.setVisibility(View.GONE);
+                            holderSearch.autotrophy.setText("");
+                        }else {
+                            holderSearch.autotrophy.setVisibility(View.VISIBLE);
+                            holderSearch.autotrophy.setText(regionName+"直供");
+                            sb.append(regionName+"直供 ");
+                            goneNum =goneNum+ regionName.length()+3;
+                        }
+                    }else {
+                        holderSearch.autotrophy.setText("");
+                        holderSearch.autotrophy.setVisibility(View.GONE);
+                    }
                 }
 
                 int is_limit_buy = dataBean.getIs_limit_buy();

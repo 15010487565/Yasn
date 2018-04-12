@@ -24,6 +24,8 @@ import com.yasn.purchase.model.HomeRecyModel;
 
 import java.util.List;
 
+import www.xcd.com.mylibrary.utils.SharePrefHelper;
+
 import static com.yasn.purchase.common.Config.TYPE_FOOTVIEW;
 
 /**
@@ -37,8 +39,10 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private Context context;
     private List<HomeRecyModel> contentList;
     String priceType = "0";
+    String regionName;
     public HomeRecyclerAdapter( Context context) {
         this.context = context;
+        regionName = SharePrefHelper.getInstance(context).getSpString("regionName");
     }
 
     public void setData(List contentList,String priceType) {
@@ -95,8 +99,18 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     sb.append("自营 ");
                     goneNum += 3;
                     holderRecy.autotrophy.setVisibility(View.VISIBLE);
+                    holderRecy.autotrophy.setText("自营");
                 }else {
-                    holderRecy.autotrophy.setVisibility(View.GONE);
+                    boolean isRegionName = homeRecy.isRegionName();
+                    if (isRegionName){
+                        holderRecy.autotrophy.setVisibility(View.VISIBLE);
+                        holderRecy.autotrophy.setText(regionName+"直供");
+                        sb.append(regionName+"直供 ");
+                        goneNum =goneNum+ regionName.length()+3;
+                    }else {
+                        holderRecy.autotrophy.setVisibility(View.GONE);
+                        holderRecy.autotrophy.setText("");
+                    }
                 }
 
                 boolean purchase = homeRecy.isPurchase();

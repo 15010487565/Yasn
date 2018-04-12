@@ -24,12 +24,38 @@ public class ShopCarAdapterModel implements Serializable {
     private int enableStore;
     private int productId;
     private int goodsOff;
-    private int isBeforeSale;
+    private String beforeSale;
     private int isExist;
     private int smallSale;
     private int step;
     private int goodsId;
     private double needPayMoney;
+    private int hasDiscount;//是否有抢购   1 有  0没有
+    private int limitnum;//限购数量
+
+    public String getBeforeSale() {
+        return beforeSale;
+    }
+
+    public void setBeforeSale(String beforeSale) {
+        this.beforeSale = beforeSale;
+    }
+
+    public int getLimitnum() {
+        return limitnum;
+    }
+
+    public void setLimitnum(int limitnum) {
+        this.limitnum = limitnum;
+    }
+
+    public int getHasDiscount() {
+        return hasDiscount;
+    }
+
+    public void setHasDiscount(int hasDiscount) {
+        this.hasDiscount = hasDiscount;
+    }
 
     public double getNeedPayMoney() {
         return needPayMoney;
@@ -77,14 +103,6 @@ public class ShopCarAdapterModel implements Serializable {
 
     public void setIsExist(int isExist) {
         this.isExist = isExist;
-    }
-
-    public int getIsBeforeSale() {
-        return isBeforeSale;
-    }
-
-    public void setIsBeforeSale(int isBeforeSale) {
-        this.isBeforeSale = isBeforeSale;
     }
 
     public int getGoodsOff() {
@@ -219,7 +237,6 @@ public class ShopCarAdapterModel implements Serializable {
                 ", enableStore=" + enableStore +
                 ", productId=" + productId +
                 ", goodsOff=" + goodsOff +
-                ", isBeforeSale=" + isBeforeSale +
                 ", isExist=" + isExist +
                 ", smallSale=" + smallSale +
                 ", step=" + step +

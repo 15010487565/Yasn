@@ -13,8 +13,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.yasn.purchase.activity.GoodsDetailsActivity;
-import com.yasn.purchase.activity.MainActivityNew;
 import com.yasn.purchase.activity.SearchActivity;
+import com.yasn.purchase.activityold.MainActivity;
 import com.yasn.purchase.activityold.WebViewActivity;
 import com.yasn.purchase.help.LoginOut;
 import com.yasn.purchase.model.EventBusMsg;
@@ -171,7 +171,7 @@ public class MyWebChromeClient2 extends WebChromeClient {
     @JavascriptInterface
     public void clearCookie() {
         Log.e("TAG_Cookie","removeAllCookie");
-        LoginOut.loginOut(activity);
+        LoginOut.startLoginOut(activity);
     }
     @JavascriptInterface
     public void webViewBack(String backString) {
@@ -217,7 +217,7 @@ public class MyWebChromeClient2 extends WebChromeClient {
         }
     }
     public void startMainActivity(int currentItem){
-        Intent intent = new Intent(activity, MainActivityNew.class);
+        Intent intent = new Intent(activity, MainActivity.class);
         intent.putExtra("CURRENTITEM",currentItem);
         activity.startActivity(intent);
     }

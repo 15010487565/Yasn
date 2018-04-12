@@ -59,8 +59,8 @@
                         <com.youth.banner.Banner
                             android:id="@+id/home_banner"
                             android:layout_width="match_parent"
-                            app:indicator_drawable_selected="@drawable/unnormal"
-                            app:indicator_drawable_unselected="@drawable/normal"
+                            app:indicator_drawable_selected="@drawable/normal"
+                            app:indicator_drawable_unselected="@drawable/unnormal"
                             app:image_scale_type="fit_xy"
                             android:layout_height="200dp"/>
                     </LinearLayout>
