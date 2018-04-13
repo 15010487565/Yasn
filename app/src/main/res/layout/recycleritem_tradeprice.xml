@@ -1,30 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/black_f5"
-    android:paddingLeft="@dimen/margin_5"
-    android:paddingRight="@dimen/margin_5"
     android:gravity="center">
-    <TextView
-        android:id="@+id/topNumber"
+    <LinearLayout
+        android:id="@+id/ll_tradeprice"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black_66"
-        android:textSize="@dimen/textsize_14"
-        android:gravity="center_horizontal"
-        android:lines="1"
-        android:text="0~0"
-        />
+        android:gravity="center">
+        <TextView
+            android:id="@+id/topNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_66"
+            android:textSize="@dimen/textsize_14"
+            android:gravity="center_horizontal"
+            android:lines="1"
+            android:text="0~0"
+            />
 
+        <TextView
+            android:id="@+id/tradePrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/textsize_16"
+            android:gravity="center_horizontal"
+            android:lines="1"
+            android:text="￥XXXX"/>
+    </LinearLayout>
     <TextView
-        android:id="@+id/tradePrice"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_line"
+        android:layout_width="@dimen/margin_2"
         android:layout_height="wrap_content"
-        android:textColor="@color/orange"
-        android:textSize="@dimen/textsize_16"
-        android:gravity="center_horizontal"
-        android:lines="1"
-        android:text="￥XXXX"/>
+        android:background="@color/line_c3"/>
 </LinearLayout>

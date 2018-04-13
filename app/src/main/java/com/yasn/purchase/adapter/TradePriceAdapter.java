@@ -65,13 +65,18 @@ public class TradePriceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         GoodsDetailsModel.GoodsDetailsBean.ProductsBean.LadderPricesBean ladderPricesBean = ladderPrices.get(position);
         int minNum = ladderPricesBean.getMinNum();
         int maxNum = ladderPricesBean.getMaxNum();
-//        if (maxNum ==2000000000){
-//            tradePriceHolder.topNumber.setText(">="+minNum);
-//        }else {
+        if (maxNum ==2000000000){
+            tradePriceHolder.topNumber.setText(">="+minNum);
+        }else {
             tradePriceHolder.topNumber.setText(minNum + "~" + maxNum);
-//        }
+        }
+        if (position == ladderPrices.size()-1){
+            tradePriceHolder.tvLine.setVisibility(View.GONE);
+        }else {
+            tradePriceHolder.tvLine.setVisibility(View.VISIBLE);
+        }
         double wholesalePrice = ladderPricesBean.getWholesalePrice();
-        tradePriceHolder.tradePrice.setText(String.valueOf(wholesalePrice));
+        tradePriceHolder.tradePrice.setText("￥"+String.valueOf(wholesalePrice));
 //        onItemEventClick(tradePriceHolder);
     }
 
@@ -84,13 +89,13 @@ public class TradePriceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     class ViewHolder extends RecyclerView.ViewHolder {
         public TextView topNumber;
         public TextView tradePrice;
-
+        private TextView tvLine;
         public ViewHolder(View view) {
             super(view);
             topNumber = (TextView) view.findViewById(R.id.topNumber);
             tradePrice = (TextView) view.findViewById(R.id.tradePrice);
+            tvLine = (TextView) view.findViewById(R.id.tv_line);
         }
-
     }
 
     protected void onItemEventClick(final RecyclerView.ViewHolder holder) {

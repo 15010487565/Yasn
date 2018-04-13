@@ -69,22 +69,49 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/margin_10"
             android:background="@mipmap/cleanhistory" />
-
-        <TextView
-            android:id="@+id/tv_orderListName"
+        <RelativeLayout
+            android:id="@+id/re_orderListName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_10"
-            android:layout_toLeftOf="@id/iv_orderListClean"
-            android:text="XXXXXXXX"
-            android:textColor="@color/black_66"
-            android:textSize="@dimen/textsize_14" />
+            android:paddingBottom="@dimen/margin_5"
+            android:paddingRight="@dimen/margin_10"
+            android:layout_toLeftOf="@id/iv_orderListClean">
+
+            <TextView
+                android:id="@+id/tv_orderListName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_10"
+                android:text="XXXXXXXX"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_14" />
+
+            <TextView
+                android:id="@+id/tv_purchase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_5"
+                android:background="@drawable/shape_red2"
+                android:text="限购"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_14" />
+
+            <TextView
+                android:id="@+id/tv_presell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_purchase"
+                android:background="@drawable/shape_blue2"
+                android:text="预售"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_14" />
+        </RelativeLayout>
 
         <com.yasn.purchase.view.TagsLayout
             android:id="@+id/shopcarLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_orderListName"
+            android:layout_below="@id/re_orderListName"
             android:background="#ffffff"
             android:paddingRight="@dimen/margin_10"
             lee:tagHorizontalSpace="10dp"
@@ -99,10 +126,19 @@
             android:text="预售商品请单独下单"
             android:textColor="@color/orange"
             android:textSize="@dimen/textsize_12" />
+        <TextView
+            android:id="@+id/tv_PurchaseHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_PresellHint"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:text=""
+            android:textColor="@color/orange"
+            android:textSize="@dimen/textsize_12" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_PresellHint"
+            android:layout_below="@id/tv_PurchaseHint"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <TextView

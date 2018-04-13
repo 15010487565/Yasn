@@ -318,10 +318,14 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             ToastUtil.showToast("请输入正确数量！");
             return;
         }
-        int activityId = goodsInfoFragment.getActivityId();
-        int productId = goodsInfoFragment.getProductId();
 
-        Log.e("TAG_详情选择", "数量=" + goodsNum);
+        int productId = goodsInfoFragment.getProductId();
+        Log.e("TAG_详情加入规格", "productId=" + productId);
+        if (productId == 0) {
+            ToastUtil.showToast("请选择规格！");
+            return;
+        }
+        int activityId = goodsInfoFragment.getActivityId();
         Map<String, Object> params1 = new HashMap<String, Object>();
         params1.put("productId", String.valueOf(productId));
         params1.put("num", goodsNum);
@@ -522,7 +526,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         tvUndata.setVisibility(View.VISIBLE);
     }
 
-    public void setTvAddShopCar(boolean isOnclick) {
+    public void setTvAddShopCar(boolean isOnclick,String title) {
         if ("0".equals(loginState)) {
             if (isOnclick) {
                 tvAddShopCar.setEnabled(true);
@@ -535,7 +539,20 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             tvAddShopCar.setEnabled(true);
             tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
         }
-
+        if (title !=null){
+            Log.e("TAG_加入进货单","title="+title);
+            if (title.indexOf("预售")!=-1){
+                tvAddShopCar.setEnabled(true);
+                tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
+            }else  if (title.indexOf("限购")!=-1){
+                tvAddShopCar.setEnabled(true);
+                tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
+            }
+//            else {
+//                tvAddShopCar.setEnabled(false);
+//                tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.black_99));
+//            }
+        }
     }
 
     public SobotModel sobotModel;

@@ -19,8 +19,10 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
 
+    String loginState;
     public GoodsDetailsTopBtnFunc(Activity activity) {
         super(activity);
+        loginState = SharePrefHelper.getInstance(activity).getSpString("loginState");
     }
 
     @Override
@@ -35,7 +37,11 @@ public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
 
     @Override
     public void onclick(View v) {
-        showCreateMultiChatActionBar(v);
+        if ("登录看价格".equals(loginState)){
+            showCreateMultiChatActionBar(v,0);
+        }else {
+            showCreateMultiChatActionBar(v,1);
+        }
     }
 
     /**
@@ -43,16 +49,18 @@ public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
      *
      * @param view
      */
-    public void showCreateMultiChatActionBar(View view) {
+    public void showCreateMultiChatActionBar(View view,int state) {
         QuickAction quickAction = new QuickAction(getActivity(), QuickAction.VERTICAL);
         quickAction.addActionItem(new BaseActionItem(0, getActivity().getString(R.string.home),
                 ContextCompat.getDrawable(getActivity(), R.mipmap.goods_home)));
         quickAction.addActionItem(new BaseActionItem(1, getActivity().getString(R.string.classify),
                 ContextCompat.getDrawable(getActivity(), R.mipmap.goods_classify)));
-        quickAction.addActionItem(new BaseActionItem(2, getActivity().getString(R.string.order),
-                ContextCompat.getDrawable(getActivity(), R.mipmap.goods_order)));
-        quickAction.addActionItem(new BaseActionItem(3, getActivity().getString(R.string.vipcenter),
-                ContextCompat.getDrawable(getActivity(), R.mipmap.goods_shop)));
+        if (state==1){
+            quickAction.addActionItem(new BaseActionItem(2, getActivity().getString(R.string.order),
+                    ContextCompat.getDrawable(getActivity(), R.mipmap.goods_order)));
+            quickAction.addActionItem(new BaseActionItem(3, getActivity().getString(R.string.vipcenter),
+                    ContextCompat.getDrawable(getActivity(), R.mipmap.goods_shop)));
+        }
         quickAction.addActionItem(new BaseActionItem(4, getActivity().getString(R.string.share),
                 ContextCompat.getDrawable(getActivity(), R.mipmap.goods_share)));
 //

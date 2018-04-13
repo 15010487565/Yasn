@@ -633,6 +633,9 @@ public class HomeFragment extends SimpleTopbarFragment implements
             String cancelTimeString = HelpUtils.getDateToString(cancelDateTime);
             String logiName = order.getLogiName();
             String shipNo = order.getShipNo();
+            expressStateImage.setVisibility(View.VISIBLE);
+            expressStateText.setVisibility(View.VISIBLE);
+            orderTime.setVisibility(View.VISIBLE);
             if (status == 1) {
                 expressStateImage.setBackgroundResource(R.mipmap.daifukuan);
                 expressStateText.setText("待付款");
@@ -643,14 +646,12 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 expressStateText.setText("代发货");
                 orderHint.setText("仓库正在紧急备货中!");
                 orderTime.setText(createTimeString + " 下单成功");
-            }
-            if (status == 3) {
+            }else if (status == 3) {
                 expressStateImage.setBackgroundResource(R.mipmap.daishouhuo);
                 expressStateText.setText("待收货");
                 orderHint.setText("您的订单已发货!");
                 orderTime.setText(logiName + " " + shipNo);
-            }
-            if (status == 4) {
+            }else if (status == 4) {
                 expressStateImage.setBackgroundResource(R.mipmap.yiwancheng);
                 expressStateText.setText("已收货");
                 orderHint.setText("您的订单已收货!");
@@ -660,8 +661,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     orderTime.setVisibility(View.VISIBLE);
                     orderTime.setText(logiName + " " + shipNo);
                 }
-            }
-            if (status == 5) {
+            }else if (status == 5) {
                 expressStateImage.setBackgroundResource(R.mipmap.yiwancheng);
                 expressStateText.setText("已完成");
                 orderHint.setText("您的订单已完成!");
@@ -671,12 +671,16 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     orderTime.setVisibility(View.VISIBLE);
                     orderTime.setText(logiName + " " + shipNo);
                 }
-            }
-            if (status == 6) {
+            }else if (status == 6) {
                 expressStateImage.setBackgroundResource(R.mipmap.yiquxiao);
                 expressStateText.setText("已取消");
                 orderHint.setText("您的订单已取消!");
                 orderTime.setText(cancelTimeString + " 订单取消");
+            }else {
+                expressStateImage.setVisibility(View.GONE);
+                expressStateText.setVisibility(View.GONE);
+                orderHint.setText("订单有误！!");
+                orderTime.setVisibility(View.GONE);
             }
             String image = order.getImage();
             Glide.with(this)
@@ -789,7 +793,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onRefresh() {
-//        isFrist = true;
+        isFrist = true;
         OkHttpDemand();
         TimerTask timerTask = new TimerTask() {
             @Override

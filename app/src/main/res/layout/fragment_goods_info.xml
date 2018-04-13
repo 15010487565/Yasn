@@ -195,7 +195,7 @@
                         android:singleLine="true"
                         android:text="活动折扣XXXX"
                         android:textColor="@color/black_99"
-                        android:textSize="@dimen/textsize_14" />
+                        android:textSize="@dimen/textsize_12" />
                     <LinearLayout
                         android:id="@+id/sold_Linear"
                         android:layout_width="wrap_content"
@@ -237,7 +237,7 @@
                             android:singleLine="true"
                             android:text="建议售价:"
                             android:textColor="@color/black_99"
-                            android:textSize="@dimen/textsize_14" />
+                            android:textSize="@dimen/textsize_12" />
 
                         <TextView
                             android:id="@+id/retailPriceView"
@@ -267,7 +267,7 @@
                             android:singleLine="true"
                             android:text="批发价:"
                             android:textColor="@color/black_99"
-                            android:textSize="@dimen/textsize_14" />
+                            android:textSize="@dimen/textsize_12" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -290,7 +290,7 @@
                                 android:lines="1"
                                 android:text="最小起订量：X\t\tX件起批"
                                 android:textColor="@color/orange"
-                                android:textSize="@dimen/textsize_14" />
+                                android:textSize="@dimen/textsize_12" />
 
                         </LinearLayout>
 
@@ -312,7 +312,7 @@
                             android:ellipsize="end"
                             android:text="卖点:"
                             android:textColor="@color/black_99"
-                            android:textSize="@dimen/textsize_14" />
+                            android:textSize="@dimen/textsize_12" />
 
                         <TextView
                             android:id="@+id/sellingview"
@@ -321,7 +321,7 @@
                             android:layout_height="wrap_content"
                             android:text=""
                             android:textColor="@color/black_99"
-                            android:textSize="@dimen/textsize_14" />
+                            android:textSize="@dimen/textsize_12" />
 
                     </LinearLayout>
 
@@ -342,7 +342,7 @@
                             android:singleLine="true"
                             android:text="规格:"
                             android:textColor="@color/black_99"
-                            android:textSize="@dimen/textsize_14" />
+                            android:textSize="@dimen/textsize_12" />
 
                         <com.yasn.purchase.view.ShoppingSelectView
                             android:id="@+id/label_include"
@@ -374,7 +374,7 @@
                             android:singleLine="true"
                             android:text="折扣:"
                             android:textColor="@color/black_99"
-                            android:textSize="@dimen/textsize_14" />
+                            android:textSize="@dimen/textsize_12" />
 
                         <TextView
                             android:id="@+id/discountview"
@@ -386,7 +386,7 @@
                             android:singleLine="true"
                             android:text="积分可折扣%s"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/textsize_14" />
+                            android:textSize="@dimen/textsize_12" />
 
                     </LinearLayout>
 
@@ -407,7 +407,7 @@
                             android:singleLine="true"
                             android:text="促销:"
                             android:textColor="@color/black_99"
-                            android:textSize="@dimen/textsize_14" />
+                            android:textSize="@dimen/textsize_12" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -487,7 +487,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/margin_1dp"
-                        android:paddingTop="@dimen/margin_10"
+                        android:layout_marginTop="@dimen/margin_10"
                         android:layout_marginLeft="@dimen/margin_10"
                         android:layout_marginRight="@dimen/margin_10"
                         android:background="@color/black_f7"/>
@@ -500,7 +500,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black_99"
-                            android:textSize="@dimen/textsize_14"
+                            android:textSize="@dimen/textsize_12"
                             android:text="进货数量："/>
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -562,7 +562,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black_66"
-                            android:textSize="@dimen/textsize_14"
+                            android:textSize="@dimen/textsize_12"
                             android:layout_marginLeft="@dimen/height_45"
                             android:text="库存:X"/>
                     </LinearLayout>
@@ -580,14 +580,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black_99"
-                            android:textSize="@dimen/textsize_14"
+                            android:textSize="@dimen/textsize_12"
                             android:text="适用车型："/>
                         <TextView
                             android:id="@+id/carTypes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black_99"
-                            android:textSize="@dimen/textsize_14"
+                            android:textSize="@dimen/textsize_12"
                             android:text="XXXXXXX"/>
                     </LinearLayout>
                     <View
@@ -617,7 +617,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black_99"
-                                android:textSize="@dimen/textsize_14"
+                                android:textSize="@dimen/textsize_12"
                                 android:layout_marginLeft="@dimen/margin_3"
                                 android:text="正品保障"/>
                         </LinearLayout>
@@ -640,7 +640,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/black_99"
-                                android:textSize="@dimen/textsize_14"
+                                android:textSize="@dimen/textsize_12"
                                 android:text="七天包退"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -649,7 +649,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black_99"
-                        android:textSize="@dimen/textsize_14"
+                        android:textSize="@dimen/textsize_12"
                         android:layout_marginTop="@dimen/margin_5"
                         android:paddingLeft="@dimen/margin_10"
                         android:text="该商品由雅森发货及售后"/>

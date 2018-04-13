@@ -134,7 +134,6 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
 
                 String name = shopCarAdapterModel.getName();
-                listViewHolder.tvOrderListName.setText(name == null ? "" : name);
                 final int enableStore = shopCarAdapterModel.getEnableStore();
                 if (enableStore < 10) {
                     listViewHolder.tvOrderListHintNum.setText("仅剩" + enableStore + "件");
@@ -212,12 +211,44 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     listViewHolder.etGoodsNum.setTextColor(ContextCompat.getColor(context, R.color.black_99));
                     listViewHolder.etGoodsNum.setText(String.valueOf(num));
                 }
+                StringBuffer sb = new StringBuffer();
+                int goneNum = 0;
                 String beforeSale = shopCarAdapterModel.getBeforeSale();
                 if (beforeSale==null||"".equals(beforeSale)){
                     listViewHolder.tvPresellHint.setVisibility(View.GONE);
+                    listViewHolder.tvPresellHint.setText("");
+                    listViewHolder.tvPresell.setVisibility(View.GONE);
                 }else {
                     listViewHolder.tvPresellHint.setVisibility(View.VISIBLE);
+                    listViewHolder.tvPresellHint.setText("预售商品请单独下单");
+                    goneNum += 3;
+                    sb.append("预售 ");
+                    listViewHolder.tvPresell.setVisibility(View.VISIBLE);
                 }
+                int hasDiscount = shopCarAdapterModel.getHasDiscount();
+                if (hasDiscount == 0){//是否有抢购   1 有  0没有
+                    listViewHolder.tvPurchase.setVisibility(View.GONE);
+                    listViewHolder.tvPurchase.setText("");
+                }else {
+                    goneNum += 3;
+                    sb.append("抢购 ");
+                    listViewHolder.tvPurchase.setVisibility(View.VISIBLE);
+                    listViewHolder.tvPurchase.setText("抢购");
+                }
+                //限购
+                int limitnum = shopCarAdapterModel.getLimitnum();
+                if (limitnum <=0){
+                    listViewHolder.tvPurchaseHint.setVisibility(View.GONE);
+                    listViewHolder.tvPurchaseHint.setText("");
+                }else {
+                    listViewHolder.tvPurchaseHint.setVisibility(View.VISIBLE);
+                    listViewHolder.tvPurchaseHint.setText("限购"+limitnum+"件");
+                }
+                SpannableStringBuilder span = new SpannableStringBuilder(sb + (name == null ? "" : name));
+                span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.white)), 0, goneNum,
+                        Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                listViewHolder.tvOrderListName.setText(span);
+
                 String imageDefault = shopCarAdapterModel.getImageDefault();
                 Glide.with(context.getApplicationContext())
                         .load(imageDefault)
@@ -278,12 +309,15 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private TagsLayout shopcarLabel;
         private LinearLayout llSubtractNum, llAddNum, llOorderListSelect;
         private ImageView ivSubtractNum, ivAddNum;
-        private TextView etGoodsNum,tvPresellHint;
+        private TextView etGoodsNum,tvPresellHint,tvPurchaseHint,tvPurchase,tvPresell;
         private LinearLayout llNum;
         public ListViewHolder(View itemView) {
             super(itemView);
             llNum = (LinearLayout) itemView.findViewById(R.id.ll_Num);
             tvPresellHint = (TextView) itemView.findViewById(R.id.tv_PresellHint);
+            tvPurchaseHint = (TextView) itemView.findViewById(R.id.tv_PurchaseHint);
+            tvPurchase = (TextView) itemView.findViewById(R.id.tv_purchase);
+            tvPresell = (TextView) itemView.findViewById(R.id.tv_presell);
             //列表商品名称
             tvOrderListName = (TextView) itemView.findViewById(R.id.tv_orderListName);
             ivOrderListImage = (ImageView) itemView.findViewById(R.id.iv_orderListImage);

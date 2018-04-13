@@ -429,6 +429,9 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                         //限购数量
                         int limitnum = goodslistBean.getLimitnum();
                         shopCarAdapterModel.setLimitnum(limitnum);
+                        //抢购
+                        int hasDiscount = goodslistBean.getHasDiscount();
+                        shopCarAdapterModel.setHasDiscount(hasDiscount);
                         shopCarAdapterModel.setItmeType(2);
                         shopCarAdapterList.add(shopCarAdapterModel);
                     }

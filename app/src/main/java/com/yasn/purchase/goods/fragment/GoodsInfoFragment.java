@@ -60,7 +60,7 @@ import com.yasn.purchase.utils.AlignedTextUtils;
 import com.yasn.purchase.utils.HtmlImageGetter;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.FlowLayout;
-import com.yasn.purchase.view.RcDecoration;
+import com.yasn.purchase.view.RecyclerViewDecoration;
 import com.yasn.purchase.view.ShoppingSelectView;
 
 import java.io.IOException;
@@ -421,7 +421,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         int storeId = goodsDetails.getStoreId();
         if (storeId == 1) {
             autotrophy.setVisibility(View.VISIBLE);
-           autotrophy.setText("自营");
+            autotrophy.setText("自营");
             goneNum += 3;
             sb.append("自营 ");
             storeNameString = " 雅森 ";
@@ -446,11 +446,15 @@ public class GoodsInfoFragment extends BaseFragment implements
             storeNameString = " 厂家 ";
             salesReturn.setVisibility(View.GONE);
         }
-        String minNumberString = String.format("该商品由%s发货及售后", storeNameString);
-        SpannableStringBuilder storeNameSpan = new SpannableStringBuilder(minNumberString);
-        storeNameSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.black_33)), 4, 8,
-                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        storeName.setText(storeNameSpan);
+        try {
+            String minNumberString = String.format("该商品由%s发货及售后", storeNameString);
+            SpannableStringBuilder storeNameSpan = new SpannableStringBuilder(minNumberString);
+            storeNameSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.black_33)), 4, 8,
+                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            storeName.setText(storeNameSpan);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         int isLimitBuy = goodsDetails.getIsLimitBuy();
         if (isLimitBuy == 1) {
@@ -771,6 +775,10 @@ public class GoodsInfoFragment extends BaseFragment implements
         goodsDetails = goodsdetailsmodel.getGoodsDetails();
         //音频布局
         initVoice();
+        //轮播图
+        initBannerView(goodsDetails);
+        //设置title
+        initGoodsTitleContent(goodsDetails);
         //设置临时价格
         double price = goodsDetails.getPrice();
         soldout_money.setText("￥" + String.valueOf(price));
@@ -805,10 +813,6 @@ public class GoodsInfoFragment extends BaseFragment implements
         int totalBuyCount = goodsDetails.getTotalBuyCount();
         initSoldNumber(soldOut, String.valueOf(totalBuyCount), R.color.white);
         initSoldNumber(soldOut2, String.valueOf(totalBuyCount), R.color.black_66);
-        //轮播图
-        initBannerView(goodsDetails);
-        //设置title
-        initGoodsTitleContent(goodsDetails);
         //卖点
         String subTitle = goodsDetails.getSubTitle();
         if (TextUtils.isEmpty(subTitle)) {
@@ -896,8 +900,11 @@ public class GoodsInfoFragment extends BaseFragment implements
         //实例化adapter
         adapter = new TradePriceAdapter(getActivity());
         tradeprice_recy.setAdapter(adapter);
-        RcDecoration rcDecoration = new RcDecoration(getActivity(), RcDecoration.HORIZONTAL_LIST);
-        tradeprice_recy.addItemDecoration(rcDecoration);
+//        RcDecoration rcDecoration = new RcDecoration(getActivity(), RcDecoration.HORIZONTAL_LIST);
+//        tradeprice_recy.addItemDecoration(rcDecoration);
+        tradeprice_recy.addItemDecoration(new RecyclerViewDecoration(
+                getActivity(), LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.orange)));
+        adapter.notifyDataSetChanged();
     }
 
     private int productId;//商品规格id
@@ -908,6 +915,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         typeLadderPricesposition = position;
         if (position == -1) {
             enableStore.setVisibility(View.GONE);
+            productId = 0;
             return;
         }
         GoodsDetailsModel.GoodsDetailsBean.ProductsBean productsBean;
@@ -919,7 +927,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             //建议零售价
             String minReferencePrice = productsBean.getMinReferencePrice();
             String maxReferencePrice = productsBean.getMaxReferencePrice();
-            if (minReferencePrice != null && maxReferencePrice != null && !"0".equals(minReferencePrice) && !"0".equals(maxReferencePrice)) {
+            if (minReferencePrice != null && maxReferencePrice != null &&  Double.valueOf(maxReferencePrice)>0) {
                 llRetailPrice.setVisibility(View.VISIBLE);
                 retailPriceView.setText("￥" + minReferencePrice + "-￥" + maxReferencePrice);
             } else {
@@ -934,14 +942,14 @@ public class GoodsInfoFragment extends BaseFragment implements
                 enableStore.setText("库存:充足");
                 etGoodsNum.setText(String.valueOf(smallSale));
 
-                ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true);
+                ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, title.getText().toString());
             } else {
                 enableStore.setText("库存:" + String.valueOf(enableStoreNum));
                 if (enableStoreNum == 0) {
-                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false);
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, title.getText().toString());
                 } else {
                     etGoodsNum.setText(String.valueOf(smallSale));
-                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true);
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, title.getText().toString());
                 }
             }
             //阶梯价
@@ -1093,6 +1101,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             if (has_discount == 0) {
                 top_purchasepromotion.setVisibility(View.GONE);
                 sold_Linear.setVisibility(View.VISIBLE);
+//                ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false,null);
             } else {
                 top_purchasepromotion.setVisibility(View.VISIBLE);
                 sold_Linear.setVisibility(View.GONE);
@@ -1102,6 +1111,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                 //限时抢购倒计时
                 time = discount.getRemainingTime();
                 handler.postDelayed(runnable, 1000);
+//                ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true,null);
             }
         }
     }
@@ -1315,6 +1325,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             }
         } else {
             enableStore.setVisibility(View.GONE);
+            productId=0;
         }
     }
 
@@ -1469,6 +1480,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         etGoodsNum.removeTextChangedListener(this);
         if (position == -1) {
             enableStore.setVisibility(View.GONE);
+            productId=0;
             return;
         }
         GoodsDetailsModel.GoodsDetailsBean.ProductsBean productsBean;
@@ -1483,13 +1495,13 @@ public class GoodsInfoFragment extends BaseFragment implements
             Log.e("TAG_库存", "position=" + position + ";enableStoreNum=" + enableStoreNum);
             if (enableStoreNum >= 10) {
                 enableStore.setText("库存:充足");
-                ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true);
+                ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, title.getText().toString());
             } else {
                 enableStore.setText("库存:" + String.valueOf(enableStoreNum));
                 if (enableStoreNum == 0) {
-                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false);
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, title.getText().toString());
                 } else {
-                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true);
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, title.getText().toString());
                 }
             }
             //阶梯价

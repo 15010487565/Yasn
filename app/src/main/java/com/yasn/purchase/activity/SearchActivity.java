@@ -528,7 +528,8 @@ public class SearchActivity extends SimpleTopbarActivity implements
         int selectPosition = tab.getPosition();
         Log.e("TAG_", selectPosition + "");
         int cat_id = cats.get(selectPosition).getCat_id();
-        startSearchGet("", String.valueOf(cat_id), "def_desc");
+        secarchcarid = String.valueOf(cat_id);
+        startSearchGet("", secarchcarid, "def_desc");
     }
 
     @Override

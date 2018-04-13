@@ -508,6 +508,15 @@ public class ShopCarModel implements Serializable {
             private int isBeforeSale;
             private int goodsOff;
             private String beforeSale;
+            private int hasDiscount;
+
+            public int getHasDiscount() {
+                return hasDiscount;
+            }
+
+            public void setHasDiscount(int hasDiscount) {
+                this.hasDiscount = hasDiscount;
+            }
 
             public int getId() {
                 return id;
