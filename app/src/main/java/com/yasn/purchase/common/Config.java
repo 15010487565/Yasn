@@ -11,19 +11,17 @@ public class Config {
 //    public static final String IP = "http://shop.yasn.com:9100/api/composite-service/";//正式
 //    public static final String URLCAIGOU = "http://caigou.yasn.com/";//正式服
 //    public static final String URL = "http://shop.yasn.com/";//正式服
+//    public final static String SEARCH = "http://47.93.233.216:9998/search/solr/goods/list?";//正式服搜索页面
     public static final String IP = "http://shoptest.yasn.com:9100/api/composite-service/";//测试
     public static final String URLCAIGOU = "http://shoptt.yasn.com/";//测试首服
     public static final String URL = "http://shoptt.yasn.com:81/";//测试首服
-    public final static String SHOPPCAR_1 = "http://192.168.50.166:9100/api/composite-service/cart/get-cart-list";//号哥本地
-    //欢迎界面图片
+    public final static String SEARCH = "http://47.93.192.134:9998/search/solr/goods/list?";//测试服搜索页面
+//    //欢迎界面图片
     public static final String url = "http://caigou.yasn.com/";//正式服
-    //搜索页面
-//    public final static String SEARCH = "http://47.93.233.216:9998/search/solr/goods/list?";//正式服
-    public final static String SEARCH = "http://47.93.192.134:9998/search/solr/goods/list?";//测试服
     //欢迎界面图片
     public final static String LAUNCHIMAGE = url+"api/base/app/geturl.do";
     //首页
-            public static final String HOME = IP+"home/index";
+    public static final String HOME = IP+"home/index";
     //分类页面
     public final static String CLASSIFY = IP+"goods/cat/list";
     //发现页面

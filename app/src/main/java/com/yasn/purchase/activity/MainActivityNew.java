@@ -11,9 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,7 +20,7 @@ import com.yasn.purchase.activityold.WebViewActivity;
 import com.yasn.purchase.application.YasnApplication;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.fragment.ClassifyFragment;
-import com.yasn.purchase.fragment.FindFragment;
+import com.yasn.purchase.fragment.FindTestFragment;
 import com.yasn.purchase.fragment.HomeFragment;
 import com.yasn.purchase.fragment.ShopCarFragment;
 import com.yasn.purchase.fragment.ShopFragment;
@@ -42,6 +40,7 @@ import java.util.Map;
 import www.xcd.com.mylibrary.R;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
+import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 import www.xcd.com.mylibrary.view.NoPreloadViewPager;
 import www.xcd.com.mylibrary.view.NoScrollPreloadViewPager;
@@ -56,7 +55,8 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     public static Class<?> fragmentArray[] = {
             HomeFragment.class,
             ClassifyFragment.class,
-            FindFragment.class,
+//            FindFragment.class,
+            FindTestFragment.class,
             ShopCarFragment.class,
             ShopFragment.class
     };
@@ -102,9 +102,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
 
     private NoScrollPreloadViewPager viewPager;
     private SnsTabWidget tabWidget;
-    private LinearLayout main_bottom;
-    private RelativeLayout main_find_view, main_find_viewhl;
-    private FrameLayout main_find_frame;
+    private RelativeLayout rlMainError;//错误布局
     /**
      * 第一次返回按钮时间
      */
@@ -145,37 +143,20 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     private void initView() {
         viewPager = (NoScrollPreloadViewPager) findViewById(R.id.main_viewpager);
         tabWidget = (SnsTabWidget) findViewById(R.id.main_tabwidget);
-        main_bottom = (LinearLayout) findViewById(R.id.main_bottom);
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return false;
             }
         });
-        main_find_frame = (FrameLayout) findViewById(R.id.main_find_frame);
-        main_find_frame.setOnClickListener(this);
-        main_find_view = (RelativeLayout) findViewById(R.id.main_find_view);
-        main_find_viewhl = (RelativeLayout) findViewById(R.id.main_find_viewhl);
-    }
-
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-            case R.id.main_find_frame:
-                main_find_view.setAlpha(0);
-                main_find_viewhl.setAlpha(1);
-                viewPager.setCurrentItem(2);
-                break;
-
-        }
+        rlMainError = (RelativeLayout) findViewById(R.id.rl_mainError);
+        rlMainError.setVisibility(View.GONE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        currentItem = getIntent().getIntExtra("CURRENTITEM", 0);
-//        viewPager.setCurrentItem(currentItem);
+        tabWidget.getBackground().setAlpha(0);
     }
 
     @Override
@@ -257,19 +238,27 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         TextView textViewHl = (TextView) view.findViewById(R.id.main_tabitem_texthl);
         // 设置文字
         textViewHl.setText(MAIN_TAB_TEXT[index]);
-        if (index != 2) {
-            // ImageView
-            ImageView imageView = (ImageView) view.findViewById(R.id.main_tabitem_icon);
-            // 非高亮图标
-            imageView.setImageResource(MAIN_TAB_IMAGE[index]);
-
-            // ImageView
-            ImageView imageViewHl = (ImageView) view.findViewById(R.id.main_tabitem_iconhl);
-            // 高亮图标
-            imageViewHl.setImageResource(MAIN_TAB_IMAGEHL[index]);
-
-            resetTextViewStyle(view, index, isCur);
+        // ImageView
+        ImageView imageView = (ImageView) view.findViewById(R.id.main_tabitem_icon);
+        // ImageView
+        ImageView imageViewHl = (ImageView) view.findViewById(R.id.main_tabitem_iconhl);
+        // 非高亮图标
+        imageView.setImageResource(MAIN_TAB_IMAGE[index]);
+        RelativeLayout.LayoutParams lp= (RelativeLayout.LayoutParams) imageView.getLayoutParams();
+        // 高亮图标
+        imageViewHl.setImageResource(MAIN_TAB_IMAGEHL[index]);
+        RelativeLayout.LayoutParams lpHl= (RelativeLayout.LayoutParams) imageViewHl.getLayoutParams();
+        if (index == 2) {
+            int dip2px = HelpUtils.imageDip2px(this, 60);
+            Log.e("TAG_首页2","dip2px="+dip2px);
+            lp.width = dip2px;
+            lp.height = dip2px;
+            lpHl.width = dip2px;
+            lpHl.height = dip2px;
         }
+        imageView.setLayoutParams(lp);
+        imageViewHl.setLayoutParams(lpHl);
+        resetTextViewStyle(view, index, isCur);
     }
 
     /**
@@ -439,8 +428,6 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
                 viewPager.setCurrentItem(tabIndex, false);
             }
 
-            main_find_view.setAlpha(1);
-            main_find_viewhl.setAlpha(0);
             if (!viewPager.hasFocus()) {
                 viewPager.requestFocus();
             }
@@ -570,6 +557,10 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
 
         }else if ("webViewBack".equals(msg)){//返回页
 
-        }
+        }else if ("error".equals(msg)){
+           rlMainError.setVisibility(View.VISIBLE);
+       }else if ("Success".equals(msg)){
+           rlMainError.setVisibility(View.GONE);
+       }
     }
 }

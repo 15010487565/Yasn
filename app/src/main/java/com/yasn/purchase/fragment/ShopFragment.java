@@ -311,6 +311,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         mSwipeRefreshLayout.setRefreshing(false);
+        EventBus.getDefault().post(new EventBusMsg("Success"));
         switch (requestCode) {
             case 101:
                 if (returnCode == 200) {
@@ -396,6 +397,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
             handler.sendEmptyMessage(0);
         }
     };
+    int lv_id = 0;
     private void initShopData(String returnData) {
         try {
             if (returnData != null) {
@@ -411,7 +413,6 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                 ShopInfoModel shopinfomodel = JSON.parseObject(returnData, ShopInfoModel.class);
                 if (shopinfomodel != null) {
                     ShopInfoModel.MemberBean member = shopinfomodel.getMember();
-                    int lv_id = 0;
                     if (member != null) {
                         //地方站名字
                         String regionName = member.getRegionName();
@@ -749,49 +750,73 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
 
     @Override
     public void onCancelResult() {
-
+        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
-
+        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
-
+        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override
     public void onFinishResult() {
-
+        EventBus.getDefault().post(new EventBusMsg("error"));
     }
     //点击事件
     @Override
     public void OnItemClick(View view, int position) {
-        switch (position){
-            case 0://我的积分
-                startWebViewActivity(Config.SHOPINTEGRAL);
-                break;
-            case 1://收货地址
-                startWebViewActivity(Config.SHOPPLACEOFRECEIPT);
-                break;
-            case 2://数字会员
-                startWebViewActivity(Config.DREDGEYASNHELP);
-                break;
-            case 3://帮助中心
-                startWebViewActivity(Config.SHOPHELP);
-                break;
-            case 4://电话咨询
-                startWebViewActivity(Config.SHOPPHONE);
-                break;
-            case 5://在线客服
-                SobotUtil.startSobot(getActivity(),null);
-                break;
-            case 6://专票资质
-                startWebViewActivity(Config.SHOPAPTITUDE);
-                break;
+        if (lv_id>5){
+            switch (position){
+                case 0://我的积分
+                    startWebViewActivity(Config.SHOPINTEGRAL);
+                    break;
+                case 1://收货地址
+                    startWebViewActivity(Config.SHOPPLACEOFRECEIPT);
+                    break;
+                case 2://数字会员
+                    startWebViewActivity(Config.DREDGEYASNHELP);
+                    break;
+                case 3://帮助中心
+                    startWebViewActivity(Config.SHOPHELP);
+                    break;
+                case 4://电话咨询
+                    startWebViewActivity(Config.SHOPPHONE);
+                    break;
+                case 5://在线客服
+                    SobotUtil.startSobot(getActivity(),null);
+                    break;
+                case 6://专票资质
+                    startWebViewActivity(Config.SHOPAPTITUDE);
+                    break;
+            }
+        }else {
+            switch (position){
+                case 0://我的积分
+                    startWebViewActivity(Config.SHOPINTEGRAL);
+                    break;
+                case 1://数字会员
+                    startWebViewActivity(Config.DREDGEYASNHELP);
+                    break;
+                case 2://帮助中心
+                    startWebViewActivity(Config.SHOPHELP);
+                    break;
+                case 3://电话咨询
+                    startWebViewActivity(Config.SHOPPHONE);
+                    break;
+                case 4://在线客服
+                    SobotUtil.startSobot(getActivity(),null);
+                    break;
+                case 5://专票资质
+                    startWebViewActivity(Config.SHOPAPTITUDE);
+                    break;
+            }
         }
+
     }
 
     @Override
@@ -846,6 +871,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
      */
     private int isInvite = 0;
     private void showInviteDialog(String admin,String dutyAuth,int isInvite) {
+        Log.e("TAG_邀请","isInvite="+isInvite);
         this.isInvite = isInvite;
         LayoutInflater factor = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_invite, null);

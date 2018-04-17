@@ -10,7 +10,7 @@
         android:maxLines="2"
         android:text="Letv/乐视LETV体感-超级枪王 乐视TV超级电视产品玩具体感游戏枪 电玩道具黑色"
         android:textColor="@color/black_66"
-        android:textSize="@dimen/textsize_16">
+        android:textSize="@dimen/textsize_14">
 
     </TextView>
     <LinearLayout

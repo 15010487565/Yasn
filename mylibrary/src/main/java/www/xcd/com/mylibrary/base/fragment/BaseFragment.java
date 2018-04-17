@@ -473,7 +473,6 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 						onParseErrorResult(HttpConfig.PARSEERROR);
 						ToastUtil.showToast("网络异常,数据解析错误...");
 						dialogDissmiss();
-
 						break;
 					//网络错误
 					case HttpConfig.NETERROR:

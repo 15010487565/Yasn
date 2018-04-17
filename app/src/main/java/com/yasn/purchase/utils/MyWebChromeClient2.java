@@ -13,8 +13,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.yasn.purchase.activity.GoodsDetailsActivity;
+import com.yasn.purchase.activity.MainActivityNew;
 import com.yasn.purchase.activity.SearchActivity;
-import com.yasn.purchase.activityold.MainActivity;
 import com.yasn.purchase.activityold.WebViewActivity;
 import com.yasn.purchase.help.LoginOut;
 import com.yasn.purchase.model.EventBusMsg;
@@ -207,6 +207,13 @@ public class MyWebChromeClient2 extends WebChromeClient {
         }else if ("SearchResultList".equals(backString)){//搜索列表
 //            EventBus.getDefault().post(new EventBusMsg("SearchResultList"));
             Intent intent = new Intent(activity, SearchActivity.class);
+            if (goodsId!=null&&!"".equals(goodsId)){
+                intent.putExtra("SECARCHCARID",goodsId);
+                intent.putExtra("SECARCHTOPTAB",true);//是否显示搜索页顶部TabLayout
+            }else {
+                intent.putExtra("SECARCHCONTEXT",startSourceURL);
+                intent.putExtra("SECARCHTOPTAB",false);//是否显示搜索页顶部TabLayout
+            }
             activity.startActivity(intent);
         }else if ("else".equals(backString)){//关闭当前activity
             activity.finish();
@@ -217,8 +224,13 @@ public class MyWebChromeClient2 extends WebChromeClient {
         }
     }
     public void startMainActivity(int currentItem){
-        Intent intent = new Intent(activity, MainActivity.class);
-        intent.putExtra("CURRENTITEM",currentItem);
-        activity.startActivity(intent);
+        Log.e("TAG_JS跳转","主页");
+        String token = SharePrefHelper.getInstance(activity).getSpString("token");
+        String resetToken = SharePrefHelper.getInstance(activity).getSpString("resetToken");
+        if ((token != null && !"".equals(token)||(resetToken != null && !"".equals(resetToken)))) {
+            Intent intent = new Intent(activity, MainActivityNew.class);
+            intent.putExtra("CURRENTITEM",currentItem);
+            activity.startActivity(intent);
+        }
     }
 }

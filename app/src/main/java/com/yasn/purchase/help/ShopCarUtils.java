@@ -1,5 +1,7 @@
 package com.yasn.purchase.help;
 
+import android.util.Log;
+
 import java.io.IOException;
 
 import okhttp3.OkHttpClient;
@@ -14,6 +16,8 @@ public class ShopCarUtils {
     public static String getShopCar(String path,String token){
         String body = null;
         try {
+            Log.e("TAG_PATH","path="+path);
+            Log.e("TAG_PATH","token="+token);
             //创建okHttpClient对象
             OkHttpClient client = new OkHttpClient();
             Request.Builder builder = new Request.Builder();

@@ -1,6 +1,7 @@
 package com.yasn.purchase.activity;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -265,14 +266,18 @@ public class SearchActivity extends SimpleTopbarActivity implements
         ungoods_relat.setAlpha(0);
         //抽屉
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //右侧抽屉布局
+    }
+
+    private void initRightDrawerLayout() {
+        Rect frame = new Rect();getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        int statusBarHeight = frame.top;
         menu_layout_right = (LinearLayout) findViewById(R.id.menu_layout_right);
         WindowManager wm = this.getWindowManager();//获取屏幕宽高
         int width1 = wm.getDefaultDisplay().getWidth();
-        int height1 = wm.getDefaultDisplay().getHeight();
+//        int height1 = wm.getDefaultDisplay().getHeight();
         ViewGroup.LayoutParams para = menu_layout_right.getLayoutParams();//获取drawerlayout的布局
         para.width = width1 / 5 * 4;//修改宽度
-        para.height = height1;//修改高度
+//        para.height = height1;//修改高度
         menu_layout_right.setLayoutParams(para); //设置修改后的布局。
         backDrawer= (ImageView) findViewById(R.id.back);
         backDrawer.setOnClickListener(this);
@@ -289,9 +294,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
         //完成
         ok = (TextView) findViewById(R.id.ok);
         ok.setOnClickListener(this);
-    }
 
-    private void initRightDrawerLayout() {
         seclectName = (TextView) findViewById(R.id.seclectName);
         drawlayoutsearch_rv = (RecyclerView) findViewById(R.id.drawlayoutsearch_rv);
         mComparator = new PinyinComparator();
@@ -383,21 +386,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
                 startActivity(intent);
                 break;
             case R.id.search_synthesis://综合
-                tabType = 1;
-                searchsynthesis.setTextColor(ContextCompat.getColor(this, R.color.orange));
-                searchsalesvolume.setTextColor(ContextCompat.getColor(this, R.color.black_33));
-                searchmoney.setTextColor(ContextCompat.getColor(this, R.color.black_33));
-                searchscreen.setTextColor(ContextCompat.getColor(this, R.color.black_33));
-                if (!sortOld.equals("def_desc")) {
-                    page = 1;
-                    if (secarchtoptab) {
-                        startSearchGet("", secarchcarid, "def_desc");
-                    } else {
-                        startSearchGet(secarchContext, "", "def_desc");
-                    }
-                }
-                searchsalesvolume.animateArrow(false);//重置销量箭头
-                searchmoney.animateArrow(false);//重置价格箭头
+                searchSynthesis();
                 break;
             case R.id.search_salesvolume://销量
                 tabType = 2;
@@ -493,7 +482,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
                 mAdapter.notifyDataSetChanged();
                 break;
             case R.id.ok:
-                Log.e("TAG_车型",""+ISCHECKEDYASN+";cartype="+cartype);
+                Log.e("TAG_车型","自营="+ISCHECKEDYASN+";cartype="+cartype);
                 if (ISCHECKEDYASN||(cartype !=null&&!"".equals(cartype))){
                     selecttype.setVisibility(View.VISIBLE);
                     drawer_layout.closeDrawer(menu_layout_right);
@@ -513,6 +502,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
                         cartypefram.setVisibility(View.VISIBLE);
                         cartypetext.setText(cartype);
                     }
+                    searchSynthesis();
                 }else {
                     ToastUtil.showToast("选择条件不能空");
                 }
@@ -521,6 +511,24 @@ public class SearchActivity extends SimpleTopbarActivity implements
                 drawer_layout.closeDrawer(menu_layout_right);
                 break;
         }
+    }
+
+    private void searchSynthesis() {
+        tabType = 1;
+        searchsynthesis.setTextColor(ContextCompat.getColor(this, R.color.orange));
+        searchsalesvolume.setTextColor(ContextCompat.getColor(this, R.color.black_33));
+        searchmoney.setTextColor(ContextCompat.getColor(this, R.color.black_33));
+        searchscreen.setTextColor(ContextCompat.getColor(this, R.color.black_33));
+//        if (!sortOld.equals("def_desc")) {
+            page = 1;
+            if (secarchtoptab) {
+                startSearchGet("", secarchcarid, "def_desc");
+            } else {
+                startSearchGet(secarchContext, "", "def_desc");
+            }
+//        }
+        searchsalesvolume.animateArrow(false);//重置销量箭头
+        searchmoney.animateArrow(false);//重置价格箭头
     }
 
     @Override

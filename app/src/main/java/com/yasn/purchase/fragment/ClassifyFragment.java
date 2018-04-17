@@ -25,9 +25,12 @@ import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.ClassifyLeftModel;
 import com.yasn.purchase.model.ClassifyModel;
 import com.yasn.purchase.model.ClassifyRightModel;
+import com.yasn.purchase.model.EventBusMsg;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.NoScrollGridView;
 import com.yasn.purchase.view.TagsLayout;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -274,6 +277,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        EventBus.getDefault().post(new EventBusMsg("Success"));
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {
@@ -292,22 +296,22 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onCancelResult() {
-
+        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
-
+        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
-
+        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override
     public void onFinishResult() {
-
+        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override

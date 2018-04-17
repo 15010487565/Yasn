@@ -518,13 +518,17 @@ public class HomeFragment extends SimpleTopbarFragment implements
         } else {
             home_banner.setVisibility(View.GONE);
         }
-
     }
 
     //轮播图点击事件
     @Override
     public void OnBannerClick(int position) {
-        ToastUtil.showToast("新轮播");
+        List<HomeModel.AdvsBean> advs = homemodel.getAdvs();
+        HomeModel.AdvsBean advsBean = advs.get(position);
+        String url = advsBean.getUrl();
+        if (url!=null&&!"".equals(url)){
+            startWebViewActivity(Config.URL+url);
+        }
     }
 
     @Override
@@ -581,6 +585,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        EventBus.getDefault().post(new EventBusMsg("Success"));
         switch (requestCode) {
             case 100:
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -676,10 +681,15 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 expressStateText.setText("已取消");
                 orderHint.setText("您的订单已取消!");
                 orderTime.setText(cancelTimeString + " 订单取消");
+            }else if (status == 7) {
+                expressStateImage.setVisibility(View.GONE);
+                expressStateText.setVisibility(View.GONE);
+                orderHint.setText("已申请售后申请!");
+                orderTime.setVisibility(View.GONE);
             }else {
                 expressStateImage.setVisibility(View.GONE);
                 expressStateText.setVisibility(View.GONE);
-                orderHint.setText("订单有误！!");
+                orderHint.setVisibility(View.GONE);
                 orderTime.setVisibility(View.GONE);
             }
             String image = order.getImage();
@@ -734,7 +744,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
         if (homerecyList != null) {
             HomeRecyModel homeRecyModel = homerecyList.get(listPosition);
             int itemType = homeRecyModel.getItemType();
-            if (itemType == 0) {
+            if (itemType == 1) {
                 return;
             }
             int market_enable = homeRecyModel.getMarket_enable();
@@ -759,7 +769,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         int selectPosition = tab.getPosition();
-        Log.e("TAG_TabSelected","次数");
+        Log.e("TAG_TabSelected","isFrist="+isFrist+";isOpen="+isOpen);
         if (isFrist) {
             isFrist = false;
             return;
@@ -816,22 +826,22 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onCancelResult() {
-
+        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
-
+        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
-
+        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override
     public void onFinishResult() {
-
+        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     private Handler handler = new Handler() {

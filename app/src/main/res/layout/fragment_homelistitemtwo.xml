@@ -46,7 +46,7 @@
                 android:maxLines="2"
                 android:text="Letv/乐视LETV体感-超级枪王 乐视TV超级电视产品玩具体感游戏枪 电玩道具黑色"
                 android:textColor="@color/black_66"
-                android:textSize="@dimen/textsize_16">
+                android:textSize="@dimen/textsize_14">
 
             </TextView>
 
@@ -90,7 +90,7 @@
             android:singleLine="true"
             android:text="XXXX"
             android:textColor="@color/black_99"
-            android:textSize="@dimen/textsize_14" />
+            android:textSize="@dimen/textsize_12" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,7 +104,7 @@
                 android:layout_marginTop="@dimen/margin_5"
                 android:text="￥XX.XX"
                 android:textColor="@color/orange"
-                android:textSize="@dimen/textsize_16" />
+                android:textSize="@dimen/textsize_14" />
 
             <TextView
                 android:id="@+id/home_count"
@@ -116,7 +116,7 @@
                 android:singleLine="true"
                 android:text="XXXX"
                 android:textColor="@color/orange"
-                android:textSize="@dimen/textsize_14" />
+                android:textSize="@dimen/textsize_12" />
         </LinearLayout>
 
         <LinearLayout

@@ -1,7 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
@@ -63,58 +62,6 @@
                     </LinearLayout>
                 </ScrollView>
         </LinearLayout>
-            <!--<android.support.design.widget.CoordinatorLayout-->
-                <!--android:id="@+id/main_content"-->
-                <!--android:focusable="true"-->
-                <!--android:focusableInTouchMode="true"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:paddingTop="@dimen/margin_10"-->
-                <!--android:paddingRight="@dimen/margin_10"-->
-                <!--android:layout_weight="2">-->
-
-                <!--&lt;!&ndash;AppBarLayout 是继承LinerLayout实现的一个ViewGroup容器组件，它是为了Material Design设计的AppBar，支持手势滑动操作&ndash;&gt;-->
-                <!--<android.support.design.widget.AppBarLayout-->
-                    <!--android:id="@+id/appbar"-->
-                    <!--android:focusable="true"-->
-                    <!--android:focusableInTouchMode="true"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
-
-                    <!--<android.support.design.widget.CollapsingToolbarLayout-->
-                        <!--android:id="@+id/collapsing_toolbar"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:fitsSystemWindows="true"-->
-                        <!--app:contentScrim="?attr/colorPrimary"-->
-                        <!--app:expandedTitleMarginStart="48dp"-->
-                        <!--app:layout_scrollFlags="scroll|exitUntilCollapsed">-->
-                        <!--&lt;!&ndash;<com.bigkoo.convenientbanner.ConvenientBanner&ndash;&gt;-->
-                        <!--&lt;!&ndash;android:id="@+id/convenientBanner"&ndash;&gt;-->
-                        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-                        <!--&lt;!&ndash;android:layout_height="@dimen/height_150"&ndash;&gt;-->
-                        <!--&lt;!&ndash;app:canLoop="true">&ndash;&gt;-->
-
-                        <!--&lt;!&ndash;</com.bigkoo.convenientbanner.ConvenientBanner>&ndash;&gt;-->
-                        <!--<ImageView-->
-                            <!--android:id="@+id/convenientBanner"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="120dp"-->
-                            <!--android:scaleType="fitXY"-->
-                            <!--app:canLoop="true"/>-->
-
-                    <!--</android.support.design.widget.CollapsingToolbarLayout>-->
-                <!--</android.support.design.widget.AppBarLayout>-->
-                <!--<android.support.v7.widget.RecyclerView-->
-                    <!--android:id="@+id/calssifyrecy_right"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:paddingTop="@dimen/margin_20"-->
-                    <!--android:background="@color/white"-->
-                    <!--android:layout_weight="2"-->
-                    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
-            <!--</android.support.design.widget.CoordinatorLayout>-->
 
         </LinearLayout>
 

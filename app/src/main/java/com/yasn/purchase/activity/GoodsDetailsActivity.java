@@ -276,10 +276,16 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                 SobotUtil.startSobot(this, getSobotModel());
                 break;
             case R.id.fl_shopCar:
-                startWebViewActivity(Config.SHOPPCARWEBVIEW);
+//                startWebViewActivity(Config.SHOPPCARWEBVIEW);
+                if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
+                    startActivity(new Intent(GoodsDetailsActivity.this, ShopCarActivity.class));
+                }else {
+                    startWebViewActivity(Config.LOGINWEBVIEW);
+                }
                 break;
             case R.id.tv_addShopCar:
                 String trim = tvAddShopCar.getText().toString().trim();
+                Log.e("TAG_详情提交", "trim=" + trim);
                 if ("去登录".equals(trim)) {
                     startWebViewActivity(Config.LOGINWEBVIEW);
                 } else if ("去认证".equals(trim)) {
@@ -356,13 +362,13 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
 
     private void startWebViewActivity(String url) {
 
-        if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
-            startActivity(new Intent(GoodsDetailsActivity.this, ShopCarActivity.class));
-        } else {
-            Intent intent = new Intent(GoodsDetailsActivity.this, WebViewActivity.class);
-            intent.putExtra("webViewUrl", url);
-            startActivity(intent);
-        }
+//        if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
+//            startActivity(new Intent(GoodsDetailsActivity.this, ShopCarActivity.class));
+//        } else {
+        Intent intent = new Intent(GoodsDetailsActivity.this, WebViewActivity.class);
+        intent.putExtra("webViewUrl", url);
+        startActivity(intent);
+//        }
     }
 
     @Override
@@ -526,7 +532,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         tvUndata.setVisibility(View.VISIBLE);
     }
 
-    public void setTvAddShopCar(boolean isOnclick,String title) {
+    public void setTvAddShopCar(boolean isOnclick, String title) {
         if ("0".equals(loginState)) {
             if (isOnclick) {
                 tvAddShopCar.setEnabled(true);
@@ -539,12 +545,12 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             tvAddShopCar.setEnabled(true);
             tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
         }
-        if (title !=null){
-            Log.e("TAG_加入进货单","title="+title);
-            if (title.indexOf("预售")!=-1){
+        if (title != null) {
+            Log.e("TAG_加入进货单", "title=" + title);
+            if (title.indexOf("预售") != -1) {
                 tvAddShopCar.setEnabled(true);
                 tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
-            }else  if (title.indexOf("限购")!=-1){
+            } else if (title.indexOf("限购") != -1) {
                 tvAddShopCar.setEnabled(true);
                 tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
             }

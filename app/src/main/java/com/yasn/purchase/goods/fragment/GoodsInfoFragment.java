@@ -530,8 +530,27 @@ public class GoodsInfoFragment extends BaseFragment implements
                 etGoodsNum.addTextChangedListener(this);
                 break;
             case R.id.iv_addNum:
+                String titleString = null;
+                if (title != null) {
+                    titleString = title.getText().toString();
+                }
+                Log.e("TAG_详情加数量", "titleString=" + titleString);
                 if (enableStoreNum == 0) {
-                    ToastUtil.showToast("库存不足");
+                    if (titleString.indexOf("预售") == -1) {
+                        ToastUtil.showToast("库存不足");
+                    } else {
+                        etGoodsNum.removeTextChangedListener(this);
+                        int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
+                        if (smallSale > 0) {
+                            int allAddNum = addNum + smallSale;
+                            etGoodsNum.setText(String.valueOf(allAddNum));
+                        } else {
+                            int allAddNum = addNum + 1;
+                            etGoodsNum.setText(String.valueOf(allAddNum));
+                        }
+                        etGoodsNum.addTextChangedListener(this);
+                    }
+
                 } else {
                     etGoodsNum.removeTextChangedListener(this);
                     int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
@@ -927,7 +946,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             //建议零售价
             String minReferencePrice = productsBean.getMinReferencePrice();
             String maxReferencePrice = productsBean.getMaxReferencePrice();
-            if (minReferencePrice != null && maxReferencePrice != null &&  Double.valueOf(maxReferencePrice)>0) {
+            if (minReferencePrice != null && maxReferencePrice != null && Double.valueOf(maxReferencePrice) > 0) {
                 llRetailPrice.setVisibility(View.VISIBLE);
                 retailPriceView.setText("￥" + minReferencePrice + "-￥" + maxReferencePrice);
             } else {
@@ -944,12 +963,19 @@ public class GoodsInfoFragment extends BaseFragment implements
 
                 ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, title.getText().toString());
             } else {
-                enableStore.setText("库存:" + String.valueOf(enableStoreNum));
+
+                String titleString = title.getText().toString();
+                if (titleString.indexOf("预售") != -1) {
+                    enableStore.setText("库存:充足");
+                    etGoodsNum.setText("1");
+                } else {
+                    enableStore.setText("库存:" + String.valueOf(enableStoreNum));
+                }
                 if (enableStoreNum == 0) {
-                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, title.getText().toString());
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, titleString);
                 } else {
                     etGoodsNum.setText(String.valueOf(smallSale));
-                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, title.getText().toString());
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, titleString);
                 }
             }
             //阶梯价
@@ -1325,7 +1351,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             }
         } else {
             enableStore.setVisibility(View.GONE);
-            productId=0;
+            productId = 0;
         }
     }
 
@@ -1480,7 +1506,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         etGoodsNum.removeTextChangedListener(this);
         if (position == -1) {
             enableStore.setVisibility(View.GONE);
-            productId=0;
+            productId = 0;
             return;
         }
         GoodsDetailsModel.GoodsDetailsBean.ProductsBean productsBean;
@@ -1497,11 +1523,17 @@ public class GoodsInfoFragment extends BaseFragment implements
                 enableStore.setText("库存:充足");
                 ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, title.getText().toString());
             } else {
-                enableStore.setText("库存:" + String.valueOf(enableStoreNum));
-                if (enableStoreNum == 0) {
-                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, title.getText().toString());
+                String titleString = title.getText().toString();
+                if (titleString.indexOf("预售") != -1) {
+                    enableStore.setText("库存:充足");
+                    etGoodsNum.setText("1");
                 } else {
-                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, title.getText().toString());
+                    enableStore.setText("库存:" + String.valueOf(enableStoreNum));
+                }
+                if (enableStoreNum == 0) {
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, titleString);
+                } else {
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, titleString);
                 }
             }
             //阶梯价

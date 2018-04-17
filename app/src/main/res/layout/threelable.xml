@@ -15,7 +15,7 @@
         android:paddingTop="@dimen/margin_2"
         android:text="教你卖好"
         android:textColor="@color/white"
-        android:textSize="@dimen/textsize_14" />
+        android:textSize="@dimen/textsize_12" />
 
     <View
         android:layout_width="@dimen/margin_10"
@@ -32,7 +32,7 @@
         android:paddingTop="@dimen/margin_2"
         android:text="成功案例"
         android:textColor="@color/white"
-        android:textSize="@dimen/textsize_14" />
+        android:textSize="@dimen/textsize_12" />
 
     <View
         android:layout_width="@dimen/margin_10"
@@ -49,5 +49,5 @@
         android:paddingTop="@dimen/margin_2"
         android:text="语音讲解"
         android:textColor="@color/white"
-        android:textSize="@dimen/textsize_14" />
+        android:textSize="@dimen/textsize_12" />
 </merge>

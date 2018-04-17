@@ -135,12 +135,12 @@ public class MyWebViewClient
         Log.e("TAG_CookieSave() ","cookies="+cookies);
         if (cookies != null && (oldCookie == null || !oldCookie.equals(cookies))) {
             SerializableUtil.saveObject(cookies, activity.getFilesDir(), SerializableUtil.COOKIE);
-        }
-        if ((cookies.indexOf("token")==-1)&&(cookies.indexOf("refresh_token")==-1)){
-            String token = SharePrefHelper.getInstance(activity).getSpString("token");
-            String resetToken = SharePrefHelper.getInstance(activity).getSpString("resetToken");
-            if ((token==null)&&(resetToken==null)){
-                LoginOut.loginOut(activity);
+            if ((cookies.indexOf("token")==-1)&&(cookies.indexOf("refresh_token")==-1)){
+                String token = SharePrefHelper.getInstance(activity).getSpString("token");
+                String resetToken = SharePrefHelper.getInstance(activity).getSpString("resetToken");
+                if ((token==null)&&(resetToken==null)){
+                    LoginOut.loginOut(activity);
+                }
             }
         }
         if (!webView.getSettings().getLoadsImagesAutomatically()) {

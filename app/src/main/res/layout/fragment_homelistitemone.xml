@@ -25,7 +25,7 @@
             android:textColor="@color/orange"
             android:layout_marginLeft="@dimen/margin_10"
             android:layout_marginRight="@dimen/margin_10"
-            android:textSize="@dimen/textsize_16"
+            android:textSize="@dimen/textsize_14"
             android:text="caasdaa"/>
         <!--画右边的那条线-->
         <View

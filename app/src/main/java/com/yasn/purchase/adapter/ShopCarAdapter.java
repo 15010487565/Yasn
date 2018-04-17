@@ -24,6 +24,7 @@ import com.yasn.purchase.listener.OnShopCarClickListener;
 import com.yasn.purchase.model.ShopCarAdapterModel;
 import com.yasn.purchase.view.TagsLayout;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -105,7 +106,14 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         String tvMmailHintString = titleViewHolder.tvMmailHint.getText().toString();
                         //选中价格
                         double storeCheckPrice = shopCarAdapterModel.getStoreCheckPrice();
-                        double residueDouble = Double.valueOf(freeShipMoney) - storeCheckPrice;
+                        BigDecimal b1 = new BigDecimal(freeShipMoney);
+                        BigDecimal b2 = new BigDecimal(storeCheckPrice);
+                        double residueDouble = b1.subtract(b2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                        Log.e("TAG_进货单下单","freeShipMoney====="+freeShipMoney);
+                        Log.e("TAG_进货单下单","b1====="+b1);
+                        Log.e("TAG_进货单下单","storeCheckPrice====="+storeCheckPrice);
+                        Log.e("TAG_进货单下单","b2====="+b2);
+                        Log.e("TAG_进货单下单","residueDouble====="+residueDouble);
                         tvMmailHintString = String.format(tvMmailHintString, freeShipMoney, String.valueOf(residueDouble < 0 ? 0 : residueDouble) + "元");
                         SpannableStringBuilder span = new SpannableStringBuilder(tvMmailHintString);
                         span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.orange)), tvMmailHintString.length() - 3, tvMmailHintString.length(),
@@ -134,13 +142,6 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
 
                 String name = shopCarAdapterModel.getName();
-                final int enableStore = shopCarAdapterModel.getEnableStore();
-                if (enableStore < 10) {
-                    listViewHolder.tvOrderListHintNum.setText("仅剩" + enableStore + "件");
-                    listViewHolder.tvOrderListHintNum.setVisibility(View.VISIBLE);
-                } else {
-                    listViewHolder.tvOrderListHintNum.setVisibility(View.GONE);
-                }
                 int goodsOff = shopCarAdapterModel.getGoodsOff();
                 if (goodsOff == 0) {//0上架
                     listViewHolder.ivShroud.setVisibility(View.GONE);
@@ -211,6 +212,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     listViewHolder.etGoodsNum.setTextColor(ContextCompat.getColor(context, R.color.black_99));
                     listViewHolder.etGoodsNum.setText(String.valueOf(num));
                 }
+                int enableStore = shopCarAdapterModel.getEnableStore();
                 StringBuffer sb = new StringBuffer();
                 int goneNum = 0;
                 String beforeSale = shopCarAdapterModel.getBeforeSale();
@@ -218,9 +220,16 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     listViewHolder.tvPresellHint.setVisibility(View.GONE);
                     listViewHolder.tvPresellHint.setText("");
                     listViewHolder.tvPresell.setVisibility(View.GONE);
+                    if (enableStore < 10) {
+                        listViewHolder.tvOrderListHintNum.setText("仅剩" + enableStore + "件");
+                        listViewHolder.tvOrderListHintNum.setVisibility(View.VISIBLE);
+                    } else {
+                        listViewHolder.tvOrderListHintNum.setVisibility(View.GONE);
+                    }
                 }else {
                     listViewHolder.tvPresellHint.setVisibility(View.VISIBLE);
                     listViewHolder.tvPresellHint.setText("预售商品请单独下单");
+                    listViewHolder.tvOrderListHintNum.setVisibility(View.GONE);
                     goneNum += 3;
                     sb.append("预售 ");
                     listViewHolder.tvPresell.setVisibility(View.VISIBLE);
