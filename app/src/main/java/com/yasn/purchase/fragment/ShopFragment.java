@@ -320,6 +320,8 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     SharePrefHelper.getInstance(getActivity()).putSpString("token", "");
                     thread = new Thread(networkTask);
                     thread.start();
+                }else {
+                    ToastUtil.showToast("数据加载异常，请下拉重新加载！");
                 }
                 break;
             case 102:
@@ -450,6 +452,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                             undredgeYsenHelp.setVisibility(View.GONE);
                             okdredgeYsenHelp.setVisibility(View.VISIBLE);
                             gradeLinear.setVisibility(View.VISIBLE);
+                            department.setVisibility(View.VISIBLE);
                             int endDate = member.getEndDate();
                             String expireTime = HelpUtils.getDateToString(endDate);
                             String minNumberString = String.format("会员有效期 %s", expireTime);
@@ -462,42 +465,46 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                             shopImage.setBackgroundResource(R.mipmap.login_n_yasn);
                             undredgeYsenHelp.setVisibility(View.GONE);
                             okdredgeYsenHelp.setVisibility(View.GONE);
-                            gradeLinear.setVisibility(View.VISIBLE);
                             if (lv_id == 2) {
                                 whiteTopText.setText("认证审核中");
                                 meanage.setVisibility(View.GONE);
-                                gradeLinear.setVisibility(View.GONE);
+                                gradeLinear.setVisibility(View.VISIBLE);
+                                department.setVisibility(View.GONE);
                             } else if (lv_id == 3) {
                                 whiteTopText.setText("审核未通过  ");
                                 undredgeYsenHelp.setText("查看原因");
                                 meanage.setVisibility(View.GONE);
                                 undredgeYsenHelp.setVisibility(View.VISIBLE);
-                                gradeLinear.setVisibility(View.GONE);
+                                gradeLinear.setVisibility(View.VISIBLE);
+                                department.setVisibility(View.GONE);
                             } else if (lv_id == 5) {
                                 whiteTopText.setText("");
                                 undredgeYsenHelp.setText("去认证");
                                 meanage.setVisibility(View.GONE);
                                 undredgeYsenHelp.setVisibility(View.VISIBLE);
-                                gradeLinear.setVisibility(View.GONE);
+                                gradeLinear.setVisibility(View.VISIBLE);
+                                department.setVisibility(View.GONE);
                             }else if (lv_id == 1) {
                                 whiteTopText.setText("");
                                 undredgeYsenHelp.setText("去认证");
                                 meanage.setVisibility(View.GONE);
                                 undredgeYsenHelp.setVisibility(View.VISIBLE);
-                                gradeLinear.setVisibility(View.GONE);
+                                gradeLinear.setVisibility(View.VISIBLE);
+                                department.setVisibility(View.GONE);
                             } else {
                                 whiteTopText.setText("");
                                 undredgeYsenHelp.setVisibility(View.VISIBLE);
                                 undredgeYsenHelp.setText("开通雅森帮");
                                 gradeLinear.setVisibility(View.VISIBLE);
+                                department.setVisibility(View.VISIBLE);
                                 okdredgeYsenHelp.setVisibility(View.GONE);
                             }
                         }
                     }
                     ShopInfoModel.StatisticsBean statistics = shopinfomodel.getStatistics();
                     if (statistics != null) {
-                        totalMoney.setText("￥" + String.valueOf(statistics.getTotalCount()));
-                        goodsNum.setText("￥" + String.valueOf(statistics.getGoodsNum()));
+                        totalMoney.setText("￥" + String.format("%.2f", Double.valueOf(statistics.getTotalCount())));
+                        goodsNum.setText("￥" + String.format("%.2f", Double.valueOf(statistics.getGoodsNum())));
                         orderNum.setText(String.valueOf(statistics.getOrderNum()) + "笔");
                     }
                     ShopInfoModel.StoreBean store = shopinfomodel.getStore();
@@ -523,12 +530,12 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                                 int i = employeeAuth.indexOf("2");
                                 if (i != -1) {
                                     dutyAuth = "采购+财务";
-                                    goodsNum.setText("￥" + String.valueOf(statistics.getGoodsNum()));
+                                    goodsNum.setText("￥" + String.format("%.2f", statistics.getGoodsNum()));
                                     goodsHint.setText("待支付金额");
                                     department.setText("(采购+财务)");
                                 } else {
                                     if ("0".equals(employeeAuth)) {
-                                        goodsNum.setText("￥" + String.valueOf(statistics.getGoodsNum()));
+                                        goodsNum.setText("￥" + String.format("%.2f", statistics.getGoodsNum()));
                                         goodsHint.setText("待支付金额");
                                     } else {
                                         goodsNum.setText(String.valueOf(statistics.getGoodsNum()) + "件");

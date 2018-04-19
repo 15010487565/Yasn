@@ -182,11 +182,15 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 String has_discount = dataBean.getHas_discount();
                 Log.e("TAG_has_discount","has_discount="+has_discount+";loginState="+loginState);
+                //抢购价
+                String discount_price = dataBean.getDiscount_price();
+                //正常价格
+                double price = dataBean.getPrice();
                 if ("1".equals(has_discount)){
                     holderSearch.buyingspreeLinear.setVisibility(View.VISIBLE);
-                    holderSearch.buyingspreeMoney.setText(dataBean.getDiscount_price());
+                    holderSearch.buyingspreeMoney.setText("￥"+String.format("%.2f", Double.valueOf(discount_price)));
                     if ("0".equals(loginState)){
-                        holderSearch.searchmoney.setText(String.valueOf("￥"+dataBean.getPrice()));
+                        holderSearch.searchmoney.setText("￥"+String.format("%.2f", price));
                         holderSearch.buyingspreeLinear.setVisibility(View.VISIBLE);
                     }else {
                         holderSearch.searchmoney.setText(loginState == null?"登录看价格":loginState);
@@ -194,7 +198,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                 }else {
                     if ("0".equals(loginState)){
-                        holderSearch.searchmoney.setText(String.valueOf("￥"+dataBean.getPrice()));
+                        holderSearch.searchmoney.setText("￥"+String.format("%.2f", price));
                     }else {
                         holderSearch.searchmoney.setText(loginState == null?"登录看价格":loginState);
                     }

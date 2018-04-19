@@ -1,10 +1,9 @@
 package com.yasn.purchase.goods.fragment;
 
-import android.text.Html;
-import android.text.Spanned;
-import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,7 +11,6 @@ import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.model.GoodsDetailsOtherModel;
-import com.yasn.purchase.utils.HtmlImageGetter;
 import com.yasn.purchase.utils.ToastUtil;
 
 import java.io.IOException;
@@ -28,9 +26,10 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
  */
 public class GoodsCommentFragment extends BaseFragment {
 
-    private TextView htmlTextView,undata;
+    private TextView undata;
     // 标志位，标志已经初始化完成。
     private boolean isPrepared;
+    private WebView webView;
 
     protected void OkHttpDemand() {
         String goodsid = SharePrefHelper.getInstance(getActivity()).getSpString("GOODSID");
@@ -67,9 +66,7 @@ public class GoodsCommentFragment extends BaseFragment {
         topbat_parent.setVisibility(View.GONE);
 
         undata = (TextView) view.findViewById(R.id.undata);
-        htmlTextView = (TextView) view.findViewById(R.id.htmlText);
-        htmlTextView.setMovementMethod(ScrollingMovementMethod.getInstance());// 设置可滚动
-
+        webView = (WebView) view.findViewById(R.id.webView);
         createDialog();
         //XXX初始化view的各控件
         isPrepared = true;
@@ -86,10 +83,12 @@ public class GoodsCommentFragment extends BaseFragment {
                     int isSuccessCase = goodsIntro.getIsSuccessCase();
                     if (isSuccessCase ==1){
                         String successCase = goodsIntro.getSuccessCase();
-                        HtmlImageGetter htmlImageGetter = new HtmlImageGetter(getActivity(),htmlTextView);
-                        Spanned spanned = Html.fromHtml(successCase, htmlImageGetter, null);
-                        htmlTextView.setText(spanned);
+//                        HtmlImageGetter htmlImageGetter = new HtmlImageGetter(getActivity(),htmlTextView);
+//                        Spanned spanned = Html.fromHtml(successCase, htmlImageGetter, null);
+//                        htmlTextView.setText(spanned);
                         undata.setVisibility(View.GONE);
+                        getHtmlData(successCase,webView);
+                        Log.e("TAG_successCase","successCase="+successCase);
                     }else {
                         undata.setVisibility(View.VISIBLE);
                     }

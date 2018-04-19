@@ -202,6 +202,7 @@ public class MyWebChromeClient2 extends WebChromeClient {
         }else if ("GoodsDetail".equals(backString)){//商品详情
 //            EventBus.getDefault().post(new EventBusMsg("GoodsDetail"));
             Intent intent = new Intent(activity, GoodsDetailsActivity.class);
+            SharePrefHelper.getInstance(activity).putSpString("GOODSID", goodsId);
             intent.putExtra("GOODSID",goodsId);
             activity.startActivity(intent);
         }else if ("SearchResultList".equals(backString)){//搜索列表

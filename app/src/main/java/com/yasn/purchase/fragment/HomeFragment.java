@@ -413,10 +413,10 @@ public class HomeFragment extends SimpleTopbarFragment implements
             String title = subjectsBean.getTitle();
             tabTextList.add(title);
             TabLayout.Tab tab = tablayout.newTab().setText(title);
-            if (i==0){
-                tablayout.addTab(tab,true);
-            }else {
-                tablayout.addTab(tab,false);
+            if (i == 0) {
+                tablayout.addTab(tab, true);
+            } else {
+                tablayout.addTab(tab, false);
             }
             HomeRecyModel homerecyTab = new HomeRecyModel();
             homerecyTab.setItemType(1);
@@ -435,7 +435,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 int has_discount = contentBean.getHas_discount();//是否有折扣价
                 String discount_price = contentBean.getDiscount_price();//折扣价
                 double price = contentBean.getPrice();//正常价格
-                int totalBuyCount = contentBean.getTotalBuyCount();//已售数量
+                int totalBuyCount = contentBean.getTotal_buy_count();//已售数量
 
                 HomeRecyModel homeRecy = new HomeRecyModel();
                 homeRecy.setGoodsid(String.valueOf(goods_id));//商品ID
@@ -444,11 +444,13 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 homeRecy.setImage(small);
                 homeRecy.setSubject_id(subject_id);
                 if (priceDisplayType == 0) {//取正常价格
+                    String result;
                     if (has_discount == 0) {//正常价格
-                        homeRecy.setMoney(String.valueOf(price));
+                        result = String.format("%.2f", price);
                     } else {//折扣价
-                        homeRecy.setMoney(discount_price);
+                        result = String.format("%.2f", Double.valueOf(discount_price));
                     }
+                    homeRecy.setMoney(result);
                 } else {//取文字信息
                     homeRecy.setMoney(priceDisplayMsg == null ? "" : priceDisplayMsg);
                 }
@@ -526,8 +528,8 @@ public class HomeFragment extends SimpleTopbarFragment implements
         List<HomeModel.AdvsBean> advs = homemodel.getAdvs();
         HomeModel.AdvsBean advsBean = advs.get(position);
         String url = advsBean.getUrl();
-        if (url!=null&&!"".equals(url)){
-            startWebViewActivity(Config.URL+url);
+        if (url != null && !"".equals(url)) {
+            startWebViewActivity(Config.URL + url);
         }
     }
 
@@ -651,12 +653,12 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 expressStateText.setText("代发货");
                 orderHint.setText("仓库正在紧急备货中!");
                 orderTime.setText(createTimeString + " 下单成功");
-            }else if (status == 3) {
+            } else if (status == 3) {
                 expressStateImage.setBackgroundResource(R.mipmap.daishouhuo);
                 expressStateText.setText("待收货");
                 orderHint.setText("您的订单已发货!");
                 orderTime.setText(logiName + " " + shipNo);
-            }else if (status == 4) {
+            } else if (status == 4) {
                 expressStateImage.setBackgroundResource(R.mipmap.yiwancheng);
                 expressStateText.setText("已收货");
                 orderHint.setText("您的订单已收货!");
@@ -666,7 +668,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     orderTime.setVisibility(View.VISIBLE);
                     orderTime.setText(logiName + " " + shipNo);
                 }
-            }else if (status == 5) {
+            } else if (status == 5) {
                 expressStateImage.setBackgroundResource(R.mipmap.yiwancheng);
                 expressStateText.setText("已完成");
                 orderHint.setText("您的订单已完成!");
@@ -676,17 +678,17 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     orderTime.setVisibility(View.VISIBLE);
                     orderTime.setText(logiName + " " + shipNo);
                 }
-            }else if (status == 6) {
+            } else if (status == 6) {
                 expressStateImage.setBackgroundResource(R.mipmap.yiquxiao);
                 expressStateText.setText("已取消");
                 orderHint.setText("您的订单已取消!");
                 orderTime.setText(cancelTimeString + " 订单取消");
-            }else if (status == 7) {
+            } else if (status == 7) {
                 expressStateImage.setVisibility(View.GONE);
                 expressStateText.setVisibility(View.GONE);
                 orderHint.setText("已申请售后申请!");
                 orderTime.setVisibility(View.GONE);
-            }else {
+            } else {
                 expressStateImage.setVisibility(View.GONE);
                 expressStateText.setVisibility(View.GONE);
                 orderHint.setVisibility(View.GONE);
@@ -769,15 +771,15 @@ public class HomeFragment extends SimpleTopbarFragment implements
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         int selectPosition = tab.getPosition();
-        Log.e("TAG_TabSelected","isFrist="+isFrist+";isOpen="+isOpen);
+        Log.e("TAG_TabSelected", "isFrist=" + isFrist + ";isOpen=" + isOpen);
         if (isFrist) {
             isFrist = false;
             return;
         }
         isOnClickTab = true;
-        if (isOpen) {
-            appBarLayout.setExpanded(false, true);
-        }
+//        if (isOpen) {
+        appBarLayout.setExpanded(false, true);
+//        }
 //        nestedScrollView.setVisibility(View.GONE);
 //        recyclerview.setVisibility(View.VISIBLE);
         String tabText = tab.getText().toString();

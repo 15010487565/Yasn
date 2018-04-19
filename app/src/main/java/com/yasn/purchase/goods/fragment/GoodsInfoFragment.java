@@ -13,22 +13,22 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.ScrollingMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.TextAppearanceSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -57,7 +57,6 @@ import com.yasn.purchase.model.GoodsDetailsModel;
 import com.yasn.purchase.model.GoodsDetailsOtherModel;
 import com.yasn.purchase.model.SobotModel;
 import com.yasn.purchase.utils.AlignedTextUtils;
-import com.yasn.purchase.utils.HtmlImageGetter;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.FlowLayout;
 import com.yasn.purchase.view.RecyclerViewDecoration;
@@ -87,7 +86,8 @@ import static www.xcd.com.mylibrary.utils.SharePrefHelper.context;
  */
 public class GoodsInfoFragment extends BaseFragment implements
         ShoppingSelectView.OnSelectedListener, OnItemClickListener,
-        SlideDetailsLayout.OnSlideDetailsListener, MediaPlayer.OnPreparedListener,
+        SlideDetailsLayout.OnSlideDetailsListener
+        , MediaPlayer.OnPreparedListener,
         ViewPager.OnPageChangeListener, TextWatcher {
 
     private RelativeLayout topbat_parent;
@@ -184,7 +184,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     private SimpleRecyclerAdapter simpleadapter;
     //商品属性列表
     private RecyclerView attributesList;
-    private TextView htmlTextView, undata;
+    private TextView undata;
 
     /**
      * 音频布局
@@ -281,8 +281,18 @@ public class GoodsInfoFragment extends BaseFragment implements
     private void initGoodsView(View rootView) {
         topbat_parent = (RelativeLayout) rootView.findViewById(R.id.topbat_parent);
         topbat_parent.setVisibility(View.GONE);
+
         banner = (ConvenientBanner) rootView.findViewById(R.id.banner);
         banner.setOnPageChangeListener(this);
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) banner.getLayoutParams();
+        WindowManager manager = getActivity().getWindowManager();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        manager.getDefaultDisplay().getMetrics(outMetrics);
+        int width = outMetrics.widthPixels;//获取屏幕宽度
+        lp.width = width;
+        lp.height = width;
+        banner.setLayoutParams(lp);
+
         viewpage_number = (TextView) rootView.findViewById(R.id.viewpage_number);
         //音频布局
         voice = (RelativeLayout) rootView.findViewById(R.id.voice);
@@ -398,13 +408,17 @@ public class GoodsInfoFragment extends BaseFragment implements
         pull_up_view.setOnClickListener(this);
         //底部上拉内容
         undata = (TextView) rootView.findViewById(R.id.undata);
-        htmlTextView = (TextView) rootView.findViewById(R.id.htmlText);
-        htmlTextView.setMovementMethod(ScrollingMovementMethod.getInstance());
+//        htmlTextView = (TextView) rootView.findViewById(R.id.htmlText);
+//        htmlTextView.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         slideDetailsLayout = (SlideDetailsLayout) rootView.findViewById(R.id.slideDetailsLayout);
         slideDetailsLayout.setOnSlideDetailsListener(this);
         scrollView = (ScrollView) rootView.findViewById(R.id.scrollView);
+        //
+        webView = (WebView) rootView.findViewById(R.id.webView);
     }
+    private WebView webView;
+
 
     private void initGoodsTitleContent(GoodsDetailsModel.GoodsDetailsBean goodsDetails) {
         if (goodsDetails == null) {
@@ -528,6 +542,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                     etGoodsNum.setText(String.valueOf(subtractNum));
                 }
                 etGoodsNum.addTextChangedListener(this);
+                resetLadderPrices();
                 break;
             case R.id.iv_addNum:
                 String titleString = null;
@@ -556,22 +571,43 @@ public class GoodsInfoFragment extends BaseFragment implements
                     int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
                     if (smallSale > 0) {
                         int allAddNum = addNum + smallSale;
-                        if (allAddNum <= enableStoreNum) {
-                            etGoodsNum.setText(String.valueOf(allAddNum));
-                        } else {
-                            ToastUtil.showToast("库存不足");
+                        if (isLimitBuy == 1) {// 是否限购 0否1是
+                            if (allAddNum>enableStoreNum){
+                                ToastUtil.showToast("库存仅剩"+num+"件");
+                                return;
+                            }
+                            if (allAddNum>num){
+                                ToastUtil.showToast("该商品限购"+num+"件");
+                            }else {
+                                etGoodsNum.setText(String.valueOf(allAddNum));
+                            }
+                        }else {
+                            if (allAddNum <= enableStoreNum) {
+                                etGoodsNum.setText(String.valueOf(allAddNum));
+                            } else {
+                                ToastUtil.showToast("库存不足");
+                            }
                         }
+
                     } else {
                         int allAddNum = addNum + 1;
-                        if (allAddNum <= enableStoreNum) {
-                            etGoodsNum.setText(String.valueOf(allAddNum));
-                        } else {
-                            ToastUtil.showToast("库存不足");
+                        if (isLimitBuy == 1) {// 是否限购 0否1是
+                            if (allAddNum>num){
+                                ToastUtil.showToast("该商品限购"+num+"件");
+                            }else {
+                                etGoodsNum.setText(String.valueOf(allAddNum));
+                            }
+                        }else {
+                            if (allAddNum <= enableStoreNum) {
+                                etGoodsNum.setText(String.valueOf(allAddNum));
+                            } else {
+                                ToastUtil.showToast("库存不足");
+                            }
                         }
                     }
                     etGoodsNum.addTextChangedListener(this);
                 }
-
+                resetLadderPrices();
                 break;
             case R.id.originalprice2:
                 String trim = originalprice2.getText().toString().trim();
@@ -762,10 +798,11 @@ public class GoodsInfoFragment extends BaseFragment implements
                     if (intro == null || "".equals(intro)) {
                         undata.setVisibility(View.VISIBLE);
                     } else {
-                        HtmlImageGetter htmlImageGetter = new HtmlImageGetter(getActivity(), htmlTextView);
-                        Spanned spanned = Html.fromHtml(intro, htmlImageGetter, null);
-                        htmlTextView.setText(spanned);
+//                        HtmlImageGetter htmlImageGetter = new HtmlImageGetter(getActivity(), htmlTextView);
+//                        Spanned spanned = Html.fromHtml(intro, htmlImageGetter, null);
+//                        htmlTextView.setText(spanned);
                         undata.setVisibility(View.GONE);
+                        getHtmlData(intro,webView);
                     }
 
                 } else {
@@ -800,9 +837,10 @@ public class GoodsInfoFragment extends BaseFragment implements
         initGoodsTitleContent(goodsDetails);
         //设置临时价格
         double price = goodsDetails.getPrice();
-        soldout_money.setText("￥" + String.valueOf(price));
-        originalprice.setText("￥" + String.valueOf(price));
-        originalprice2.setText("￥" + String.valueOf(price));
+        String priceResult = "￥" + String.format("%.2f", price);
+        soldout_money.setText(priceResult);
+        originalprice.setText(priceResult);
+        originalprice2.setText(priceResult);
 
         //规格数据
         List<GoodsDetailsModel.GoodsDetailsBean.SpecsBean> specs = goodsDetails.getSpecs();
@@ -819,6 +857,10 @@ public class GoodsInfoFragment extends BaseFragment implements
         //批发价
         products = goodsDetails.getProducts();
         initTradePricePosition(products, 0);
+        boolean isChecked = label_include.getIsChecked();
+        if (isChecked){//存在选中状态，总库存大于0
+            ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, "");
+        }
         //
         String advert = goodsDetails.getAdvert();
         if (advert == null || "".equals(advert)) {
@@ -928,7 +970,10 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     private int productId;//商品规格id
     private int typeLadderPricesposition;//临时选中的规格对应折扣价的position
-
+    //建议售价
+    GoodsDetailsModel.GoodsDetailsBean.ProductsBean productsBean;
+    //阶梯价
+    List<GoodsDetailsModel.GoodsDetailsBean.ProductsBean.LadderPricesBean> ladderPrices;
     private void initTradePricePosition(List<GoodsDetailsModel.GoodsDetailsBean.ProductsBean> products, int position) {
         etGoodsNum.removeTextChangedListener(this);
         typeLadderPricesposition = position;
@@ -937,22 +982,25 @@ public class GoodsInfoFragment extends BaseFragment implements
             productId = 0;
             return;
         }
-        GoodsDetailsModel.GoodsDetailsBean.ProductsBean productsBean;
         enableStore.setVisibility(View.VISIBLE);
-        List<GoodsDetailsModel.GoodsDetailsBean.ProductsBean.LadderPricesBean> ladderPrices;
 
         if (products != null) {
             productsBean = products.get(position);
-            //建议零售价
+            //建议售价
             String minReferencePrice = productsBean.getMinReferencePrice();
             String maxReferencePrice = productsBean.getMaxReferencePrice();
             if (minReferencePrice != null && maxReferencePrice != null && Double.valueOf(maxReferencePrice) > 0) {
                 llRetailPrice.setVisibility(View.VISIBLE);
-                retailPriceView.setText("￥" + minReferencePrice + "-￥" + maxReferencePrice);
+                retailPriceView.setText("￥" +  String.format("%.2f", Double.valueOf(minReferencePrice)) + "-￥" +  String.format("%.2f", Double.valueOf(maxReferencePrice)));
             } else {
                 llRetailPrice.setVisibility(View.GONE);
             }
-            productId = productsBean.getProductId();
+            List<Integer> specValueIds = productsBean.getSpecValueIds();
+            if (specValueIds.size()==1){
+                productId = productsBean.getProductId();
+            }else {
+                productId = 0;
+            }
             //最小起订量
             smallSale = productsBean.getSmallSale();
             enableStoreNum = productsBean.getEnableStore();
@@ -980,48 +1028,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             }
             //阶梯价
             ladderPrices = productsBean.getLadderPrices();
-            if (ladderPrices != null && ladderPrices.size() > 0) {
-                llLadderPrices.setVisibility(View.VISIBLE);
-                //折扣价数据
-
-                tradeprice_recy.setVisibility(View.VISIBLE);
-                adapter.setData(ladderPrices);
-
-                double goodsNumDou = Long.valueOf(etGoodsNum.getText().toString());
-                for (int i = 0, k = ladderPrices.size(); i < k; i++) {
-                    GoodsDetailsModel.GoodsDetailsBean.ProductsBean.LadderPricesBean ladderPricesBean = ladderPrices.get(i);
-                    int minNum = ladderPricesBean.getMinNum();
-                    int maxNum = ladderPricesBean.getMaxNum();
-                    if (goodsNumDou >= minNum && goodsNumDou <= maxNum) {
-                        String activityPrice = ladderPricesBean.getActivityPrice();
-                        if (activityPrice == null || "".equals(activityPrice) || "0.00".equals(activityPrice)) {
-                            double wholesalePrice = ladderPricesBean.getWholesalePrice();
-                            soldout_money.setText("￥" + String.valueOf(wholesalePrice));
-                            originalprice.setText("￥" + String.valueOf(wholesalePrice));
-                            originalprice2.setText("￥" + String.valueOf(wholesalePrice));
-                        } else {
-                            double wholesalePrice = ladderPricesBean.getWholesalePrice();
-                            soldout_money.setText("￥" + activityPrice);
-                            originalprice.setText("￥" + String.valueOf(wholesalePrice));
-                            originalprice2.setText("￥" + activityPrice);
-                        }
-                    }
-                }
-            } else {
-                llLadderPrices.setVisibility(View.GONE);
-                tradeprice_recy.setVisibility(View.GONE);
-                String activityPrice = productsBean.getActivityPrice();
-                if (activityPrice != null && !"".equals(activityPrice) && !"0.00".equals(activityPrice)) {
-                    soldout_money.setText("￥" + activityPrice);
-                    originalprice.setText("￥" + activityPrice);
-                    originalprice2.setText("￥" + activityPrice);
-                } else {
-                    String price = String.valueOf(productsBean.getPrice());
-                    soldout_money.setText("￥" + price);
-                    originalprice.setText("￥" + price);
-                    originalprice2.setText("￥" + price);
-                }
-            }
+            resetLadderPrices();
         } else {
             smallSale = 0;
             llRetailPrice.setVisibility(View.GONE);
@@ -1035,6 +1042,56 @@ public class GoodsInfoFragment extends BaseFragment implements
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         minNumber.setText(span);
         etGoodsNum.addTextChangedListener(this);
+    }
+
+    private void resetLadderPrices() {
+        if (ladderPrices != null && ladderPrices.size() > 0) {
+            llLadderPrices.setVisibility(View.VISIBLE);
+            //折扣价数据
+
+            tradeprice_recy.setVisibility(View.VISIBLE);
+            adapter.setData(ladderPrices);
+
+            double goodsNumDou = Long.valueOf(etGoodsNum.getText().toString());
+            for (int i = 0, k = ladderPrices.size(); i < k; i++) {
+                GoodsDetailsModel.GoodsDetailsBean.ProductsBean.LadderPricesBean ladderPricesBean = ladderPrices.get(i);
+                int minNum = ladderPricesBean.getMinNum();
+                int maxNum = ladderPricesBean.getMaxNum();
+                if (goodsNumDou >= minNum && goodsNumDou <= maxNum) {
+                    String activityPrice = ladderPricesBean.getActivityPrice();
+                    if (activityPrice == null || "".equals(activityPrice) || "0.00".equals(activityPrice)) {
+                        double wholesalePrice = ladderPricesBean.getWholesalePrice();//批发价
+                        String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
+                        soldout_money.setText(wholesalePriceResult);
+                        originalprice.setText(wholesalePriceResult);
+                        originalprice2.setText(wholesalePriceResult);
+                    } else {
+                        double wholesalePrice = ladderPricesBean.getWholesalePrice();
+                        String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
+                        originalprice.setText(wholesalePriceResult);
+                        String activityPriceResult = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
+                        soldout_money.setText(activityPriceResult);
+                        originalprice2.setText(activityPriceResult);
+                    }
+                }
+            }
+        } else {
+            llLadderPrices.setVisibility(View.GONE);
+            tradeprice_recy.setVisibility(View.GONE);
+            String activityPrice = productsBean.getActivityPrice();
+            if (activityPrice != null && !"".equals(activityPrice) && !"0.00".equals(activityPrice)) {
+                String activityPriceResult = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
+                soldout_money.setText(activityPriceResult);
+                originalprice.setText(activityPriceResult);
+                originalprice2.setText(activityPriceResult);
+            } else {
+                String price = String.valueOf(productsBean.getPrice());
+                String priceResult = "￥" + String.format("%.2f", Double.valueOf(price));
+                soldout_money.setText(priceResult);
+                originalprice.setText(priceResult);
+                originalprice2.setText(priceResult);
+            }
+        }
     }
 
     List<GoodsDetailsModel.GoodsDetailsBean.GoodsGallerysBean> goodsGallerys;
@@ -1057,7 +1114,8 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     private int PROMOTIONVISIBILIT = 0;
     private int activityId;//活动商品id
-
+    private int isLimitBuy;// 是否限购 0否1是
+    private int num;//限购数量
     private void initPromotion(GoodsDetailsModel.GoodsDetailsBean goodsdetailsmodelData) {
         PROMOTIONVISIBILIT = 0;
         GoodsDetailsModel.GoodsDetailsBean.GoodsActityBean goodsActity = goodsdetailsmodelData.getGoodsActity();
@@ -1082,14 +1140,15 @@ public class GoodsInfoFragment extends BaseFragment implements
             hot.setText(activityName1);
             activityId = storeActivity.getActivityId();
         }
-        int isLimitBuy = goodsdetailsmodelData.getIsLimitBuy();
+        isLimitBuy = goodsdetailsmodelData.getIsLimitBuy();
         if (isLimitBuy == 1) {// 是否限购 0否1是
             GoodsDetailsModel.GoodsDetailsBean.GoodsLimitBuyBean goodsLimitBuy = goodsdetailsmodelData.getGoodsLimitBuy();
             long startTime = goodsLimitBuy.getStartTime();
             String saleStartTime = getDateToString(startTime);
             long endTime = goodsLimitBuy.getEndTime();
             String saleEndTime = getDateToString(endTime);
-            purchase_promotion.setText(saleStartTime + "到" + saleEndTime + ",限购");
+            num = goodsLimitBuy.getNum();
+            purchase_promotion.setText(saleStartTime + "到" + saleEndTime + ",限购"+num+"个");
             purchase_linear.setVisibility(View.VISIBLE);
             PROMOTIONVISIBILIT += 1;
 
@@ -1133,7 +1192,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                 sold_Linear.setVisibility(View.GONE);
                 //限时抢购价
                 String discount_price = discount.getDiscount_price();
-                originalprice.setText(discount_price == null ? "" : discount_price);
+                originalprice.setText(discount_price == null ? "" : String.format("%.2f", Double.valueOf(discount_price)));
                 //限时抢购倒计时
                 time = discount.getRemainingTime();
                 handler.postDelayed(runnable, 1000);
@@ -1526,7 +1585,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                 String titleString = title.getText().toString();
                 if (titleString.indexOf("预售") != -1) {
                     enableStore.setText("库存:充足");
-                    etGoodsNum.setText("1");
+//                    etGoodsNum.setText("1");
                 } else {
                     enableStore.setText("库存:" + String.valueOf(enableStoreNum));
                 }
@@ -1556,14 +1615,17 @@ public class GoodsInfoFragment extends BaseFragment implements
                         String activityPrice = ladderPricesBean.getActivityPrice();
                         if (activityPrice == null || "".equals(activityPrice) || "0.00".equals(activityPrice)) {
                             double wholesalePrice = ladderPricesBean.getWholesalePrice();
-                            soldout_money.setText("￥" + String.valueOf(wholesalePrice));
-                            originalprice.setText("￥" + String.valueOf(wholesalePrice));
-                            originalprice2.setText("￥" + String.valueOf(wholesalePrice));
+                            String wholesalePriceResult = "￥" +String.format("%.2f", wholesalePrice);
+                            soldout_money.setText( String.valueOf(wholesalePriceResult));
+                            originalprice.setText(String.valueOf(wholesalePriceResult));
+                            originalprice2.setText(String.valueOf(wholesalePriceResult));
                         } else {
                             double wholesalePrice = ladderPricesBean.getWholesalePrice();
-                            soldout_money.setText("￥" + activityPrice);
-                            originalprice.setText("￥" + String.valueOf(wholesalePrice));
-                            originalprice2.setText("￥" + activityPrice);
+                            String wholesalePriceResult =  "￥" +String.format("%.2f", wholesalePrice);
+                            originalprice.setText(String.valueOf(wholesalePriceResult));
+                            String activityPriceResult = "￥" +String.format("%.2f", Double.valueOf(activityPrice));
+                            soldout_money.setText(activityPriceResult);
+                            originalprice2.setText(activityPriceResult);
                         }
                     }
                 }
@@ -1571,14 +1633,15 @@ public class GoodsInfoFragment extends BaseFragment implements
                 llLadderPrices.setVisibility(View.GONE);
                 String activityPrice = productsBean.getActivityPrice();
                 if (activityPrice != null && !"".equals(activityPrice) || "0.00".equals(activityPrice)) {
-                    soldout_money.setText("￥" + activityPrice);
-                    originalprice.setText("￥" + activityPrice);
-                    originalprice2.setText("￥" + activityPrice);
+                    String price = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
+                    soldout_money.setText( price);
+                    originalprice.setText(price);
+                    originalprice2.setText(price);
                 } else {
-                    String price = String.valueOf(productsBean.getPrice());
-                    soldout_money.setText("￥" + price);
-                    originalprice.setText("￥" + price);
-                    originalprice2.setText("￥" + price);
+                    String price = "￥" + String.format("%.2f",productsBean.getPrice());
+                    soldout_money.setText( price);
+                    originalprice.setText(price);
+                    originalprice2.setText(price);
                 }
             }
         }

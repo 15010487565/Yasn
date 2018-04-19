@@ -34,7 +34,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="203dp"
+                        android:layout_height="wrap_content"
                         android:background="@color/white">
 
                         <com.bigkoo.convenientbanner.ConvenientBanner
@@ -700,8 +700,8 @@
                     </LinearLayout>
                 </LinearLayout>
             </ScrollView>
-
             <include layout="@layout/include_item_tab" />
+
         </com.yasn.purchase.goods.view.SlideDetailsLayout>
 
     </android.support.design.widget.CoordinatorLayout>

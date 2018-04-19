@@ -109,14 +109,9 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         BigDecimal b1 = new BigDecimal(freeShipMoney);
                         BigDecimal b2 = new BigDecimal(storeCheckPrice);
                         double residueDouble = b1.subtract(b2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-                        Log.e("TAG_进货单下单","freeShipMoney====="+freeShipMoney);
-                        Log.e("TAG_进货单下单","b1====="+b1);
-                        Log.e("TAG_进货单下单","storeCheckPrice====="+storeCheckPrice);
-                        Log.e("TAG_进货单下单","b2====="+b2);
-                        Log.e("TAG_进货单下单","residueDouble====="+residueDouble);
-                        tvMmailHintString = String.format(tvMmailHintString, freeShipMoney, String.valueOf(residueDouble < 0 ? 0 : residueDouble) + "元");
+                        tvMmailHintString = String.format(tvMmailHintString, String.format("%.2f", freeShipMoney), String.valueOf(residueDouble <= 0 ? String.format("%.2f", 0) : String.format("%.2f", residueDouble)) + "元");
                         SpannableStringBuilder span = new SpannableStringBuilder(tvMmailHintString);
-                        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.orange)), tvMmailHintString.length() - 3, tvMmailHintString.length(),
+                        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.orange)), tvMmailHintString.length() - 1, tvMmailHintString.length(),
                                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                         titleViewHolder.tvMmailHint.setText(span);
                     } else {
@@ -188,7 +183,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     listViewHolder.ivSubtractNum.setBackgroundResource(R.mipmap.subtractimage);
                     listViewHolder.llSubtractNum.setEnabled(true);
                     listViewHolder.ivOrderListClean.setBackgroundResource(R.mipmap.cleanhistory);
-                    listViewHolder.ivOrderListClean.setEnabled(true);
+//                    listViewHolder.ivOrderListClean.setEnabled(true);
                 } else {
                     listViewHolder.tvOrderListPrice.setTextColor(ContextCompat.getColor(context, R.color.orange_un));
                     listViewHolder.llNum.setBackgroundResource(R.drawable.text_black99_white);
@@ -197,7 +192,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     listViewHolder.ivSubtractNum.setBackgroundResource(R.mipmap.subtractimage1);
                     listViewHolder.llSubtractNum.setEnabled(false);
                     listViewHolder.ivOrderListClean.setBackgroundResource(R.mipmap.cleanhistory1);
-                    listViewHolder.ivOrderListClean.setEnabled(false);
+//                    listViewHolder.ivOrderListClean.setEnabled(false);
                 }
                 listViewHolder.tvOrderListPrice.setText("￥" + String.valueOf(price));
 

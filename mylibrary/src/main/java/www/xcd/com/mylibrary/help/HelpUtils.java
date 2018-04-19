@@ -542,6 +542,4 @@ public class HelpUtils {
             Log.e(tag, "result=" + result);
         }
     }
-
-
 }

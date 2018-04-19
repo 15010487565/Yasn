@@ -306,6 +306,13 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     }
 
     private void addShopCarRequest() {
+        int productId = goodsInfoFragment.getProductId();
+        Log.e("TAG_详情加入规格", "productId=" + productId);
+        if (productId == 0) {
+            ToastUtil.showToast("请选择规格！");
+            return;
+        }
+
         String goodsNum = goodsInfoFragment.getGoodsNum();
         if (goodsNum == null || "".equals(goodsNum)) {
             goodsNum = "0";
@@ -325,12 +332,6 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             return;
         }
 
-        int productId = goodsInfoFragment.getProductId();
-        Log.e("TAG_详情加入规格", "productId=" + productId);
-        if (productId == 0) {
-            ToastUtil.showToast("请选择规格！");
-            return;
-        }
         int activityId = goodsInfoFragment.getActivityId();
         Map<String, Object> params1 = new HashMap<String, Object>();
         params1.put("productId", String.valueOf(productId));
@@ -545,7 +546,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             tvAddShopCar.setEnabled(true);
             tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
         }
-        if (title != null) {
+        if (title != null&&!"".equals(title)) {
             Log.e("TAG_加入进货单", "title=" + title);
             if (title.indexOf("预售") != -1) {
                 tvAddShopCar.setEnabled(true);

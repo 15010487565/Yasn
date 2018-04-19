@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -153,8 +154,10 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     holderRecy.advertRecy.setVisibility(View.VISIBLE);
                     holderRecy.advertRecy.setText(advert);
                 }
+                String money = homeRecy.getMoney();
+                Log.e("TAG_首页价格","money="+money);
                 if ("0".equals(priceType)){
-                    holderRecy.moneyRecy.setText("￥"+homeRecy.getMoney());
+                    holderRecy.moneyRecy.setText("￥"+money);
                 }else {
                     holderRecy.moneyRecy.setText(priceType==null?"未知错误":priceType);
                 }

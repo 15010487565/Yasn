@@ -65,8 +65,8 @@ public class ItemRecommendGoodsAdapter extends BaseAdapter {
         RecommendGoodsBean bean = data.get(position);
         Glide.with(context).load(bean.imag).error(R.mipmap.default_icon).into(holder.itemGoodsImage);
         holder.tvGoodsName.setText(bean.title);
-        holder.tvGoodsPrice.setText("￥" + bean.currentPrice);
-        holder.tvGoodsOldPrice.setText("￥" + bean.price);
+        holder.tvGoodsPrice.setText("￥" + String.format("%.2f", bean.currentPrice));
+        holder.tvGoodsOldPrice.setText("￥" + String.format("%.2f", bean.price));
     }
 
     class ViewHolder {

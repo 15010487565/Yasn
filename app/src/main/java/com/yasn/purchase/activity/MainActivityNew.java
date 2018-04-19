@@ -120,7 +120,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         setContentView(R.layout.activity_mainnew);
         EventBus.getDefault().register(this);
         currentItem = getIntent().getIntExtra("CURRENTITEM", 0);
-        Log.e("TAG_MAIN","onCreate="+currentItem);
+        Log.e("TAG_MAIN", "onCreate=" + currentItem);
         initView();
         // 初始化fragments
         initFragments();
@@ -244,13 +244,13 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         ImageView imageViewHl = (ImageView) view.findViewById(R.id.main_tabitem_iconhl);
         // 非高亮图标
         imageView.setImageResource(MAIN_TAB_IMAGE[index]);
-        RelativeLayout.LayoutParams lp= (RelativeLayout.LayoutParams) imageView.getLayoutParams();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
         // 高亮图标
         imageViewHl.setImageResource(MAIN_TAB_IMAGEHL[index]);
-        RelativeLayout.LayoutParams lpHl= (RelativeLayout.LayoutParams) imageViewHl.getLayoutParams();
+        RelativeLayout.LayoutParams lpHl = (RelativeLayout.LayoutParams) imageViewHl.getLayoutParams();
         if (index == 2) {
             int dip2px = HelpUtils.imageDip2px(this, 60);
-            Log.e("TAG_首页2","dip2px="+dip2px);
+            Log.e("TAG_首页2", "dip2px=" + dip2px);
             lp.width = dip2px;
             lp.height = dip2px;
             lpHl.width = dip2px;
@@ -408,7 +408,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
 
         @Override
         public void onTabSelectionChanged(int tabIndex) {
-            Log.e("TAG_MAIN","选择tabIndex="+tabIndex);
+            Log.e("TAG_MAIN", "选择tabIndex=" + tabIndex);
             if (tabIndex == 3 || tabIndex == 4) {
                 token = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("token");
                 resetToken = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("resetToken");
@@ -417,8 +417,8 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
                     if (tabIndex == 3) {
 //                        startWebViewActivity(Config.SHOPPCARWEBVIEW);
                         //原生进货单
-                        startActivity(new Intent(MainActivityNew.this,ShopCarActivity.class));
-                    }  else {
+                        startActivity(new Intent(MainActivityNew.this, ShopCarActivity.class));
+                    } else {
                         viewPager.setCurrentItem(tabIndex, false);
                     }
                 } else {
@@ -434,11 +434,12 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         }
     }
 
-    private void startWebViewActivity(String url){
+    private void startWebViewActivity(String url) {
         Intent intent = new Intent(MainActivityNew.this, WebViewActivity.class);
         intent.putExtra("webViewUrl", url);
         startActivity(intent);
     }
+
     /**
      * pager adapter
      *
@@ -489,7 +490,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         @Override
         public void onPageScrolled(int paramInt1, float paramFloat, int paramInt2) {
             int curIndex = tabWidget.getCurIndex();
-            Log.e("TAG_Main","onPageScrolled="+curIndex);
+            Log.e("TAG_Main", "onPageScrolled=" + curIndex);
             // 向右滑
             if (curIndex == paramInt1) {
                 resetTextViewAlpha(tabWidget.getChildAt(curIndex), 1 - paramFloat);
@@ -509,7 +510,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
 
         @Override
         public void onPageSelected(int index) {
-            Log.e("TAG_Main","tabWidgetSelected="+index);
+            Log.e("TAG_Main", "tabWidgetSelected=" + index);
             // tabWidget焦点策略
             int oldFocusability = tabWidget.getDescendantFocusability();
             // 阻止冒泡
@@ -529,7 +530,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
 
         @Override
         public void onPageScrollStateChanged(int paramInt) {
-            Log.e("TAG_Main","onPageScrollStateChanged="+paramInt);
+            Log.e("TAG_Main", "onPageScrollStateChanged=" + paramInt);
         }
 
     }
@@ -549,18 +550,18 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
         Log.e("TAG_activity", "Main=" + msg);
-       if ("loginout".equals(msg)) {
+        if ("loginout".equals(msg)) {
             setCartNum(0);
             viewPager.setCurrentItem(0);
-        }else if ("carNum".equals(msg)) {
+        } else if ("carNum".equals(msg)) {
             setCartNum(0);
 
-        }else if ("webViewBack".equals(msg)){//返回页
+        } else if ("webViewBack".equals(msg)) {//返回页
 
-        }else if ("error".equals(msg)){
-           rlMainError.setVisibility(View.VISIBLE);
-       }else if ("Success".equals(msg)){
-           rlMainError.setVisibility(View.GONE);
-       }
+        } else if ("error".equals(msg)) {
+            rlMainError.setVisibility(View.VISIBLE);
+        } else if ("Success".equals(msg)) {
+            rlMainError.setVisibility(View.GONE);
+        }
     }
 }

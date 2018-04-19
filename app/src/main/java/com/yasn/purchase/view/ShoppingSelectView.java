@@ -92,7 +92,6 @@ public class ShoppingSelectView extends LinearLayout {
         } else {
             setOrientation(LinearLayout.VERTICAL);
         }
-        int isFirst = 0;
         int checkboxNum = 0;
         for (GoodsDetailsModel.GoodsDetailsBean.SpecsBean attr : specs) {
             List<GoodsDetailsModel.GoodsDetailsBean.SpecsBean.SpecValuesBean> specValues = attr.getSpecValues();
@@ -123,7 +122,7 @@ public class ShoppingSelectView extends LinearLayout {
             for (int i = 0,n = specValues.size(); i < n; i++) {
                 GoodsDetailsModel.GoodsDetailsBean.SpecsBean.SpecValuesBean smallAttr = specValues.get(i);
                 //属性按钮
-                CheckBox button = new CheckBox(context);
+                CheckBox button = new CheckBox(context.getApplicationContext());
                 //设置按钮的参数
                 LayoutParams buttonParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
                         dip2px(context, buttonHeight));
@@ -138,6 +137,7 @@ public class ShoppingSelectView extends LinearLayout {
                 button.setLayoutParams(marginParams);
                 button.setGravity(Gravity.CENTER);
                 button.setButtonDrawable(android.R.color.transparent);
+                button.setTextSize(14);
                 button.setText(smallAttr.getSpecValueName());//设置规格内容
                 int specValueId = smallAttr.getSpecValueId();
                 button.setId(specValueId);//设置规格ID
@@ -151,7 +151,7 @@ public class ShoppingSelectView extends LinearLayout {
                     isSelectFirst = false;
                     button.setChecked(false);
                     button.setBackgroundResource(R.drawable.text_black_blackf7);
-                    button.setTextColor(ContextCompat.getColor(context,R.color.black_33));
+                    button.setTextColor(ContextCompat.getColor(context,R.color.black_66));
                 }
                 boolean isChecked = false;
                 List<GoodsDetailsModel.GoodsDetailsBean.ProductsBean> products = list.getProducts();
@@ -176,6 +176,7 @@ public class ShoppingSelectView extends LinearLayout {
                         button.setEnabled(true);
                         button.setBackgroundResource(R.drawable.text_black_blackf7);
                         button.setTextColor(ContextCompat.getColor(context,R.color.black_33));
+                        isCheckedSpecs = true;
                     }else {
                         button.setEnabled(false);
                         button.setBackgroundResource(R.drawable.text_black99_blacke0);
@@ -206,8 +207,11 @@ public class ShoppingSelectView extends LinearLayout {
             addView(layout);
         }
     }
-
-
+    //是否存在可选中规格
+    private boolean isCheckedSpecs = false;
+    public boolean getIsChecked(){
+        return isCheckedSpecs;
+    }
     /**
      * 根据手机的分辨率从 dip 的单位 转成为 px(像素)
      */

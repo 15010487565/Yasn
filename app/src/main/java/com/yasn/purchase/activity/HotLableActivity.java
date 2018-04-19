@@ -143,6 +143,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
             case R.id.searchbutton:
                 String topsearchString = topsearch.getText().toString().trim();
                 if (TextUtils.isEmpty(topsearchString)){
+                    ToastUtil.showToast("搜索内容不能为空！");
                     return;
                 }
                 // 1. 点击搜索键后，对该搜索字段在数据库是否存在进行检查（查询）->> 关注1

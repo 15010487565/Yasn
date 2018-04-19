@@ -54,6 +54,8 @@ import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
+import static com.yasn.purchase.R.id.iv_StoreNameSelect;
+
 
 public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarClickListener
         , SwipeRefreshLayout.OnRefreshListener {
@@ -116,7 +118,6 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         adapter.setOnItemClickListener(this);
         //自定义的分隔线
         rcShopCar.addItemDecoration(new RcDecoration(this, RcDecoration.VERTICAL_LIST));
-        adapter.notifyDataSetChanged();
         rcShopCar.setAdapter(adapter);
         //底部提交订单
         llPayorder = (LinearLayout) findViewById(R.id.ll_Payorder);
@@ -126,7 +127,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         //总价格
         tvNeedPayMoney = (TextView) findViewById(R.id.tv_needPayMoney);
         //全选
-        ivStoreNameSelect = (ImageView) findViewById(R.id.iv_StoreNameSelect);
+        ivStoreNameSelect = (ImageView) findViewById(iv_StoreNameSelect);
         ivStoreNameSelect.setOnClickListener(this);
         //无数据
         llShopcarNodata = (LinearLayout) findViewById(R.id.ll_shopcarNodata);
@@ -145,53 +146,8 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.iv_StoreNameSelect:
-                StringBuffer tag = (StringBuffer) ivStoreNameSelect.getTag();
-                int first = 0;
-                StringBuffer sb = new StringBuffer();
-                for (int i = 0, j = shopCarAdapterList.size(); i < j; i++) {
-                    ShopCarAdapterModel shopCarAdapterGood = shopCarAdapterList.get(i);
-                    int productId = shopCarAdapterGood.getProductId();
-                    int enableStore = shopCarAdapterGood.getEnableStore();
-                    int goodsOff = shopCarAdapterGood.getGoodsOff();
-                    int itmeType = shopCarAdapterGood.getItmeType();
-                    String beforeSale = shopCarAdapterGood.getBeforeSale();
-                    int isCheck = shopCarAdapterGood.getIsCheck();
-                    if (beforeSale!=null&&!"".equals(beforeSale)){//预售已选中
-                        if (isCheck==1){
-                            Log.e("TAG_进货单11111","isSelected=====");
-                            isSelected(0, String.valueOf(productId));
-                        }
-                    }else {
-                        if (productId > 0 && itmeType == 2 && enableStore > 0 && goodsOff != 1) {
-                            first++;
-                            if (first == 1) {
-                                sb.append(String.valueOf(productId));
-                            } else {
-                                sb.append(",");
-                                sb.append(String.valueOf(productId));
-                            }
-                        }
-                        if (tag != null) {//已全选，设置全部未选
-                            shopCarAdapterGood.setIsCheck(0);
-                        } else {
-                            shopCarAdapterGood.setIsCheck(1);
-                        }
-                    }
-                }
-                productId = sb.toString();
-                if (tag != null) {//已全选，设置全部未选
-                    Log.e("TAG_进货单22222","isSelected=====");
-                    isSelected(0, String.valueOf(productId));
-                    ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_unchecked);
-                    ivStoreNameSelect.setTag(null);
-                } else {
-                    Log.e("TAG_进货单33333","isSelected=====");
-                    isSelected(1, String.valueOf(productId));
-                    ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_checked);
-                    ivStoreNameSelect.setTag(sb);
-                }
-                adapter.notifyDataSetChanged();
+            case iv_StoreNameSelect:
+                initImageStoreNameSelect();
                 break;
             case R.id.tv_addShopCar:
                 boolean isCheckBeforeSale = false;//是否存在预售商品
@@ -200,7 +156,8 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                     ShopCarAdapterModel shopCarAdapterGood = shopCarAdapterList.get(i);
                     String beforeSale = shopCarAdapterGood.getBeforeSale();
                     int isCheck = shopCarAdapterGood.getIsCheck();
-                    if (isCheck==1){//选中
+                    int itmeType = shopCarAdapterGood.getItmeType();
+                    if (isCheck==1&&itmeType==2){//选中
                         if (beforeSale != null&&!"".equals(beforeSale)){
                             //预售
                             isCheckBeforeSale = true;
@@ -215,6 +172,55 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                 }
                 break;
         }
+    }
+
+    private void initImageStoreNameSelect() {
+        StringBuffer tag = (StringBuffer) ivStoreNameSelect.getTag();
+        int first = 0;
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0, j = shopCarAdapterList.size(); i < j; i++) {
+            ShopCarAdapterModel shopCarAdapterGood = shopCarAdapterList.get(i);
+            int productId = shopCarAdapterGood.getProductId();
+            int enableStore = shopCarAdapterGood.getEnableStore();
+            int goodsOff = shopCarAdapterGood.getGoodsOff();
+            int itmeType = shopCarAdapterGood.getItmeType();
+            String beforeSale = shopCarAdapterGood.getBeforeSale();
+            int isCheck = shopCarAdapterGood.getIsCheck();
+            if (beforeSale!=null&&!"".equals(beforeSale)){//预售已选中
+                if (isCheck==1){
+                    Log.e("TAG_进货单11111","isSelected=====");
+                    isSelected(0, String.valueOf(productId));
+                }
+            }else {
+                if (productId > 0 && itmeType == 2 && enableStore > 0 && goodsOff != 1) {
+                    first++;
+                    if (first == 1) {
+                        sb.append(String.valueOf(productId));
+                    } else {
+                        sb.append(",");
+                        sb.append(String.valueOf(productId));
+                    }
+                }
+                if (tag != null) {//已全选，设置全部未选
+                    shopCarAdapterGood.setIsCheck(0);
+                } else {
+                    shopCarAdapterGood.setIsCheck(1);
+                }
+            }
+        }
+        productId = sb.toString();
+        if (tag != null) {//已全选，设置全部未选
+            Log.e("TAG_进货单22222","isSelected=====");
+            isSelected(0, String.valueOf(productId));
+            ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_unchecked);
+            ivStoreNameSelect.setTag(null);
+        } else {
+            Log.e("TAG_进货单33333","isSelected=====");
+            isSelected(1, String.valueOf(productId));
+            ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_checked);
+            ivStoreNameSelect.setTag(sb);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     private void startWebViewActivity(String url) {
@@ -298,7 +304,9 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                         int code = object.optInt("code");
                         if (code == 200) {
                             OkHttpDemand();
-
+                        }else {
+                            OkHttpDemand();
+                            ToastUtil.showToast(returnMsg);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -379,7 +387,8 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                         shopCarAdapterModel.setImageDefault(imageDefault);
                         //价格
                         double price = goodslistBean.getPrice();
-                        shopCarAdapterModel.setPrice(price);
+                        String priceResult = String.format("%.2f", price);
+                        shopCarAdapterModel.setPrice(Double.valueOf(priceResult));
                         //数量
                         int num = goodslistBean.getNum();
                         shopCarAdapterModel.setNum(num);
@@ -440,6 +449,8 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         llShopcarNodata.setVisibility(View.GONE);
         //判断是否有下架商品
         upSelectGoodsOff();
+        //全选状态
+//        initImageStoreNameSelect();
     }
 
     private void upSelectGoodsOff() {
@@ -725,7 +736,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
             }
         }
         //总价格
-        tvNeedPayMoney.setText("￥" + String.valueOf(allNeedPayMoney));
+        tvNeedPayMoney.setText("￥" + String.format("%.2f", allNeedPayMoney));
     }
 
     @Override

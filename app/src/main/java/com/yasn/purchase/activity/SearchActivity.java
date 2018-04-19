@@ -306,10 +306,11 @@ public class SearchActivity extends SimpleTopbarActivity implements
         drawlayoutsearch_rv.setLayoutManager(manager);
         mAdapter = new SortAdapter(this);
         mAdapter.setOnItemClickListener(this);
+        drawlayoutsearch_rv.setAdapter(mAdapter);
         //自定义的分隔线
         drawlayoutsearch_rv.addItemDecoration(new RcDecoration(this,RcDecoration.VERTICAL_LIST));
         mAdapter.notifyDataSetChanged();
-        drawlayoutsearch_rv.setAdapter(mAdapter);
+
         //设置右侧SideBar触摸监听
         mSideBar.setOnTouchLetterChangeListener(new WaveSideBar.OnTouchLetterChangeListener() {
             @Override
@@ -349,6 +350,8 @@ public class SearchActivity extends SimpleTopbarActivity implements
             CarType.CarTypesBean carTypesBean = list.get(i);
             int carTypeId = carTypesBean.getCarTypeId();
             sortModel.setCarTypeId(carTypeId);
+            String logo = carTypesBean.getLogo();
+            sortModel.setLogo(logo);
             String name = carTypesBean.getName();
             sortModel.setName(name);
             //汉字转换成拼音
@@ -412,7 +415,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
                         startSearchGet(secarchContext, "", "buynum_asc");
                     }
                 }
-                searchmoney.animateArrow(false);//重置价格箭头
+//                searchmoney.animateArrow(false);//重置价格箭头
                 break;
             case R.id.search_money://价格
                 tabType = 3;
@@ -435,7 +438,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
                         startSearchGet(secarchContext, "", "price_asc");
                     }
                 }
-                searchsalesvolume.animateArrow(false);//重置销量箭头
+//                searchsalesvolume.animateArrow(false);//重置销量箭头
                 break;
 
             case R.id.search_screen://筛选
@@ -451,10 +454,17 @@ public class SearchActivity extends SimpleTopbarActivity implements
                 selected_yasn.setAlpha(0);
                 unselected_yasn.setAlpha(1);
                 ISCHECKEDYASN = false;
+                if (!ISCHECKEDYASN&&"".equals(cartype)){
+                    selecttype.setVisibility(View.GONE);
+                }
                 break;
             case R.id.cartypefram://车类型
                 cartypefram.setVisibility(View.GONE);
                 cartype = "";
+                seclectName.setText(cartype);
+                if (!ISCHECKEDYASN&&"".equals(cartype)){
+                    selecttype.setVisibility(View.GONE);
+                }
                 break;
 
             case R.id.selected_fram:
@@ -571,7 +581,11 @@ public class SearchActivity extends SimpleTopbarActivity implements
                         swipe_layout.setLoading(false);
                         adapter.addData(data);
                     } else {
-                        adapter.setData(data);
+                        if (data==null||data.size()==0){
+                            ToastUtil.showToast("未搜索到该商品名称！");
+                        }else {
+                            adapter.setData(data);
+                        }
                     }
                 }else {
                     ToastUtil.showToast(returnMsg);
@@ -587,8 +601,8 @@ public class SearchActivity extends SimpleTopbarActivity implements
                         Collections.sort(mDateList, mComparator);
 
                         mAdapter.setData(mDateList);
-                        mDecoration = new TitleItemDecoration(this, mDateList);
                         //如果add两个，那么按照先后顺序，依次渲染。
+                        mDecoration = new TitleItemDecoration(this, mDateList);
                         drawlayoutsearch_rv.addItemDecoration(mDecoration);
                         drawlayoutsearch_rv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
                     }

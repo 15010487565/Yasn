@@ -76,7 +76,7 @@ public class TradePriceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             tradePriceHolder.tvLine.setVisibility(View.VISIBLE);
         }
         double wholesalePrice = ladderPricesBean.getWholesalePrice();
-        tradePriceHolder.tradePrice.setText("￥"+String.valueOf(wholesalePrice));
+        tradePriceHolder.tradePrice.setText("￥"+String.format("%.2f", wholesalePrice));
 //        onItemEventClick(tradePriceHolder);
     }
 

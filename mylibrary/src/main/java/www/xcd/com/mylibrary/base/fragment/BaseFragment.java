@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -551,5 +552,12 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 			SharePrefHelper.getInstance(getActivity()).putSpString("regionId", "");
 			ToastUtil.showToast("登录已过期,请重新登录！");
 		}
+	}
+	public void getHtmlData(String bodyHTML, WebView webView) {
+		String head = "<head>" +
+				"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
+				"<style>img{max-width: 100%; width:auto; height:auto;}</style>" +
+				"</head>";
+		webView.loadData("<html>" + head + "<body>" + bodyHTML + "</body></html>", "text/html; charset=UTF-8", null);
 	}
 }
