@@ -33,6 +33,7 @@ public class ShopCarAdapterModel implements Serializable {
     private int hasDiscount;//是否有抢购   1 有  0没有
     private int limitnum;//限购数量
 
+
     public String getBeforeSale() {
         return beforeSale;
     }

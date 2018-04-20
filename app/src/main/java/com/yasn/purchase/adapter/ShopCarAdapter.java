@@ -109,11 +109,15 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         BigDecimal b1 = new BigDecimal(freeShipMoney);
                         BigDecimal b2 = new BigDecimal(storeCheckPrice);
                         double residueDouble = b1.subtract(b2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-                        tvMmailHintString = String.format(tvMmailHintString, String.format("%.2f", freeShipMoney), String.valueOf(residueDouble <= 0 ? String.format("%.2f", 0) : String.format("%.2f", residueDouble)) + "元");
-                        SpannableStringBuilder span = new SpannableStringBuilder(tvMmailHintString);
-                        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.orange)), tvMmailHintString.length() - 1, tvMmailHintString.length(),
-                                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                        titleViewHolder.tvMmailHint.setText(span);
+                        String residueDoubleFormat = String.format("%.2f", (residueDouble <= 0 ? 0 : residueDouble));
+                        //去凑单剩余价格
+//                        shopCarAdapterModel.setResidueDoubleFormat(residueDoubleFormat);
+                        setResidueDoubleFormat(residueDoubleFormat);
+                        String freeShipMoneyFormat = String.format("%.2f", Double.valueOf(freeShipMoney));
+                        String tvMmailHin = String.format(tvMmailHintString, freeShipMoneyFormat);
+                        Log.e("TAG_购物车",residueDoubleFormat+"=="+residueDoubleFormat.length());
+                        titleViewHolder.tvMmailHint.setText(tvMmailHin);
+                        titleViewHolder.tvMailHintPrice.setText(residueDoubleFormat + "元");
                     } else {
                         titleViewHolder.llMail.setVisibility(View.GONE);
                     }
@@ -155,7 +159,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     for (int i = 0, j = specList.size(); i < j; i++) {
                         String sprcTextString = specList.get(i);
-                        final TextView tvSprc = new TextView(context);
+                        final TextView tvSprc = new TextView(context.getApplicationContext());
                         Log.e("TAG_规格","sprcTextString="+sprcTextString+";position="+position);
                         tvSprc.setText(sprcTextString);
                         if (goodsOff == 0) {
@@ -194,7 +198,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     listViewHolder.ivOrderListClean.setBackgroundResource(R.mipmap.cleanhistory1);
 //                    listViewHolder.ivOrderListClean.setEnabled(false);
                 }
-                listViewHolder.tvOrderListPrice.setText("￥" + String.valueOf(price));
+                listViewHolder.tvOrderListPrice.setText("￥" + String.format("%.2f", price));
 
                 int num = shopCarAdapterModel.getNum();
                 if (goodsOff == 0) {
@@ -275,7 +279,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     class TitleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         LinearLayout llStoreName, llAddgoods, llMail, llStoreNameSelect;
-        TextView tvStoreName, tvMmailHint;
+        TextView tvStoreName, tvMmailHint,tvMailHintPrice;
         ImageView ivStoreNameSelect;
 
         public TitleViewHolder(View itemView) {
@@ -284,6 +288,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             //包邮
             llMail = (LinearLayout) itemView.findViewById(R.id.ll_mail);
             tvMmailHint = (TextView) itemView.findViewById(R.id.tv_mailHint);
+            tvMailHintPrice = (TextView) itemView.findViewById(R.id.tv_mailHintPrice);
             //去凑单
             llAddgoods = (LinearLayout) itemView.findViewById(R.id.ll_addgoods);
             llAddgoods.setOnClickListener(this);
@@ -388,5 +393,14 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 onItemClickListener.OnItemClick(v, position);
             }
         });
+    }
+    private String residueDoubleFormat;//去凑单剩余价格
+
+    public String getResidueDoubleFormat() {
+        return residueDoubleFormat;
+    }
+
+    public void setResidueDoubleFormat(String residueDoubleFormat) {
+        this.residueDoubleFormat = residueDoubleFormat;
     }
 }

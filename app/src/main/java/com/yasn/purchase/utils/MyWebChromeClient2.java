@@ -16,6 +16,7 @@ import com.yasn.purchase.activity.GoodsDetailsActivity;
 import com.yasn.purchase.activity.MainActivityNew;
 import com.yasn.purchase.activity.SearchActivity;
 import com.yasn.purchase.activityold.WebViewActivity;
+import com.yasn.purchase.common.Config;
 import com.yasn.purchase.help.LoginOut;
 import com.yasn.purchase.model.EventBusMsg;
 
@@ -190,23 +191,27 @@ public class MyWebChromeClient2 extends WebChromeClient {
     public void webViewBack(String backString,String startSourceURL,String goodsId) {
         Log.e("TAG_webViewBack3","返回按钮backString="+backString+";startSource="+startSourceURL+";goodsI="+goodsId);
         if ("Home".equals(backString)){
-            startMainActivity(0);
+            Intent intent = new Intent(activity, MainActivityNew.class);
+            intent.putExtra("CURRENTITEM",0);
+            activity.startActivity(intent);
         }else if ("Category".equals(backString)){
-            startMainActivity(1);
+            Intent intent = new Intent(activity, MainActivityNew.class);
+            intent.putExtra("CURRENTITEM",1);
+            activity.startActivity(intent);
         }else if ("Finder".equals(backString)){
-            startMainActivity(2);
+            Intent intent = new Intent(activity, MainActivityNew.class);
+            intent.putExtra("CURRENTITEM",2);
+            activity.startActivity(intent);
         }else if ("ShopCar".equals(backString)){
             startMainActivity(3);
         }else if ("PersonCenter".equals(backString)){
             startMainActivity(4);
         }else if ("GoodsDetail".equals(backString)){//商品详情
-//            EventBus.getDefault().post(new EventBusMsg("GoodsDetail"));
             Intent intent = new Intent(activity, GoodsDetailsActivity.class);
             SharePrefHelper.getInstance(activity).putSpString("GOODSID", goodsId);
             intent.putExtra("GOODSID",goodsId);
             activity.startActivity(intent);
         }else if ("SearchResultList".equals(backString)){//搜索列表
-//            EventBus.getDefault().post(new EventBusMsg("SearchResultList"));
             Intent intent = new Intent(activity, SearchActivity.class);
             if (goodsId!=null&&!"".equals(goodsId)){
                 intent.putExtra("SECARCHCARID",goodsId);
@@ -231,6 +236,10 @@ public class MyWebChromeClient2 extends WebChromeClient {
         if ((token != null && !"".equals(token)||(resetToken != null && !"".equals(resetToken)))) {
             Intent intent = new Intent(activity, MainActivityNew.class);
             intent.putExtra("CURRENTITEM",currentItem);
+            activity.startActivity(intent);
+        }else {
+            Intent intent = new Intent(activity, WebViewActivity.class);
+            intent.putExtra("webViewUrl", Config.LOGINWEBVIEW);
             activity.startActivity(intent);
         }
     }

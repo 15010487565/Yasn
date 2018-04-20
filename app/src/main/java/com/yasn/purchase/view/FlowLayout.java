@@ -171,7 +171,8 @@ public class FlowLayout extends ViewGroup implements CompoundButton.OnCheckedCha
                 }
                 MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
 
-                int lc = left + lp.leftMargin;
+//                int lc = left + lp.leftMargin;
+                int lc = left;
                 int tc = top + lp.topMargin;
                 int rc = lc + child.getMeasuredWidth();
                 int bc = tc + child.getMeasuredHeight();
@@ -205,6 +206,12 @@ public class FlowLayout extends ViewGroup implements CompoundButton.OnCheckedCha
         ((CheckBox) child).setOnCheckedChangeListener(this);
         super.addView(child);
     }
+
+//    @Override
+//    public void addView(View child, LayoutParams params) {
+//        ((CheckBox) child).setOnCheckedChangeListener(this);
+//        super.addView(child, params);
+//    }
 
     //监听按钮的选择状态
     @Override

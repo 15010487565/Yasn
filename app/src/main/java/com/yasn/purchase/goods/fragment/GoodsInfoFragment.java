@@ -417,6 +417,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         //
         webView = (WebView) rootView.findViewById(R.id.webView);
     }
+
     private WebView webView;
 
 
@@ -572,16 +573,16 @@ public class GoodsInfoFragment extends BaseFragment implements
                     if (smallSale > 0) {
                         int allAddNum = addNum + smallSale;
                         if (isLimitBuy == 1) {// 是否限购 0否1是
-                            if (allAddNum>enableStoreNum){
-                                ToastUtil.showToast("库存仅剩"+num+"件");
+                            if (allAddNum > enableStoreNum) {
+                                ToastUtil.showToast("库存仅剩" + num + "件");
                                 return;
                             }
-                            if (allAddNum>num){
-                                ToastUtil.showToast("该商品限购"+num+"件");
-                            }else {
+                            if (allAddNum > num) {
+                                ToastUtil.showToast("该商品限购" + num + "件");
+                            } else {
                                 etGoodsNum.setText(String.valueOf(allAddNum));
                             }
-                        }else {
+                        } else {
                             if (allAddNum <= enableStoreNum) {
                                 etGoodsNum.setText(String.valueOf(allAddNum));
                             } else {
@@ -592,12 +593,12 @@ public class GoodsInfoFragment extends BaseFragment implements
                     } else {
                         int allAddNum = addNum + 1;
                         if (isLimitBuy == 1) {// 是否限购 0否1是
-                            if (allAddNum>num){
-                                ToastUtil.showToast("该商品限购"+num+"件");
-                            }else {
+                            if (allAddNum > num) {
+                                ToastUtil.showToast("该商品限购" + num + "件");
+                            } else {
                                 etGoodsNum.setText(String.valueOf(allAddNum));
                             }
-                        }else {
+                        } else {
                             if (allAddNum <= enableStoreNum) {
                                 etGoodsNum.setText(String.valueOf(allAddNum));
                             } else {
@@ -802,7 +803,7 @@ public class GoodsInfoFragment extends BaseFragment implements
 //                        Spanned spanned = Html.fromHtml(intro, htmlImageGetter, null);
 //                        htmlTextView.setText(spanned);
                         undata.setVisibility(View.GONE);
-                        getHtmlData(intro,webView);
+                        getHtmlData(intro, webView);
                     }
 
                 } else {
@@ -857,8 +858,14 @@ public class GoodsInfoFragment extends BaseFragment implements
         //批发价
         products = goodsDetails.getProducts();
         initTradePricePosition(products, 0);
+        List<GoodsDetailsModel.GoodsDetailsBean.SpecsBean.SpecValuesBean> specValues = specs.get(0).getSpecValues();
+        if (specValues.size() == 1) {
+            productId = productsBean.getProductId();
+        } else {
+            productId = 0;
+        }
         boolean isChecked = label_include.getIsChecked();
-        if (isChecked){//存在选中状态，总库存大于0
+        if (isChecked) {//存在选中状态，总库存大于0
             ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, "");
         }
         //
@@ -974,6 +981,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     GoodsDetailsModel.GoodsDetailsBean.ProductsBean productsBean;
     //阶梯价
     List<GoodsDetailsModel.GoodsDetailsBean.ProductsBean.LadderPricesBean> ladderPrices;
+
     private void initTradePricePosition(List<GoodsDetailsModel.GoodsDetailsBean.ProductsBean> products, int position) {
         etGoodsNum.removeTextChangedListener(this);
         typeLadderPricesposition = position;
@@ -991,16 +999,11 @@ public class GoodsInfoFragment extends BaseFragment implements
             String maxReferencePrice = productsBean.getMaxReferencePrice();
             if (minReferencePrice != null && maxReferencePrice != null && Double.valueOf(maxReferencePrice) > 0) {
                 llRetailPrice.setVisibility(View.VISIBLE);
-                retailPriceView.setText("￥" +  String.format("%.2f", Double.valueOf(minReferencePrice)) + "-￥" +  String.format("%.2f", Double.valueOf(maxReferencePrice)));
+                retailPriceView.setText("￥" + String.format("%.2f", Double.valueOf(minReferencePrice)) + "-￥" + String.format("%.2f", Double.valueOf(maxReferencePrice)));
             } else {
                 llRetailPrice.setVisibility(View.GONE);
             }
-            List<Integer> specValueIds = productsBean.getSpecValueIds();
-            if (specValueIds.size()==1){
                 productId = productsBean.getProductId();
-            }else {
-                productId = 0;
-            }
             //最小起订量
             smallSale = productsBean.getSmallSale();
             enableStoreNum = productsBean.getEnableStore();
@@ -1116,6 +1119,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     private int activityId;//活动商品id
     private int isLimitBuy;// 是否限购 0否1是
     private int num;//限购数量
+
     private void initPromotion(GoodsDetailsModel.GoodsDetailsBean goodsdetailsmodelData) {
         PROMOTIONVISIBILIT = 0;
         GoodsDetailsModel.GoodsDetailsBean.GoodsActityBean goodsActity = goodsdetailsmodelData.getGoodsActity();
@@ -1148,7 +1152,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             long endTime = goodsLimitBuy.getEndTime();
             String saleEndTime = getDateToString(endTime);
             num = goodsLimitBuy.getNum();
-            purchase_promotion.setText(saleStartTime + "到" + saleEndTime + ",限购"+num+"个");
+            purchase_promotion.setText(saleStartTime + "到" + saleEndTime + ",限购" + num + "个");
             purchase_linear.setVisibility(View.VISIBLE);
             PROMOTIONVISIBILIT += 1;
 
@@ -1615,15 +1619,15 @@ public class GoodsInfoFragment extends BaseFragment implements
                         String activityPrice = ladderPricesBean.getActivityPrice();
                         if (activityPrice == null || "".equals(activityPrice) || "0.00".equals(activityPrice)) {
                             double wholesalePrice = ladderPricesBean.getWholesalePrice();
-                            String wholesalePriceResult = "￥" +String.format("%.2f", wholesalePrice);
-                            soldout_money.setText( String.valueOf(wholesalePriceResult));
+                            String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
+                            soldout_money.setText(String.valueOf(wholesalePriceResult));
                             originalprice.setText(String.valueOf(wholesalePriceResult));
                             originalprice2.setText(String.valueOf(wholesalePriceResult));
                         } else {
                             double wholesalePrice = ladderPricesBean.getWholesalePrice();
-                            String wholesalePriceResult =  "￥" +String.format("%.2f", wholesalePrice);
+                            String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
                             originalprice.setText(String.valueOf(wholesalePriceResult));
-                            String activityPriceResult = "￥" +String.format("%.2f", Double.valueOf(activityPrice));
+                            String activityPriceResult = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
                             soldout_money.setText(activityPriceResult);
                             originalprice2.setText(activityPriceResult);
                         }
@@ -1634,12 +1638,12 @@ public class GoodsInfoFragment extends BaseFragment implements
                 String activityPrice = productsBean.getActivityPrice();
                 if (activityPrice != null && !"".equals(activityPrice) || "0.00".equals(activityPrice)) {
                     String price = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
-                    soldout_money.setText( price);
+                    soldout_money.setText(price);
                     originalprice.setText(price);
                     originalprice2.setText(price);
                 } else {
-                    String price = "￥" + String.format("%.2f",productsBean.getPrice());
-                    soldout_money.setText( price);
+                    String price = "￥" + String.format("%.2f", productsBean.getPrice());
+                    soldout_money.setText(price);
                     originalprice.setText(price);
                     originalprice2.setText(price);
                 }

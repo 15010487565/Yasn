@@ -482,14 +482,14 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                                 undredgeYsenHelp.setText("去认证");
                                 meanage.setVisibility(View.GONE);
                                 undredgeYsenHelp.setVisibility(View.VISIBLE);
-                                gradeLinear.setVisibility(View.VISIBLE);
+                                gradeLinear.setVisibility(View.GONE);
                                 department.setVisibility(View.GONE);
                             }else if (lv_id == 1) {
                                 whiteTopText.setText("");
                                 undredgeYsenHelp.setText("去认证");
                                 meanage.setVisibility(View.GONE);
                                 undredgeYsenHelp.setVisibility(View.VISIBLE);
-                                gradeLinear.setVisibility(View.VISIBLE);
+                                gradeLinear.setVisibility(View.GONE);
                                 department.setVisibility(View.GONE);
                             } else {
                                 whiteTopText.setText("");

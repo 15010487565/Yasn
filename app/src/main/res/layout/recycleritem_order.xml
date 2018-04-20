@@ -55,14 +55,23 @@
             android:text="包邮"/>
         <TextView
             android:id="@+id/tv_mailHint"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/textsize_14"
             android:textColor="@color/black_66"
             android:singleLine="true"
             android:ellipsize="end"
             android:text="@string/shopcartitlemail"/>
+        <TextView
+            android:id="@+id/tv_mailHintPrice"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/orange"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text=""/>
         <LinearLayout
             android:id="@+id/ll_addgoods"
             android:layout_marginLeft="@dimen/margin_10"

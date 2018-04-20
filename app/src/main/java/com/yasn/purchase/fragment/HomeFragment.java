@@ -126,7 +126,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
             params.put("access_token", resetToken);
         } else {
             notLogin.setVisibility(View.VISIBLE);
-            home_infomessage.setVisibility(View.GONE);
+            home_infomessage.setVisibility(View.INVISIBLE);
             SharePrefHelper.getInstance(getActivity()).putSpString("regionId", "");
         }
         okHttpGet(100, Config.HOME, params);
@@ -188,7 +188,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
     private void initLoginData(HomeModel.MemberBean member) {
         if (member == null || "".equals(member)) {
             notLogin.setVisibility(View.VISIBLE);
-            home_infomessage.setVisibility(View.GONE);
+            home_infomessage.setVisibility(View.INVISIBLE);
             loginImage.setBackgroundResource(R.mipmap.unlogin);
             home_collect.setVisibility(View.GONE);
         } else {
@@ -273,6 +273,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
         notLogin = (LinearLayout) view.findViewById(R.id.notlogin);
         home_infomessage = (RelativeLayout) view.findViewById(R.id.home_infomessage);
+        home_infomessage.setVisibility(View.INVISIBLE);
         //登陆图片
         loginImage = (ImageView) view.findViewById(R.id.loginImage);
         //登陆
@@ -650,7 +651,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 orderTime.setText(createTimeString + " 下单成功");
             } else if (status == 2) {
                 expressStateImage.setBackgroundResource(R.mipmap.daifahuo);
-                expressStateText.setText("代发货");
+                expressStateText.setText("待发货");
                 orderHint.setText("仓库正在紧急备货中!");
                 orderTime.setText(createTimeString + " 下单成功");
             } else if (status == 3) {

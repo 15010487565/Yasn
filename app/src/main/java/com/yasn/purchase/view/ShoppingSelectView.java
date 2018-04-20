@@ -52,7 +52,7 @@ public class ShoppingSelectView extends LinearLayout {
     /**
      * 属性按钮之间的上边距
      */
-    private int buttonTopMargin = 2;
+    private int buttonTopMargin = 5;
     /**
      * 文字与按钮的边距
      */
@@ -107,6 +107,7 @@ public class ShoppingSelectView extends LinearLayout {
             int margin = dip2px(context, titleMargin);
             textView.setText(attr.getSpecName());
             params.setMargins(margin, margin, margin, margin);
+            textView.setTextSize(14);
             textView.setLayoutParams(params);
             addView(textView);
             //设置一个大规格下的所有小规格
@@ -115,6 +116,7 @@ public class ShoppingSelectView extends LinearLayout {
             layout.setTitle(attr.getSpecName());
             layout.setPadding(dip2px(context, flowLayoutMargin), 0, dip2px(context, flowLayoutMargin), 0);
             //设置选择监听
+            Log.e("TAG_设置选择监听", "listener=" + (listener != null));
             if (listener != null) {
                 layout.setListener(listener);
             }
@@ -125,7 +127,9 @@ public class ShoppingSelectView extends LinearLayout {
                 CheckBox button = new CheckBox(context.getApplicationContext());
                 //设置按钮的参数
                 LayoutParams buttonParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
-                        dip2px(context, buttonHeight));
+                        LayoutParams.WRAP_CONTENT);
+//                ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                        dip2px(context, buttonHeight));
                 //设置文字的边距
                 int padding = dip2px(context, textPadding);
                 button.setPadding(padding, 0, padding, 0);
@@ -134,11 +138,12 @@ public class ShoppingSelectView extends LinearLayout {
                 marginParams.leftMargin = dip2px(context, buttonLeftMargin);
                 marginParams.topMargin = dip2px(context, buttonTopMargin);
 
-                button.setLayoutParams(marginParams);
                 button.setGravity(Gravity.CENTER);
                 button.setButtonDrawable(android.R.color.transparent);
                 button.setTextSize(14);
                 button.setText(smallAttr.getSpecValueName());//设置规格内容
+//                lp.setMargins(10, 5, 10,0);
+                button.setLayoutParams(marginParams);
                 int specValueId = smallAttr.getSpecValueId();
                 button.setId(specValueId);//设置规格ID
                 //默认选中第一个specsChecked
@@ -183,25 +188,6 @@ public class ShoppingSelectView extends LinearLayout {
                         button.setTextColor(ContextCompat.getColor(context, R.color.black_33));
                     }
                 }
-
-//                //第一个可点击按钮
-//                boolean buttonEnabled = button.isEnabled();
-//                if (isFirst == 0&&buttonEnabled){
-//                    isFirst += 1;
-//                    button.setChecked(true);
-//                    button.setBackgroundResource(R.drawable.text_orange_blackf7);
-//                    button.setTextColor(ContextCompat.getColor(context, R.color.orange));
-//                    map.put(layout.getId(),specValueId);
-//                }else {
-//                    button.setChecked(false);
-//                    if (buttonEnabled){
-//                        isFirst += 1;
-//                        button.setBackgroundResource(R.drawable.text_black_blackf7);
-//                    }else {
-//                        button.setBackgroundResource(R.drawable.text_black99_blacke0);
-//                    }
-//                    button.setTextColor(ContextCompat.getColor(context, R.color.black_33));
-//                }
                 layout.addView(button);
             }
             addView(layout);

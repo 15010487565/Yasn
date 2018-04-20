@@ -86,5 +86,5 @@
         您同意后您在雅森车品宝的所有信息将同步成邀请您公司的信息。如果拒绝，该帐号作废，需重新申请帐号。
 </string>
     <string name="shopcartitlehint">亲~当日16:00之前完成支付，当日发货；16:00之后完成支付的订单，将于次日发货，请悉知~</string>
-    <string name="shopcartitlemail">满%1$s包邮，还差%2$s</string>
+    <string name="shopcartitlemail">满%1$s包邮，还差</string>
 </resources>

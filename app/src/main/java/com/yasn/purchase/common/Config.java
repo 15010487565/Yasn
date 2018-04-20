@@ -135,4 +135,6 @@ public class Config {
     public final static String MAKERSHOPORDER  = URL+"ck_shoporder.html";
     //确认订单
     public final static String CHECKOUTSHOPCAR  = URLCAIGOU+"checkout.html";
+    //去凑单
+    public final static String SHOPCARADDONITEM  = URLCAIGOU+"collecting_home.html?show_c=4&store_id=1&keyword=&end_price=&key=2&order=asc&start_price=";
 }

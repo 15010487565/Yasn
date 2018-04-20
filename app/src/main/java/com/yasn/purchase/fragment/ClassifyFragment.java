@@ -28,7 +28,6 @@ import com.yasn.purchase.model.ClassifyRightModel;
 import com.yasn.purchase.model.EventBusMsg;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.NoScrollGridView;
-import com.yasn.purchase.view.TagsLayout;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -56,7 +55,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     //    private ConvenientBanner convenientBanner;
     private ImageView convenientBanner;
     private TextView topsearch;
-    private TagsLayout hotlabel;
+//    private TagsLayout hotlabel;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_classify;
@@ -137,7 +136,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
         //右侧图片
         convenientBanner = (ImageView) view.findViewById(R.id.convenientBanner);
         //实例化标签
-        hotlabel = (TagsLayout) view.findViewById(R.id.hotlabel);
+//        hotlabel = (TagsLayout) view.findViewById(R.id.hotlabel);
         //XXX初始化view的各控件
         isPrepared = true;
         lazyLoad();
