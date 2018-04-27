@@ -502,6 +502,7 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     private boolean flag = true;
     private int duration = 0;
+    private int allDuration = 0;//总时长
 
     public void onClick(View view) {
         switch (view.getId()) {
@@ -524,6 +525,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                 if (mediaplayer == null) {
                     return;
                 }
+
                 if (!mediaplayer.isPlaying()) {
                     voice_start.setBackgroundResource(R.mipmap.voice_stop);
                     mediaplayer.start();
@@ -534,13 +536,14 @@ public class GoodsInfoFragment extends BaseFragment implements
                     mediaplayer.pause();
                     flag = false;
                 }
+
                 break;
             case R.id.iv_subtractNum:
                 int subtractNum = Integer.valueOf(etGoodsNum.getText().toString().trim()) - step;
                 etGoodsNum.removeTextChangedListener(this);
                 if (subtractNum < smallSale) {
                     etGoodsNum.setText(String.valueOf(smallSale));
-                    ToastUtil.showToast("该商品最小起量为"+smallSale+"件！");
+                    ToastUtil.showToast("该商品最小起量为" + smallSale + "件！");
                 } else {
                     etGoodsNum.setText(String.valueOf(subtractNum));
                 }
@@ -628,11 +631,14 @@ public class GoodsInfoFragment extends BaseFragment implements
         public void run() {
             if (flag) {
                 duration -= 1000;
-                String formatLongToTimeStr = HelpUtils.formatLongToTime((long) duration);
-                voice_time.setText(formatLongToTimeStr);
                 if (duration > 0) {
+                    String formatLongToTimeStr = HelpUtils.formatLongToTime((long) duration);
+                    voice_time.setText(formatLongToTimeStr);
                     handler.postDelayed(this, 1000);
                 } else {
+                    voice_start.setBackgroundResource(R.mipmap.voice_stop);
+                    voice_time.setText("00:00:00");
+                    duration = allDuration;
                     handler.removeCallbacks(runnableVoice);
                 }
             }
@@ -752,6 +758,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         if (mediaplayer != null) {
             mediaplayer.pause();
             flag = false;
+            voice_start.setBackgroundResource(R.mipmap.voice_start);
         }
     }
 
@@ -1005,7 +1012,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             } else {
                 llRetailPrice.setVisibility(View.GONE);
             }
-                productId = productsBean.getProductId();
+            productId = productsBean.getProductId();
             //最小起订量
             smallSale = productsBean.getSmallSale();
             //步长
@@ -1079,8 +1086,8 @@ public class GoodsInfoFragment extends BaseFragment implements
                         String activityPriceResult = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
                         soldout_money.setText(activityPriceResult);
                         originalprice2.setText(activityPriceResult);
-                        Log.e("TAG_活动价","soldout_money="+wholesalePriceResult);
-                        Log.e("TAG_活动价市场价","originalprice="+activityPriceResult);
+                        Log.e("TAG_活动价", "soldout_money=" + wholesalePriceResult);
+                        Log.e("TAG_活动价市场价", "originalprice=" + activityPriceResult);
                     }
                 }
             }
@@ -1696,12 +1703,14 @@ public class GoodsInfoFragment extends BaseFragment implements
             voice.setVisibility(View.GONE);
         }
     }
+    String formatLongToTimeStr;//总时长
 
     @Override
     public void onPrepared(MediaPlayer mp) {
         voice.setVisibility(View.VISIBLE);
         duration = mp.getDuration();//总时长
-        String formatLongToTimeStr = HelpUtils.formatLongToTime((long) duration);
+        allDuration = duration;
+        formatLongToTimeStr = HelpUtils.formatLongToTime((long) duration);
         voice_time.setText(formatLongToTimeStr);
     }
 
@@ -1722,10 +1731,12 @@ public class GoodsInfoFragment extends BaseFragment implements
         intent.putExtra("webViewUrl", url);
         getActivity().startActivity(intent);
     }
+
     //最小起订量，供activity调用
     public int getStep() {
         return step;
     }
+
     //步长，供activity调用
     public int getSmallSale() {
         return smallSale;

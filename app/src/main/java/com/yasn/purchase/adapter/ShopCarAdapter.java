@@ -142,16 +142,6 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                 String name = shopCarAdapterModel.getName();
                 int goodsOff = shopCarAdapterModel.getGoodsOff();
-                if (goodsOff == 0) {//0上架
-                    listViewHolder.ivShroud.setVisibility(View.GONE);
-                    listViewHolder.ivOrderListSelect.setVisibility(View.VISIBLE);
-                    listViewHolder.tvOrderListName.setTextColor(ContextCompat.getColor(context, R.color.black_66));
-                } else {//1下架
-                    listViewHolder.ivShroud.setVisibility(View.VISIBLE);
-                    listViewHolder.ivOrderListSelect.setVisibility(View.INVISIBLE);
-                    listViewHolder.tvOrderListName.setTextColor(ContextCompat.getColor(context, R.color.black_99));
-                }
-
                 //规格
                 listViewHolder.shopcarLabel.removeAllViews();
                 List<String> specList = shopCarAdapterModel.getSpecList();
@@ -179,25 +169,6 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
 
                 double price = shopCarAdapterModel.getPrice();
-                if (goodsOff == 0) {
-                    listViewHolder.tvOrderListPrice.setTextColor(ContextCompat.getColor(context, R.color.orange));
-                    listViewHolder.llNum.setBackgroundResource(R.drawable.text_black_white);
-                    listViewHolder.ivAddNum.setBackgroundResource(R.mipmap.addblack);
-                    listViewHolder.llAddNum.setEnabled(true);
-                    listViewHolder.ivSubtractNum.setBackgroundResource(R.mipmap.subtractimage);
-                    listViewHolder.llSubtractNum.setEnabled(true);
-                    listViewHolder.ivOrderListClean.setBackgroundResource(R.mipmap.cleanhistory);
-//                    listViewHolder.ivOrderListClean.setEnabled(true);
-                } else {
-                    listViewHolder.tvOrderListPrice.setTextColor(ContextCompat.getColor(context, R.color.orange_un));
-                    listViewHolder.llNum.setBackgroundResource(R.drawable.text_black99_white);
-                    listViewHolder.ivAddNum.setBackgroundResource(R.mipmap.addblack1);
-                    listViewHolder.llAddNum.setEnabled(false);
-                    listViewHolder.ivSubtractNum.setBackgroundResource(R.mipmap.subtractimage1);
-                    listViewHolder.llSubtractNum.setEnabled(false);
-                    listViewHolder.ivOrderListClean.setBackgroundResource(R.mipmap.cleanhistory1);
-//                    listViewHolder.ivOrderListClean.setEnabled(false);
-                }
                 listViewHolder.tvOrderListPrice.setText("￥" + String.format("%.2f", price));
 
                 int num = shopCarAdapterModel.getNum();
@@ -220,8 +191,14 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     listViewHolder.tvPresellHint.setText("");
                     listViewHolder.tvPresell.setVisibility(View.GONE);
                     if (enableStore < 10) {
-                        listViewHolder.tvOrderListHintNum.setText("仅剩" + enableStore + "件");
-                        listViewHolder.tvOrderListHintNum.setVisibility(View.VISIBLE);
+                        if (enableStore>0){
+                            listViewHolder.tvOrderListHintNum.setText("仅剩" + enableStore + "件");
+                            listViewHolder.tvOrderListHintNum.setVisibility(View.VISIBLE);
+                        }else {
+                            listViewHolder.tvOrderListHintNum.setText("");
+                            listViewHolder.tvOrderListHintNum.setVisibility(View.GONE);
+                        }
+
                     } else {
                         listViewHolder.tvOrderListHintNum.setVisibility(View.GONE);
                     }
@@ -266,6 +243,59 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         .error(R.mipmap.errorimage)
                         .into(listViewHolder.ivOrderListImage);
                 onItemEventClick(listViewHolder);
+
+                if (goodsOff == 0) {//上架
+                    if (beforeSale==null||"".equals(beforeSale)){//没有预售
+                        if (enableStore <= 0 ){
+                            listViewHolder.ivOrderListSelect.setVisibility(View.INVISIBLE);
+                            listViewHolder.tvOrderListName.setTextColor(ContextCompat.getColor(context, R.color.black_99));
+                            listViewHolder.ivShroud.setVisibility(View.VISIBLE);
+                            listViewHolder.ivShroud.setBackgroundResource(R.mipmap.image_ungoods);
+                            listViewHolder.tvOrderListPrice.setTextColor(ContextCompat.getColor(context, R.color.orange_un));
+                            listViewHolder.llNum.setBackgroundResource(R.drawable.text_black99_white);
+                            listViewHolder.ivAddNum.setBackgroundResource(R.mipmap.addblack1);
+                            listViewHolder.llAddNum.setEnabled(false);
+                            listViewHolder.ivSubtractNum.setBackgroundResource(R.mipmap.subtractimage1);
+                            listViewHolder.llSubtractNum.setEnabled(false);
+                            listViewHolder.ivOrderListClean.setBackgroundResource(R.mipmap.cleanhistory1);
+                        }else {
+                            listViewHolder.ivOrderListSelect.setVisibility(View.VISIBLE);
+                            listViewHolder.tvOrderListName.setTextColor(ContextCompat.getColor(context, R.color.black_66));
+                            listViewHolder.ivShroud.setVisibility(View.GONE);
+                            listViewHolder.tvOrderListPrice.setTextColor(ContextCompat.getColor(context, R.color.orange));
+                            listViewHolder.llNum.setBackgroundResource(R.drawable.text_black_white);
+                            listViewHolder.ivAddNum.setBackgroundResource(R.mipmap.addblack);
+                            listViewHolder.llAddNum.setEnabled(true);
+                            listViewHolder.ivSubtractNum.setBackgroundResource(R.mipmap.subtractimage);
+                            listViewHolder.llSubtractNum.setEnabled(true);
+                            listViewHolder.ivOrderListClean.setBackgroundResource(R.mipmap.cleanhistory);
+                        }
+                    }else {//预售
+                        listViewHolder.ivOrderListSelect.setVisibility(View.VISIBLE);
+                        listViewHolder.tvOrderListName.setTextColor(ContextCompat.getColor(context, R.color.black_66));
+                        listViewHolder.ivShroud.setVisibility(View.GONE);
+                        listViewHolder.tvOrderListPrice.setTextColor(ContextCompat.getColor(context, R.color.orange));
+                        listViewHolder.llNum.setBackgroundResource(R.drawable.text_black_white);
+                        listViewHolder.ivAddNum.setBackgroundResource(R.mipmap.addblack);
+                        listViewHolder.llAddNum.setEnabled(true);
+                        listViewHolder.ivSubtractNum.setBackgroundResource(R.mipmap.subtractimage);
+                        listViewHolder.llSubtractNum.setEnabled(true);
+                        listViewHolder.ivOrderListClean.setBackgroundResource(R.mipmap.cleanhistory);
+                    }
+                } else {//下架
+                    listViewHolder.ivOrderListSelect.setVisibility(View.INVISIBLE);
+                    listViewHolder.tvOrderListName.setTextColor(ContextCompat.getColor(context, R.color.black_99));
+                    listViewHolder.ivShroud.setVisibility(View.VISIBLE);
+                    listViewHolder.ivShroud.setBackgroundResource(R.mipmap.soldout);
+                    listViewHolder.tvOrderListPrice.setTextColor(ContextCompat.getColor(context, R.color.orange_un));
+                    listViewHolder.llNum.setBackgroundResource(R.drawable.text_black99_white);
+                    listViewHolder.ivAddNum.setBackgroundResource(R.mipmap.addblack1);
+                    listViewHolder.llAddNum.setEnabled(false);
+                    listViewHolder.ivSubtractNum.setBackgroundResource(R.mipmap.subtractimage1);
+                    listViewHolder.llSubtractNum.setEnabled(false);
+                    listViewHolder.ivOrderListClean.setBackgroundResource(R.mipmap.cleanhistory1);
+//                    listViewHolder.ivOrderListClean.setEnabled(false);
+                }
                 break;
         }
     }

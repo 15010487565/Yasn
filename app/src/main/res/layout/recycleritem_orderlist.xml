@@ -26,15 +26,15 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="@dimen/image_size"
-        android:layout_height="@dimen/image_size"
+        android:layout_width="@dimen/image_sizeshopcar"
+        android:layout_height="@dimen/image_sizeshopcar"
         android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginRight="@dimen/margin_10">
 
         <ImageView
             android:id="@+id/iv_orderListImage"
-            android:layout_width="@dimen/image_size"
-            android:layout_height="@dimen/image_size"
+            android:layout_width="@dimen/image_sizeshopcar"
+            android:layout_height="@dimen/image_sizeshopcar"
             />
 
         <TextView
@@ -49,8 +49,8 @@
 
         <ImageView
             android:id="@+id/iv_shroud"
-            android:layout_width="@dimen/image_size"
-            android:layout_height="@dimen/image_size"
+            android:layout_width="@dimen/image_sizeshopcar"
+            android:layout_height="@dimen/image_sizeshopcar"
             android:background="@mipmap/soldout"
             android:scaleType="fitXY" />
     </RelativeLayout>

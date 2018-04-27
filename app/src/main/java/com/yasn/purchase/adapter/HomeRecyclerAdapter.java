@@ -44,6 +44,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public HomeRecyclerAdapter( Context context) {
         this.context = context;
         regionName = SharePrefHelper.getInstance(context).getSpString("regionName");
+        Log.e("TAG_regionName","regionName="+regionName);
     }
 
     public void setData(List contentList,String priceType) {

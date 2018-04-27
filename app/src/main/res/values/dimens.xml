@@ -33,5 +33,6 @@
     <dimen name="text_size_xs">11sp</dimen>
     <!-- 分割线 -->
     <dimen name="line_width">1dp</dimen>
-    <dimen name="image_size">90dp</dimen>
+    <dimen name="image_sizeshopcar">80dp</dimen>
+    <dimen name="image_size">100dp</dimen>
 </resources>

@@ -203,7 +203,6 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
             }else {
                 if (beforeSale != null && !"".equals(beforeSale)) {//预售已选中
                     if (isCheck == 1) {
-                        Log.e("TAG_进货单11111", "isSelected=====");
                         isSelected(0, String.valueOf(productId));
                     }
                 } else {
@@ -226,12 +225,10 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         }
         productId = sb.toString();
         if (tag != null) {//已全选，设置全部未选
-            Log.e("TAG_进货单22222", "isSelected=====");
             isSelected(0, String.valueOf(productId));
             ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_unchecked);
             ivStoreNameSelect.setTag(null);
         } else {
-            Log.e("TAG_进货单33333", "isSelected=====");
             isSelected(1, String.valueOf(productId));
             ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_checked);
             ivStoreNameSelect.setTag(sb);
@@ -282,10 +279,9 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    ToastUtil.showToast(returnMsg);
+//                    ToastUtil.showToast(returnMsg);
                 } else if (returnCode == 401) {
                     cleanToken();
-                    Log.e("TAG_进货单44444", "isSelected=====");
                     isSelected(isCheck == 1 ? 0 : 1, productId);
                 } else {
                     ToastUtil.showToast(returnMsg);
@@ -599,7 +595,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                             initShopCarData(returnData);
                         }
                     } else {
-                        ToastUtil.showToast("数据请求异常！");
+                        ToastUtil.showToast("网络异常！");
                     }
                     if (progressTxt != null) {
                         progressTxt.setVisibility(View.GONE);
@@ -664,7 +660,6 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                 boolean oneGoodsAndBeforeSale = isOneGoodsAndBeforeSale(storeId);
                 if (oneGoodsAndBeforeSale){
                     int productIdBeforeSale = shopCarAdapterList.get(listPosition+1).getProductId();
-                    Log.e("TAG_进货单aaaaaaa","isSelected====="+productIdBeforeSale);
                     isSelected(isCheck==0?1:0, String.valueOf(productIdBeforeSale));
                     return;
                 }
@@ -678,12 +673,8 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                     int goodsOff = shopCarAdapterGood.getGoodsOff();
                     String beforeSale = shopCarAdapterGood.getBeforeSale();
                     if (beforeSale != null && !"".equals(beforeSale)) {
-                        Log.e("TAG_进货单77777", "j="+j+";isSelected====="+productId);
-//                        if (j==1){//门店单个商品为预售
-//                            isSelected(1, String.valueOf(productId));
-//                            return;
-//                        }else {
-                            isSelected(0, String.valueOf(productId));
+                        ToastUtil.showToast("预售商品请单独下单！");
+                        isSelected(0, String.valueOf(productId));
                     } else {
                         if (productId > 0 && goodId == storeId && enableStore > 0 && goodsOff != 1) {
                             first++;
@@ -702,20 +693,17 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                 }
                 if (sb != null) {
                     productId = sb.toString();
-                    Log.e("TAG_进货单88888", "isSelected=====");
                     isSelected(isCheck == 1 ? 0 : 1, String.valueOf(productId));
                 }
             } else {
                 shopCarSelected.setIsCheck(isCheck == 1 ? 0 : 1);
                 productId = String.valueOf(shopCarSelected.getProductId());
-                Log.e("TAG_进货单99999", "isSelected=====");
                 isSelected(isCheck == 1 ? 0 : 1, productId);
                 for (int i = 0, j = shopCarAdapterList.size(); i < j; i++) {
                     ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(i);
                     String beforeSale = shopCarAdapterModel.getBeforeSale();
                     int isCheck = shopCarAdapterModel.getIsCheck();
                     if (beforeSale != null && !"".equals(beforeSale) && isCheck == 1) {
-                        Log.e("TAG_进货单10101010", "isSelected=====");
                         isSelected(0, String.valueOf(shopCarAdapterModel.getProductId()));
                     }
                 }
@@ -724,10 +712,8 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
             int isCheck = shopCarSelected.getIsCheck();
             int productIdSelected = shopCarSelected.getProductId();
             if (isCheck == 1) {
-                Log.e("TAG_进货单1=1=1=1=1", "isSelected=====");
                 isSelected(0, String.valueOf(productIdSelected));
             } else {
-                Log.e("TAG_进货单2=2=2=2=2=2=2", "isSelected=====");
                 isSelected(1, String.valueOf(productIdSelected));
                 int first = 0;
                 StringBuffer sb = new StringBuffer();
@@ -745,7 +731,6 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                     }
                 }
                 productId = sb.toString();
-                Log.e("TAG_进货单3=3==3=3=3=3", "isSelected=====");
                 isSelected(0, String.valueOf(productId));
             }
 
