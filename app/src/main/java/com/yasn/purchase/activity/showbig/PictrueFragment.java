@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -35,17 +36,41 @@ public class PictrueFragment extends Fragment{
 		initView(view);
 		return view;
 	}
-
+	float lastPosX,lastPosY;
+	long firClick = 0;
 	private void initView(View view) {
 		ScaleView imageView = (ScaleView) view
 				.findViewById(R.id.scale_pic_item);
-		imageView.setOnClickListener(new View.OnClickListener() {
+		imageView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
-			public void onClick(View view) {
-				Log.e("TAG_放大","关闭点击事件");
-				getActivity().finish();
+			public boolean onTouch(View view, MotionEvent motionEvent) {
+				int action = motionEvent.getAction();
+				switch (action) {
+					case MotionEvent.ACTION_DOWN:
+						lastPosX = motionEvent.getX();
+						lastPosY = motionEvent.getY();
+						firClick = System.currentTimeMillis();
+						break;
+					case MotionEvent.ACTION_CANCEL:
+					case MotionEvent.ACTION_UP:
+						if (motionEvent.getX() == lastPosX && motionEvent.getY() == lastPosY) {
+							long time = System.currentTimeMillis();
+							if (time - firClick < 500) {
+								getActivity().finish();
+							}
+						}
+						break;
+				}
+				return false;
 			}
 		});
+//		imageView.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View view) {
+//				Log.e("TAG_放大","关闭点击事件");
+//				getActivity().finish();
+//			}
+//		});
 //		imageView.setImageResource(resId);
 		Log.e("TAG_放大","imageUrl="+imageUrl);
 		if (imageUrl.indexOf("http://")==-1){

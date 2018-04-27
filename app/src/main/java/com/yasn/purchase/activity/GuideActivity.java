@@ -69,9 +69,9 @@ public class GuideActivity extends YasnBaseActivity implements View.OnClickListe
 //        if (isRegister) {
 //            Bundle bundle = new Bundle();
 //            bundle.putInt("type", 4);
-//            startActivity(new Intent(this, MainActivity.class));
+//            startActivity(new Intent(this, MainActivityOld.class));
 //        } else
-//            startActivity(new Intent(this, MainActivity.class));
+//            startActivity(new Intent(this, MainActivityOld.class));
         // 设置结果，并进行传送
         this.setResult(Activity.RESULT_OK);
         finish();

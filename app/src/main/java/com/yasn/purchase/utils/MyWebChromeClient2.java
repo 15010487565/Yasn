@@ -15,6 +15,7 @@ import android.webkit.WebView;
 import com.yasn.purchase.activity.GoodsDetailsActivity;
 import com.yasn.purchase.activity.MainActivityNew;
 import com.yasn.purchase.activity.SearchActivity;
+import com.yasn.purchase.activity.ShopCarActivity;
 import com.yasn.purchase.activityold.WebViewActivity;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.help.LoginOut;
@@ -203,7 +204,15 @@ public class MyWebChromeClient2 extends WebChromeClient {
             intent.putExtra("CURRENTITEM",2);
             activity.startActivity(intent);
         }else if ("ShopCar".equals(backString)){
-            startMainActivity(3);
+            String token = SharePrefHelper.getInstance(activity).getSpString("token");
+            String resetToken = SharePrefHelper.getInstance(activity).getSpString("resetToken");
+            if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
+                activity.startActivity(new Intent(activity, ShopCarActivity.class));
+            } else {
+                Intent intent = new Intent(activity, WebViewActivity.class);
+                intent.putExtra("webViewUrl", Config.LOGINWEBVIEW);
+                activity.startActivity(intent);
+            }
         }else if ("PersonCenter".equals(backString)){
             startMainActivity(4);
         }else if ("GoodsDetail".equals(backString)){//商品详情

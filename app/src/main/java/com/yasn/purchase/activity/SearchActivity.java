@@ -100,6 +100,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
         return false;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

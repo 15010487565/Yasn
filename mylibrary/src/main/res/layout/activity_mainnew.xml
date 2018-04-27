@@ -9,13 +9,19 @@
         android:id="@+id/topbat_parent"
         layout="@layout/view_simple_topbar" />
 
-    <www.xcd.com.mylibrary.view.NoScrollPreloadViewPager
-        android:id="@+id/main_viewpager"
+    <FrameLayout
+        android:id="@+id/frame_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/topbat_parent">
+    </FrameLayout>
+    <!--<www.xcd.com.mylibrary.view.NoScrollPreloadViewPager-->
+        <!--android:id="@+id/main_viewpager"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_below="@id/topbat_parent">-->
 
-    </www.xcd.com.mylibrary.view.NoScrollPreloadViewPager>
+    <!--</www.xcd.com.mylibrary.view.NoScrollPreloadViewPager>-->
 
     <www.xcd.com.mylibrary.widget.SnsTabWidget
         android:layout_width="match_parent"
@@ -30,27 +36,5 @@
         android:layout_alignParentBottom="true"
         android:background="@color/transparent"
         android:showDividers="none" />
-    <RelativeLayout
-        android:id="@+id/rl_mainError"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/topbat_parent"
-        android:background="@color/white">
-        <TextView
-            android:id="@+id/tv_mainError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/orange"
-            android:layout_centerInParent="true"
-            android:text="获取数据异常，请下拉重新请求!"/>
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_above="@id/tv_mainError"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:layout_centerHorizontal="true"
-            android:background="@mipmap/unlogin"/>
-    </RelativeLayout>
 
 </RelativeLayout>

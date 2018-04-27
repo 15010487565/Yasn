@@ -1,23 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical">
-    <TextView
-        android:id="@+id/undata"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="@dimen/textsize_16"
-        android:textColor="@color/black_66"
-        android:gravity="center"
-        android:text="暂无数据！"
-        android:visibility="gone"/>
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </WebView>
+    <RelativeLayout
+        android:id="@+id/undata"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topbat_parent"
+        android:background="@color/white">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_GoodsError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="亲，该商品已经下架了哦~"
+            android:textColor="@color/black_66"
+            android:textSize="@dimen/textsize_14" />
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_above="@id/tv_GoodsError"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:background="@mipmap/unlogin" />
+    </RelativeLayout>
+</RelativeLayout>

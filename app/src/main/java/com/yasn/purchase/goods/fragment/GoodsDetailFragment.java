@@ -22,14 +22,15 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 
 /**
- * item页ViewPager里的教你卖好Fragment
+ * 教你卖好Fragment
  */
 public class GoodsDetailFragment extends BaseFragment implements View.OnClickListener{
 
-    private TextView undata;
+    private RelativeLayout undata;
     // 标志位，标志已经初始化完成。
     private boolean isPrepared;
     private WebView webView;
+    private TextView tvGoodsError;
 
     protected void OkHttpDemand() {
         String goodsid = SharePrefHelper.getInstance(getActivity()).getSpString("GOODSID");
@@ -65,10 +66,12 @@ public class GoodsDetailFragment extends BaseFragment implements View.OnClickLis
         RelativeLayout topbat_parent = (RelativeLayout) view.findViewById(R.id.topbat_parent);
         topbat_parent.setVisibility(View.GONE);
 
-        undata = (TextView) view.findViewById(R.id.undata);
+        undata = (RelativeLayout) view.findViewById(R.id.undata);
+        undata.setVisibility(View.GONE);
 //        htmlTextView.setMovementMethod(LinkMovementMethod.getInstance());//设置超链接可以打开网页
         //XXX初始化view的各控件
         webView = (WebView) view.findViewById(R.id.webView);
+        tvGoodsError = (TextView) view.findViewById(R.id.tv_GoodsError);
         isPrepared = true;
         lazyLoad();
     }
@@ -93,6 +96,7 @@ public class GoodsDetailFragment extends BaseFragment implements View.OnClickLis
                     }
                 } else {
                     undata.setVisibility(View.VISIBLE);
+                    tvGoodsError.setText("亲，未获取到教你卖好数据~");
                     ToastUtil.showToast(returnMsg);
                 }
                 break;

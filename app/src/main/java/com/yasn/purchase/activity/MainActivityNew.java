@@ -2,14 +2,11 @@ package com.yasn.purchase.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -42,8 +39,6 @@ import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
-import www.xcd.com.mylibrary.view.NoPreloadViewPager;
-import www.xcd.com.mylibrary.view.NoScrollPreloadViewPager;
 import www.xcd.com.mylibrary.widget.SnsTabWidget;
 
 public class MainActivityNew extends SimpleTopbarActivity implements LoadWebViewErrListener {
@@ -100,9 +95,9 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
      */
     private List<BaseFragment> fragmentList = new ArrayList<BaseFragment>();
 
-    private NoScrollPreloadViewPager viewPager;
+//    private NoScrollPreloadViewPager viewPager;
     private SnsTabWidget tabWidget;
-    private RelativeLayout rlMainError;//错误布局
+
     /**
      * 第一次返回按钮时间
      */
@@ -121,11 +116,10 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         EventBus.getDefault().register(this);
         currentItem = getIntent().getIntExtra("CURRENTITEM", 0);
         Log.e("TAG_MAIN", "onCreate=" + currentItem);
-        initView();
         // 初始化fragments
         initFragments();
         // 初始化ViewPager
-        initPager();
+//        initPager();
         // 初始化Tab
         initTabWidget();
         //实例化红点
@@ -139,18 +133,34 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     public void setCartNum(int cartnum) {
         resetRedPoint(3, cartnum);
     }
-
     private void initView() {
-        viewPager = (NoScrollPreloadViewPager) findViewById(R.id.main_viewpager);
+//        viewPager = (NoScrollPreloadViewPager) findViewById(R.id.main_viewpager);
         tabWidget = (SnsTabWidget) findViewById(R.id.main_tabwidget);
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
-        rlMainError = (RelativeLayout) findViewById(R.id.rl_mainError);
-        rlMainError.setVisibility(View.GONE);
+        // 为布局添加fragment,开启事物
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction tran = fm.beginTransaction();
+
+//        HomeFragment homeFragment = new HomeFragment();
+//        ClassifyFragment classifyFragment = new ClassifyFragment();
+//        FindTestFragment findTestFragment = new FindTestFragment();
+//        ShopCarFragment shopCarFragment = new ShopCarFragment();
+//        ShopFragment shopFragment = new ShopFragment();
+        //R.id.relative为布局
+        tran.add(R.id.frame_content, fragmentList.get(0), "home").show(fragmentList.get(0))
+                .add(R.id.frame_content, fragmentList.get(1), "classify").hide(fragmentList.get(1))
+                .add(R.id.frame_content, fragmentList.get(2), "findTest").hide(fragmentList.get(2))
+                .add(R.id.frame_content, fragmentList.get(3), "shopCar").hide(fragmentList.get(3))
+                .add(R.id.frame_content, fragmentList.get(4), "shop").hide(fragmentList.get(4));
+
+        tran.commit();
+//        clickFragmentBtn(0);
+//        viewPager.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return false;
+//            }
+//        });
+
     }
 
     @Override
@@ -189,20 +199,21 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
             }
             fragmentList.add(fragment);
         }
+        initView();
     }
 
     /**
      * 初始化ViewPager
      */
-    protected void initPager() {
-
-        // adapter
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
-        // 默认选中第一个
-        viewPager.setCurrentItem(currentItem);
-        // page change监听
-        viewPager.setOnPageChangeListener(new MainPageChangeListener());
-    }
+//    protected void initPager() {
+//
+//        // adapter
+//        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+//        // 默认选中第一个
+//        viewPager.setCurrentItem(currentItem);
+//        // page change监听
+//        viewPager.setOnPageChangeListener(new MainPageChangeListener());
+//    }
 
     /**
      * 初始化Tab
@@ -419,19 +430,38 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
                         //原生进货单
                         startActivity(new Intent(MainActivityNew.this, ShopCarActivity.class));
                     } else {
-                        viewPager.setCurrentItem(tabIndex, false);
+//                        viewPager.setCurrentItem(tabIndex, false);
+                        clickFragmentBtn(tabIndex);
                     }
                 } else {
                     startWebViewActivity(Config.LOGINWEBVIEW);
                 }
             } else {
-                viewPager.setCurrentItem(tabIndex, false);
+//                viewPager.setCurrentItem(tabIndex, false);
+                clickFragmentBtn(tabIndex);
             }
 
-            if (!viewPager.hasFocus()) {
-                viewPager.requestFocus();
+//            if (!viewPager.hasFocus()) {
+//                viewPager.requestFocus();
+//            }
+        }
+    }
+
+    private void clickFragmentBtn(int tabIndex) {
+        // 得到Fragment事务管理器
+        FragmentTransaction fragmentTransaction = this
+                .getSupportFragmentManager().beginTransaction();
+
+        for (int i = 0; i < fragmentList.size(); i++) {
+            if (i == tabIndex){
+                fragmentTransaction.show(fragmentList.get(i));
+                resetTextViewAlpha(tabWidget.getChildAt(i),1);
+            }else {
+                fragmentTransaction.hide(fragmentList.get(i));
+                resetTextViewAlpha(tabWidget.getChildAt(i),0);
             }
         }
+        fragmentTransaction.commit();
     }
 
     private void startWebViewActivity(String url) {
@@ -447,36 +477,36 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
      * @version 1.0
      * @date 2014年9月23日
      */
-    private class MainPagerAdapter extends FragmentPagerAdapter {
-
-        private FragmentManager manager;
-
-        public MainPagerAdapter(FragmentManager fm) {
-            super(fm);
-            manager = fm;
-        }
-
-        @Override
-        public Fragment getItem(int paramInt) {
-
-            return fragmentList.get(paramInt);
-        }
-
-        @Override
-        public int getCount() {
-            return fragmentList.size();
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-//            super.destroyItem(container, position, object);
-        }
-
-        @Override
-        public void destroyItem(View container, int position, Object object) {
-//            super.destroyItem(container, position, object);
-        }
-    }
+//    private class MainPagerAdapter extends FragmentPagerAdapter {
+//
+//        private FragmentManager manager;
+//
+//        public MainPagerAdapter(FragmentManager fm) {
+//            super(fm);
+//            manager = fm;
+//        }
+//
+//        @Override
+//        public Fragment getItem(int paramInt) {
+//
+//            return fragmentList.get(paramInt);
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return fragmentList.size();
+//        }
+//
+//        @Override
+//        public void destroyItem(ViewGroup container, int position, Object object) {
+////            super.destroyItem(container, position, object);
+//        }
+//
+//        @Override
+//        public void destroyItem(View container, int position, Object object) {
+////            super.destroyItem(container, position, object);
+//        }
+//    }
 
     /**
      * page change监听
@@ -485,55 +515,55 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
      * @version 1.0
      * @date 2014年9月23日
      */
-    private class MainPageChangeListener implements NoPreloadViewPager.OnPageChangeListener {
-
-        @Override
-        public void onPageScrolled(int paramInt1, float paramFloat, int paramInt2) {
-            int curIndex = tabWidget.getCurIndex();
-            Log.e("TAG_Main", "onPageScrolled=" + curIndex);
-            // 向右滑
-            if (curIndex == paramInt1) {
-                resetTextViewAlpha(tabWidget.getChildAt(curIndex), 1 - paramFloat);
-                resetFragmentAlpha(curIndex, 1 - paramFloat);
-                resetTextViewAlpha(tabWidget.getChildAt(curIndex + 1), paramFloat);
-                resetFragmentAlpha(curIndex + 1, paramFloat);
-            } else if (curIndex == paramInt1 + 1) {// 向左划
-                resetTextViewAlpha(tabWidget.getChildAt(curIndex), paramFloat);
-                resetFragmentAlpha(curIndex, paramFloat);
-                resetTextViewAlpha(tabWidget.getChildAt(paramInt1), 1 - paramFloat);
-                resetFragmentAlpha(paramInt1, 1 - paramFloat);
-            }
-            token = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("token");
-            resetToken = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("resetToken");
-            resetTokenTime = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("resetTokenTime");
-        }
-
-        @Override
-        public void onPageSelected(int index) {
-            Log.e("TAG_Main", "tabWidgetSelected=" + index);
-            // tabWidget焦点策略
-            int oldFocusability = tabWidget.getDescendantFocusability();
-            // 阻止冒泡
-            tabWidget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-            // 切换tab
-            tabWidget.setCurrentTab(index);
-            // 重设title
-//            resetTitle(index);
-            // 变换tab显示
-            for (int i = 0; i < fragmentArray.length; i++) {
-                View view = tabWidget.getChildAt(i);
-                resetTextViewStyle(view, i, (i == index));
-            }
-            // 还原焦点策略
-            tabWidget.setDescendantFocusability(oldFocusability);
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int paramInt) {
-            Log.e("TAG_Main", "onPageScrollStateChanged=" + paramInt);
-        }
-
-    }
+//    private class MainPageChangeListener implements NoPreloadViewPager.OnPageChangeListener {
+//
+//        @Override
+//        public void onPageScrolled(int paramInt1, float paramFloat, int paramInt2) {
+//            int curIndex = tabWidget.getCurIndex();
+//            Log.e("TAG_Main", "onPageScrolled=" + curIndex);
+//            // 向右滑
+//            if (curIndex == paramInt1) {
+//                resetTextViewAlpha(tabWidget.getChildAt(curIndex), 1 - paramFloat);
+//                resetFragmentAlpha(curIndex, 1 - paramFloat);
+//                resetTextViewAlpha(tabWidget.getChildAt(curIndex + 1), paramFloat);
+//                resetFragmentAlpha(curIndex + 1, paramFloat);
+//            } else if (curIndex == paramInt1 + 1) {// 向左划
+//                resetTextViewAlpha(tabWidget.getChildAt(curIndex), paramFloat);
+//                resetFragmentAlpha(curIndex, paramFloat);
+//                resetTextViewAlpha(tabWidget.getChildAt(paramInt1), 1 - paramFloat);
+//                resetFragmentAlpha(paramInt1, 1 - paramFloat);
+//            }
+//            token = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("token");
+//            resetToken = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("resetToken");
+//            resetTokenTime = SharePrefHelper.getInstance(MainActivityNew.this).getSpString("resetTokenTime");
+//        }
+//
+//        @Override
+//        public void onPageSelected(int index) {
+//            Log.e("TAG_Main", "tabWidgetSelected=" + index);
+//            // tabWidget焦点策略
+//            int oldFocusability = tabWidget.getDescendantFocusability();
+//            // 阻止冒泡
+//            tabWidget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+//            // 切换tab
+//            tabWidget.setCurrentTab(index);
+//            // 重设title
+////            resetTitle(index);
+//            // 变换tab显示
+//            for (int i = 0; i < fragmentArray.length; i++) {
+//                View view = tabWidget.getChildAt(i);
+//                resetTextViewStyle(view, i, (i == index));
+//            }
+//            // 还原焦点策略
+//            tabWidget.setDescendantFocusability(oldFocusability);
+//        }
+//
+//        @Override
+//        public void onPageScrollStateChanged(int paramInt) {
+//            Log.e("TAG_Main", "onPageScrollStateChanged=" + paramInt);
+//        }
+//
+//    }
 
     @Override
     protected Object getTopbarTitle() {
@@ -546,22 +576,24 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         EventBus.getDefault().unregister(this);
     }
 
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+////        super.onSaveInstanceState(outState);
+//
+//    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
-        Log.e("TAG_activity", "Main=" + msg);
         if ("loginout".equals(msg)) {
             setCartNum(0);
-            viewPager.setCurrentItem(0);
+//            viewPager.setCurrentItem(0);
         } else if ("carNum".equals(msg)) {
-            setCartNum(0);
+
+            setCartNum(Integer.valueOf(event.getCarNum()));
 
         } else if ("webViewBack".equals(msg)) {//返回页
 
-        } else if ("error".equals(msg)) {
-            rlMainError.setVisibility(View.VISIBLE);
-        } else if ("Success".equals(msg)) {
-            rlMainError.setVisibility(View.GONE);
         }
     }
 }

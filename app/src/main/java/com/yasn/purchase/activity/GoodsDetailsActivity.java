@@ -74,7 +74,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     private ShareEntity testBean;
     //进货单数量
     private BadgeView main_tabitem_redpoint;
-    TextView tvUndata;
+    RelativeLayout tvUndata;
     //收藏图片、文字
     private LinearLayout llCollect;
     private ImageView ivCollect;
@@ -106,7 +106,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         titleTabs = (PagerSlidingTabStrip) findViewById(R.id.title_tabs);
         llTitle = (LinearLayout) findViewById(R.id.ll_title);
         viewPager = (NoScrollViewPager) findViewById(R.id.viewPager);
-        tvUndata = (TextView) findViewById(R.id.tv_undata);
+        tvUndata = (RelativeLayout) findViewById(R.id.tv_undata);
         tvUndata.setVisibility(View.GONE);
         viewPager.setVisibility(View.VISIBLE);
         viewPager.setScroll(true);
@@ -319,9 +319,15 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         }
         Integer integerGoodsNum = Integer.valueOf(goodsNum);
         int smallSale = goodsInfoFragment.getSmallSale();
-        Log.e("TAG_activity", "加入进货单goodsNum=" + goodsNum + ";smallSale=" + smallSale);
+        int step = goodsInfoFragment.getStep();
+        Log.e("TAG_activity", "加入进货单goodsNum=" + integerGoodsNum + ";smallSale=" + smallSale+""+step);
+        if (integerGoodsNum < smallSale){
+            ToastUtil.showToast("最小起订量为"+smallSale+"件，请输入正确数量！");
+            return;
+        }
         if (smallSale > 0) {
-            int remainder = Integer.valueOf(goodsNum) % smallSale;
+            int remainder = integerGoodsNum % smallSale;
+            Log.e("TAG_activity", "加入进货单remainder=" + remainder);
             if (remainder > 0) {
                 ToastUtil.showToast("请输入正确数量！");
                 return;

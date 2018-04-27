@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -453,6 +454,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 	public void okHttpGet(final int requestCode, String url, final Map<String, Object> paramsMaps) {
 
 		if (NetUtil.getNetWorking(getActivity()) == false) {
+			Log.e("TAG_请求","requestCode="+requestCode+";url="+url);
 			showToast("请检查网络。。。");
 			return;
 		}

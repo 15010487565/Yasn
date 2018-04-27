@@ -10,10 +10,12 @@ import android.os.Parcelable;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -420,10 +422,15 @@ public class SlideDetailsLayout extends ViewGroup {
                 }
             }
         }
-
         if (android.os.Build.VERSION.SDK_INT < 14) {
             return ViewCompat.canScrollVertically(mTarget, -direction) || mTarget.getScrollY() > 0;
         } else {
+             if (mTarget instanceof RelativeLayout){
+                Log.e("TAG_子控件","child="+mTarget);
+                RelativeLayout childRl = (RelativeLayout) mTarget;
+                WebView webView =  (WebView)childRl.getChildAt(0);
+                return ViewCompat.canScrollVertically(webView, -direction);
+            }
             return ViewCompat.canScrollVertically(mTarget, -direction);
         }
     }

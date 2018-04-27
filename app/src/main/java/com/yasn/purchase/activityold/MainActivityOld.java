@@ -54,7 +54,7 @@ import java.util.List;
 
 import www.xcd.com.mylibrary.PhotoActivity;
 
-public class MainActivity extends PhotoActivity
+public class MainActivityOld extends PhotoActivity
  implements View.OnClickListener, LoadWebViewErrListener
 {
     private BridgeWebView mWebView;
@@ -85,7 +85,7 @@ public class MainActivity extends PhotoActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_mainold);
         EventBus.getDefault().register(this);
         initView();
         initData();
@@ -159,7 +159,7 @@ public class MainActivity extends PhotoActivity
             @Override
             public void handler(String data, CallBackFunction function) {
                 WXPay wxPay = new WXPay();
-                wxPay.pay(MainActivity.this, data);
+                wxPay.pay(MainActivityOld.this, data);
 
                 function.onCallBack("微信支付中...");
             }
@@ -214,7 +214,7 @@ public class MainActivity extends PhotoActivity
                         }
 
                         if (response != null && response.length() > 0) {
-                            if (!response.equals(VersionUtil.getVersionCode(MainActivity.this))) {
+                            if (!response.equals(VersionUtil.getVersionCode(MainActivityOld.this))) {
                                 msgHandler.sendEmptyMessage(SHOW_IS_NEW_VERSION);//强制更新,所以一定是最新版本
                             } else {
                                 msgHandler.sendEmptyMessage(SHOW_IS_NEW_VERSION);
@@ -234,7 +234,7 @@ public class MainActivity extends PhotoActivity
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SHOW_IS_NEW_VERSION:
-                    ToastUtil.show(MainActivity.this, getResources().getString(R.string.is_new_version));
+                    ToastUtil.show(MainActivityOld.this, getResources().getString(R.string.is_new_version));
                     break;
                 default:
                     break;
@@ -280,7 +280,7 @@ public class MainActivity extends PhotoActivity
         if (appCacheDir.exists()) {
             deleteFile(appCacheDir);
         }
-        ToastUtil.show(MainActivity.this, getResources().getString(R.string.clear_sucess));
+        ToastUtil.show(MainActivityOld.this, getResources().getString(R.string.clear_sucess));
     }
 
     /**
@@ -469,8 +469,8 @@ public class MainActivity extends PhotoActivity
     }
     public void playVideo(String videoUrl,String videoName) {
         int version = Integer.valueOf(android.os.Build.VERSION.SDK);
-        Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-//        Intent intent = new Intent(MainActivity.this, PlayEmptyControlActivity.class);
+        Intent intent = new Intent(MainActivityOld.this, PlayActivity.class);
+//        Intent intent = new Intent(MainActivityOld.this, PlayEmptyControlActivity.class);
         intent.putExtra("VIDEOURL",videoUrl);
         intent.putExtra("VIDEONAME",videoName);
         startActivity(intent);

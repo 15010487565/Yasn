@@ -109,6 +109,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     private ImageView setting;
 
     //    public static int SHOPWEBVIEWCODE = 50000;
+    private RelativeLayout rlMainError;//错误布局
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_shop;
@@ -140,23 +141,23 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
 
     @Override
     protected void lazyLoad() {
-        if (!isPrepared || !isVisible) {
-            return;
-        }
+//        if (!isPrepared || !isVisible) {
+//            return;
+//        }
         //填充各控件的数据
         OkHttpDemand();
     }
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(getUserVisibleHint()) {
-            isVisible = true;
-//            onVisible();
-        } else {
-            isVisible = false;
-//            onInvisible();
-        }
-    }
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        if(getUserVisibleHint()) {
+//            isVisible = true;
+////            onVisible();
+//        } else {
+//            isVisible = false;
+////            onInvisible();
+//        }
+//    }
 
     @Override
     protected void initView(LayoutInflater inflater, View view) {
@@ -210,6 +211,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         meanagestaff.setOnClickListener(this);
         //实例化功能列表
         initFuncData(imageUrl,nameTitle);
+        //error界面
+        rlMainError = (RelativeLayout) view.findViewById(R.id.rl_mainError);
+        rlMainError.setVisibility(View.GONE);
         //XXX初始化view的各控件
         isPrepared = true;
         lazyLoad();
@@ -311,7 +315,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         mSwipeRefreshLayout.setRefreshing(false);
-        EventBus.getDefault().post(new EventBusMsg("Success"));
+        rlMainError.setVisibility(View.GONE);
         switch (requestCode) {
             case 101:
                 if (returnCode == 200) {
@@ -400,6 +404,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         }
     };
     int lv_id = 0;
+    int digital_member;
     private void initShopData(String returnData) {
         try {
             if (returnData != null) {
@@ -439,7 +444,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                         }
                         String levelName = member.getLevelName();
                         shopGrade.setText(levelName == null ? "未知" : levelName);
-                        int digital_member = member.getDigital_member();
+                        digital_member = member.getDigital_member();
                         lv_id = member.getLv_id();
                         if (lv_id>5){
                             //实例化功能列表
@@ -757,22 +762,22 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
 
     @Override
     public void onCancelResult() {
-        EventBus.getDefault().post(new EventBusMsg("error"));
+        rlMainError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
-        EventBus.getDefault().post(new EventBusMsg("error"));
+        rlMainError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
-        EventBus.getDefault().post(new EventBusMsg("error"));
+        rlMainError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onFinishResult() {
-        EventBus.getDefault().post(new EventBusMsg("error"));
+        rlMainError.setVisibility(View.VISIBLE);
     }
     //点击事件
     @Override
@@ -786,7 +791,11 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     startWebViewActivity(Config.SHOPPLACEOFRECEIPT);
                     break;
                 case 2://数字会员
-                    startWebViewActivity(Config.DREDGEYASNHELP);
+                    if (digital_member == 0) {//未开通雅森帮
+                        startWebViewActivity(Config.DREDGEYASNHELP);
+                    }else {
+                        startWebViewActivity(Config.YASNBANG);
+                    }
                     break;
                 case 3://帮助中心
                     startWebViewActivity(Config.SHOPHELP);

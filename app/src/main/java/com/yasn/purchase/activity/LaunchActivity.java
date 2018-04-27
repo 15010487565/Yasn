@@ -69,18 +69,6 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
         getAsyncHttp(Config.LAUNCHIMAGE, 100);
 //        int i = 1/0;
     }
-//    @Overridegradlew compileDebugSources --stacktrace -info
-//    protected void onRestart() {
-//        super.onRestart();
-//        if (!isNeedCheck) {
-//
-//        }
-//    }
-//    @Override
-//    public void haveAllPermisson() {
-//        super.haveAllPermisson();
-//
-//    }
 
     private void isFirstOpen() {
         isFirstOpen(3000);
@@ -157,7 +145,7 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
     }
     private void startActivity(){
         ActivityHelper.init(LaunchActivity.this).startActivity(MainActivityNew.class);
-//        ActivityHelper.init(LaunchActivity.this).startActivity(MainActivity.class);
+//        ActivityHelper.init(LaunchActivity.this).startActivity(MainActivityOld.class);
         LaunchActivity.this.finish();
     }
     private void checkForUpdates() {

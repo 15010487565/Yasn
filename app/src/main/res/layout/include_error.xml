@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/rl_mainError"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/topbat_parent"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_mainError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="网络异常！\n请下拉重新请求!"
+        android:textColor="@color/black_66"
+        android:textSize="@dimen/textsize_14" />
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_above="@id/tv_mainError"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:background="@mipmap/unlogin" />
+</RelativeLayout>

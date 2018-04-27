@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_f7"
@@ -19,79 +18,90 @@
         android:layout_height="match_parent"
         android:addStatesFromChildren="true"
         android:focusable="true"
-        android:focusableInTouchMode="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:focusableInTouchMode="true">
 
-        <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/main_content"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="0dp">
+            android:layout_height="match_parent">
 
-            <!--AppBarLayout 是继承LinerLayout实现的一个ViewGroup容器组件，它是为了Material Design设计的AppBar，支持手势滑动操作-->
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/appbar"
+            <android.support.design.widget.CoordinatorLayout
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/main_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
-                app:layout_scrollFlags="scroll"
-                app:elevation="0dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="0dp">
+                <!--AppBarLayout 是继承LinerLayout实现的一个ViewGroup容器组件，它是为了Material Design设计的AppBar，支持手势滑动操作-->
+                <android.support.design.widget.AppBarLayout
+                    android:id="@+id/appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:elevation="0dp"
+                    app:layout_scrollFlags="scroll"
+                    >
 
-                <!--<android.support.design.widget.CollapsingToolbarLayout-->
-                    <!--android:id="@+id/collapsing_toolbar"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--app:layout_collapseParallaxMultiplier="0"-->
-                    <!--app:layout_scrollFlags="scroll">-->
-                    <LinearLayout
+                    <android.support.design.widget.CollapsingToolbarLayout
+                        android:id="@+id/collapsing_toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/black_f7"
-                        app:layout_scrollFlags="scroll"
-                        android:orientation="vertical">
-                        <include layout="@layout/include_homeinfo" />
-                        <include layout="@layout/include_homeshopandyasn" />
-                        <include layout="@layout/include_homeorderinfo" />
-                        <com.youth.banner.Banner
-                            android:id="@+id/home_banner"
+                        android:layout_height="match_parent"
+                        app:layout_collapseParallaxMultiplier="0"
+                        app:layout_scrollFlags="scroll">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            app:indicator_drawable_selected="@drawable/normal"
-                            app:indicator_drawable_unselected="@drawable/unnormal"
-                            app:image_scale_type="fit_xy"
-                            android:layout_height="200dp"/>
-                    </LinearLayout>
-                <!--</android.support.design.widget.CollapsingToolbarLayout>-->
+                            android:layout_height="wrap_content"
+                            android:background="@color/black_f7"
+                            app:layout_scrollFlags="scroll"
+                            android:orientation="vertical">
 
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tablayout"
+                            <include layout="@layout/include_homeinfo" />
+
+                            <include layout="@layout/include_homeshopandyasn" />
+
+                            <include layout="@layout/include_homeorderinfo" />
+
+                            <com.youth.banner.Banner
+                                android:id="@+id/home_banner"
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp"
+                                app:image_scale_type="fit_xy"
+                                app:indicator_drawable_selected="@drawable/normal"
+                                app:indicator_drawable_unselected="@drawable/unnormal" />
+                        </LinearLayout>
+                    </android.support.design.widget.CollapsingToolbarLayout>
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tablayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_45"
+                        android:background="@color/white"
+                        app:layout_collapseMode="pin"
+                        app:tabIndicatorColor="@color/orange"
+                        app:tabMode="scrollable"
+                        app:tabSelectedTextColor="@color/orange"
+                        app:tabTextAppearance="@style/TabLayoutTextStyle"
+                        app:tabTextColor="@color/black_33" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/margin_1"
+                        android:background="@color/line_c3" />
+
+                </android.support.design.widget.AppBarLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerview"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_45"
-                    android:background="@color/white"
-                    app:layout_collapseMode="pin"
-                    app:tabIndicatorColor="@color/orange"
-                    app:tabMode="scrollable"
-                    app:tabSelectedTextColor="@color/orange"
-                    app:tabTextAppearance="@style/TabLayoutTextStyle"
-                    app:tabTextColor="@color/black_33"/>
+                    android:layout_height="wrap_content"
+                    app:layout_anchor="@id/appbar"
+                    app:layout_anchorGravity="bottom"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    app:layout_scrollFlags="scroll" />
+            </android.support.design.widget.CoordinatorLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_1"
-                    android:background="@color/line_c3" />
+            <include layout="@layout/include_error" />
+        </RelativeLayout>
 
-            </android.support.design.widget.AppBarLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll"
-                app:layout_anchorGravity="bottom"
-                app:layout_anchor="@id/appbar"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-        </android.support.design.widget.CoordinatorLayout>
     </com.yasn.purchase.view.MultiSwipeRefreshLayout>
 </LinearLayout>
 

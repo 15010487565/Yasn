@@ -376,7 +376,7 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
     public void playVideo(String videoUrl, String videoName) {
         int version = Integer.valueOf(android.os.Build.VERSION.SDK);
         Intent intent = new Intent(WebViewActivity.this, PlayActivity.class);
-//        Intent intent = new Intent(MainActivity.this, PlayEmptyControlActivity.class);
+//        Intent intent = new Intent(MainActivityOld.this, PlayEmptyControlActivity.class);
         intent.putExtra("VIDEOURL", videoUrl);
         intent.putExtra("VIDEONAME", videoName);
         startActivity(intent);

@@ -22,15 +22,15 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 
 /**
- * item页ViewPager里的评价Fragment
+ * 成功案例
  */
 public class GoodsCommentFragment extends BaseFragment {
 
-    private TextView undata;
+    private RelativeLayout undata;
     // 标志位，标志已经初始化完成。
     private boolean isPrepared;
     private WebView webView;
-
+    private TextView tvGoodsError;
     protected void OkHttpDemand() {
         String goodsid = SharePrefHelper.getInstance(getActivity()).getSpString("GOODSID");
         Map<String, Object> params = new HashMap<String, Object>();
@@ -65,8 +65,10 @@ public class GoodsCommentFragment extends BaseFragment {
         RelativeLayout topbat_parent = (RelativeLayout) view.findViewById(R.id.topbat_parent);
         topbat_parent.setVisibility(View.GONE);
 
-        undata = (TextView) view.findViewById(R.id.undata);
+        undata = (RelativeLayout) view.findViewById(R.id.undata);
         webView = (WebView) view.findViewById(R.id.webView);
+        tvGoodsError = (TextView) view.findViewById(R.id.tv_GoodsError);
+        undata.setVisibility(View.GONE);
         createDialog();
         //XXX初始化view的各控件
         isPrepared = true;
@@ -91,6 +93,7 @@ public class GoodsCommentFragment extends BaseFragment {
                         Log.e("TAG_successCase","successCase="+successCase);
                     }else {
                         undata.setVisibility(View.VISIBLE);
+                        tvGoodsError.setText("亲，未获取到成功案例数据~");
                     }
                 } else {
                     undata.setVisibility(View.VISIBLE);

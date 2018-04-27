@@ -25,11 +25,8 @@ import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.ClassifyLeftModel;
 import com.yasn.purchase.model.ClassifyModel;
 import com.yasn.purchase.model.ClassifyRightModel;
-import com.yasn.purchase.model.EventBusMsg;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.NoScrollGridView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,15 +61,14 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     private boolean isPrepared;
     @Override
     protected void lazyLoad() {
-        if(!isPrepared || !isVisible) {
-            return;
-        }
+//        if(!isPrepared || !isVisible) {
+//            return;
+//        }
         //填充各控件的数据
         OkHttpDemand();
     }
     @Override
     protected void OkHttpDemand() {
-        Log.e("TAG_initView","CLASSFY_OkHttp");
         token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
         resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
         resetTokenTime = SharePrefHelper.getInstance(getActivity()).getSpString("resetTokenTime");
@@ -89,17 +85,17 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
             okHttpGet(100, Config.CLASSIFY, params);
         }
     }
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(getUserVisibleHint()) {
-            isVisible = true;
-            onVisible();
-        } else {
-            isVisible = false;
-//            onInvisible();
-        }
-    }
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        if(getUserVisibleHint()) {
+//            isVisible = true;
+//            onVisible();
+//        } else {
+//            isVisible = false;
+////            onInvisible();
+//        }
+//    }
     @Override
     protected void initView(LayoutInflater inflater, View view) {
         Log.e("TAG_initView","CLASSIFY_initView");
@@ -276,7 +272,6 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-        EventBus.getDefault().post(new EventBusMsg("Success"));
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {
@@ -295,22 +290,18 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onCancelResult() {
-        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
-        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
-        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override
     public void onFinishResult() {
-        EventBus.getDefault().post(new EventBusMsg("error"));
     }
 
     @Override

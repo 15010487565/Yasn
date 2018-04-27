@@ -34,18 +34,17 @@ public class HackyViewPager extends ViewPager {
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		try {
-			Log.e("TAG_HackyViewPager","="+super.onInterceptTouchEvent(ev));
+			Log.e("TAG_===HackyViewPager","onInterceptTouchEvent="+super.onInterceptTouchEvent(ev));
 			return super.onInterceptTouchEvent(ev);
 		}  catch (IllegalArgumentException e) {
 			//不理会
-			Log.e("TAG_HackyViewPager","Illegal=不理会");
+			Log.e("TAG_===HackyViewPager","Illegal=不理会");
 			return false;
 		}catch(ArrayIndexOutOfBoundsException e ){
 			//不理会
-			Log.e("TAG_HackyViewPager","Array=不理会");
+			Log.e("TAG_===HackyViewPager","Array=不理会");
 			return false;
 		}
 	}
-
 }
 

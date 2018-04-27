@@ -52,6 +52,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
     private TagsLayout hotlabel;//热门标签
     private LinearLayout hotlableLinear;
     private ImageView ivClean;
+    private LinearLayout llHistorysearch;//历史搜索
     @Override
     public boolean isTopbarVisibility() {
         return false;
@@ -76,6 +77,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
         searchbutton = (TextView) findViewById(R.id.searchbutton);
         searchbutton.setOnClickListener(this);
         // 4. 历史搜索记录 = ListView显示
+        llHistorysearch = (LinearLayout) findViewById(R.id.ll_Historysearch);
         listView = (RecyclerView) findViewById(recyclerview);
         //清空历史记录
         cleanhistory = (LinearLayout) findViewById(R.id.cleanhistory);
@@ -161,6 +163,8 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
                 deleteData();
                 // 模糊搜索空字符 = 显示所有的搜索历史（此时是没有搜索记录的）
                 queryData("");
+                cleanhistory.setVisibility(View.GONE);
+                llHistorysearch.setVisibility(View.GONE);
                 break;
             case R.id.topbar_left:
                 finish();
@@ -240,10 +244,12 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
         // 3. 设置适配器
         adapter.changeCursor(cursor);
         // 当输入框为空 & 数据库中有搜索记录时，显示 "删除搜索记录"按钮
-        if (tempName.equals("") && cursor.getCount() != 0) {
-//            tv_clear.setVisibility(VISIBLE);
+        if (cursor.getCount() != 0) {
+            cleanhistory.setVisibility(View.VISIBLE);
+            llHistorysearch.setVisibility(View.VISIBLE);
         } else {
-//            tv_clear.setVisibility(INVISIBLE);
+            cleanhistory.setVisibility(View.GONE);
+            llHistorysearch.setVisibility(View.GONE);
         }
         ;
 

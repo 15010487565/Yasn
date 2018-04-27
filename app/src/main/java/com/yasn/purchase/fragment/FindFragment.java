@@ -58,23 +58,23 @@ public class FindFragment extends SimpleTopbarFragment implements
     private boolean isPrepared;
     @Override
     protected void lazyLoad() {
-        if(!isPrepared || !isVisible) {
-            return;
-        }
+//        if(!isPrepared || !isVisible) {
+//            return;
+//        }
         //填充各控件的数据
         OkHttpDemand();
     }
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(getUserVisibleHint()) {
-            isVisible = true;
-            onVisible();
-        } else {
-            isVisible = false;
-//            onInvisible();
-        }
-    }
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        if(getUserVisibleHint()) {
+//            isVisible = true;
+//            onVisible();
+//        } else {
+//            isVisible = false;
+////            onInvisible();
+//        }
+//    }
     @Override
     protected void initView(LayoutInflater inflater, View view) {
         pager = (ViewPager)view. findViewById(R.id.pager);

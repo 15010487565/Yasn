@@ -171,6 +171,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     private EditText etGoodsNum;
     private LinearLayout ivSubtractNum, ivAddNum;
     private int smallSale = 0;//最小起订量
+    private int step;//步长
     private int enableStoreNum;//库存
     private TextView enableStore;
     //是否雅森自营提示语
@@ -184,7 +185,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     private SimpleRecyclerAdapter simpleadapter;
     //商品属性列表
     private RecyclerView attributesList;
-    private TextView undata;
+    private RelativeLayout undata;
 
     /**
      * 音频布局
@@ -217,9 +218,9 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     @Override
     protected void lazyLoad() {
-        if (!isPrepared || !isVisible) {
-            return;
-        }
+//        if (!isPrepared || !isVisible) {
+//            return;
+//        }
         //填充各控件的数据
         OkHttpDemand();
     }
@@ -407,7 +408,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         pull_up_view = (LinearLayout) rootView.findViewById(R.id.pull_up_view);
         pull_up_view.setOnClickListener(this);
         //底部上拉内容
-        undata = (TextView) rootView.findViewById(R.id.undata);
+        undata = (RelativeLayout) rootView.findViewById(R.id.undata);
 //        htmlTextView = (TextView) rootView.findViewById(R.id.htmlText);
 //        htmlTextView.setMovementMethod(ScrollingMovementMethod.getInstance());
 
@@ -535,10 +536,11 @@ public class GoodsInfoFragment extends BaseFragment implements
                 }
                 break;
             case R.id.iv_subtractNum:
-                int subtractNum = Integer.valueOf(etGoodsNum.getText().toString().trim()) - smallSale;
+                int subtractNum = Integer.valueOf(etGoodsNum.getText().toString().trim()) - step;
                 etGoodsNum.removeTextChangedListener(this);
-                if (subtractNum <= 0) {
-                    etGoodsNum.setText("0");
+                if (subtractNum < smallSale) {
+                    etGoodsNum.setText(String.valueOf(smallSale));
+                    ToastUtil.showToast("该商品最小起量为"+smallSale+"件！");
                 } else {
                     etGoodsNum.setText(String.valueOf(subtractNum));
                 }
@@ -557,8 +559,8 @@ public class GoodsInfoFragment extends BaseFragment implements
                     } else {
                         etGoodsNum.removeTextChangedListener(this);
                         int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
-                        if (smallSale > 0) {
-                            int allAddNum = addNum + smallSale;
+                        if (step > 0) {
+                            int allAddNum = addNum + step;
                             etGoodsNum.setText(String.valueOf(allAddNum));
                         } else {
                             int allAddNum = addNum + 1;
@@ -570,8 +572,8 @@ public class GoodsInfoFragment extends BaseFragment implements
                 } else {
                     etGoodsNum.removeTextChangedListener(this);
                     int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
-                    if (smallSale > 0) {
-                        int allAddNum = addNum + smallSale;
+                    if (step > 0) {
+                        int allAddNum = addNum + step;
                         if (isLimitBuy == 1) {// 是否限购 0否1是
                             if (allAddNum > enableStoreNum) {
                                 ToastUtil.showToast("库存仅剩" + num + "件");
@@ -1006,6 +1008,8 @@ public class GoodsInfoFragment extends BaseFragment implements
                 productId = productsBean.getProductId();
             //最小起订量
             smallSale = productsBean.getSmallSale();
+            //步长
+            step = productsBean.getStep();
             enableStoreNum = productsBean.getEnableStore();
             Log.e("TAG_库存", "position=" + position + ";enableStoreNum=" + enableStoreNum);
             if (enableStoreNum >= 10) {
@@ -1037,7 +1041,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             llRetailPrice.setVisibility(View.GONE);
 //            etGoodsNum.setText(String.valueOf(smallSale));
         }
-        String minNumberString = String.format("最小起订量:%s  %s件起批", smallSale, smallSale);
+        String minNumberString = String.format("最小起订量:%s  %s件起批", smallSale, step);
         SpannableStringBuilder span = new SpannableStringBuilder(minNumberString);
         span.setSpan(new TextAppearanceSpan(getActivity(), R.style.style_text14_black_66), 0, 6,
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -1075,6 +1079,8 @@ public class GoodsInfoFragment extends BaseFragment implements
                         String activityPriceResult = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
                         soldout_money.setText(activityPriceResult);
                         originalprice2.setText(activityPriceResult);
+                        Log.e("TAG_活动价","soldout_money="+wholesalePriceResult);
+                        Log.e("TAG_活动价市场价","originalprice="+activityPriceResult);
                     }
                 }
             }
@@ -1195,8 +1201,8 @@ public class GoodsInfoFragment extends BaseFragment implements
                 top_purchasepromotion.setVisibility(View.VISIBLE);
                 sold_Linear.setVisibility(View.GONE);
                 //限时抢购价
-                String discount_price = discount.getDiscount_price();
-                originalprice.setText(discount_price == null ? "" : String.format("%.2f", Double.valueOf(discount_price)));
+//                String discount_price = discount.getDiscount_price();
+//                originalprice.setText(discount_price == null ? "" : String.format("%.2f", Double.valueOf(discount_price)));
                 //限时抢购倒计时
                 time = discount.getRemainingTime();
                 handler.postDelayed(runnable, 1000);
@@ -1717,7 +1723,10 @@ public class GoodsInfoFragment extends BaseFragment implements
         getActivity().startActivity(intent);
     }
     //最小起订量，供activity调用
-
+    public int getStep() {
+        return step;
+    }
+    //步长，供activity调用
     public int getSmallSale() {
         return smallSale;
     }

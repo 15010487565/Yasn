@@ -115,7 +115,7 @@
                                 android:layout_marginBottom="@dimen/margin_3"
                                 android:text="￥00.00"
                                 android:textColor="@color/white"
-                                android:textSize="@dimen/textsize_20" />
+                                android:textSize="@dimen/textsize_18" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -701,7 +701,6 @@
                 </LinearLayout>
             </ScrollView>
             <include layout="@layout/include_item_tab" />
-
         </com.yasn.purchase.goods.view.SlideDetailsLayout>
 
     </android.support.design.widget.CoordinatorLayout>

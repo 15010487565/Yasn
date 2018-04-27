@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.yasn.purchase.activityold.MainActivity"
+            android:name="com.yasn.purchase.activityold.MainActivityOld"
             android:alwaysRetainTaskState="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"

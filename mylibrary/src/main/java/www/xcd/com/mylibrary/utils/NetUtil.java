@@ -37,7 +37,7 @@ public class NetUtil {
 					if (info != null) {
 						for (NetworkInfo anInfo : info) {
 							if (anInfo.getState() == NetworkInfo.State.CONNECTED) {
-								Log.d("Network",
+								Log.e("Network",
 										"NETWORKNAME: " + anInfo.getTypeName());
 								return true;
 							}

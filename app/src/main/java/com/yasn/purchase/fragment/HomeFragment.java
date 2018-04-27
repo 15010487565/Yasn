@@ -35,11 +35,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.GoodsDetailsActivity;
 import com.yasn.purchase.activity.HotLableActivity;
-import com.yasn.purchase.activity.MainActivityNew;
 import com.yasn.purchase.adapter.HomeRecyclerAdapter;
+import com.yasn.purchase.application.YasnApplication;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.help.GlideImageLoader;
 import com.yasn.purchase.help.SobotUtil;
+import com.yasn.purchase.listener.AppBarStateChangeListener;
 import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.EventBusMsg;
 import com.yasn.purchase.model.HomeModel;
@@ -64,6 +65,8 @@ import java.util.TimerTask;
 
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
+
+import static com.yasn.purchase.R.id.appbar;
 
 
 /**
@@ -95,7 +98,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
     private FrameLayout topinfomssage;
     private LinearLayout shoplist, yasnbang, home_collect, home_service;
     private CollapsingToolbarLayout collapsingToolbar;
-
+    private RelativeLayout rlMainError;//错误布局
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_home;
@@ -106,9 +109,10 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     protected void lazyLoad() {
-        if (!isPrepared || !isVisible) {
-            return;
-        }
+        Log.e("TAG_HOME",((!isPrepared)+"==="+(!isVisible)));
+//        if (!isPrepared || !isVisible) {
+//            return;
+//        }
         //填充各控件的数据
         isFrist = true;
         OkHttpDemand();
@@ -132,24 +136,20 @@ public class HomeFragment extends SimpleTopbarFragment implements
         okHttpGet(100, Config.HOME, params);
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (getUserVisibleHint()) {
-            isVisible = true;
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        if (getUserVisibleHint()) {
+//            isVisible = true;
 //            onVisible();
-
-        } else {
-            isVisible = false;
-//            onInvisible();
-        }
-    }
-
-    private View view;
+//
+//        } else {
+//            isVisible = false;
+//        }
+//    }
 
     @Override
     protected void initView(LayoutInflater inflater, View view) {
-        this.view = view;
         topbat_parent = (RelativeLayout) view.findViewById(R.id.topbat_parent);
         topbat_parent.setVisibility(View.GONE);
 
@@ -177,14 +177,19 @@ public class HomeFragment extends SimpleTopbarFragment implements
         initSwipeRefreshLayout(view);
 //        homeConvenientBanner = (ConvenientBanner) view.findViewById(R.id.home_convenientBanner);
         home_banner = (Banner) view.findViewById(R.id.home_banner);
+        //开始轮播
+        home_banner.startAutoPlay();
         //初始化tab
         tablayout = (TabLayout) view.findViewById(R.id.tablayout);
         initRecyclerView(view);
+        //error界面
+        rlMainError = (RelativeLayout) view.findViewById(R.id.rl_mainError);
+        rlMainError.setVisibility(View.GONE);
         //XXX初始化view的各控件
         isPrepared = true;
         lazyLoad();
     }
-
+    int digital_member;
     private void initLoginData(HomeModel.MemberBean member) {
         if (member == null || "".equals(member)) {
             notLogin.setVisibility(View.VISIBLE);
@@ -200,8 +205,10 @@ public class HomeFragment extends SimpleTopbarFragment implements
             //
             int member_id = member.getMember_id();
             SharePrefHelper.getInstance(getActivity()).putSpString("memberid", String.valueOf(member_id));
-//                HelpUtils.getGoodsNum(Config.CARTGOODSNUM+member_id,handler);
-            ((MainActivityNew) getActivity()).setCartNum(Integer.valueOf(member.getCartCount()));
+//            ((MainActivityNew) getActivity()).setCartNum(Integer.valueOf(member.getCartCount()));
+            EventBusMsg carNum = new EventBusMsg("carNum");
+            carNum.setCarNum(String.valueOf(member.getCartCount()));
+            EventBus.getDefault().post(carNum);
             //账号
             String uname = member.getUname();
             homeAccount.setText(uname == null ? "未知" : uname);
@@ -212,7 +219,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
             //地方站ID
             int regionId = member.getRegionId();
             SharePrefHelper.getInstance(getActivity()).putSpString("regionId", String.valueOf(regionId));
-            int digital_member = member.getDigital_member();
+            digital_member = member.getDigital_member();
             if (digital_member == 0) {//未开通雅森帮
                 undredgeYsenHelp.setVisibility(View.GONE);
                 okdredgeYsenHelp.setVisibility(View.GONE);
@@ -323,6 +330,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
     @Override
     public void onClick(View v) {
         super.onClick(v);
+        String undredgeYsenHelpContext = undredgeYsenHelp.getText().toString();
         Intent intent = null;
         switch (v.getId()) {
             case R.id.login:
@@ -332,7 +340,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 startWebViewActivity(Config.REGISTERWEBVIEW);
                 break;
             case R.id.undredge_YsenHelp:
-                String undredgeYsenHelpContext = undredgeYsenHelp.getText().toString();
+
                 if ("去认证".equals(undredgeYsenHelpContext)) {
                     startWebViewActivity(Config.ATTESTATION);
                 } else if ("开通雅森帮".equals(undredgeYsenHelpContext)) {
@@ -354,7 +362,11 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 startWebViewActivity(Config.SHOPLIST);
                 break;
             case R.id.yasnbang://雅森帮
-                startWebViewActivity(Config.YASNBANG);
+                if (digital_member == 0) {//未开通雅森帮
+                    startWebViewActivity(Config.DREDGEYASNHELP);
+                }else {
+                    startWebViewActivity(Config.YASNBANG);
+                }
                 break;
             case R.id.home_collect://收藏
 //                startActivity(new Intent(getActivity(), CollectActivity.class));
@@ -376,15 +388,22 @@ public class HomeFragment extends SimpleTopbarFragment implements
         //设置样式刷新显示的位置
         mSwipeRefreshLayout.setProgressViewOffset(true, -20, 100);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.orange, R.color.blue, R.color.black);
-        appBarLayout = (AppBarLayout) view.findViewById(R.id.appbar);
+        appBarLayout = (AppBarLayout) view.findViewById(appbar);
 
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+        appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (verticalOffset >= 0) {//展开
+            public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                Log.e("STATE", state.name());
+                if( state == State.EXPANDED ) {
+                    //展开状态
                     isOpen = true;
                     mSwipeRefreshLayout.setEnabled(true);
-                } else {
+                }else if(state == State.COLLAPSED){
+                    //折叠状态
+                    isOpen = false;
+                    mSwipeRefreshLayout.setEnabled(false);
+                }else {
+                    //中间状态
                     isOpen = false;
                     mSwipeRefreshLayout.setEnabled(false);
                 }
@@ -513,6 +532,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     private void initViewPagerImage() {
         List<HomeModel.AdvsBean> advs = homemodel.getAdvs();
+        Log.e("TAG_轮播图","advs="+advs.size());
         if (advs != null && advs.size() > 0) {
             home_banner.setImages(advs)
                     .setImageLoader(new GlideImageLoader())
@@ -526,6 +546,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
     //轮播图点击事件
     @Override
     public void OnBannerClick(int position) {
+        Log.e("TAG_轮播图position","position="+position);
         List<HomeModel.AdvsBean> advs = homemodel.getAdvs();
         HomeModel.AdvsBean advsBean = advs.get(position);
         String url = advsBean.getUrl();
@@ -538,8 +559,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
     public void onResume() {
         super.onResume();
 //        homeConvenientBanner.startTurning(3000);// 2s 换一张
-        //开始轮播
-        home_banner.startAutoPlay();
 //        initViewPagerImage();
     }
 
@@ -588,7 +607,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-        EventBus.getDefault().post(new EventBusMsg("Success"));
+        rlMainError.setVisibility(View.GONE);
         switch (requestCode) {
             case 100:
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -624,6 +643,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     cleanToken();
                     OkHttpDemand();
                 } else {
+                    rlMainError.setVisibility(View.VISIBLE);
                     home_banner.setVisibility(View.GONE);
                 }
                 break;
@@ -696,7 +716,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 orderTime.setVisibility(View.GONE);
             }
             String image = order.getImage();
-            Glide.with(this)
+            Glide.with(YasnApplication.getInstance())
                     .load(image)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -740,7 +760,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     public void OnClickRecyButton(int itemPosition, int listPosition) {
-        startFragmentCount(itemPosition, listPosition);
+//        startFragmentCount(itemPosition, listPosition);
     }
 
     private void startFragmentCount(int itemPosition, int listPosition) {
@@ -778,11 +798,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
             return;
         }
         isOnClickTab = true;
-//        if (isOpen) {
-        appBarLayout.setExpanded(false, true);
-//        }
-//        nestedScrollView.setVisibility(View.GONE);
-//        recyclerview.setVisibility(View.VISIBLE);
+        appBarLayout.setExpanded(false);
         String tabText = tab.getText().toString();
         Log.e("TAG_TAB", "selectPosition=" + selectPosition);
         //定位计算方法
@@ -829,22 +845,22 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onCancelResult() {
-        EventBus.getDefault().post(new EventBusMsg("error"));
+        rlMainError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
-        EventBus.getDefault().post(new EventBusMsg("error"));
+        rlMainError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
-        EventBus.getDefault().post(new EventBusMsg("error"));
+        rlMainError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onFinishResult() {
-        EventBus.getDefault().post(new EventBusMsg("error"));
+        rlMainError.setVisibility(View.VISIBLE);
     }
 
     private Handler handler = new Handler() {
@@ -947,12 +963,10 @@ public class HomeFragment extends SimpleTopbarFragment implements
 //                    nestedScrollView.setVisibility(View.VISIBLE);
 //                    recyclerview.setVisibility(View.GONE);
                     //expanded true:展开  false:收缩
-                    appBarLayout.setExpanded(true, true);
-
+                    appBarLayout.setExpanded(true);
                     return;
                 }
             }
-//            appBarLayout.setExpanded(false, true);
         }
 
         @Override
