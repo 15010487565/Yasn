@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,9 +113,14 @@ public class SearchActivity extends SimpleTopbarActivity implements
         //开始搜索
         Intent intent = getIntent();
         if (intent != null) {
+            //模糊搜索关键
             secarchContext = intent.getStringExtra("SECARCHCONTEXT");
+            //分类id
             secarchcarid = intent.getStringExtra("SECARCHCARID");
+            //是否开启顶部tab
             secarchtoptab = intent.getBooleanExtra("SECARCHTOPTAB", false);
+            //品牌id
+            brand = intent.getStringExtra("SECARCHBRAND");
             topsearch.setHint(secarchContext);
             initTabLayout();
             if (secarchtoptab) {
@@ -136,6 +142,8 @@ public class SearchActivity extends SimpleTopbarActivity implements
      *             play_desc ；sort=play_asc 浏览次数
      */
     String region;
+    //品牌id
+    String brand;
     private void startSearchGet(String secarchContext, String carId, String sort) {
         sortOld = sort;
         //搜索
@@ -159,6 +167,9 @@ public class SearchActivity extends SimpleTopbarActivity implements
         }
         if (cartype !=null&&!"".equals(cartype)) {//是否选择车型
             params.put("carbrand", String.valueOf(carTypeId));
+        }
+        if (!TextUtils.isEmpty(brand)){
+            params.put("brand", brand);//品牌id
         }
         params.put("page", String.valueOf(page));//页码
 //                params.put("brand", brand);//品牌id

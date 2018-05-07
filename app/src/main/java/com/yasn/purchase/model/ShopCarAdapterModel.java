@@ -32,7 +32,15 @@ public class ShopCarAdapterModel implements Serializable {
     private double needPayMoney;
     private int hasDiscount;//是否有抢购   1 有  0没有
     private int limitnum;//限购数量
+    private int goodsNum;//同一店铺下商品个数
 
+    public int getGoodsNum() {
+        return goodsNum;
+    }
+
+    public void setGoodsNum(int goodsNum) {
+        this.goodsNum = goodsNum;
+    }
 
     public String getBeforeSale() {
         return beforeSale;

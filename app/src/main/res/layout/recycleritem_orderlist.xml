@@ -26,6 +26,7 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_imageOnClick"
         android:layout_width="@dimen/image_sizeshopcar"
         android:layout_height="@dimen/image_sizeshopcar"
         android:layout_marginLeft="@dimen/margin_10"
@@ -136,6 +137,7 @@
             android:textColor="@color/orange"
             android:textSize="@dimen/textsize_12" />
         <LinearLayout
+            android:id="@+id/ll_PriceAndNum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_PurchaseHint"
@@ -216,5 +218,14 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+        <TextView
+            android:id="@+id/tv_itemOnClick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_toLeftOf="@id/iv_orderListClean"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/ll_PriceAndNum"/>
     </RelativeLayout>
 </LinearLayout>

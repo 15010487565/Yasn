@@ -109,12 +109,6 @@ public class SobotUtil {
         if (sobotGoodsDescribe !=null&&!"".equals(sobotGoodsDescribe)){
             consultingContent.setSobotGoodsDescribe(sobotGoodsDescribe);
         }
-        //标签，选填(价格)
-//        String sobotGoodsLable = goodInfo.getSobotGoodsLable();
-//        String loginState = SharePrefHelper.getInstance(context).getSpString("loginState");
-//        if (sobotGoodsLable !=null&&!"".equals(sobotGoodsLable)&&!"￥0.00".equals(sobotGoodsLable)&&!"￥00.00".equals(sobotGoodsLable)&&"0".equals(loginState)){
-//            consultingContent.setSobotGoodsLable(sobotGoodsLable);
-//        }
         //可以设置为null
         info.setConsultingContent(consultingContent);
     }

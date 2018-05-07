@@ -146,8 +146,15 @@ public class ShoppingSelectView extends LinearLayout {
                 button.setLayoutParams(marginParams);
                 int specValueId = smallAttr.getSpecValueId();
                 button.setId(specValueId);//设置规格ID
+                Log.e("TAG_specs1", "specs=" + specs.toString());
+                Log.e("TAG_specs2", "specs=" + specs.size()+";checkboxNum="+checkboxNum);
                 //默认选中第一个specsChecked
                 if (specs.size() == 1&&(checkboxNum/specs.size())==1) {
+                    isSelectFirst = true;
+                    button.setChecked(true);
+                    button.setBackgroundResource(R.drawable.text_orange_blackf7);
+                    button.setTextColor(ContextCompat.getColor(context,R.color.orange));
+                }else if (specs.size() > 1&&(checkboxNum/specs.size())==1) {
                     isSelectFirst = true;
                     button.setChecked(true);
                     button.setBackgroundResource(R.drawable.text_orange_blackf7);

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -128,6 +129,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         resetRedPoint(2, 0);
         resetRedPoint(3, 0);
         resetRedPoint(4, 0);
+        clickFragmentBtn(currentItem);
     }
 
     public void setCartNum(int cartnum) {
@@ -595,5 +597,36 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         } else if ("webViewBack".equals(msg)) {//返回页
 
         }
+    }
+    // 保存MyTouchListener接口的列表
+    private ArrayList<MainActivityTouchListener> activityTouchListeners = new ArrayList<MainActivityTouchListener>();
+    public interface MainActivityTouchListener {
+        public void onTouchEvent(MotionEvent event);
+    }
+    /**
+     * 提供给Fragment通过getActivity()方法来注册自己的触摸事件的方法
+     * @param listener
+     */
+    public void registerTouchListener(MainActivityTouchListener listener) {
+        activityTouchListeners.add(listener);
+    }
+
+    /**
+     * 提供给Fragment通过getActivity()方法来注销自己的触摸事件的方法
+     * @param listener
+     */
+    public void unRegisterTouchListener(MainActivityTouchListener listener) {
+        activityTouchListeners.remove( listener );
+    }
+
+    /**
+     * 分发触摸事件给所有注册了MainActivityTouchListener的接口
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        for (MainActivityTouchListener listener : activityTouchListeners) {
+            listener.onTouchEvent(ev);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

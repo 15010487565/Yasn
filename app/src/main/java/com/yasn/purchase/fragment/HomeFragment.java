@@ -18,7 +18,9 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -35,6 +37,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.GoodsDetailsActivity;
 import com.yasn.purchase.activity.HotLableActivity;
+import com.yasn.purchase.activity.MainActivityNew;
+import com.yasn.purchase.activity.SearchActivity;
 import com.yasn.purchase.adapter.HomeRecyclerAdapter;
 import com.yasn.purchase.application.YasnApplication;
 import com.yasn.purchase.common.Config;
@@ -99,6 +103,8 @@ public class HomeFragment extends SimpleTopbarFragment implements
     private LinearLayout shoplist, yasnbang, home_collect, home_service;
     private CollapsingToolbarLayout collapsingToolbar;
     private RelativeLayout rlMainError;//错误布局
+    private GestureDetector gd;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_home;
@@ -109,7 +115,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     protected void lazyLoad() {
-        Log.e("TAG_HOME",((!isPrepared)+"==="+(!isVisible)));
+        Log.e("TAG_HOME", ((!isPrepared) + "===" + (!isVisible)));
 //        if (!isPrepared || !isVisible) {
 //            return;
 //        }
@@ -150,6 +156,23 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     protected void initView(LayoutInflater inflater, View view) {
+        /**
+         * Fragment中，注册
+         * 接收MainActivity的Touch回调的对象
+         * 重写其中的onTouchEvent函数，并进行该Fragment的逻辑处理
+         */
+        MainActivityNew.MainActivityTouchListener myTouchListener = new MainActivityNew.MainActivityTouchListener() {
+            @Override
+            public void onTouchEvent(MotionEvent event) {
+                // 处理手势事件
+                //给GestureDetector添加onTouchEvent
+                gd.onTouchEvent(event);
+            }
+        };
+
+        // 将myTouchListener注册到分发列表
+        ((MainActivityNew) this.getActivity()).registerTouchListener(myTouchListener);
+
         topbat_parent = (RelativeLayout) view.findViewById(R.id.topbat_parent);
         topbat_parent.setVisibility(View.GONE);
 
@@ -189,7 +212,9 @@ public class HomeFragment extends SimpleTopbarFragment implements
         isPrepared = true;
         lazyLoad();
     }
+
     int digital_member;
+
     private void initLoginData(HomeModel.MemberBean member) {
         if (member == null || "".equals(member)) {
             notLogin.setVisibility(View.VISIBLE);
@@ -362,11 +387,11 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 startWebViewActivity(Config.SHOPLIST);
                 break;
             case R.id.yasnbang://雅森帮
-                if (digital_member == 0) {//未开通雅森帮
-                    startWebViewActivity(Config.DREDGEYASNHELP);
-                }else {
+//                if (digital_member == 0) {//未开通雅森帮
+//                    startWebViewActivity(Config.DREDGEYASNHELP);
+//                } else {
                     startWebViewActivity(Config.YASNBANG);
-                }
+//                }
                 break;
             case R.id.home_collect://收藏
 //                startActivity(new Intent(getActivity(), CollectActivity.class));
@@ -394,15 +419,15 @@ public class HomeFragment extends SimpleTopbarFragment implements
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
                 Log.e("STATE", state.name());
-                if( state == State.EXPANDED ) {
+                if (state == State.EXPANDED) {
                     //展开状态
                     isOpen = true;
                     mSwipeRefreshLayout.setEnabled(true);
-                }else if(state == State.COLLAPSED){
+                } else if (state == State.COLLAPSED) {
                     //折叠状态
                     isOpen = false;
                     mSwipeRefreshLayout.setEnabled(false);
-                }else {
+                } else {
                     //中间状态
                     isOpen = false;
                     mSwipeRefreshLayout.setEnabled(false);
@@ -532,7 +557,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     private void initViewPagerImage() {
         List<HomeModel.AdvsBean> advs = homemodel.getAdvs();
-        Log.e("TAG_轮播图","advs="+advs.size());
+        Log.e("TAG_轮播图", "advs=" + advs.size());
         if (advs != null && advs.size() > 0) {
             home_banner.setImages(advs)
                     .setImageLoader(new GlideImageLoader())
@@ -546,12 +571,67 @@ public class HomeFragment extends SimpleTopbarFragment implements
     //轮播图点击事件
     @Override
     public void OnBannerClick(int position) {
-        Log.e("TAG_轮播图position","position="+position);
+        Log.e("TAG_轮播图position", "position=" + position);
         List<HomeModel.AdvsBean> advs = homemodel.getAdvs();
         HomeModel.AdvsBean advsBean = advs.get(position);
         String url = advsBean.getUrl();
-        if (url != null && !"".equals(url)) {
-            startWebViewActivity(Config.URL + url);
+        Log.e("TAG_轮播图url", "url=" + url);
+        /**
+         * goods.html?id=74&type=    详情页
+         * goods_list.html?brand=527&region=0  品保搜索页
+         * goods_list.html?keyword=赫狮&region=0 关键字搜索页
+         */
+        if (url != null && !"".equals(url)&&!"#".equals(url)) {
+            int indexOf = url.indexOf("?");
+            if (indexOf !=-1){
+                String substring = url.substring(indexOf+1);
+                Log.e("TAG_轮播图substring", "substring=" + substring);
+                String[] strarray=substring.split("&");
+                for (int i = 0; i < strarray.length; i++) {
+                    Log.e("TAG_轮播图strarray", i+"=" + strarray[i]);
+                    if (url.indexOf("goods.html")!=-1){
+                        if (strarray[i].length()>"id=".length()){
+                            int indexOfGoods = strarray[i].indexOf("=");
+                            String substringGoods = strarray[i].substring(indexOfGoods+1);
+                            Log.e("TAG_轮播图详情页id","详情页="+substringGoods);
+                            SharePrefHelper.getInstance(getActivity()).putSpInt("GOODSFRAGMENTID", 0);
+                            Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
+                            SharePrefHelper.getInstance(getActivity()).putSpString("GOODSID", substringGoods);
+                            startActivity(intent);
+                            return;
+                        }
+                    }else if (url.indexOf("goods_list.html")!=-1){
+                        if (url.indexOf("brand")!=-1){//品牌搜索
+                            if (strarray[i].length()>"brand=".length()){
+                                int indexOfBrand = strarray[i].indexOf("=");
+                                String substringBrand = strarray[i].substring(indexOfBrand+1);
+                                Log.e("TAG_轮播图品牌","品牌="+substringBrand);
+                                Intent intent = new Intent(getActivity(),SearchActivity.class);
+                                intent.putExtra("SECARCHBRAND",substringBrand);
+                                intent.putExtra("SECARCHTOPTAB",false);//是否显示搜索页顶部TabLayout
+                                startActivity(intent);
+                                return;
+                            }
+
+                        }else if (url.indexOf("keyword")!=-1){//关键字搜索
+                            if (strarray[i].length()>"keyword=".length()){
+                                int indexOfKeyword = strarray[i].indexOf("=");
+                                String substringKeyword = strarray[i].substring(indexOfKeyword+1);
+                                Log.e("TAG_轮播图关键字","关键字="+substringKeyword);
+                                Intent intent = new Intent(getActivity(),SearchActivity.class);
+                                intent.putExtra("SECARCHCONTEXT",substringKeyword);
+                                intent.putExtra("SECARCHTOPTAB",false);//是否显示搜索页顶部TabLayout
+                                startActivity(intent);
+                                return;
+                            }
+                        }
+                    }else {
+                        startWebViewActivity(Config.URL + url);
+                        return;
+                    }
+                }
+
+            }
         }
     }
 
@@ -946,15 +1026,17 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     recyclerview.smoothScrollBy(0, top);
                 }
             }
-//            //表示是否能向上滚动，true表示能滚动，false表示已经滚动到底部
-//            boolean canScrollVertically = recyclerview.canScrollVertically(1);
-//            if (canScrollVertically&&isOpen){
-//                mLinearLayoutManager.setScrollEnabled(true);
-//            }else {
-//                appBarLayout.setExpanded(false, true);
-//            }
+            //表示是否能向上滚动，true表示能滚动，false表示已经滚动到底部
+            boolean canScrollVertically = recyclerview.canScrollVertically(1);
+            Log.e("TAG_首页上滑", "canScrollVertically=" + canScrollVertically + ";direction=" + direction);
+            if (!canScrollVertically && direction == 1) {
+                appBarLayout.setExpanded(false, true);
+                return;
+            }
             //表示是否能向下滚动，true表示能滚动，false表示已经滚动到顶部
             boolean scrollVertically = recyclerview.canScrollVertically(-1);
+
+            Log.e("TAG_首页下滑", "scrollVertically=" + scrollVertically + ";isOpen=" + isOpen);
             if (!isOpen && !scrollVertically && newState == RecyclerView.SCROLL_STATE_IDLE) {
                 if (isOnClickTab) {
                     isOnClickTab = false;
@@ -1017,7 +1099,60 @@ public class HomeFragment extends SimpleTopbarFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
+        gd = new GestureDetector(getActivity(), new GestureDetector.OnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onShowPress(MotionEvent e) {
+
+            }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                return false;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                direction = detectDicr(e1.getX(), e1.getY(), e2.getX(), e2.getY());
+                return false;
+            }
+        });
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private int direction;//列表滑动方向
+
+    //通过手势来移动：1,2,3,4对应上下左右
+    private int detectDicr(float start_x, float start_y, float end_x, float end_y) {
+        boolean isLeftOrRight = Math.abs(start_x - end_x) > Math.abs(start_y - end_y) ? true : false;
+        if (isLeftOrRight) {
+            if (start_x - end_x > 0) {
+                return 3;
+            } else if (start_x - end_x < 0) {
+                return 4;
+            }
+        } else {
+            if (start_y - end_y > 0) {
+                return 1;
+            } else if (start_y - end_y < 0) {
+                return 2;
+            }
+        }
+        return 0;
     }
 
     @Override

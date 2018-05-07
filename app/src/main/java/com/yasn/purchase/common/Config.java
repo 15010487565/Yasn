@@ -28,12 +28,14 @@ public class Config {
     public final static String FIND = IP+"discovery/get-discovery-list/";
     //进货单WEB页面
     public final static String SHOPPCARWEBVIEW = URLCAIGOU+"cart.html";
+    //进货单阶梯价
+    public final static String SHOPPCARWHOLELIST = IP+"cart/get-whole-list";
     //进货单
     public final static String SHOPPCAR = IP+"cart/get-cart-list";
     //进货单单择
-    public final static String SHOPPCARONECHECK = IP+"cart/check-product?";
-    //进货单全部选择
-    public final static String SHOPPCARCHECK = IP+"cart/check-all?";
+    public final static String SHOPPCARONECHECK = IP+"cart/check-cancel?";
+    //结算页前判断是否有失效商品
+    public final static String SHOPPCARINVALIDGOODS = IP+"cart/invalid-goods";
     //进货单删除
     public final static String SHOPPCARDELETECART = IP+"cart/delete-cart?";
     //进货单总价
@@ -86,7 +88,7 @@ public class Config {
     //开通雅森帮
     public static final String DREDGEYASNHELP =  URLCAIGOU+"digital_member.html";
     //雅森帮
-    public static final String YASNBANG =  URLCAIGOU+"goods_list2.html?publish_type=1";
+    public static final String YASNBANG =  URL+"yasn.html?publish_type=1";
     //去认证
     public static final String ATTESTATION =  URLCAIGOU+"verify_register.html";
     //收藏WebView

@@ -442,7 +442,7 @@ public class ShopInfoModel implements Serializable {
         private int orderNum;
         private String statisticsMonth;
         private double totalCount;
-        private int goodsNum;
+        private double goodsNum;
 
         public int getOrderNum() {
             return orderNum;
@@ -468,11 +468,11 @@ public class ShopInfoModel implements Serializable {
             this.totalCount = totalCount;
         }
 
-        public int getGoodsNum() {
+        public double getGoodsNum() {
             return goodsNum;
         }
 
-        public void setGoodsNum(int goodsNum) {
+        public void setGoodsNum(double goodsNum) {
             this.goodsNum = goodsNum;
         }
     }

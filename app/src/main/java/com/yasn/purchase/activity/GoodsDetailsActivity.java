@@ -320,13 +320,13 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         Integer integerGoodsNum = Integer.valueOf(goodsNum);
         int smallSale = goodsInfoFragment.getSmallSale();
         int step = goodsInfoFragment.getStep();
-        Log.e("TAG_activity", "加入进货单goodsNum=" + integerGoodsNum + ";smallSale=" + smallSale+""+step);
+        Log.e("TAG_activity", "加入进货单goodsNum=" + integerGoodsNum + ";smallSale=" + smallSale+"；step="+step);
         if (integerGoodsNum < smallSale){
             ToastUtil.showToast("最小起订量为"+smallSale+"件，请输入正确数量！");
             return;
         }
         if (smallSale > 0) {
-            int remainder = integerGoodsNum % smallSale;
+            int remainder = (integerGoodsNum -smallSale)% step;
             Log.e("TAG_activity", "加入进货单remainder=" + remainder);
             if (remainder > 0) {
                 ToastUtil.showToast("请输入正确数量！");

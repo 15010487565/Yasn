@@ -131,8 +131,6 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
             Map<String, Object> paramsShop = new HashMap<String, Object>();
             paramsShop.put("access_token", resetToken);
             okHttpGet(102, Config.SHOP, paramsShop);
-        } else {
-            startWebViewActivity(Config.LOGINWEBVIEW);
         }
     }
 
@@ -533,17 +531,19 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                                 dutyAuth = "财务";
                             }else {
                                 int i = employeeAuth.indexOf("2");
+                                double goodsNum = statistics.getGoodsNum();
+                                Log.e("TAG_goodsNum","goodsNum="+goodsNum);
                                 if (i != -1) {
                                     dutyAuth = "采购+财务";
-                                    goodsNum.setText("￥" + String.format("%.2f", statistics.getGoodsNum()));
+                                    this.goodsNum.setText("￥" + String.format("%.2f", goodsNum));
                                     goodsHint.setText("待支付金额");
                                     department.setText("(采购+财务)");
                                 } else {
                                     if ("0".equals(employeeAuth)) {
-                                        goodsNum.setText("￥" + String.format("%.2f", statistics.getGoodsNum()));
+                                        this.goodsNum.setText("￥" + String.format("%.2f",goodsNum));
                                         goodsHint.setText("待支付金额");
                                     } else {
-                                        goodsNum.setText(String.valueOf(statistics.getGoodsNum()) + "件");
+                                        this.goodsNum.setText(String.valueOf(goodsNum) + "件");
                                         goodsHint.setText("采购商品数");
                                     }
                                 }

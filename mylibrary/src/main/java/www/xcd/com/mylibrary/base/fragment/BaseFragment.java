@@ -456,6 +456,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 		if (NetUtil.getNetWorking(getActivity()) == false) {
 			Log.e("TAG_请求","requestCode="+requestCode+";url="+url);
 			showToast("请检查网络。。。");
+			onParseErrorResult(HttpConfig.PARSEERROR);
 			return;
 		}
 		dialogshow();

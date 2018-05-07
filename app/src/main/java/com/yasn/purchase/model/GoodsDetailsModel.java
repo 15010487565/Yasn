@@ -1339,6 +1339,25 @@ public class GoodsDetailsModel implements Serializable {
                 public void setSpecValueName(String specValueName) {
                     this.specValueName = specValueName;
                 }
+
+                @Override
+                public String toString() {
+                    return "SpecValuesBean{" +
+                            "specValueId=" + specValueId +
+                            ", specValueName='" + specValueName + '\'' +
+                            ", isChecked=" + isChecked +
+                            '}';
+                }
+            }
+
+            @Override
+            public String toString() {
+                return "SpecsBean{" +
+                        "specId=" + specId +
+                        ", specName='" + specName + '\'' +
+                        ", specValues=" + specValues +
+                        ", isCheck=" + isCheck +
+                        '}';
             }
         }
 

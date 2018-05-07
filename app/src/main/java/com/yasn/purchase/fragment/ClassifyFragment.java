@@ -85,6 +85,16 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
             okHttpGet(100, Config.CLASSIFY, params);
         }
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e("TAG_onHiddenChanged","CLASSIFY="+hidden);
+        if (hidden){
+            lazyLoad();
+        }
+    }
+
 //    @Override
 //    public void setUserVisibleHint(boolean isVisibleToUser) {
 //        super.setUserVisibleHint(isVisibleToUser);

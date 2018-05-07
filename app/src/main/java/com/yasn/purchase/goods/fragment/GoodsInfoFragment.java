@@ -77,6 +77,7 @@ import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
+import static com.yasn.purchase.R.id.et_goodsNum;
 import static www.xcd.com.mylibrary.help.HelpUtils.getDateToString;
 import static www.xcd.com.mylibrary.utils.SharePrefHelper.context;
 
@@ -369,7 +370,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         promotionString.append("：");
         promotion.setText(promotionString);
         //购买数量
-        etGoodsNum = (EditText) rootView.findViewById(R.id.et_goodsNum);
+        etGoodsNum = (EditText) rootView.findViewById(et_goodsNum);
 //        etGoodsNum.addTextChangedListener(this);
         ivSubtractNum = (LinearLayout) rootView.findViewById(R.id.iv_subtractNum);
         ivSubtractNum.setOnClickListener(this);
@@ -539,6 +540,11 @@ public class GoodsInfoFragment extends BaseFragment implements
 
                 break;
             case R.id.iv_subtractNum:
+                if (productId == 0){
+                    ToastUtil.showToast("请选择商品规格！");
+                    etGoodsNum.setEnabled(false);
+                    return;
+                }
                 int subtractNum = Integer.valueOf(etGoodsNum.getText().toString().trim()) - step;
                 etGoodsNum.removeTextChangedListener(this);
                 if (subtractNum < smallSale) {
@@ -551,6 +557,11 @@ public class GoodsInfoFragment extends BaseFragment implements
                 resetLadderPrices();
                 break;
             case R.id.iv_addNum:
+                if (productId == 0){
+                    etGoodsNum.setEnabled(false);
+                    ToastUtil.showToast("请选择商品规格！");
+                    return;
+                }
                 String titleString = null;
                 if (title != null) {
                     titleString = title.getText().toString();
@@ -636,8 +647,8 @@ public class GoodsInfoFragment extends BaseFragment implements
                     voice_time.setText(formatLongToTimeStr);
                     handler.postDelayed(this, 1000);
                 } else {
-                    voice_start.setBackgroundResource(R.mipmap.voice_stop);
-                    voice_time.setText("00:00:00");
+                    voice_start.setBackgroundResource(R.mipmap.voice_start);
+                    voice_time.setText("语音讲解");
                     duration = allDuration;
                     handler.removeCallbacks(runnableVoice);
                 }
@@ -654,7 +665,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.popwindowlayout, null);
         final PopupWindow window = new PopupWindow(view,
-                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);
         window.setFocusable(true);
         // 实例化一个ColorDrawable颜色为半透明
@@ -783,8 +794,9 @@ public class GoodsInfoFragment extends BaseFragment implements
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {
-                    succeedResult(returnData);
                     loginState = SharePrefHelper.getInstance(getActivity()).getSpString("loginState");
+                    succeedResult(returnData);
+                    Log.e("TAG_loginState1","loginState="+loginState);
                     if (!"0".equals(loginState)) {
                         llLadderPrices.setVisibility(View.GONE);
                         soldout_money.setText(loginState);
@@ -857,7 +869,10 @@ public class GoodsInfoFragment extends BaseFragment implements
         if (specs == null || specs.size() == 0) {
             ll_specs.setVisibility(View.GONE);
         } else {
-            if (specs.size() == 1 && "默认".equals(specs.get(0).getSpecName())) {
+            String specName = specs.get(0).getSpecName();
+            String specValueName = specs.get(0).getSpecValues().get(0).getSpecValueName();
+            Log.e("TAG_specName", "specName=" +(specName==null)+ ("默认".equals(specName)+""+"".equals(specName)));
+            if (specs.size() == 1 && (specName==null||"默认".equals(specValueName)||"".equals(specValueName))) {
                 ll_specs.setVisibility(View.GONE);
             } else {
                 ll_specs.setVisibility(View.VISIBLE);
@@ -868,10 +883,25 @@ public class GoodsInfoFragment extends BaseFragment implements
         products = goodsDetails.getProducts();
         initTradePricePosition(products, 0);
         List<GoodsDetailsModel.GoodsDetailsBean.SpecsBean.SpecValuesBean> specValues = specs.get(0).getSpecValues();
+        Log.e("TAG_批发价设置后", "specValues=" + specValues.size());
         if (specValues.size() == 1) {
             productId = productsBean.getProductId();
+            etGoodsNum.setEnabled(true);
         } else {
             productId = 0;
+            etGoodsNum.setEnabled(false);
+        }
+        if (products.size() >0){
+            tradeprice_recy.setVisibility(View.GONE);
+            tradeprice.setVisibility(View.GONE);
+        }else {
+            if (productId == 0){
+                tradeprice_recy.setVisibility(View.GONE);
+                tradeprice.setVisibility(View.GONE);
+            }else {
+                tradeprice_recy.setVisibility(View.VISIBLE);
+                tradeprice.setVisibility(View.INVISIBLE);
+            }
         }
         boolean isChecked = label_include.getIsChecked();
         if (isChecked) {//存在选中状态，总库存大于0
@@ -997,6 +1027,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         if (position == -1) {
             enableStore.setVisibility(View.GONE);
             productId = 0;
+            etGoodsNum.setEnabled(false);
             return;
         }
         enableStore.setVisibility(View.VISIBLE);
@@ -1013,6 +1044,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                 llRetailPrice.setVisibility(View.GONE);
             }
             productId = productsBean.getProductId();
+            etGoodsNum.setEnabled(true);
             //最小起订量
             smallSale = productsBean.getSmallSale();
             //步长
@@ -1034,6 +1066,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                     enableStore.setText("库存:" + String.valueOf(enableStoreNum));
                 }
                 if (enableStoreNum == 0) {
+                    etGoodsNum.setText("1");
                     ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, titleString);
                 } else {
                     etGoodsNum.setText(String.valueOf(smallSale));
@@ -1048,22 +1081,35 @@ public class GoodsInfoFragment extends BaseFragment implements
             llRetailPrice.setVisibility(View.GONE);
 //            etGoodsNum.setText(String.valueOf(smallSale));
         }
-        String minNumberString = String.format("最小起订量:%s  %s件起批", smallSale, step);
+        //最小起訂量
+        String minNumberString = String.format("最小起订量:%s      %s件起批", smallSale, step);
         SpannableStringBuilder span = new SpannableStringBuilder(minNumberString);
         span.setSpan(new TextAppearanceSpan(getActivity(), R.style.style_text14_black_66), 0, 6,
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         span.setSpan(new TextAppearanceSpan(getActivity(), R.style.style_text14_black_66), minNumberString.length() - 2, minNumberString.length(),
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         minNumber.setText(span);
+        //庫存字体颜色
+        SpannableStringBuilder enableStoreSpan = new SpannableStringBuilder(enableStore.getText().toString());
+        enableStoreSpan.setSpan(new TextAppearanceSpan(getActivity(), R.style.style_text14_black_66), 0, 3,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        enableStore.setText(enableStoreSpan);
+
         etGoodsNum.addTextChangedListener(this);
     }
 
     private void resetLadderPrices() {
         if (ladderPrices != null && ladderPrices.size() > 0) {
-            llLadderPrices.setVisibility(View.VISIBLE);
-            //折扣价数据
 
-            tradeprice_recy.setVisibility(View.VISIBLE);
+            //折扣价数据
+            Log.e("TAG_折扣价","products="+products.size()+";typeLadderPricesposition="+typeLadderPricesposition);
+            if (productId == 0){
+                tradeprice_recy.setVisibility(View.GONE);
+                tradeprice.setVisibility(View.GONE);
+            }else {
+                tradeprice_recy.setVisibility(View.VISIBLE);
+                tradeprice.setVisibility(View.INVISIBLE);
+            }
             adapter.setData(ladderPrices);
 
             double goodsNumDou = Long.valueOf(etGoodsNum.getText().toString());
@@ -1073,12 +1119,14 @@ public class GoodsInfoFragment extends BaseFragment implements
                 int maxNum = ladderPricesBean.getMaxNum();
                 if (goodsNumDou >= minNum && goodsNumDou <= maxNum) {
                     String activityPrice = ladderPricesBean.getActivityPrice();
-                    if (activityPrice == null || "".equals(activityPrice) || "0.00".equals(activityPrice)) {
+                    if (activityPrice == null || Double.valueOf(activityPrice)==0) {
                         double wholesalePrice = ladderPricesBean.getWholesalePrice();//批发价
                         String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
                         soldout_money.setText(wholesalePriceResult);
                         originalprice.setText(wholesalePriceResult);
                         originalprice2.setText(wholesalePriceResult);
+                        Log.e("TAG_活动价", "soldout_money=" + wholesalePriceResult);
+                        Log.e("TAG_活动价市场价", "originalprice=" + activityPrice);
                     } else {
                         double wholesalePrice = ladderPricesBean.getWholesalePrice();
                         String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
@@ -1094,8 +1142,9 @@ public class GoodsInfoFragment extends BaseFragment implements
         } else {
             llLadderPrices.setVisibility(View.GONE);
             tradeprice_recy.setVisibility(View.GONE);
+            tradeprice.setVisibility(View.GONE);
             String activityPrice = productsBean.getActivityPrice();
-            if (activityPrice != null && !"".equals(activityPrice) && !"0.00".equals(activityPrice)) {
+            if (activityPrice != null && Double.valueOf(activityPrice)>0) {
                 String activityPriceResult = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
                 soldout_money.setText(activityPriceResult);
                 originalprice.setText(activityPriceResult);
@@ -1107,6 +1156,16 @@ public class GoodsInfoFragment extends BaseFragment implements
                 originalprice.setText(priceResult);
                 originalprice2.setText(priceResult);
             }
+        }
+        Log.e("TAG_loginState2","loginState="+loginState);
+        if (!"0".equals(loginState)) {
+            llLadderPrices.setVisibility(View.GONE);
+            llRetailPrice.setVisibility(View.GONE);
+            soldout_money.setText(loginState);
+            originalprice.setText(loginState);
+            originalprice2.setText(loginState);
+        }else {
+            llLadderPrices.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1280,8 +1339,12 @@ public class GoodsInfoFragment extends BaseFragment implements
                 }
             }
         }
+        Log.e("TAG_hashmapSelect", "hashmapSelect=" + hashmapSelect.size());
         if (hashmapSelect.size() == 0) {
             label_include.removeAllViews();
+            //重置规格id
+            productId = 0;
+            etGoodsNum.setEnabled(false);
             //规格数据
             label_include.setData(goodsDetails);
             return;
@@ -1428,6 +1491,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         } else {
             enableStore.setVisibility(View.GONE);
             productId = 0;
+            etGoodsNum.setEnabled(false);
         }
     }
 
@@ -1583,6 +1647,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         if (position == -1) {
             enableStore.setVisibility(View.GONE);
             productId = 0;
+            etGoodsNum.setEnabled(false);
             return;
         }
         GoodsDetailsModel.GoodsDetailsBean.ProductsBean productsBean;
@@ -1592,6 +1657,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         if (products != null) {
             productsBean = products.get(position);
             productId = productsBean.getProductId();
+            etGoodsNum.setEnabled(true);
             Log.e("TAG_库存规格id", "productId=" + productId);
             enableStoreNum = productsBean.getEnableStore();
             Log.e("TAG_库存", "position=" + position + ";enableStoreNum=" + enableStoreNum);
@@ -1615,12 +1681,18 @@ public class GoodsInfoFragment extends BaseFragment implements
             //阶梯价
             ladderPrices = productsBean.getLadderPrices();
             if (ladderPrices != null && ladderPrices.size() > 0) {
-                llLadderPrices.setVisibility(View.VISIBLE);
                 //折扣价数据
                 if (ladderPrices == null || ladderPrices.size() == 0) {
                     tradeprice_recy.setVisibility(View.GONE);
+                    tradeprice.setVisibility(View.GONE);
                 } else {
-                    tradeprice_recy.setVisibility(View.VISIBLE);
+                    if (productId==0){
+                        tradeprice_recy.setVisibility(View.GONE);
+                        tradeprice.setVisibility(View.GONE);
+                    }else {
+                        tradeprice_recy.setVisibility(View.VISIBLE);
+                        tradeprice.setVisibility(View.INVISIBLE);
+                    }
                     adapter.setData(ladderPrices);
                 }
                 double goodsNumDou = Long.valueOf(etGoodsNum.getText().toString());
@@ -1630,7 +1702,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                     int maxNum = ladderPricesBean.getMaxNum();
                     if (goodsNumDou >= minNum && goodsNumDou <= maxNum) {
                         String activityPrice = ladderPricesBean.getActivityPrice();
-                        if (activityPrice == null || "".equals(activityPrice) || "0.00".equals(activityPrice)) {
+                        if (activityPrice == null || Double.valueOf(activityPrice)==0) {
                             double wholesalePrice = ladderPricesBean.getWholesalePrice();
                             String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
                             soldout_money.setText(String.valueOf(wholesalePriceResult));
@@ -1649,7 +1721,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             } else {
                 llLadderPrices.setVisibility(View.GONE);
                 String activityPrice = productsBean.getActivityPrice();
-                if (activityPrice != null && !"".equals(activityPrice) || "0.00".equals(activityPrice)) {
+                if (activityPrice != null && Double.valueOf(activityPrice)>0) {
                     String price = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
                     soldout_money.setText(price);
                     originalprice.setText(price);
@@ -1661,6 +1733,16 @@ public class GoodsInfoFragment extends BaseFragment implements
                     originalprice2.setText(price);
                 }
             }
+        }
+        Log.e("TAG_loginState3","loginState="+loginState);
+        if (!"0".equals(loginState)) {
+            llLadderPrices.setVisibility(View.GONE);
+            llRetailPrice.setVisibility(View.GONE);
+            soldout_money.setText(loginState);
+            originalprice.setText(loginState);
+            originalprice2.setText(loginState);
+        }else {
+            llLadderPrices.setVisibility(View.VISIBLE);
         }
         etGoodsNum.addTextChangedListener(this);
     }
@@ -1711,7 +1793,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         duration = mp.getDuration();//总时长
         allDuration = duration;
         formatLongToTimeStr = HelpUtils.formatLongToTime((long) duration);
-        voice_time.setText(formatLongToTimeStr);
+        voice_time.setText("语音讲解");
     }
 
     public String getGoodsNum() {

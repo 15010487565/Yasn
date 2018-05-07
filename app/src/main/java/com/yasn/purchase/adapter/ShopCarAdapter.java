@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.TypedValue;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +29,8 @@ import com.yasn.purchase.view.TagsLayout;
 import java.math.BigDecimal;
 import java.util.List;
 
+import www.xcd.com.mylibrary.utils.SharePrefHelper;
+
 /**
  * Created by gs on 2017/12/29.
  */
@@ -38,10 +42,12 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private OnShopCarClickListener onItemClickListener;
     private static final int TYPE_ITEMTITLE = 1;
     private static final int TYPE_ITEMLIST = 2;
+    private String loginState;
 
     public ShopCarAdapter(Context context) {
         super();
         this.context = context;
+        loginState = SharePrefHelper.getInstance(context).getSpString("loginState");
     }
 
     public void setOnItemClickListener(OnShopCarClickListener onItemClickListener) {
@@ -149,27 +155,32 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     for (int i = 0, j = specList.size(); i < j; i++) {
                         String sprcTextString = specList.get(i);
-                        final TextView tvSprc = new TextView(context.getApplicationContext());
                         Log.e("TAG_规格","sprcTextString="+sprcTextString+";position="+position);
-                        tvSprc.setText(sprcTextString);
-                        if (goodsOff == 0) {
-                            tvSprc.setTextColor(ContextCompat.getColor(context, R.color.black_66));
-                            tvSprc.setBackgroundResource(R.drawable.text_n_f5);
-                        } else {
-                            tvSprc.setTextColor(ContextCompat.getColor(context, R.color.black_99));
-                            tvSprc.setBackgroundResource(R.drawable.text_n_f5);
+                        if (!TextUtils.isEmpty(sprcTextString)){
+                            final TextView tvSprc = new TextView(context.getApplicationContext());
+                            tvSprc.setText(sprcTextString);
+                            if (goodsOff == 0) {
+                                tvSprc.setTextColor(ContextCompat.getColor(context, R.color.black_66));
+                                tvSprc.setBackgroundResource(R.drawable.text_n_f5);
+                            } else {
+                                tvSprc.setTextColor(ContextCompat.getColor(context, R.color.black_99));
+                                tvSprc.setBackgroundResource(R.drawable.text_n_f5);
+                            }
+                            tvSprc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                            tvSprc.setGravity(Gravity.CENTER);
+                            tvSprc.setTag(list.get(i));
+                            lp.setMargins(10, 10, 10,0);
+                            listViewHolder.shopcarLabel.addView(tvSprc, lp);
                         }
-                        tvSprc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                        tvSprc.setGravity(Gravity.CENTER);
-                        tvSprc.setTag(list.get(i));
-                        lp.setMargins(10, 10, 10,0);
-                        listViewHolder.shopcarLabel.addView(tvSprc, lp);
-
                     }
                 }
 
                 double price = shopCarAdapterModel.getPrice();
-                listViewHolder.tvOrderListPrice.setText("￥" + String.format("%.2f", price));
+                if ("0".equals(loginState)){
+                    listViewHolder.tvOrderListPrice.setText("￥" + String.format("%.2f", price));
+                }else {
+                    listViewHolder.tvOrderListPrice.setText(loginState == null?"登录看价格":loginState);
+                }
 
                 int num = shopCarAdapterModel.getNum();
                 if (goodsOff == 0) {
@@ -242,7 +253,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         .placeholder(R.mipmap.errorimage)
                         .error(R.mipmap.errorimage)
                         .into(listViewHolder.ivOrderListImage);
-                onItemEventClick(listViewHolder);
+//                onItemEventClick(listViewHolder);
 
                 if (goodsOff == 0) {//上架
                     if (beforeSale==null||"".equals(beforeSale)){//没有预售
@@ -350,6 +361,8 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private ImageView ivSubtractNum, ivAddNum;
         private TextView etGoodsNum,tvPresellHint,tvPurchaseHint,tvPurchase,tvPresell;
         private LinearLayout llNum;
+        private TextView itemOnClick;
+        private RelativeLayout rlImageOnClick;
         public ListViewHolder(View itemView) {
             super(itemView);
             llNum = (LinearLayout) itemView.findViewById(R.id.ll_Num);
@@ -387,6 +400,11 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ivShroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
             Drawable ivShroudBg = tvOrderListHintNum.getBackground();
             ivShroudBg.setAlpha(255);
+            //item
+            itemOnClick = (TextView) itemView.findViewById(R.id.tv_itemOnClick);
+            itemOnClick.setOnClickListener(this);
+            rlImageOnClick = (RelativeLayout) itemView.findViewById(R.id.rl_imageOnClick);
+            rlImageOnClick.setOnClickListener(this);
         }
 
         @Override
@@ -411,19 +429,25 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 case R.id.et_goodsNum:
                     onItemClickListener.setOnTouchListener(getLayoutPosition());
                     break;
+                case R.id.tv_itemOnClick:
+                    onItemClickListener.OnItemClick(v, getLayoutPosition());
+                    break;
+                case R.id.rl_imageOnClick:
+                    onItemClickListener.OnItemClick(v, getLayoutPosition());
+                    break;
             }
         }
     }
 
-    protected void onItemEventClick(RecyclerView.ViewHolder holder) {
-        final int position = holder.getLayoutPosition();
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.OnItemClick(v, position);
-            }
-        });
-    }
+//    protected void onItemEventClick(RecyclerView.ViewHolder holder) {
+//        final int position = holder.getLayoutPosition();
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onItemClickListener.OnItemClick(v, position);
+//            }
+//        });
+//    }
     private String residueDoubleFormat;//去凑单剩余价格
 
     public String getResidueDoubleFormat() {
