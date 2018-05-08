@@ -170,12 +170,12 @@ public class ShoppingSelectView extends LinearLayout {
                 for (int j = 0, k = products.size(); j < k; j++) {
                     GoodsDetailsModel.GoodsDetailsBean.ProductsBean productsBean = products.get(j);
                     int enableStore = productsBean.getEnableStore();
-                    Log.e("TAG_false1", "j="+j+"；enableStore=" + enableStore+";ProductId="+productsBean.getProductId());
+//                    Log.e("TAG_false1", "j="+j+"；enableStore=" + enableStore+";ProductId="+productsBean.getProductId());
                     if (enableStore != 0) {
                         List<Integer> specValueIds = productsBean.getSpecValueIds();
                         for (int l = 0, m = specValueIds.size(); l < m; l++) {
                             Integer specId = specValueIds.get(l);
-                            Log.e("TAG_false2", "specId=" + specId+";specValueId="+specValueId);
+//                            Log.e("TAG_false2", "specId=" + specId+";specValueId="+specValueId);
                             if (specId == specValueId) {
                                 isChecked = true;
                             }

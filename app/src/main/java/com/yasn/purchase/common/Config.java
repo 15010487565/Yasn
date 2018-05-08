@@ -114,7 +114,7 @@ public class Config {
     //统计查看更多
     public final static String STATISTICSLOOKALL = URL+"Statistics.html";
     //门店收货地址
-    public final static String SHOPPLACEOFRECEIPT  = URLCAIGOU+"addresslist.html?back=1";
+    public final static String SHOPPLACEOFRECEIPT  = URL+"address_list.html?back=1";
     //门店帮助中心
     public final static String SHOPHELP  = URLCAIGOU+"help.html";
     //门店电话咨询
@@ -139,4 +139,5 @@ public class Config {
     public final static String CHECKOUTSHOPCAR  = URLCAIGOU+"checkout.html";
     //去凑单
     public final static String SHOPCARADDONITEM  = URLCAIGOU+"collecting_home.html?show_c=4&store_id=1&keyword=&end_price=&key=2&order=asc&start_price=";
+
 }

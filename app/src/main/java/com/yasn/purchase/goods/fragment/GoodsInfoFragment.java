@@ -1088,6 +1088,11 @@ public class GoodsInfoFragment extends BaseFragment implements
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         span.setSpan(new TextAppearanceSpan(getActivity(), R.style.style_text14_black_66), minNumberString.length() - 2, minNumberString.length(),
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        if (smallSale<=1&&step<=1){
+            minNumber.setVisibility(View.GONE);
+        }else {
+            minNumber.setVisibility(View.VISIBLE);
+        }
         minNumber.setText(span);
         //庫存字体颜色
         SpannableStringBuilder enableStoreSpan = new SpannableStringBuilder(enableStore.getText().toString());
@@ -1108,7 +1113,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                 tradeprice.setVisibility(View.GONE);
             }else {
                 tradeprice_recy.setVisibility(View.VISIBLE);
-                tradeprice.setVisibility(View.INVISIBLE);
+                tradeprice.setVisibility(View.VISIBLE);
             }
             adapter.setData(ladderPrices);
 
