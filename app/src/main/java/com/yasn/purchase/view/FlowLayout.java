@@ -14,8 +14,6 @@ import com.yasn.purchase.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import static www.xcd.com.mylibrary.utils.SharePrefHelper.context;
-
 public class FlowLayout extends ViewGroup implements CompoundButton.OnCheckedChangeListener {
     /**
      * 属性的标题
@@ -23,15 +21,15 @@ public class FlowLayout extends ViewGroup implements CompoundButton.OnCheckedCha
     private String title;
     private ShoppingSelectView.OnSelectedListener listener;
     int postion;
-
+    private Context context;
     public FlowLayout(Context context) {
         super(context);
-
+        this.context = context;
     }
 
     public FlowLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        this.context = context;
     }
 
     @Override

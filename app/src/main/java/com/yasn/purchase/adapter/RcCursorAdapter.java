@@ -58,6 +58,7 @@ public class RcCursorAdapter extends RecyclerViewCursorAdapter<RcCursorAdapter.M
     protected void onContentChanged() {
 
     }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         private TextView contactName;
         public MyViewHolder(View itemView) {

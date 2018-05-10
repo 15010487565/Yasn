@@ -466,17 +466,26 @@ public class SearchActivity extends SimpleTopbarActivity implements
                 selected_yasn.setAlpha(0);
                 unselected_yasn.setAlpha(1);
                 ISCHECKEDYASN = false;
-                if (!ISCHECKEDYASN&&"".equals(cartype)){
+                Log.e("TAG_类型","ISCHECKEDYASN="+ISCHECKEDYASN+";cartype="+(!TextUtils.isEmpty(cartype)));
+                if (!ISCHECKEDYASN&&TextUtils.isEmpty(cartype)){
                     selecttype.setVisibility(View.GONE);
                 }
+                onRefresh();
                 break;
             case R.id.cartypefram://车类型
                 cartypefram.setVisibility(View.GONE);
                 cartype = "";
                 seclectName.setText(cartype);
-                if (!ISCHECKEDYASN&&"".equals(cartype)){
+                Log.e("TAG_类型","ISCHECKEDYASN="+ISCHECKEDYASN+";cartype="+(!TextUtils.isEmpty(cartype)));
+                if (!ISCHECKEDYASN&&TextUtils.isEmpty(cartype)){
                     selecttype.setVisibility(View.GONE);
                 }
+                for (int i = 0; i < mDateList.size(); i++) {
+                    SortModel sortModel = mDateList.get(i);
+                    sortModel.setChecked(false);
+                }
+                mAdapter.notifyDataSetChanged();
+                onRefresh();
                 break;
 
             case R.id.selected_fram:
@@ -502,6 +511,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
                     sortModel.setChecked(false);
                 }
                 mAdapter.notifyDataSetChanged();
+                onRefresh();
                 break;
             case R.id.ok:
                 Log.e("TAG_车型","自营="+ISCHECKEDYASN+";cartype="+cartype);

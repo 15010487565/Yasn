@@ -14,8 +14,8 @@ import okhttp3.Response;
 
 public class ShopCarUtils {
     public static String getShopCar(String path,String token){
-        String body = null;
         try {
+        String body = null;
             Log.e("TAG_PATH","path="+path);
             Log.e("TAG_PATH","token="+token);
             //创建okHttpClient对象
@@ -31,9 +31,12 @@ public class ShopCarUtils {
             if (response.isSuccessful()) {
                 body = response.body().string();
             }
+            Log.e("TAG_进货单","code="+response.code());
+            Log.e("TAG_进货单错误信息","response="+response);
             return body;
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e("TAG_进货单错误信息","IOException="+ e.toString());
             return "";
         }
     }

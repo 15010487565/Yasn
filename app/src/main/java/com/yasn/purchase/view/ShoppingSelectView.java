@@ -151,17 +151,20 @@ public class ShoppingSelectView extends LinearLayout {
                 //默认选中第一个specsChecked
                 if (specs.size() == 1&&(checkboxNum/specs.size())==1) {
                     isSelectFirst = true;
-                    button.setChecked(true);
+                    button.setChecked(true);//默认选中
+                    button.setEnabled(false);//默认必选
                     button.setBackgroundResource(R.drawable.text_orange_blackf7);
                     button.setTextColor(ContextCompat.getColor(context,R.color.orange));
                 }else if (specs.size() > 1&&(checkboxNum/specs.size())==1) {
                     isSelectFirst = true;
-                    button.setChecked(true);
+                    button.setEnabled(false);//默认必选
+                    button.setChecked(true);//默认选中
                     button.setBackgroundResource(R.drawable.text_orange_blackf7);
                     button.setTextColor(ContextCompat.getColor(context,R.color.orange));
                 }else {
                     isSelectFirst = false;
-                    button.setChecked(false);
+                    button.setEnabled(true);//可切换
+                    button.setChecked(false);//默认选中
                     button.setBackgroundResource(R.drawable.text_black_blackf7);
                     button.setTextColor(ContextCompat.getColor(context,R.color.black_66));
                 }
@@ -190,9 +193,16 @@ public class ShoppingSelectView extends LinearLayout {
                         button.setTextColor(ContextCompat.getColor(context,R.color.black_33));
                         isCheckedSpecs = true;
                     }else {
-                        button.setEnabled(false);
-                        button.setBackgroundResource(R.drawable.text_black99_blacke0);
-                        button.setTextColor(ContextCompat.getColor(context, R.color.black_33));
+                        if (isBeforeSale == 1){ // 是否预售, 0否1是
+                            button.setEnabled(true);
+                            button.setBackgroundResource(R.drawable.text_black_blackf7);
+                            button.setTextColor(ContextCompat.getColor(context,R.color.black_33));
+                            isCheckedSpecs = true;
+                        }else {
+                            button.setEnabled(false);
+                            button.setBackgroundResource(R.drawable.text_black99_blacke0);
+                            button.setTextColor(ContextCompat.getColor(context, R.color.black_33));
+                        }
                     }
                 }
                 layout.addView(button);
@@ -202,6 +212,7 @@ public class ShoppingSelectView extends LinearLayout {
     }
     //是否存在可选中规格
     private boolean isCheckedSpecs = false;
+    private int isBeforeSale;// 是否预售, 0否1是
     public boolean getIsChecked(){
         return isCheckedSpecs;
     }
@@ -213,8 +224,9 @@ public class ShoppingSelectView extends LinearLayout {
         return (int) (dpValue * scale + 0.5f);
     }
 
-    public void setData(GoodsDetailsModel.GoodsDetailsBean data) {
+    public void setData(GoodsDetailsModel.GoodsDetailsBean data,int isBeforeSale) {
         list = data;
+        this.isBeforeSale = isBeforeSale;
         getView();
     }
 

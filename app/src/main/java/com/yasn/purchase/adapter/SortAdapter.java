@@ -2,7 +2,6 @@ package com.yasn.purchase.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +52,7 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.ViewHolder> {
             holder.selectimage.setVisibility(View.GONE);
         }
         String logo = sortModel.getLogo();
-        Log.e("TAG_车型图片","logo="+logo);
+//        Log.e("TAG_车型图片","logo="+logo);
         Glide.with(mContext.getApplicationContext())
                 .load(logo)
                 .crossFade()

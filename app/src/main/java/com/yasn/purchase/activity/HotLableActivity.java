@@ -237,7 +237,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
 
         // 1. 模糊搜索
         Cursor cursor = helper.getReadableDatabase().rawQuery(
-                "select id as _id,name from records where name like '%" + tempName + "%' order by id desc ", null);
+                "select id as _id,name from records where name like '%" + tempName + "%' order by id desc limit 10", null);
 //        // 2. 创建adapter适配器对象 & 装入模糊搜索的结果
 //        adapter = new SimpleCursorAdapter(this, R.layout.recycleritem_historysearch, cursor, new String[]{"name"},
 //                new int[]{R.id.historysearch_title}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);

@@ -700,7 +700,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     if (place != null && !"".equals(place)) {
                         String regionName = place.getRegionName();
                         address.setText(regionName == null ? "" : regionName);
-                        SharePrefHelper.getInstance(getActivity()).putSpString("regionName", regionName);
+                        SharePrefHelper.getInstance(getActivity()).putSpString("regionName", (regionName==null?"":regionName));
                     } else {
                         address.setText("");
                         SharePrefHelper.getInstance(getActivity()).putSpString("regionName", "");

@@ -17,6 +17,7 @@
 
         <com.yasn.purchase.goods.view.SlideDetailsLayout
             android:id="@+id/slideDetailsLayout"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

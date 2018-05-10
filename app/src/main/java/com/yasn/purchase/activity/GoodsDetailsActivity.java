@@ -279,7 +279,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
 //                startWebViewActivity(Config.SHOPPCARWEBVIEW);
                 if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
                     startActivity(new Intent(GoodsDetailsActivity.this, ShopCarActivity.class));
-                }else {
+                } else {
                     startWebViewActivity(Config.LOGINWEBVIEW);
                 }
                 break;
@@ -320,13 +320,13 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         Integer integerGoodsNum = Integer.valueOf(goodsNum);
         int smallSale = goodsInfoFragment.getSmallSale();
         int step = goodsInfoFragment.getStep();
-        Log.e("TAG_activity", "加入进货单goodsNum=" + integerGoodsNum + ";smallSale=" + smallSale+"；step="+step);
-        if (integerGoodsNum < smallSale){
-            ToastUtil.showToast("最小起订量为"+smallSale+"件，请输入正确数量！");
+        Log.e("TAG_activity", "加入进货单goodsNum=" + integerGoodsNum + ";smallSale=" + smallSale + "；step=" + step);
+        if (integerGoodsNum < smallSale) {
+            ToastUtil.showToast("最小起订量为" + smallSale + "件，请输入正确数量！");
             return;
         }
         if (smallSale > 0) {
-            int remainder = (integerGoodsNum -smallSale)% step;
+            int remainder = (integerGoodsNum - smallSale) % step;
             Log.e("TAG_activity", "加入进货单remainder=" + remainder);
             if (remainder > 0) {
                 ToastUtil.showToast("请输入正确数量！");
@@ -539,32 +539,29 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         tvUndata.setVisibility(View.VISIBLE);
     }
 
-    public void setTvAddShopCar(boolean isOnclick, String title) {
+    /**
+     * loginState 0 登录状态
+     * @param isOnclick 庫存是否大於0
+     * @param isBeforeSale 是否預售 , 0否1是
+     */
+    public void setTvAddShopCar(boolean isOnclick, boolean isBeforeSale) {
+        Log.e("TAG_加入进货单", "isBeforeSale=" + isBeforeSale);
         if ("0".equals(loginState)) {
-            if (isOnclick) {
+            if (isOnclick) {//库存大于0
                 tvAddShopCar.setEnabled(true);
                 tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
             } else {
-                tvAddShopCar.setEnabled(false);
-                tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.black_99));
+                if (isBeforeSale) {//预售
+                    tvAddShopCar.setEnabled(true);
+                    tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
+                } else {
+                    tvAddShopCar.setEnabled(false);
+                    tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.black_99));
+                }
             }
         } else {
             tvAddShopCar.setEnabled(true);
             tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
-        }
-        if (title != null&&!"".equals(title)) {
-            Log.e("TAG_加入进货单", "title=" + title);
-            if (title.indexOf("预售") != -1) {
-                tvAddShopCar.setEnabled(true);
-                tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
-            } else if (title.indexOf("限购") != -1) {
-                tvAddShopCar.setEnabled(true);
-                tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
-            }
-//            else {
-//                tvAddShopCar.setEnabled(false);
-//                tvAddShopCar.setBackgroundColor(ContextCompat.getColor(this, R.color.black_99));
-//            }
         }
     }
 

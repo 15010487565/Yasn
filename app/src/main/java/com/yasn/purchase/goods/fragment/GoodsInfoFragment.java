@@ -64,7 +64,6 @@ import com.yasn.purchase.view.ShoppingSelectView;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -235,6 +234,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         } else {
             isVisible = false;
             if (mediaplayer != null) {
+                voice_start.setBackgroundResource(R.mipmap.voice_start);
                 mediaplayer.pause();
                 flag = false;
             }
@@ -414,6 +414,7 @@ public class GoodsInfoFragment extends BaseFragment implements
 //        htmlTextView.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         slideDetailsLayout = (SlideDetailsLayout) rootView.findViewById(R.id.slideDetailsLayout);
+        slideDetailsLayout.setVisibility(View.GONE);
         slideDetailsLayout.setOnSlideDetailsListener(this);
         scrollView = (ScrollView) rootView.findViewById(R.id.scrollView);
         //
@@ -562,13 +563,11 @@ public class GoodsInfoFragment extends BaseFragment implements
                     ToastUtil.showToast("请选择商品规格！");
                     return;
                 }
-                String titleString = null;
-                if (title != null) {
-                    titleString = title.getText().toString();
-                }
-                Log.e("TAG_详情加数量", "titleString=" + titleString);
+                //是否預售 , 0否1是
+                 int isBeforeSale = goodsDetails.getIsBeforeSale();
+
                 if (enableStoreNum == 0) {
-                    if (titleString.indexOf("预售") == -1) {
+                    if (isBeforeSale == 0) {
                         ToastUtil.showToast("库存不足");
                     } else {
                         etGoodsNum.removeTextChangedListener(this);
@@ -739,7 +738,6 @@ public class GoodsInfoFragment extends BaseFragment implements
             time--;
             String formatLongToTimeStr = HelpUtils.formatLongToTimeStr(time);
             int timeLength = formatLongToTimeStr.length();
-            Log.e("TAG_详情", "时间=" + formatLongToTimeStr);
             SpannableStringBuilder style = new SpannableStringBuilder(formatLongToTimeStr);
             int blacktop_bar = ContextCompat.getColor(getActivity(), R.color.top_bar_background);
             style.setSpan(new BackgroundColorSpan(blacktop_bar), 0, timeLength - 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -795,6 +793,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             case 100:
                 if (returnCode == 200) {
                     loginState = SharePrefHelper.getInstance(getActivity()).getSpString("loginState");
+                    slideDetailsLayout.setVisibility(View.VISIBLE);
                     succeedResult(returnData);
                     Log.e("TAG_loginState1","loginState="+loginState);
                     if (!"0".equals(loginState)) {
@@ -876,7 +875,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                 ll_specs.setVisibility(View.GONE);
             } else {
                 ll_specs.setVisibility(View.VISIBLE);
-                label_include.setData(goodsDetails);
+                label_include.setData(goodsDetails,goodsDetails.getIsBeforeSale());
             }
         }
         //批发价
@@ -891,21 +890,29 @@ public class GoodsInfoFragment extends BaseFragment implements
             productId = 0;
             etGoodsNum.setEnabled(false);
         }
+        Log.e("TAG_规格","products="+products.size());
         if (products.size() >0){
-            tradeprice_recy.setVisibility(View.GONE);
-            tradeprice.setVisibility(View.GONE);
+            if (products.size() ==1){
+                tradeprice_recy.setVisibility(View.VISIBLE);
+                tradeprice.setVisibility(View.VISIBLE);
+            }else {
+                tradeprice_recy.setVisibility(View.GONE);
+                tradeprice.setVisibility(View.GONE);
+            }
         }else {
             if (productId == 0){
                 tradeprice_recy.setVisibility(View.GONE);
                 tradeprice.setVisibility(View.GONE);
             }else {
                 tradeprice_recy.setVisibility(View.VISIBLE);
-                tradeprice.setVisibility(View.INVISIBLE);
+                tradeprice.setVisibility(View.VISIBLE);
             }
         }
         boolean isChecked = label_include.getIsChecked();
         if (isChecked) {//存在选中状态，总库存大于0
-            ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, "");
+            //是否預售 , 0否1是
+            int isBeforeSale = goodsDetails.getIsBeforeSale();
+            ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, isBeforeSale==1?true:false);
         }
         //
         String advert = goodsDetails.getAdvert();
@@ -1054,12 +1061,13 @@ public class GoodsInfoFragment extends BaseFragment implements
             if (enableStoreNum >= 10) {
                 enableStore.setText("库存:充足");
                 etGoodsNum.setText(String.valueOf(smallSale));
-
-                ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, title.getText().toString());
+                //是否預售 , 0否1是
+                int isBeforeSale = goodsDetails.getIsBeforeSale();
+                ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, isBeforeSale==1?true:false);
             } else {
-
-                String titleString = title.getText().toString();
-                if (titleString.indexOf("预售") != -1) {
+                //是否預售 , 0否1是
+                int isBeforeSale = goodsDetails.getIsBeforeSale();
+                if (isBeforeSale == 1) {
                     enableStore.setText("库存:充足");
                     etGoodsNum.setText("1");
                 } else {
@@ -1067,10 +1075,10 @@ public class GoodsInfoFragment extends BaseFragment implements
                 }
                 if (enableStoreNum == 0) {
                     etGoodsNum.setText("1");
-                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, titleString);
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, isBeforeSale==1?true:false);
                 } else {
                     etGoodsNum.setText(String.valueOf(smallSale));
-                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, titleString);
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, isBeforeSale==1?true:false);
                 }
             }
             //阶梯价
@@ -1109,9 +1117,11 @@ public class GoodsInfoFragment extends BaseFragment implements
             //折扣价数据
             Log.e("TAG_折扣价","products="+products.size()+";typeLadderPricesposition="+typeLadderPricesposition);
             if (productId == 0){
+                llLadderPrices.setVisibility(View.GONE);
                 tradeprice_recy.setVisibility(View.GONE);
                 tradeprice.setVisibility(View.GONE);
             }else {
+                llLadderPrices.setVisibility(View.VISIBLE);
                 tradeprice_recy.setVisibility(View.VISIBLE);
                 tradeprice.setVisibility(View.VISIBLE);
             }
@@ -1162,15 +1172,10 @@ public class GoodsInfoFragment extends BaseFragment implements
                 originalprice2.setText(priceResult);
             }
         }
-        Log.e("TAG_loginState2","loginState="+loginState);
         if (!"0".equals(loginState)) {
-            llLadderPrices.setVisibility(View.GONE);
-            llRetailPrice.setVisibility(View.GONE);
             soldout_money.setText(loginState);
             originalprice.setText(loginState);
             originalprice2.setText(loginState);
-        }else {
-            llLadderPrices.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1284,22 +1289,22 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     @Override
     public void onCancelResult() {
-
+        slideDetailsLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
-
+        slideDetailsLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
-
+        slideDetailsLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void onFinishResult() {
-
+        slideDetailsLayout.setVisibility(View.GONE);
     }
 
     //    //临时储存单个对比id
@@ -1333,6 +1338,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                             int radiobuttonId = radiobutton1.getId();
                             if (radiobuttonId == childId) {
                                 boolean checked = radiobutton1.isChecked();
+                                Log.e("TAG_checked", "checked=" + checked);
                                 if (checked) {
                                     hashmapSelect.put(flowlayoutId, radiobuttonId);
                                 } else {
@@ -1351,7 +1357,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             productId = 0;
             etGoodsNum.setEnabled(false);
             //规格数据
-            label_include.setData(goodsDetails);
+            label_include.setData(goodsDetails,goodsDetails.getIsBeforeSale());
             return;
         }
         if (listCompare.size() > 0) {
@@ -1480,7 +1486,10 @@ public class GoodsInfoFragment extends BaseFragment implements
             }
         }
         Log.e("TAG_不可点击id组合", "unClickSet=" + unClickSet.toString());
-        selectOneId(unClickSet);
+        int isBeforeSale = goodsDetails.getIsBeforeSale(); // 是否预售, 0否1是
+        if (isBeforeSale==0){//非预售产品规格库存为0置灰
+            selectOneId(unClickSet);
+        }
         if (listCompare.size() == flowlayoutCon) {
             enableStore.setVisibility(View.VISIBLE);
             for (int m = 0, n = products.size(); m < n; m++) {
@@ -1538,7 +1547,6 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     public void permutation(int a[], int count, int count2, int except) {
         if (count2 == except) {
-            System.out.println(Arrays.toString(hashSetArray));
             try {
                 if (hashSetArray != null && hashSetArray.length != 0) {
                     List<Integer> list = new ArrayList<Integer>();
@@ -1577,7 +1585,6 @@ public class GoodsInfoFragment extends BaseFragment implements
     //轮播图点击事件
     @Override
     public void onItemClick(int position) {
-        Log.e("TAG_详情轮播图", "点击了" + position);
         List<GoodsDetailsModel.GoodsDetailsBean.GoodsGallerysBean> goodsGallerys = goodsDetails.getGoodsGallerys();
         ArrayList<String> imageShowBigList = new ArrayList<String>();
         for (int i = 0, j = goodsGallerys.size(); i < j; i++) {
@@ -1666,21 +1673,22 @@ public class GoodsInfoFragment extends BaseFragment implements
             Log.e("TAG_库存规格id", "productId=" + productId);
             enableStoreNum = productsBean.getEnableStore();
             Log.e("TAG_库存", "position=" + position + ";enableStoreNum=" + enableStoreNum);
+            //是否預售 , 0否1是
+            int isBeforeSale = goodsDetails.getIsBeforeSale();
             if (enableStoreNum >= 10) {
                 enableStore.setText("库存:充足");
-                ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, title.getText().toString());
+                ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true,  isBeforeSale==1?true:false);
             } else {
-                String titleString = title.getText().toString();
-                if (titleString.indexOf("预售") != -1) {
+                if (isBeforeSale == 1) {
                     enableStore.setText("库存:充足");
 //                    etGoodsNum.setText("1");
                 } else {
                     enableStore.setText("库存:" + String.valueOf(enableStoreNum));
                 }
                 if (enableStoreNum == 0) {
-                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, titleString);
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, isBeforeSale==1?true:false);
                 } else {
-                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, titleString);
+                    ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, isBeforeSale==1?true:false);
                 }
             }
             //阶梯价
@@ -1690,13 +1698,16 @@ public class GoodsInfoFragment extends BaseFragment implements
                 if (ladderPrices == null || ladderPrices.size() == 0) {
                     tradeprice_recy.setVisibility(View.GONE);
                     tradeprice.setVisibility(View.GONE);
+                    llLadderPrices.setVisibility(View.GONE);
                 } else {
                     if (productId==0){
                         tradeprice_recy.setVisibility(View.GONE);
                         tradeprice.setVisibility(View.GONE);
+                        llLadderPrices.setVisibility(View.GONE);
                     }else {
                         tradeprice_recy.setVisibility(View.VISIBLE);
-                        tradeprice.setVisibility(View.INVISIBLE);
+                        tradeprice.setVisibility(View.VISIBLE);
+                        llLadderPrices.setVisibility(View.VISIBLE);
                     }
                     adapter.setData(ladderPrices);
                 }
@@ -1741,13 +1752,9 @@ public class GoodsInfoFragment extends BaseFragment implements
         }
         Log.e("TAG_loginState3","loginState="+loginState);
         if (!"0".equals(loginState)) {
-            llLadderPrices.setVisibility(View.GONE);
-            llRetailPrice.setVisibility(View.GONE);
             soldout_money.setText(loginState);
             originalprice.setText(loginState);
             originalprice2.setText(loginState);
-        }else {
-            llLadderPrices.setVisibility(View.VISIBLE);
         }
         etGoodsNum.addTextChangedListener(this);
     }
