@@ -563,66 +563,106 @@ public class GoodsInfoFragment extends BaseFragment implements
                     ToastUtil.showToast("请选择商品规格！");
                     return;
                 }
+                etGoodsNum.removeTextChangedListener(this);
                 //是否預售 , 0否1是
-                 int isBeforeSale = goodsDetails.getIsBeforeSale();
-
-                if (enableStoreNum == 0) {
-                    if (isBeforeSale == 0) {
-                        ToastUtil.showToast("库存不足");
-                    } else {
-                        etGoodsNum.removeTextChangedListener(this);
-                        int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
-                        if (step > 0) {
-                            int allAddNum = addNum + step;
-                            etGoodsNum.setText(String.valueOf(allAddNum));
-                        } else {
-                            int allAddNum = addNum + 1;
+                int isBeforeSale = goodsDetails.getIsBeforeSale();
+                int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
+                int allAddNum = addNum + (step >0?step:1);
+                if (isBeforeSale == 0) {
+                    if (allAddNum <= enableStoreNum) {
+                        if (isLimitBuy == 1) {// 是否限购 0否1是
+                            if (allAddNum > num) {
+                                ToastUtil.showToast("该商品限购" + num + "件");
+                            } else {
+                                etGoodsNum.setText(String.valueOf(allAddNum));
+                            }
+                        }else {
                             etGoodsNum.setText(String.valueOf(allAddNum));
                         }
-                        etGoodsNum.addTextChangedListener(this);
+                        etGoodsNum.setText(String.valueOf(allAddNum));
+                    } else {
+                        ToastUtil.showToast("库存仅剩" + enableStoreNum + "件");
                     }
-
                 } else {
-                    etGoodsNum.removeTextChangedListener(this);
-                    int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
-                    if (step > 0) {
-                        int allAddNum = addNum + step;
-                        if (isLimitBuy == 1) {// 是否限购 0否1是
-                            if (allAddNum > enableStoreNum) {
-                                ToastUtil.showToast("库存仅剩" + num + "件");
-                                return;
-                            }
-                            if (allAddNum > num) {
-                                ToastUtil.showToast("该商品限购" + num + "件");
-                            } else {
-                                etGoodsNum.setText(String.valueOf(allAddNum));
-                            }
+                    if (isLimitBuy == 1) {// 是否限购 0否1是
+                        if (allAddNum > num) {
+                            ToastUtil.showToast("该商品限购" + num + "件");
                         } else {
-                            if (allAddNum <= enableStoreNum) {
-                                etGoodsNum.setText(String.valueOf(allAddNum));
-                            } else {
-                                ToastUtil.showToast("库存不足");
-                            }
+                            etGoodsNum.setText(String.valueOf(allAddNum));
                         }
-
-                    } else {
-                        int allAddNum = addNum + 1;
-                        if (isLimitBuy == 1) {// 是否限购 0否1是
-                            if (allAddNum > num) {
-                                ToastUtil.showToast("该商品限购" + num + "件");
-                            } else {
-                                etGoodsNum.setText(String.valueOf(allAddNum));
-                            }
-                        } else {
-                            if (allAddNum <= enableStoreNum) {
-                                etGoodsNum.setText(String.valueOf(allAddNum));
-                            } else {
-                                ToastUtil.showToast("库存不足");
-                            }
-                        }
+                    }else {
+                        etGoodsNum.setText(String.valueOf(allAddNum));
                     }
-                    etGoodsNum.addTextChangedListener(this);
                 }
+
+                etGoodsNum.addTextChangedListener(this);
+
+//                if (enableStoreNum == 0) {
+//                    if (isBeforeSale == 0) {
+//                        ToastUtil.showToast("库存不足");
+//                    } else {
+//                        etGoodsNum.removeTextChangedListener(this);
+//                        int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
+//                        if (step > 0) {
+//                            int allAddNum = addNum + step;
+//
+//                            if (allAddNum > num) {
+//                                ToastUtil.showToast("该商品限购" + num + "件");
+//                            } else {
+//                                etGoodsNum.setText(String.valueOf(allAddNum));
+//                            }
+//                        } else {
+//                            int allAddNum = addNum + 1;
+//                            if (allAddNum > num) {
+//                                ToastUtil.showToast("该商品限购" + num + "件");
+//                            } else {
+//                                etGoodsNum.setText(String.valueOf(allAddNum));
+//                            }
+//                        }
+//                        etGoodsNum.addTextChangedListener(this);
+//                    }
+//
+//                } else {
+//                    etGoodsNum.removeTextChangedListener(this);
+//                    int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
+//                    if (step > 0) {
+//                        int allAddNum = addNum + step;
+//                        if (isLimitBuy == 1) {// 是否限购 0否1是
+//                            if (allAddNum > enableStoreNum) {
+//                                ToastUtil.showToast("库存仅剩" + num + "件");
+//                                return;
+//                            }
+//                            if (allAddNum > num) {
+//                                ToastUtil.showToast("该商品限购" + num + "件");
+//                            } else {
+//                                etGoodsNum.setText(String.valueOf(allAddNum));
+//                            }
+//                        } else {
+//                            if (allAddNum <= enableStoreNum) {
+//                                etGoodsNum.setText(String.valueOf(allAddNum));
+//                            } else {
+//                                ToastUtil.showToast("库存不足");
+//                            }
+//                        }
+//
+//                    } else {
+//                        int allAddNum = addNum + 1;
+//                        if (isLimitBuy == 1) {// 是否限购 0否1是
+//                            if (allAddNum > num) {
+//                                ToastUtil.showToast("该商品限购" + num + "件");
+//                            } else {
+//                                etGoodsNum.setText(String.valueOf(allAddNum));
+//                            }
+//                        } else {
+//                            if (allAddNum <= enableStoreNum) {
+//                                etGoodsNum.setText(String.valueOf(allAddNum));
+//                            } else {
+//                                ToastUtil.showToast("库存不足");
+//                            }
+//                        }
+//                    }
+//                    etGoodsNum.addTextChangedListener(this);
+//                }
                 resetLadderPrices();
                 break;
             case R.id.originalprice2:

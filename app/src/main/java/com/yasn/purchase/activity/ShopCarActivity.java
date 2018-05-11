@@ -116,6 +116,14 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         getWholeList();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        //获取阶梯价列表
+        getWholeList();
+    }
+
     private void initView() {
         llAnnouncement = (LinearLayout) findViewById(R.id.ll_announcement);
         tvAnnouncement = (TextView) findViewById(R.id.tv_announcement);
