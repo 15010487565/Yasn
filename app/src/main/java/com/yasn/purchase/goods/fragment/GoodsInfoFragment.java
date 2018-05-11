@@ -170,7 +170,7 @@ public class GoodsInfoFragment extends BaseFragment implements
      */
     private EditText etGoodsNum;
     private LinearLayout ivSubtractNum, ivAddNum;
-    private int smallSale = 0;//最小起订量
+    private int smallSale = 1;//最小起订量
     private int step;//步长
     private int enableStoreNum;//库存
     private TextView enableStore;
@@ -1069,15 +1069,14 @@ public class GoodsInfoFragment extends BaseFragment implements
                 int isBeforeSale = goodsDetails.getIsBeforeSale();
                 if (isBeforeSale == 1) {
                     enableStore.setText("库存:充足");
-                    etGoodsNum.setText("1");
                 } else {
                     enableStore.setText("库存:" + String.valueOf(enableStoreNum));
                 }
                 if (enableStoreNum == 0) {
-                    etGoodsNum.setText("1");
+                    etGoodsNum.setText((smallSale<=0?1:smallSale)+"");
                     ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, isBeforeSale==1?true:false);
                 } else {
-                    etGoodsNum.setText(String.valueOf(smallSale));
+                    etGoodsNum.setText(String.valueOf((smallSale<=0?1:smallSale)));
                     ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(true, isBeforeSale==1?true:false);
                 }
             }
@@ -1085,9 +1084,9 @@ public class GoodsInfoFragment extends BaseFragment implements
             ladderPrices = productsBean.getLadderPrices();
             resetLadderPrices();
         } else {
-            smallSale = 0;
+            smallSale = 1;
             llRetailPrice.setVisibility(View.GONE);
-//            etGoodsNum.setText(String.valueOf(smallSale));
+            etGoodsNum.setText(String.valueOf(smallSale));
         }
         //最小起訂量
         String minNumberString = String.format("最小起订量:%s      %s件起批", smallSale, step);
@@ -1681,7 +1680,6 @@ public class GoodsInfoFragment extends BaseFragment implements
             } else {
                 if (isBeforeSale == 1) {
                     enableStore.setText("库存:充足");
-//                    etGoodsNum.setText("1");
                 } else {
                     enableStore.setText("库存:" + String.valueOf(enableStoreNum));
                 }

@@ -14,6 +14,7 @@ public class ShopCarAdapterModel implements Serializable {
     private int store_id;
     private String storeName;//店铺名称
     private String freeShipMoney;//包邮
+    private int beforeSaleNum;//预售数量
 
     private String name;
     private String imageDefault;
@@ -33,6 +34,14 @@ public class ShopCarAdapterModel implements Serializable {
     private int hasDiscount;//是否有抢购   1 有  0没有
     private int limitnum;//限购数量
     private int goodsNum;//同一店铺下商品个数
+
+    public int getBeforeSaleNum() {
+        return beforeSaleNum;
+    }
+
+    public void setBeforeSaleNum(int beforeSaleNum) {
+        this.beforeSaleNum = beforeSaleNum;
+    }
 
     public int getGoodsNum() {
         return goodsNum;

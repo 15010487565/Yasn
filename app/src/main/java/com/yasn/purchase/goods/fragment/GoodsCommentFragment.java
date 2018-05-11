@@ -97,6 +97,7 @@ public class GoodsCommentFragment extends BaseFragment {
                     }
                 } else {
                     undata.setVisibility(View.VISIBLE);
+                    tvGoodsError.setText("亲，未获取到教你卖好数据~");
                     ToastUtil.showToast(returnMsg);
                 }
                 break;

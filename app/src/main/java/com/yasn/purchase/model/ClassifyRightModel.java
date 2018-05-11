@@ -11,6 +11,34 @@ public class ClassifyRightModel extends BaseRecyModel {
     private String rightClassifyparentId;
     private String rightClassifycatId;
 
+    private String rightClassifyBrandImg;
+    private String rightClassifyBrandName;
+    private int rightClassifyBrandId;
+
+    public String getRightClassifyBrandImg() {
+        return rightClassifyBrandImg;
+    }
+
+    public void setRightClassifyBrandImg(String rightClassifyBrandImg) {
+        this.rightClassifyBrandImg = rightClassifyBrandImg;
+    }
+
+    public String getRightClassifyBrandName() {
+        return rightClassifyBrandName;
+    }
+
+    public void setRightClassifyBrandName(String rightClassifyBrandName) {
+        this.rightClassifyBrandName = rightClassifyBrandName;
+    }
+
+    public int getRightClassifyBrandId() {
+        return rightClassifyBrandId;
+    }
+
+    public void setRightClassifyBrandId(int rightClassifyBrandId) {
+        this.rightClassifyBrandId = rightClassifyBrandId;
+    }
+
     public String getRightClassifyImg() {
         return rightClassifyImg;
     }

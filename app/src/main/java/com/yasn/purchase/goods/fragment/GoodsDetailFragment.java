@@ -86,6 +86,7 @@ public class GoodsDetailFragment extends BaseFragment implements View.OnClickLis
                     String intro = goodsIntro.getIntro();
                     if (intro == null||"".equals(intro)){
                         undata.setVisibility(View.VISIBLE);
+                        tvGoodsError.setText("亲，未获取到教你卖好数据~");
                     }else {
 //                        HtmlImageGetter htmlImageGetter = new HtmlImageGetter(getActivity(),htmlTextView);
 //                        Spanned spanned = Html.fromHtml(intro, htmlImageGetter, null);

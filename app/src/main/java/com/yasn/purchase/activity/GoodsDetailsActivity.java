@@ -329,12 +329,12 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             int remainder = (integerGoodsNum - smallSale) % step;
             Log.e("TAG_activity", "加入进货单remainder=" + remainder);
             if (remainder > 0) {
-                ToastUtil.showToast("请输入正确数量！");
+                ToastUtil.showToast("最小起订量为" + smallSale + "件，每次加减不得少于"+step+"件，请输入正确数量！");
                 return;
             }
         }
         if (integerGoodsNum == 0) {
-            ToastUtil.showToast("请输入正确数量！");
+            ToastUtil.showToast("最小起订量为" + smallSale + "件，请输入正确数量！");
             return;
         }
 

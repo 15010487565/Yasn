@@ -22,6 +22,7 @@ import com.yasn.purchase.adapter.ClassifyLeftAdapter;
 import com.yasn.purchase.adapter.ClassifyRightGridAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.listener.OnRcItemClickListener;
+import com.yasn.purchase.model.ClassifyBrandModel;
 import com.yasn.purchase.model.ClassifyLeftModel;
 import com.yasn.purchase.model.ClassifyModel;
 import com.yasn.purchase.model.ClassifyRightModel;
@@ -72,6 +73,32 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
         token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
         resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
         resetTokenTime = SharePrefHelper.getInstance(getActivity()).getSpString("resetTokenTime");
+        //推荐品牌
+        if (token != null&&!"".equals(token)){
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("access_token", token);
+            okHttpGet(101, Config.CLASSIFYBRAND, params);
+        }else if (resetToken != null&&!"".equals(resetToken)){
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("access_token", resetToken);
+            okHttpGet(101, Config.CLASSIFYBRAND, params);
+        }else {
+            Map<String, Object> params = new HashMap<String, Object>();
+            okHttpGet(101, Config.CLASSIFYBRAND, params);
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e("TAG_onHiddenChanged","CLASSIFY="+hidden);
+        if (hidden){
+            lazyLoad();
+        }
+    }
+
+    public void getClassifyList() {
+        //分类列表
         if (token != null&&!"".equals(token)){
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("access_token", token);
@@ -85,27 +112,6 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
             okHttpGet(100, Config.CLASSIFY, params);
         }
     }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Log.e("TAG_onHiddenChanged","CLASSIFY="+hidden);
-        if (hidden){
-            lazyLoad();
-        }
-    }
-
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if(getUserVisibleHint()) {
-//            isVisible = true;
-//            onVisible();
-//        } else {
-//            isVisible = false;
-////            onInvisible();
-//        }
-//    }
     @Override
     protected void initView(LayoutInflater inflater, View view) {
         Log.e("TAG_initView","CLASSIFY_initView");
@@ -129,11 +135,19 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ClassifyRightModel classifyRightModel = rightList.get(position);
-                String rightClassifycatId = classifyRightModel.getRightClassifycatId();
+                int itemType = classifyRightModel.getItemType();
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
-                intent.putExtra("SECARCHCARID",rightClassifycatId);
-                intent.putExtra("SECARCHTOPTAB",true);//是否显示搜索页顶部TabLayout
-                startActivity(intent);
+                if (brandList !=null&&brandList.size()>0&&itemType==2){
+                    int rightClassifyBrandId = classifyRightModel.getRightClassifyBrandId();
+                    intent.putExtra("SECARCHBRAND",String.valueOf(rightClassifyBrandId));//品牌id
+                    intent.putExtra("SECARCHTOPTAB",false);//是否显示搜索页顶部TabLayout
+                    startActivity(intent);
+                }else {
+                    String rightClassifycatId = classifyRightModel.getRightClassifycatId();
+                    intent.putExtra("SECARCHCARID",rightClassifycatId);//分类id
+                    intent.putExtra("SECARCHTOPTAB",true);//是否显示搜索页顶部TabLayout
+                    startActivity(intent);
+                }
             }
         });
         //实例化adapter
@@ -186,8 +200,16 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
         if (leftList != null && leftList.size() > 0) {
             leftList.clear();
         }
-        boolean isChecked = true;
         int selectPosition = 0;
+        if (brandList!= null && brandList.size() > 0) {
+            ClassifyLeftModel map = new ClassifyLeftModel();
+            map.setTitle("推荐品牌区");
+            map.setItemType(1);
+            map.setChecked(true);
+            selectPosition = 0;
+            leftList.add(map);
+        }
+        boolean isChecked = false;
         for (int i = 0, j = classifyModelCats.size(); i < j; i++) {
             ClassifyModel.CatsBean catsBean = classifyModelCats.get(i);
             String name = catsBean.getName();
@@ -202,6 +224,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
             map.setTitle(name);
             leftList.add(map);
         }
+
         ClassifyLeftModel footView = new ClassifyLeftModel();
         footView.setItemType(Config.TYPE_FOOTVIEW);
         leftList.add(footView);
@@ -212,6 +235,27 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     private void initRightData(List<ClassifyModel.CatsBean> classifyModelCats, int position) {
         if (rightList != null && rightList.size() > 0) {
             rightList.clear();
+        }
+        if (brandList!= null && brandList.size() > 0) {
+           if (position==0){
+               for (int i = 0,j = brandList.size(); i < j; i++) {
+                   ClassifyBrandModel.BrandListBean brandListBean = brandList.get(i);
+                   ClassifyRightModel rightMap = new ClassifyRightModel();
+                   int brandId = brandListBean.getBrandId();
+                   rightMap.setRightClassifyBrandId(brandId);
+                   String image = brandListBean.getImage();
+                   rightMap.setRightClassifyBrandImg(image);
+                   String name = brandListBean.getName();
+                   rightMap.setRightClassifyBrandName(name);
+                   rightMap.setItemType(2);
+                   rightList.add(rightMap);
+               }
+               //右侧顶部图片
+               convenientBanner.setVisibility(View.GONE);
+               //数理化右侧数据
+               rightAdapter.setData(rightList);
+               return;
+           }
         }
         //右侧顶部图片
         ClassifyModel.CatsBean catsBean = classifyModelCats.get(position);
@@ -277,19 +321,29 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     public void OnClickRecyButton(int itemPosition, int listPosition) {
 
     }
-
+    //分类品牌数据
     private List<ClassifyModel.CatsBean> classifyModelCats;
-
+    //分类数据
+    private List<ClassifyBrandModel.BrandListBean> brandList;
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
-            case 100:
+            case 100://分类列表
                 if (returnCode == 200) {
                     ClassifyModel classifyModel = JSON.parseObject(returnData, ClassifyModel.class);
                     classifyModelCats = classifyModel.getCats();
                     if (classifyModelCats != null && classifyModelCats.size() > 0) {
                         initLeftData(classifyModelCats);
                     }
+                } else {
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
+            case 101://推荐品牌
+                if (returnCode == 200) {
+                    ClassifyBrandModel classifyBrandModel = JSON.parseObject(returnData, ClassifyBrandModel.class);
+                   brandList = classifyBrandModel.getBrandList();
+                    getClassifyList();
                 } else {
                     ToastUtil.showToast(returnMsg);
                 }

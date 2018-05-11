@@ -65,16 +65,32 @@ public class ClassifyRightGridAdapter extends BaseAdapter{
             viewHolder = (ViewHolder) convertView.getTag();
         }
         ClassifyRightModel classifyRightModel = rightList.get(position);
-        String imageUrl = classifyRightModel.getRightClassifyImg();
-        Glide.with(context)
-                .load(imageUrl)
-                .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.mipmap.errorimage)
-                .error(R.mipmap.errorimage)
-                .into(viewHolder.rightiamge);
-        String titleString = classifyRightModel.getRightClassifyName();
-        viewHolder.rightclassify.setText(titleString==null?"雅森":titleString);
+        int itemType = classifyRightModel.getItemType();
+        if (itemType == 2){//品牌分类
+//            int rightClassifyBrandId = classifyRightModel.getRightClassifyBrandId();
+            String rightClassifyBrandImg = classifyRightModel.getRightClassifyBrandImg();
+            Glide.with(context.getApplicationContext())
+                    .load(rightClassifyBrandImg)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.mipmap.errorimage)
+                    .error(R.mipmap.errorimage)
+                    .into(viewHolder.rightiamge);
+            String rightClassifyBrandName = classifyRightModel.getRightClassifyBrandName();
+            viewHolder.rightclassify.setText(rightClassifyBrandName==null?"雅森":rightClassifyBrandName);
+        }else  if (itemType == 1){//普通分类
+            String imageUrl = classifyRightModel.getRightClassifyImg();
+            Glide.with(context.getApplicationContext())
+                    .load(imageUrl)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.mipmap.errorimage)
+                    .error(R.mipmap.errorimage)
+                    .into(viewHolder.rightiamge);
+            String titleString = classifyRightModel.getRightClassifyName();
+            viewHolder.rightclassify.setText(titleString==null?"雅森":titleString);
+
+        }
 
         return convertView;
 

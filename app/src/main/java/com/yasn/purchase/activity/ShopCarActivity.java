@@ -215,7 +215,10 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
             int enableStore = shopCarAdapterGood.getEnableStore();
             int goodsOff = shopCarAdapterGood.getGoodsOff();
             int itmeType = shopCarAdapterGood.getItmeType();
-            String beforeSale = shopCarAdapterGood.getBeforeSale();
+            String beforeSale = shopCarAdapterGood.getBeforeSale();//是否余艘
+            int beforeSaleNum = shopCarAdapterGood.getBeforeSaleNum();//同一店铺下预售数量
+            int goodsNum = shopCarAdapterGood.getGoodsNum();//同一店铺下商品个数
+
             if (j == 2) {
                 Log.e("TAG_首次", "j=" + j + ";tag=" + (tag == null));
                 if (tag == null) {
@@ -254,9 +257,6 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                             sbCancelIds.append(String.valueOf(productId));
                         }
                         shopCarAdapterGood.setIsCheck(0);
-//                    }else {
-//
-//                    }
                 } else {
                     if (tag != null) {
                         if (productId > 0 && itmeType == 2 && enableStore > 0 && goodsOff != 1) {
@@ -278,8 +278,13 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                                 sbCheckIds.append(",");
                                 sbCheckIds.append(String.valueOf(productId));
                             }
+                            shopCarAdapterGood.setIsCheck(1);
+                        }else if (itmeType == 1&&goodsNum == beforeSaleNum){
+                            Log.e("TAG_进货单全选","goodsNum="+goodsNum+";beforeSaleNum="+beforeSaleNum);
+                            shopCarAdapterGood.setIsCheck(0);
+                        }else {
+                            shopCarAdapterGood.setIsCheck(1);
                         }
-                        shopCarAdapterGood.setIsCheck(1);
                     }
 
                 }
@@ -451,6 +456,8 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                 shopCarTitleModel.setStore_id(store_id);
                 //店铺名称
                 String store_name = dataBean.getStore_name();
+                //临时记录预售商品数量
+                int beforeSaleNum = 0;
 
                 shopCarTitleModel.setItmeType(1);
                 shopCarTitleModel.setStoreName("店铺名称：" + store_name);
@@ -528,7 +535,8 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                             shopCarAdapterModel.setBeforeSale("");
                         } else {//预售
                             shopCarAdapterModel.setBeforeSale(beforeSale);
-//                            isSelected(0,String.valueOf(productId));
+                            beforeSaleNum++;
+                            shopCarTitleModel.setBeforeSaleNum(beforeSaleNum);
                         }
                         //商品是否存在 0不存   1存在
                         int isExist = goodslistBean.getIsExist();
@@ -977,7 +985,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                         }
                         Log.e("TAG_选择shopcar", "goodsNum=" + goodsNum + ";预售=" + beforeSaleNum + ";下架=" + goodsOffNum + ";库存=" + enableStoreNum);
                         Log.e("TAG_选择shopcar", "选中1=" + generalNum);
-                        Log.e("TAG_选择shopcar", "选中2=" + (goodsNum - titleNum - beforeSaleNum - goodsOffNum - enableStoreNum));
+                        Log.e("TAG_选择shopcar", "选中2=" + (goodsNum  - beforeSaleNum - goodsOffNum - enableStoreNum));
                     }
                 } else if (i + 1 == j) {
                     ShopCarAdapterModel shopCarTitleModel = shopCarAdapterList.get(titlePosition);

@@ -24,6 +24,8 @@ public class Config {
     public static final String HOME = IP+"home/index";
     //分类页面
     public final static String CLASSIFY = IP+"goods/cat/list";
+    //分类页面推荐品牌
+    public final static String CLASSIFYBRAND = IP+"goods//brand/list";
     //发现页面
     public final static String FIND = IP+"discovery/get-discovery-list/";
     //进货单WEB页面
