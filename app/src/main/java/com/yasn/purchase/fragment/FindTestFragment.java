@@ -1,7 +1,6 @@
 package com.yasn.purchase.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +97,6 @@ public class FindTestFragment extends SimpleTopbarFragment{
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
-        Log.e("TAG_fragment", "find=" + msg);
 
     }
 }

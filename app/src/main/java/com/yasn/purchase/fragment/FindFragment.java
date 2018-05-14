@@ -184,7 +184,6 @@ public class FindFragment extends SimpleTopbarFragment implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
-        Log.e("TAG_fragment", "find=" + msg);
 
     }
 }

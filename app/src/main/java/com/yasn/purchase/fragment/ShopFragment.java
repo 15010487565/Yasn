@@ -961,7 +961,6 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
-        Log.e("TAG_fragment", "shop=" + msg);
         if ("loginSucceed".equals(msg)&&getUserVisibleHint()) {
             OkHttpDemand();
         }

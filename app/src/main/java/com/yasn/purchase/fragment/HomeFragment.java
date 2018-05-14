@@ -631,6 +631,8 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     }
                 }
 
+            }else {
+                startWebViewActivity(Config.URL + url);
             }
         }
     }
@@ -1164,7 +1166,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
-        Log.e("TAG_fragment", "home=" + msg);
         if ("loginSucceed".equals(msg) && getUserVisibleHint()) {
             isFrist = true;
             OkHttpDemand();
