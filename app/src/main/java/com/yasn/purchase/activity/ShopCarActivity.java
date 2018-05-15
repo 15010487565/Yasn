@@ -593,10 +593,8 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         }
         adapter.setData(shopCarAdapterList);
         llShopcarNodata.setVisibility(View.GONE);
-        //判断是否有下架商品
-//        upSelectGoodsOff();
         //顶部titile是否选中
-        upDataSelected();
+//        upDataSelected();
         //总价
         upDataMoney();
     }
@@ -1306,16 +1304,21 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                 ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(position);
                 int smallSale = shopCarAdapterModel.getSmallSale();
                 int step = shopCarAdapterModel.getStep();
-                int rema = (Integer.valueOf(etNum) - smallSale) % step;
-                if (rema == 0) {
-                    int etSubtractNum = Integer.valueOf(etNum) - step;
-                    if (etSubtractNum > 0) {
-                        etDialogGoodsNum.setText(String.valueOf(etSubtractNum));
-                    }
-                } else {
-                    int etSubtractNum = Integer.valueOf(etNum) - rema;
-                    if (etSubtractNum > 0) {
-                        etDialogGoodsNum.setText(String.valueOf(etSubtractNum));
+                if (Integer.valueOf(TextUtils.isEmpty(etNum)?"0":etNum)-step<smallSale){
+                    etDialogGoodsNum.setText(String.valueOf(smallSale));
+                    ToastUtil.showToast("该商品最小起订量为" + smallSale + "件");
+                }else {
+                    int rema = (Integer.valueOf(TextUtils.isEmpty(etNum)?"0":etNum) - smallSale) % step;
+                    if (rema == 0) {
+                        int etSubtractNum = Integer.valueOf(TextUtils.isEmpty(etNum)?"0":etNum) - step;
+                        if (etSubtractNum > 0) {
+                            etDialogGoodsNum.setText(String.valueOf(etSubtractNum));
+                        }
+                    } else {
+                        int etSubtractNum = Integer.valueOf(TextUtils.isEmpty(etNum)?"0":etNum) - rema;
+                        if (etSubtractNum > 0) {
+                            etDialogGoodsNum.setText(String.valueOf(etSubtractNum));
+                        }
                     }
                 }
             }
@@ -1336,16 +1339,16 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                 } else {
                     enableStore = 2000000;
                 }
-                int rema = (Integer.valueOf(etNum) - smallSale) % step;
+                int rema = (Integer.valueOf(TextUtils.isEmpty(etNum)?"0":etNum) - smallSale) % step;
                 if (rema == 0) {
-                    int etAddNum = Integer.valueOf(etNum) + step;
+                    int etAddNum = Integer.valueOf(TextUtils.isEmpty(etNum)?"0":etNum) + step;
                     if (etAddNum > enableStore) {
                         ToastUtil.showToast("剩余库存已到上限！");
                     } else {
                         etDialogGoodsNum.setText(String.valueOf(etAddNum));
                     }
                 } else {
-                    int etAddNum = Integer.valueOf(etNum) - rema + step;
+                    int etAddNum = Integer.valueOf(TextUtils.isEmpty(etNum)?"0":etNum) - rema + step;
                     if (etAddNum > enableStore) {
                         ToastUtil.showToast("剩余库存已到上限！");
                     } else {
@@ -1360,8 +1363,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         agree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                dialogshow();
-                String etNum = etDialogGoodsNum.getText().toString();
+                String etNum =TextUtils.isEmpty(etDialogGoodsNum.getText())?"0": etDialogGoodsNum.getText().toString();
                 dialogUpdataNum(position, etNum);
             }
         });
@@ -1403,26 +1405,32 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         } else {
             enableStore = 2000000;
         }
+        //最小起订量
+        int smallSale = shopCarAdapterModel.getSmallSale();
         //输入商品数量
         Integer integer = Integer.valueOf(editNum);
         Log.e("TAG_软键盘num", "integer=" + integer + ";step=" + step + ";position=" + position + ";enableStore" + enableStore);
         if (enableStore >= integer) {
-            if (integer > 0 && integer % step == 0) {
-                Log.e("TAG_shopcar", "shopCarAdapterModel=" + shopCarAdapterModel.toString());
-                int limitnum = shopCarAdapterModel.getLimitnum();
-                if (limitnum <= 0) {
-                    shopCarAdapterModel.setNum(integer);
-                    updateNum(id, goodsId, productId, integer, step, position);
-                } else {
-                    if (limitnum >= integer) {
+            if (integer >=smallSale){
+                if (integer > 0 && (integer-smallSale) % step == 0) {
+                    Log.e("TAG_shopcar", "shopCarAdapterModel=" + shopCarAdapterModel.toString());
+                    int limitnum = shopCarAdapterModel.getLimitnum();
+                    if (limitnum <= 0) {
                         shopCarAdapterModel.setNum(integer);
                         updateNum(id, goodsId, productId, integer, step, position);
                     } else {
-                        ToastUtil.showToast("该商品限购" + limitnum + "件");
+                        if (limitnum >= integer) {
+                            shopCarAdapterModel.setNum(integer);
+                            updateNum(id, goodsId, productId, integer, step, position);
+                        } else {
+                            ToastUtil.showToast("该商品限购" + limitnum + "件");
+                        }
                     }
+                } else {
+                    ToastUtil.showToast("请输入正确数量");
                 }
-            } else {
-                ToastUtil.showToast("请输入正确数量");
+            }else {
+                ToastUtil.showToast("该商品最小起订量为" + smallSale + "件");
             }
         } else {
             ToastUtil.showToast("库存剩余" + enableStore + "件");

@@ -598,72 +598,6 @@ public class GoodsInfoFragment extends BaseFragment implements
 
                 etGoodsNum.addTextChangedListener(this);
 
-//                if (enableStoreNum == 0) {
-//                    if (isBeforeSale == 0) {
-//                        ToastUtil.showToast("库存不足");
-//                    } else {
-//                        etGoodsNum.removeTextChangedListener(this);
-//                        int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
-//                        if (step > 0) {
-//                            int allAddNum = addNum + step;
-//
-//                            if (allAddNum > num) {
-//                                ToastUtil.showToast("该商品限购" + num + "件");
-//                            } else {
-//                                etGoodsNum.setText(String.valueOf(allAddNum));
-//                            }
-//                        } else {
-//                            int allAddNum = addNum + 1;
-//                            if (allAddNum > num) {
-//                                ToastUtil.showToast("该商品限购" + num + "件");
-//                            } else {
-//                                etGoodsNum.setText(String.valueOf(allAddNum));
-//                            }
-//                        }
-//                        etGoodsNum.addTextChangedListener(this);
-//                    }
-//
-//                } else {
-//                    etGoodsNum.removeTextChangedListener(this);
-//                    int addNum = Integer.valueOf(etGoodsNum.getText().toString().trim());
-//                    if (step > 0) {
-//                        int allAddNum = addNum + step;
-//                        if (isLimitBuy == 1) {// 是否限购 0否1是
-//                            if (allAddNum > enableStoreNum) {
-//                                ToastUtil.showToast("库存仅剩" + num + "件");
-//                                return;
-//                            }
-//                            if (allAddNum > num) {
-//                                ToastUtil.showToast("该商品限购" + num + "件");
-//                            } else {
-//                                etGoodsNum.setText(String.valueOf(allAddNum));
-//                            }
-//                        } else {
-//                            if (allAddNum <= enableStoreNum) {
-//                                etGoodsNum.setText(String.valueOf(allAddNum));
-//                            } else {
-//                                ToastUtil.showToast("库存不足");
-//                            }
-//                        }
-//
-//                    } else {
-//                        int allAddNum = addNum + 1;
-//                        if (isLimitBuy == 1) {// 是否限购 0否1是
-//                            if (allAddNum > num) {
-//                                ToastUtil.showToast("该商品限购" + num + "件");
-//                            } else {
-//                                etGoodsNum.setText(String.valueOf(allAddNum));
-//                            }
-//                        } else {
-//                            if (allAddNum <= enableStoreNum) {
-//                                etGoodsNum.setText(String.valueOf(allAddNum));
-//                            } else {
-//                                ToastUtil.showToast("库存不足");
-//                            }
-//                        }
-//                    }
-//                    etGoodsNum.addTextChangedListener(this);
-//                }
                 resetLadderPrices();
                 break;
             case R.id.originalprice2:
@@ -1116,9 +1050,13 @@ public class GoodsInfoFragment extends BaseFragment implements
                 if (isBeforeSale == 1) {
                     enableStore.setText("库存:充足");
                 } else {
-                    enableStore.setText("库存:" + String.valueOf(enableStoreNum));
+                    if (enableStoreNum <= 0) {
+                        enableStore.setText("库存:0");
+                    }else {
+                        enableStore.setText("库存:" + String.valueOf(enableStoreNum));
+                    }
                 }
-                if (enableStoreNum == 0) {
+                if (enableStoreNum <= 0) {
                     etGoodsNum.setText((smallSale<=0?1:smallSale)+"");
                     ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, isBeforeSale==1?true:false);
                 } else {
@@ -1727,7 +1665,11 @@ public class GoodsInfoFragment extends BaseFragment implements
                 if (isBeforeSale == 1) {
                     enableStore.setText("库存:充足");
                 } else {
-                    enableStore.setText("库存:" + String.valueOf(enableStoreNum));
+                    if (enableStoreNum <= 0) {
+                        enableStore.setText("库存:0");
+                    }else {
+                        enableStore.setText("库存:" + String.valueOf(enableStoreNum));
+                    }
                 }
                 if (enableStoreNum == 0) {
                     ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false, isBeforeSale==1?true:false);
@@ -1870,12 +1812,11 @@ public class GoodsInfoFragment extends BaseFragment implements
         getActivity().startActivity(intent);
     }
 
-    //最小起订量，供activity调用
+    //步长，供activity调用
     public int getStep() {
         return step;
     }
-
-    //步长，供activity调用
+    //最小起订量，供activity调用
     public int getSmallSale() {
         return smallSale;
     }
