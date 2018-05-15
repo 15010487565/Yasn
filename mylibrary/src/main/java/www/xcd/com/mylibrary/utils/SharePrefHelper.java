@@ -66,7 +66,7 @@ public class SharePrefHelper {
      */
     public static int getSpInt(String key) {
         // 使用getString方法获得value，注意第2个参数是value的默认值
-        int value =preferences.getInt(key, 1);
+        int value =preferences.getInt(key, -1);
         return value;
     }
     public boolean putSpBoolean(String key, boolean value) {

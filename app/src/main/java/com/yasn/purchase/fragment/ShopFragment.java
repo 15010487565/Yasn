@@ -145,17 +145,15 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         //填充各控件的数据
         OkHttpDemand();
     }
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if(getUserVisibleHint()) {
-//            isVisible = true;
-////            onVisible();
-//        } else {
-//            isVisible = false;
-////            onInvisible();
-//        }
-//    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e("TAG_onHiddenChanged","shop="+hidden);
+        if (!hidden){ //隐藏时所作的事情
+            lazyLoad();
+        }
+    }
 
     @Override
     protected void initView(LayoutInflater inflater, View view) {
@@ -342,7 +340,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     if (isInvite == 1){//新用户
                         mInviteNotifyDialog.dismiss();
                     }else {
-                        LoginOut.loginOut(getActivity());
+                        LoginOut.startLoginOut(getActivity());
                         mInviteNotifyDialog.dismiss();
                     }
                 }
@@ -351,7 +349,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
             case 104:
                 if (returnCode == 200){
                     if (isInvite == 1){//新用户
-                        LoginOut.loginOut(getActivity());
+                        LoginOut.startLoginOut(getActivity());
                         mInviteNotifyDialog.dismiss();
                     }else {
                         mInviteNotifyDialog.dismiss();
@@ -444,7 +442,22 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                         shopGrade.setText(levelName == null ? "未知" : levelName);
                         digital_member = member.getDigital_member();
                         lv_id = member.getLv_id();
-                        if (lv_id>5){
+                        //临时存储lv_id，判断数据是否普改变
+                        int lv_idOld = SharePrefHelper.getInstance(getActivity()).getSpInt("lv_id");
+                        Log.e("TAG_OLD","lv_idOld="+lv_idOld);
+                        if (lv_idOld != lv_id&&lv_idOld>0){
+                            SharePrefHelper.getInstance(getActivity()).putSpInt("lv_id",lv_id);
+                            //刷新首页数据
+                            EventBus.getDefault().post(new EventBusMsg("refresh"));
+                        }else if (lv_idOld==-1){
+                            SharePrefHelper.getInstance(getActivity()).putSpInt("lv_id",lv_id);
+                        }
+                        //修改小红点
+                        EventBusMsg carNum = new EventBusMsg("carNum");
+                        carNum.setCarNum(String.valueOf(member.getCartCount()));
+                        EventBus.getDefault().post(carNum);
+
+                        if (this.lv_id >5){
                             //实例化功能列表
                             initFuncData(imageUrlAuth,nameTitleAuth);
                         }else {
@@ -468,26 +481,26 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                             shopImage.setBackgroundResource(R.mipmap.login_n_yasn);
                             undredgeYsenHelp.setVisibility(View.GONE);
                             okdredgeYsenHelp.setVisibility(View.GONE);
-                            if (lv_id == 2) {
+                            if (this.lv_id == 2) {
                                 whiteTopText.setText("认证审核中");
                                 meanage.setVisibility(View.GONE);
                                 gradeLinear.setVisibility(View.VISIBLE);
                                 department.setVisibility(View.GONE);
-                            } else if (lv_id == 3) {
+                            } else if (this.lv_id == 3) {
                                 whiteTopText.setText("审核未通过  ");
                                 undredgeYsenHelp.setText("查看原因");
                                 meanage.setVisibility(View.GONE);
                                 undredgeYsenHelp.setVisibility(View.VISIBLE);
                                 gradeLinear.setVisibility(View.VISIBLE);
                                 department.setVisibility(View.GONE);
-                            } else if (lv_id == 5) {
+                            } else if (this.lv_id == 5) {
                                 whiteTopText.setText("");
                                 undredgeYsenHelp.setText("去认证");
                                 meanage.setVisibility(View.GONE);
                                 undredgeYsenHelp.setVisibility(View.VISIBLE);
                                 gradeLinear.setVisibility(View.GONE);
                                 department.setVisibility(View.GONE);
-                            }else if (lv_id == 1) {
+                            }else if (this.lv_id == 1) {
                                 whiteTopText.setText("");
                                 undredgeYsenHelp.setText("去认证");
                                 meanage.setVisibility(View.GONE);
@@ -555,7 +568,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                             String admin = store.getAdmin();
 
                             companyName.setText((shopName == null || "".equals(shopName) || "无".equals(shopName)) ? "" : shopName);
-                            showInviteDialog(admin,dutyAuth,isInvite);
+                            if (mInviteNotifyDialog ==null){
+                                showInviteDialog(admin,dutyAuth,isInvite);
+                            }
                         }
                     }
                 }
@@ -961,6 +976,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
+        Log.e("TAG_onEventMain","SHOP="+msg);
         if ("loginSucceed".equals(msg)&&getUserVisibleHint()) {
             OkHttpDemand();
         }

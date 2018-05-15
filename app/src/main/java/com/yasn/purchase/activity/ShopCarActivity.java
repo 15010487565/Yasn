@@ -29,6 +29,7 @@ import com.yasn.purchase.adapter.ShopCarAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.help.ShopCarUtils;
 import com.yasn.purchase.listener.OnShopCarClickListener;
+import com.yasn.purchase.model.EventBusMsg;
 import com.yasn.purchase.model.ShopCarAdapterModel;
 import com.yasn.purchase.model.ShopCarModel;
 import com.yasn.purchase.model.ShopCarWholeModel;
@@ -36,6 +37,7 @@ import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.MultiSwipeRefreshLayout;
 import com.yasn.purchase.view.RcDecoration;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -114,6 +116,25 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         initView();
         //获取阶梯价列表
         getWholeList();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        //获取阶梯价列表
+        getWholeList();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e("TAG_进货单","onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("TAG_进货单","onResume");
     }
 
     @Override
@@ -323,24 +344,25 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        Log.e("TAG_购物车","requestCode="+requestCode);
         switch (requestCode) {
-            case 100://请求列表
-                mSwipeRefreshLayout.setRefreshing(false);
-                if (returnCode == 200) {
-                    int storeprice1 = returnData.indexOf("storeprice");
-                    if (storeprice1 == -1) {//空购物车
-                        initShopCarNoData();
-                    } else {
-                        initShopCarData(returnData);
-                    }
-
-                } else if (returnCode == 401) {
-                    cleanToken();
-                    OkHttpDemand();
-                } else {
-                    ToastUtil.showToast(returnMsg);
-                }
-                break;
+//            case 100://请求列表
+//                mSwipeRefreshLayout.setRefreshing(false);
+//                if (returnCode == 200) {
+//                    int storeprice1 = returnData.indexOf("storeprice");
+//                    if (storeprice1 == -1) {//空购物车
+//                        initShopCarNoData();
+//                    } else {
+//                        initShopCarData(returnData);
+//                    }
+//
+//                } else if (returnCode == 401) {
+//                    cleanToken();
+//                    OkHttpDemand();
+//                } else {
+//                    ToastUtil.showToast(returnMsg);
+//                }
+//                break;
             case 101://选中
                 if (returnCode == 200) {
                     JSONObject object = null;
@@ -627,6 +649,10 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                         int storeprice1 = returnData.indexOf("storeprice");
                         if (storeprice1 == -1) {//空购物车
                             initShopCarNoData();
+                            Log.e("TAG_购物车","空");
+                            EventBusMsg carNum = new EventBusMsg("carNum");
+                            carNum.setCarNum(String.valueOf(0));
+                            EventBus.getDefault().post(carNum);
                         } else {
                             initShopCarData(returnData);
                         }
@@ -1150,8 +1176,9 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                     }
                 }
             }
-
-            shopCarAdapterModel.setPrice(Double.valueOf(price));
+            if (!TextUtils.isEmpty(price)) {
+                shopCarAdapterModel.setPrice(Double.valueOf(price));
+            }
             adapter.notifyItemChanged(updataPosition);
         }
         Map<String, Object> params = new HashMap<String, Object>();

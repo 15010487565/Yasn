@@ -34,5 +34,6 @@ public class LoginOut {
         SharePrefHelper.getInstance(activity).putSpString("priceDisplayMsg", "");
         SharePrefHelper.getInstance(activity).putSpString("memberid","");
         SharePrefHelper.getInstance(activity).putSpString("regionName","");
+        SharePrefHelper.getInstance(activity).putSpInt("lv_id",-1);
     }
 }

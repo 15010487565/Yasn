@@ -326,6 +326,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         retailPrice = (TextView) rootView.findViewById(R.id.retailPrice);
         retailPriceView = (TextView) rootView.findViewById(R.id.retailPriceView);
         llRetailPrice = (LinearLayout) rootView.findViewById(R.id.ll_retailPrice);
+        llRetailPrice.setVisibility(View.GONE);
 //        SpannableString retailPriceString = AlignedTextUtils.formatText("建议售价:");
         SpannableStringBuilder retailPriceString = AlignedTextUtils.justifyString("建议售价", 4);
         retailPriceString.append("：");
@@ -841,6 +842,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                         soldout_money.setText(loginState);
                         originalprice.setText(loginState);
                         originalprice2.setText(loginState);
+                        //建议售价
                         llRetailPrice.setVisibility(View.GONE);
                     }
                 } else if (returnCode == 401) {
@@ -1085,8 +1087,12 @@ public class GoodsInfoFragment extends BaseFragment implements
             String minReferencePrice = productsBean.getMinReferencePrice();
             String maxReferencePrice = productsBean.getMaxReferencePrice();
             if (minReferencePrice != null && maxReferencePrice != null && Double.valueOf(maxReferencePrice) > 0) {
-                llRetailPrice.setVisibility(View.VISIBLE);
-                retailPriceView.setText("￥" + String.format("%.2f", Double.valueOf(minReferencePrice)) + "-￥" + String.format("%.2f", Double.valueOf(maxReferencePrice)));
+                if (products.size() ==1){
+                    llRetailPrice.setVisibility(View.VISIBLE);
+                    retailPriceView.setText("￥" + String.format("%.2f", Double.valueOf(minReferencePrice)) + "-￥" + String.format("%.2f", Double.valueOf(maxReferencePrice)));
+                }else {
+                    llRetailPrice.setVisibility(View.GONE);
+                }
             } else {
                 llRetailPrice.setVisibility(View.GONE);
             }

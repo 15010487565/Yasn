@@ -41,6 +41,8 @@ import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.BadgeView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -100,6 +102,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goodsdetails);
+        EventBus.getDefault().register(this);
         token = SharePrefHelper.getInstance(this).getSpString("token");
         resetToken = SharePrefHelper.getInstance(this).getSpString("resetToken");
         goodsId = SharePrefHelper.getInstance(this).getSpString("GOODSID");
@@ -531,6 +534,28 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         } else {
             main_tabitem_redpoint.setVisibility(View.VISIBLE);
             main_tabitem_redpoint.setText(String.valueOf(cartNum));
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusMsg event) {
+        String msg = event.getMsg();
+        Log.e("TAG_详情页", "msg=" + msg);
+       if ("carNum".equals(msg)) {
+           Integer cartNum = Integer.valueOf(event.getCarNum());
+           Log.e("TAG_详情页", "cartNum=" + cartNum);
+           if (cartNum == 0) {
+               main_tabitem_redpoint.setVisibility(View.GONE);
+           } else {
+               main_tabitem_redpoint.setVisibility(View.VISIBLE);
+               main_tabitem_redpoint.setText(String.valueOf(cartNum));
+           }
         }
     }
 

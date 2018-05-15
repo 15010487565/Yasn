@@ -587,11 +587,11 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
+        Log.e("TAG_Main","msg="+msg);
         if ("loginout".equals(msg)) {
             setCartNum(0);
-//            viewPager.setCurrentItem(0);
         } else if ("carNum".equals(msg)) {
-
+            Log.e("TAG_Main","CarNum="+event.getCarNum());
             setCartNum(Integer.valueOf(event.getCarNum()));
 
         } else if ("webViewBack".equals(msg)) {//返回页

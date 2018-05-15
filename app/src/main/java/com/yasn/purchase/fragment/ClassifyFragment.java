@@ -92,7 +92,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         Log.e("TAG_onHiddenChanged","CLASSIFY="+hidden);
-        if (hidden){
+        if (!hidden){ //隐藏时所作的事情
             lazyLoad();
         }
     }
@@ -258,7 +258,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
            }
         }
         //右侧顶部图片
-        ClassifyModel.CatsBean catsBean = classifyModelCats.get(position);
+        ClassifyModel.CatsBean catsBean = classifyModelCats.get(position-1);
         initViewPagerImage(catsBean.getAdv_image());
         List<ClassifyModel.CatsBean.ChildrenBean> children = catsBean.getChildren();
         for (int k = 0, l = children.size(); k < l; k++) {

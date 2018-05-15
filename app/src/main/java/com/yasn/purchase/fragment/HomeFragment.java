@@ -1173,6 +1173,9 @@ public class HomeFragment extends SimpleTopbarFragment implements
             isFrist = true;
             home_collect.setVisibility(View.GONE);
             OkHttpDemand();
+        }else if ("refresh".equals(msg)){
+            isFrist = true;
+            OkHttpDemand();
         }
     }
 }
