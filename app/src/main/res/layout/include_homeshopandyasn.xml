@@ -3,21 +3,21 @@
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:layout_marginBottom="@dimen/margin_10"
+    android:layout_marginBottom="@dimen/margin_7"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/margin_10"
-    android:paddingRight="@dimen/margin_10">
+    android:paddingLeft="@dimen/margin_7"
+    android:paddingRight="@dimen/margin_7">
 
     <LinearLayout
         android:id="@+id/shoplist"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_5"
         android:layout_weight="1"
         android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="@dimen/margin_15">
+        android:paddingRight="@dimen/margin_10">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -44,7 +44,7 @@
                 android:paddingTop="@dimen/margin_3"
                 android:text="点击查看"
                 android:textColor="@color/orange"
-                android:textSize="@dimen/textsize_16" />
+                android:textSize="@dimen/textsize_14" />
         </LinearLayout>
 
         <ImageView
@@ -61,7 +61,7 @@
         android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingRight="@dimen/margin_15">
+        android:paddingRight="@dimen/margin_10">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -88,7 +88,7 @@
                 android:paddingTop="@dimen/margin_3"
                 android:text="点击查看"
                 android:textColor="@color/orange"
-                android:textSize="@dimen/textsize_16" />
+                android:textSize="@dimen/textsize_14" />
         </LinearLayout>
 
         <ImageView

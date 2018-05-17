@@ -16,7 +16,7 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:textColor="@color/black_66"
-        android:textSize="@dimen/textsize_16"
+        android:textSize="@dimen/textsize_14"
         android:gravity="center"
         android:text="推荐分类"/>
 </com.yasn.purchasetest.view.ChoiceItemLayout>

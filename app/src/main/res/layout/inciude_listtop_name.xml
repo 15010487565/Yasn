@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="2"
+        android:lineSpacingExtra="3dp"
         android:text="Letv/乐视LETV体感-超级枪王 乐视TV超级电视产品玩具体感游戏枪 电玩道具黑色"
         android:textColor="@color/black_66"
         android:textSize="@dimen/textsize_14">
@@ -25,7 +26,7 @@
             android:background="@drawable/shape_orange2"
             android:text="自营"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_14" />
+            android:textSize="@dimen/textsize_shoplabel" />
 
         <TextView
             android:id="@+id/purchase"
@@ -36,7 +37,7 @@
             android:background="@drawable/shape_red2"
             android:text="限购"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_14" />
+            android:textSize="@dimen/textsize_shoplabel" />
 
         <TextView
             android:id="@+id/presell"
@@ -46,7 +47,7 @@
             android:background="@drawable/shape_blue2"
             android:text="预售"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_14" />
+            android:textSize="@dimen/textsize_shoplabel" />
     </LinearLayout>
 
 </merge>

@@ -810,7 +810,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
             String image = order.getImage();
             Glide.with(YasnApplication.getInstance())
                     .load(image)
-                    .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.mipmap.ic_launcher)
                     .error(R.mipmap.ic_launcher)

@@ -19,8 +19,6 @@ public class GlideImageLoader extends ImageLoader {
         Log.e("TAG_轮播图","url="+url);
         Glide.with(context.getApplicationContext())
                 .load(url)
-//                .fitCenter()
-                .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.mipmap.errorimage)
                 .error(R.mipmap.errorimage)

@@ -14,7 +14,7 @@
         android:paddingLeft="@dimen/margin_10"
         android:text="我的订单"
         android:textColor="@color/black_33"
-        android:textSize="@dimen/textsize_18" />
+        android:textSize="@dimen/textsize_16" />
 
     <View
         android:layout_width="match_parent"

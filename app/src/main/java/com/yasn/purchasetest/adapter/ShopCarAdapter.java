@@ -43,6 +43,8 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final int TYPE_ITEMTITLE = 1;
     private static final int TYPE_ITEMLIST = 2;
     private String loginState;
+    private String place = " ";
+    private int placeNum = 3;
 
     public ShopCarAdapter(Context context) {
         super();
@@ -217,8 +219,8 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     listViewHolder.tvPresellHint.setVisibility(View.VISIBLE);
                     listViewHolder.tvPresellHint.setText("预售商品请单独下单");
                     listViewHolder.tvOrderListHintNum.setVisibility(View.GONE);
-                    goneNum += 3;
-                    sb.append("预售 ");
+                    goneNum += placeNum;
+                    sb.append("预售"+place);
                     listViewHolder.tvPresell.setVisibility(View.VISIBLE);
                 }
                 int hasDiscount = shopCarAdapterModel.getHasDiscount();
@@ -226,8 +228,8 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     listViewHolder.tvPurchase.setVisibility(View.GONE);
                     listViewHolder.tvPurchase.setText("");
                 }else {
-                    goneNum += 3;
-                    sb.append("抢购 ");
+                    goneNum += placeNum;
+                    sb.append("抢购"+place);
                     listViewHolder.tvPurchase.setVisibility(View.VISIBLE);
                     listViewHolder.tvPurchase.setText("抢购");
                 }
@@ -248,7 +250,6 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 String imageDefault = shopCarAdapterModel.getImageDefault();
                 Glide.with(context.getApplicationContext())
                         .load(imageDefault)
-                        .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(R.mipmap.errorimage)
                         .error(R.mipmap.errorimage)

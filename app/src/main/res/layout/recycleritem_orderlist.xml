@@ -16,7 +16,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:paddingLeft="@dimen/margin_10"
         android:paddingRight="@dimen/margin_10">
 
         <ImageView
@@ -29,13 +28,13 @@
         android:id="@+id/rl_imageOnClick"
         android:layout_width="@dimen/image_sizeshopcar"
         android:layout_height="@dimen/image_sizeshopcar"
-        android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginRight="@dimen/margin_10">
 
         <ImageView
             android:id="@+id/iv_orderListImage"
             android:layout_width="@dimen/image_sizeshopcar"
             android:layout_height="@dimen/image_sizeshopcar"
+            android:scaleType="fitXY"
             />
 
         <TextView
@@ -82,8 +81,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/margin_10"
-                android:text="XXXXXXXX"
+                android:text="XXXXXXXXXXXXX"
                 android:textColor="@color/black_66"
+                android:lineSpacingExtra="3dp"
                 android:maxLines="2"
                 android:textSize="@dimen/textsize_14" />
 
@@ -95,7 +95,7 @@
                 android:background="@drawable/shape_red2"
                 android:text="限购"
                 android:textColor="@color/white"
-                android:textSize="@dimen/textsize_14" />
+                android:textSize="@dimen/textsize_shoplabel" />
 
             <TextView
                 android:id="@+id/tv_presell"
@@ -105,7 +105,7 @@
                 android:background="@drawable/shape_blue2"
                 android:text="预售"
                 android:textColor="@color/white"
-                android:textSize="@dimen/textsize_14" />
+                android:textSize="@dimen/textsize_shoplabel" />
         </RelativeLayout>
 
         <com.yasn.purchasetest.view.TagsLayout

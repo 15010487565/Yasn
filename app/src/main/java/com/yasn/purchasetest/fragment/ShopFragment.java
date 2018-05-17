@@ -655,6 +655,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         TextView textView = (TextView) view.findViewById(R.id.shop_tabitem_text);
         // 设置文字
         textView.setText(ORDER_TAB_TEXT[index]);
+        textView.setTextSize(14);
         // ImageView
         ImageView imageView = (ImageView) view.findViewById(R.id.shop_tabitem_icon);
         // 非高亮图标
@@ -667,6 +668,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         TextView textView = (TextView) view.findViewById(R.id.shop_tabitem_text);
         // 设置文字
         textView.setText(textArray[index]);
+        textView.setTextSize(14);
         // ImageView
         ImageView imageView = (ImageView) view.findViewById(R.id.shop_tabitem_icon);
         // 非高亮图标

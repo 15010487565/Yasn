@@ -41,6 +41,8 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<HomeRecyModel> contentList;
     String priceType = "0";
     String regionName;
+    private String place= " ";
+    private int placeNum= 3;
     private LayoutInflater inflater;
     public HomeRecyclerAdapter( Context context) {
         this.context = context;
@@ -100,8 +102,8 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 int goneNum = 0;
                 boolean autotrophy = homeRecy.isAutotrophy();
                 if (autotrophy){
-                    sb.append("自营 ");
-                    goneNum += 3;
+                    sb.append("自营"+place);
+                    goneNum += placeNum;
                     holderRecy.autotrophy.setVisibility(View.VISIBLE);
                     holderRecy.autotrophy.setText("自营");
                 }else {
@@ -109,8 +111,8 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     if (isRegionName){
                         holderRecy.autotrophy.setVisibility(View.VISIBLE);
                         holderRecy.autotrophy.setText(regionName+"直供");
-                        sb.append(regionName+"直供 ");
-                        goneNum =goneNum+ regionName.length()+3;
+                        sb.append(regionName+"直供"+place);
+                        goneNum =goneNum+ regionName.length()+placeNum;
                     }else {
                         holderRecy.autotrophy.setVisibility(View.GONE);
                         holderRecy.autotrophy.setText("");
@@ -120,8 +122,8 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 boolean purchase = homeRecy.isPurchase();
                 if (purchase){
                     holderRecy.purchase.setVisibility(View.VISIBLE);
-                    sb.append("限购 ");
-                    goneNum += 3;
+                    sb.append("限购"+place);
+                    goneNum += placeNum;
                 }else {
                     holderRecy.purchase.setVisibility(View.GONE);
                 }
@@ -129,8 +131,8 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 boolean presell = homeRecy.isPresell();
                 if (presell){
                     holderRecy.presell.setVisibility(View.VISIBLE);
-                    goneNum += 3;
-                    sb.append("预售 ");
+                    goneNum += placeNum;
+                    sb.append("预售"+place);
                 }else {
                     holderRecy.presell.setVisibility(View.GONE);
                 }
@@ -183,7 +185,6 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                }
                 Glide.with(context.getApplicationContext())
                         .load(homeRecy.getImage()==null?"":homeRecy.getImage())
-                        .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(R.mipmap.errorimage)
                         .error(R.mipmap.errorimage)

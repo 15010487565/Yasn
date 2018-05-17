@@ -19,7 +19,7 @@
             android:gravity="center_vertical"
             android:text="统计"
             android:textColor="@color/black_33"
-            android:textSize="@dimen/textsize_18" />
+            android:textSize="@dimen/textsize_16" />
 
         <View
             android:layout_width="0dp"

@@ -71,7 +71,6 @@ public class ClassifyRightGridAdapter extends BaseAdapter{
             String rightClassifyBrandImg = classifyRightModel.getRightClassifyBrandImg();
             Glide.with(context.getApplicationContext())
                     .load(rightClassifyBrandImg)
-                    .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.mipmap.errorimage)
                     .error(R.mipmap.errorimage)
@@ -82,7 +81,6 @@ public class ClassifyRightGridAdapter extends BaseAdapter{
             String imageUrl = classifyRightModel.getRightClassifyImg();
             Glide.with(context.getApplicationContext())
                     .load(imageUrl)
-                    .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.mipmap.errorimage)
                     .error(R.mipmap.errorimage)

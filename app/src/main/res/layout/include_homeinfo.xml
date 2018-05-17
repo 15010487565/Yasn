@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_90"
-    android:layout_marginBottom="@dimen/margin_10"
+    android:layout_marginBottom="@dimen/margin_7"
     android:background="@color/top_bar_background"
     android:gravity="center_vertical"
     android:orientation="horizontal"
@@ -39,7 +39,7 @@
                 android:paddingTop="@dimen/margin_3"
                 android:text="登录"
                 android:textColor="@color/orange"
-                android:textSize="@dimen/textsize_16" />
+                android:textSize="@dimen/textsize_14" />
 
             <TextView
                 android:id="@+id/register"
@@ -53,7 +53,7 @@
                 android:paddingTop="@dimen/margin_3"
                 android:text="注册"
                 android:textColor="@color/orange"
-                android:textSize="@dimen/textsize_16" />
+                android:textSize="@dimen/textsize_14" />
         </LinearLayout>
 
         <RelativeLayout
@@ -69,7 +69,7 @@
                 android:lines="1"
                 android:text="1234567890"
                 android:textColor="@color/white"
-                android:textSize="@dimen/textsize_18" />
+                android:textSize="@dimen/textsize_16" />
 
             <LinearLayout
                 android:id="@+id/account_grade"
@@ -140,7 +140,7 @@
                 android:singleLine="true"
                 android:text="会员有效期XXXX-XX-XX"
                 android:textColor="@color/white"
-                android:textSize="@dimen/textsize_16" />
+                android:textSize="@dimen/textsize_14" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -153,8 +153,8 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="@dimen/height_25"
-            android:layout_height="@dimen/height_25"
+            android:layout_width="@dimen/height_23"
+            android:layout_height="@dimen/height_23"
             android:background="@mipmap/collect" />
 
         <TextView
@@ -163,7 +163,7 @@
             android:layout_marginTop="@dimen/margin_3"
             android:text="@string/collect"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_16" />
+            android:textSize="@dimen/textsize_14" />
     </LinearLayout>
 
     <LinearLayout
@@ -175,8 +175,8 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="@dimen/height_25"
-            android:layout_height="@dimen/height_25"
+            android:layout_width="@dimen/height_23"
+            android:layout_height="@dimen/height_23"
             android:background="@mipmap/service_white" />
 
         <TextView
@@ -185,6 +185,6 @@
             android:layout_marginTop="@dimen/margin_3"
             android:text="客服"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_16" />
+            android:textSize="@dimen/textsize_14" />
     </LinearLayout>
 </LinearLayout>

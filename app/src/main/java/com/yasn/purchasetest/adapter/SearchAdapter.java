@@ -47,6 +47,8 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private String loginState;
     private LinearLayoutManager linearLayoutManager;
     String regionName;
+    private String place = " ";
+    private int placeNum = 3;
 
     public SearchAdapter(Context context,LinearLayoutManager linearLayoutManager) {
         super();
@@ -121,8 +123,8 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 int goneNum = 0;
                 int store_id = dataBean.getStore_id();
                 if (store_id == 1){
-                    sb.append("自营 ");
-                    goneNum += 3;
+                    sb.append("自营"+place);
+                    goneNum += placeNum;
                     holderSearch.autotrophy.setVisibility(View.VISIBLE);
                     holderSearch.autotrophy.setText("自营");
                 }else {
@@ -133,8 +135,8 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         }else {
                             holderSearch.autotrophy.setVisibility(View.VISIBLE);
                             holderSearch.autotrophy.setText(regionName+"直供");
-                            sb.append(regionName+"直供 ");
-                            goneNum =goneNum+ regionName.length()+3;
+                            sb.append(regionName+"直供"+place);
+                            goneNum =goneNum+ regionName.length()+placeNum;
                         }
                     }else {
                         holderSearch.autotrophy.setText("");
@@ -145,16 +147,16 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 int is_limit_buy = dataBean.getIs_limit_buy();
                 if (is_limit_buy>0){
                     holderSearch.purchase.setVisibility(View.VISIBLE);
-                    sb.append("限购 ");
-                    goneNum += 3;
+                    sb.append("限购"+place);
+                    goneNum += placeNum;
                 }else {
                     holderSearch.purchase.setVisibility(View.GONE);
                 }
                 String is_before_sale = dataBean.getIs_before_sale();
                 if ("1".equals(is_before_sale)){
                     holderSearch.presell.setVisibility(View.VISIBLE);
-                    goneNum += 3;
-                    sb.append("预售 ");
+                    goneNum += placeNum;
+                    sb.append("预售"+place);
                 }else {
                     holderSearch.presell.setVisibility(View.GONE);
                 }
@@ -226,7 +228,6 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 Glide.with(context)
                         .load(dataBean.getThumbnail())
-                        .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(R.mipmap.errorimage)
                         .error(R.mipmap.errorimage)

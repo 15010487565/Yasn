@@ -103,7 +103,10 @@
 
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_1.5"
+            android:background="@color/line_gray"/>
         <LinearLayout
             android:id="@+id/ll_Payorder"
             android:layout_width="match_parent"

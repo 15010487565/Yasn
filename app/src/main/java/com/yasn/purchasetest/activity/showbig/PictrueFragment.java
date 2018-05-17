@@ -78,7 +78,6 @@ public class PictrueFragment extends Fragment{
 		}
 		Glide.with(getActivity())
 				.load(imageUrl)
-				.crossFade()
 				.placeholder(R.mipmap.login_n_yasn)
 				.error(R.mipmap.login_n_yasn)
 				.diskCacheStrategy(DiskCacheStrategy.ALL)

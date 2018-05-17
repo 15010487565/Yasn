@@ -10,7 +10,7 @@
         android:layout_height="@dimen/height_45"
         android:gravity="center_vertical"
         android:textColor="@color/black_33"
-        android:textSize="@dimen/textsize_18"
+        android:textSize="@dimen/textsize_16"
         android:paddingLeft="@dimen/margin_10"
         android:background="@color/white"
         android:text="员工管理"/>
@@ -48,7 +48,7 @@
                 android:layout_marginLeft="@dimen/margin_3"
                 android:text="创建员工"
                 android:textColor="@color/black_66"
-                android:textSize="@dimen/textsize_16" />
+                android:textSize="@dimen/textsize_14" />
         </LinearLayout>
 
 
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:text="管理员工"
                 android:textColor="@color/black_66"
-                android:textSize="@dimen/textsize_16" />
+                android:textSize="@dimen/textsize_14" />
         </LinearLayout>
 
         <LinearLayout

@@ -15,7 +15,6 @@
             android:id="@+id/titleimage"
             android:layout_width="@dimen/image_size"
             android:layout_height="@dimen/image_size"
-            android:scaleType="fitXY"
             android:src="@mipmap/errorimage" />
         <!--<ImageView-->
             <!--android:id="@+id/iv_shroud"-->

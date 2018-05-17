@@ -228,7 +228,6 @@ public class FindAllAdapter  extends BaseAdapter {
                     videoHolder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     Glide.with(context.getApplicationContext())
                             .load(dataBean.getVideoShowImg())
-                            .crossFade()
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(videoHolder.imageView);
                     listVideoUtil.addVideoPlayer(position, videoHolder.imageView, TAG, videoHolder.videoContainer, videoHolder.playerBtn);

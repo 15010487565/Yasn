@@ -29,6 +29,12 @@
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:showDividers="none" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_1.5"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/height_50"
+        android:background="@color/line_gray"/>
     <www.xcd.com.mylibrary.widget.SnsTabWidget
         android:id="@+id/main_tabwidget"
         android:layout_width="match_parent"
@@ -36,5 +42,4 @@
         android:layout_alignParentBottom="true"
         android:background="@color/transparent"
         android:showDividers="none" />
-
 </RelativeLayout>

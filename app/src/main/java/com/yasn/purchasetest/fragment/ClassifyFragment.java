@@ -282,7 +282,6 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
             convenientBanner.setVisibility(View.VISIBLE);
             Glide.with(getActivity())
                     .load(imageUrl)
-                    .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.mipmap.failtoload)
                     .error(R.mipmap.failtoload)

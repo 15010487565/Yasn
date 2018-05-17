@@ -28,6 +28,7 @@
     <dimen name="height_30">30dp</dimen>
     <dimen name="height_26">26dp</dimen>
     <dimen name="height_25">25dp</dimen>
+    <dimen name="height_23">23dp</dimen>
     <dimen name="height_20">20dp</dimen>
     <dimen name="height_15">15dp</dimen>
     <dimen name="margin_50">50dp</dimen>
@@ -64,6 +65,8 @@
     <dimen name="textsize_8">8sp</dimen>
     <dimen name="textsize_6">6sp</dimen>
     <dimen name="textsize_4">4sp</dimen>
+
+    <dimen name="textsize_shoplabel">11sp</dimen>
 
     <dimen name="top_search_padding">7dp</dimen>
     <dimen name="top_search_height">40dp</dimen>

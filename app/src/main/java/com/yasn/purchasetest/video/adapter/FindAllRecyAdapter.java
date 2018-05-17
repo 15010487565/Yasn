@@ -116,14 +116,6 @@ public class FindAllRecyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 final TxtViewHolder holdertxt = (TxtViewHolder) holder;
                 holdertxt.find_title.setText(contentString==null?"":contentString);
                 holdertxt.find_time.setText(HelpUtils.getDateToString(modifyTime));
-//                Glide.with(context.getApplicationContext())
-//                        .load(fileUrl)
-//                        .centerCrop()
-//                        .crossFade()
-//                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                        .placeholder(R.mipmap.ic_launcher)
-//                        .error(R.mipmap.ic_launcher)
-//                        .into(holdertxt.titleImage);
                 break;
             case TYPE_IMAGE:
                 ImageViewHolder holderImage = (ImageViewHolder) holder;
@@ -134,28 +126,12 @@ public class FindAllRecyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 List<String> fileUrlMin = dataBean.getFileUrlMin();
                 GridViewImageAdapter gridViewAdapter = new GridViewImageAdapter(context, fileUrlMin);
                 holderImage.iamge_gridview.setAdapter(gridViewAdapter);
-//                Glide.with(context.getApplicationContext())
-//                        .load(fileUrl)
-//                        .centerCrop()
-//                        .crossFade()
-//                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                        .placeholder(R.mipmap.ic_launcher)
-//                        .error(R.mipmap.ic_launcher)
-//                        .into(holderImage.titleImage);
                 break;
             case TYPE_VIDEO:
                 VideoViewHolder holderVideo = (VideoViewHolder) holder;
                 holderVideo.find_title.setText(contentString==null?"":contentString);
                 holderVideo.find_time.setText(HelpUtils.getDateToString(modifyTime));
                 listVideoUtil.addVideoPlayer(position, holderVideo.imageView, TAG, holderVideo.videoContainer, holderVideo.playerBtn);
-//                Glide.with(context.getApplicationContext())
-//                        .load(fileUrl)
-//                        .centerCrop()
-//                        .crossFade()
-//                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                        .placeholder(R.mipmap.ic_launcher)
-//                        .error(R.mipmap.ic_launcher)
-//                        .into(holderVideo.titleImage);
                 onItemEventClick(holderVideo);
                 break;
         }
