@@ -45,7 +45,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-                        <com.yasn.purchase.view.NoScrollGridView
+                        <com.yasn.purchasetest.view.NoScrollGridView
                             android:id="@+id/calssifyrecy_right"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.yasn.purchase.activityold.DrawerView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.yasn.purchasetest.activityold.DrawerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -89,4 +89,4 @@
             android:text="检查更新" />
 
     </LinearLayout>
-</com.yasn.purchase.activityold.DrawerView>
+</com.yasn.purchasetest.activityold.DrawerView>

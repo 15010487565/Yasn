@@ -4,7 +4,7 @@
     android:gravity="center"
     >
 
-    <com.yasn.purchase.activity.showbig.ScaleView
+    <com.yasn.purchasetest.activity.showbig.ScaleView
         android:id="@+id/scale_pic_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -36,7 +36,7 @@
                 <include layout="@layout/include_search_text_merge" />
             </LinearLayout>
 
-            <com.yasn.purchase.view.MultiSwipeRefreshLayout
+            <com.yasn.purchasetest.view.MultiSwipeRefreshLayout
                 android:id="@+id/swipe_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -246,7 +246,7 @@
                         </RelativeLayout>
                     </FrameLayout>
                 </LinearLayout>
-            </com.yasn.purchase.view.MultiSwipeRefreshLayout>
+            </com.yasn.purchasetest.view.MultiSwipeRefreshLayout>
 
         </LinearLayout>
         <include layout="@layout/menu_layout_right" />

@@ -12,7 +12,7 @@
         android:layout_height="60dp"
         android:src="@mipmap/errorimage" />
 
-    <com.yasn.purchase.view.TwoTextView
+    <com.yasn.purchasetest.view.TwoTextView
         android:id="@+id/rightclassify"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

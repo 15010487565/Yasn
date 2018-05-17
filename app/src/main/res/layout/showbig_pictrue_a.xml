@@ -4,7 +4,7 @@
     android:background="#000000"
     android:orientation="vertical" >
 
-    <com.yasn.purchase.activity.showbig.HackyViewPager
+    <com.yasn.purchasetest.activity.showbig.HackyViewPager
         android:id="@+id/viewPager_show_bigPic"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

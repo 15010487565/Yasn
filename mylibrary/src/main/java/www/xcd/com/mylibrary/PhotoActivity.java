@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import com.yonyou.sns.im.entity.album.YYPhotoItem;
 import com.yonyou.sns.im.util.common.FileUtils;
+import com.yonyou.sns.im.util.common.ToastUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -347,8 +348,12 @@ public class PhotoActivity extends SimpleTopbarActivity {
         options.inJustDecodeBounds = false;
 
         Bitmap cropPhoto =  BitmapFactory.decodeFile(imagePath, options);
-        FileUtils.compressBmpToFile(cropPhoto, cropFile,true,75,true,0);
-        uploadImage(list);
+        if (cropPhoto !=null){
+            FileUtils.compressBmpToFile(cropPhoto, cropFile,true,75,true,0);
+            uploadImage(list);
+        }else {
+            ToastUtil.showShort(this,"请选择正确图片");
+        }
 //        try {
 //            Uri uri = null;
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

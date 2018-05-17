@@ -39,7 +39,7 @@
                 android:text="XXX"/>
         </LinearLayout>
 
-        <com.yasn.purchase.view.BadgeView
+        <com.yasn.purchasetest.view.BadgeView
             android:id="@+id/shop_tabitem_redpoint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
-    <com.yasn.purchase.activityold.DrawerView
+    <com.yasn.purchasetest.activityold.DrawerView
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -84,5 +84,5 @@
             <!--android:text="检查更新" />-->
 
         </LinearLayout>
-    </com.yasn.purchase.activityold.DrawerView>
+    </com.yasn.purchasetest.activityold.DrawerView>
 </LinearLayout>
