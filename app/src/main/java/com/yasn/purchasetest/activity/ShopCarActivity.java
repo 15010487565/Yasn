@@ -681,7 +681,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                 return;
             }
             int id = shopCarAdapterModel.getGoodsId();
-            SharePrefHelper.getInstance(this).putSpInt("GOODSFRAGMENTID", 0);
+//            SharePrefHelper.getInstance(this).putSpInt("GOODSFRAGMENTID", 0);
             Intent intent = new Intent(this, GoodsDetailsActivity.class);
             SharePrefHelper.getInstance(this).putSpString("GOODSID", String.valueOf(id));
             startActivity(intent);

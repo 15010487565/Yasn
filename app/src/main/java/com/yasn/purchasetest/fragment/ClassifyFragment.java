@@ -42,7 +42,7 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
  * Created by Android on 2017/9/5.
  */
 public class ClassifyFragment extends SimpleTopbarFragment implements
-        OnRcItemClickListener,OnItemClickListener {
+        OnRcItemClickListener, OnItemClickListener {
 
     private RelativeLayout topbat_parent;
     private RecyclerView calssifyrecy_left;
@@ -53,68 +53,70 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     //    private ConvenientBanner convenientBanner;
     private ImageView convenientBanner;
     private TextView topsearch;
-//    private TagsLayout hotlabel;
+
+    //    private TagsLayout hotlabel;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_classify;
     }
+
     // 标志位，标志已经初始化完成。
     private boolean isPrepared;
+
     @Override
     protected void lazyLoad() {
 //        if(!isPrepared || !isVisible) {
 //            return;
 //        }
         //填充各控件的数据
-        OkHttpDemand();
+        if ((brandList ==null||brandList.size()==0)||(classifyModelCats ==null&&classifyModelCats.size()==0)){
+            OkHttpDemand();
+        }
     }
+
     @Override
     protected void OkHttpDemand() {
         token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
         resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
         resetTokenTime = SharePrefHelper.getInstance(getActivity()).getSpString("resetTokenTime");
-        //推荐品牌
-        if (token != null&&!"".equals(token)){
-            Map<String, Object> params = new HashMap<String, Object>();
+        //推荐品牌\
+        Map<String, Object> params = new HashMap<String, Object>();
+        if (token != null && !"".equals(token)) {
             params.put("access_token", token);
-            okHttpGet(101, Config.CLASSIFYBRAND, params);
-        }else if (resetToken != null&&!"".equals(resetToken)){
-            Map<String, Object> params = new HashMap<String, Object>();
+        } else if (resetToken != null && !"".equals(resetToken)) {
             params.put("access_token", resetToken);
-            okHttpGet(101, Config.CLASSIFYBRAND, params);
-        }else {
-            Map<String, Object> params = new HashMap<String, Object>();
-            okHttpGet(101, Config.CLASSIFYBRAND, params);
         }
+        okHttpGet(101, Config.CLASSIFYBRAND, params);
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.e("TAG_onHiddenChanged","CLASSIFY="+hidden);
-        if (!hidden){ //隐藏时所作的事情
+        Log.e("TAG_onHiddenChanged", "CLASSIFY=" + hidden);
+        if (!hidden) { //隐藏时所作的事情
             lazyLoad();
         }
     }
 
     public void getClassifyList() {
         //分类列表
-        if (token != null&&!"".equals(token)){
+        if (token != null && !"".equals(token)) {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("access_token", token);
             okHttpGet(100, Config.CLASSIFY, params);
-        }else if (resetToken != null&&!"".equals(resetToken)){
+        } else if (resetToken != null && !"".equals(resetToken)) {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("access_token", resetToken);
             okHttpGet(100, Config.CLASSIFY, params);
-        }else {
+        } else {
             Map<String, Object> params = new HashMap<String, Object>();
             okHttpGet(100, Config.CLASSIFY, params);
         }
     }
+
     @Override
     protected void initView(LayoutInflater inflater, View view) {
-        Log.e("TAG_initView","CLASSIFY_initView");
+        Log.e("TAG_initView", "CLASSIFY_initView");
         //搜索输入框
         topsearch = (TextView) view.findViewById(R.id.topsearch);
         topsearch.setOnClickListener(this);
@@ -137,15 +139,15 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
                 ClassifyRightModel classifyRightModel = rightList.get(position);
                 int itemType = classifyRightModel.getItemType();
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
-                if (brandList !=null&&brandList.size()>0&&itemType==2){
+                if (brandList != null && brandList.size() > 0 && itemType == 2) {
                     int rightClassifyBrandId = classifyRightModel.getRightClassifyBrandId();
-                    intent.putExtra("SECARCHBRAND",String.valueOf(rightClassifyBrandId));//品牌id
-                    intent.putExtra("SECARCHTOPTAB",false);//是否显示搜索页顶部TabLayout
+                    intent.putExtra("SECARCHBRAND", String.valueOf(rightClassifyBrandId));//品牌id
+                    intent.putExtra("SECARCHTOPTAB", false);//是否显示搜索页顶部TabLayout
                     startActivity(intent);
-                }else {
+                } else {
                     String rightClassifycatId = classifyRightModel.getRightClassifycatId();
-                    intent.putExtra("SECARCHCARID",rightClassifycatId);//分类id
-                    intent.putExtra("SECARCHTOPTAB",true);//是否显示搜索页顶部TabLayout
+                    intent.putExtra("SECARCHCARID", rightClassifycatId);//分类id
+                    intent.putExtra("SECARCHTOPTAB", true);//是否显示搜索页顶部TabLayout
                     startActivity(intent);
                 }
             }
@@ -176,12 +178,6 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     }
 
     @Override
-    public void onPause() {
-        getActivity().overridePendingTransition(0, 0);
-        super.onPause();
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 //        if (resultCode == Activity.RESULT_OK) {
@@ -201,7 +197,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
             leftList.clear();
         }
         int selectPosition = 0;
-        if (brandList!= null && brandList.size() > 0) {
+        if (brandList != null && brandList.size() > 0) {
             ClassifyLeftModel map = new ClassifyLeftModel();
             map.setTitle("推荐品牌区");
             map.setItemType(1);
@@ -236,29 +232,29 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
         if (rightList != null && rightList.size() > 0) {
             rightList.clear();
         }
-        if (brandList!= null && brandList.size() > 0) {
-           if (position==0){
-               for (int i = 0,j = brandList.size(); i < j; i++) {
-                   ClassifyBrandModel.BrandListBean brandListBean = brandList.get(i);
-                   ClassifyRightModel rightMap = new ClassifyRightModel();
-                   int brandId = brandListBean.getBrandId();
-                   rightMap.setRightClassifyBrandId(brandId);
-                   String image = brandListBean.getImage();
-                   rightMap.setRightClassifyBrandImg(image);
-                   String name = brandListBean.getName();
-                   rightMap.setRightClassifyBrandName(name);
-                   rightMap.setItemType(2);
-                   rightList.add(rightMap);
-               }
-               //右侧顶部图片
-               convenientBanner.setVisibility(View.GONE);
-               //数理化右侧数据
-               rightAdapter.setData(rightList);
-               return;
-           }
+        if (brandList != null && brandList.size() > 0) {
+            if (position == 0) {
+                for (int i = 0, j = brandList.size(); i < j; i++) {
+                    ClassifyBrandModel.BrandListBean brandListBean = brandList.get(i);
+                    ClassifyRightModel rightMap = new ClassifyRightModel();
+                    int brandId = brandListBean.getBrandId();
+                    rightMap.setRightClassifyBrandId(brandId);
+                    String image = brandListBean.getImage();
+                    rightMap.setRightClassifyBrandImg(image);
+                    String name = brandListBean.getName();
+                    rightMap.setRightClassifyBrandName(name);
+                    rightMap.setItemType(2);
+                    rightList.add(rightMap);
+                }
+                //右侧顶部图片
+                convenientBanner.setVisibility(View.GONE);
+                //数理化右侧数据
+                rightAdapter.setData(rightList);
+                return;
+            }
         }
         //右侧顶部图片
-        ClassifyModel.CatsBean catsBean = classifyModelCats.get(position-1);
+        ClassifyModel.CatsBean catsBean = classifyModelCats.get(position - 1);
         initViewPagerImage(catsBean.getAdv_image());
         List<ClassifyModel.CatsBean.ChildrenBean> children = catsBean.getChildren();
         for (int k = 0, l = children.size(); k < l; k++) {
@@ -276,9 +272,9 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     }
 
     private void initViewPagerImage(String imageUrl) {
-        if (imageUrl == null ||"".equals(imageUrl)){
+        if (imageUrl == null || "".equals(imageUrl)) {
             convenientBanner.setVisibility(View.GONE);
-        }else {
+        } else {
             convenientBanner.setVisibility(View.VISIBLE);
             Glide.with(getActivity())
                     .load(imageUrl)
@@ -289,10 +285,15 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
         }
     }
 
+    private int positionSelect;
+
     @Override
     public void OnItemClick(View view, int position) {
-//        onFocusChange(topsearch,false);
+        this.positionSelect = position;
+        selectLeftPostion(position);
+    }
 
+    private void selectLeftPostion(int position) {
         for (int i = 0; i < leftList.size(); i++) {
             ClassifyLeftModel classifyleftinfo = leftList.get(i);
             if (i == position) {
@@ -320,10 +321,12 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     public void OnClickRecyButton(int itemPosition, int listPosition) {
 
     }
+
     //分类品牌数据
     private List<ClassifyModel.CatsBean> classifyModelCats;
     //分类数据
     private List<ClassifyBrandModel.BrandListBean> brandList;
+
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
@@ -341,7 +344,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
             case 101://推荐品牌
                 if (returnCode == 200) {
                     ClassifyBrandModel classifyBrandModel = JSON.parseObject(returnData, ClassifyBrandModel.class);
-                   brandList = classifyBrandModel.getBrandList();
+                    brandList = classifyBrandModel.getBrandList();
                     getClassifyList();
                 } else {
                     ToastUtil.showToast(returnMsg);
@@ -350,6 +353,42 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
         }
 
     }
+
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putInt("positionSelect", positionSelect);
+//        Log.e("TAG_分类", "返回键保存=" + positionSelect);
+//    }
+//
+//    //恢复数据
+//    @Override
+//    public void onViewStateRestored(Bundle savedInstanceState) {
+//        super.onViewStateRestored(savedInstanceState);
+//        if (savedInstanceState != null) {
+//            Log.e("TAG_分类", "返回键获取=" + positionSelect);
+//            selectLeftPostion(savedInstanceState.getInt("positionSelect"));
+//        }
+//    }
+//
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        Log.e("TAG_分类", "onStart=" + positionSelect);
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        Log.e("TAG_分类", "onResume=" + positionSelect);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        getActivity().overridePendingTransition(0, 0);
+//        super.onPause();
+//        Log.e("TAG_分类", "onPause=" + positionSelect);
+//    }
 
     @Override
     public void onCancelResult() {

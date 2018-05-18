@@ -107,9 +107,12 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
                                     .crossFade()
                                     .into(adIv);
                             checkForUpdates();
+                        }else {
+                            isFirstOpen();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        isFirstOpen();
                     }
                     break;
             }

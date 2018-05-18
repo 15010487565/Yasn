@@ -6,10 +6,10 @@
     android:gravity="center"
     android:minHeight="90dp"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/margin_20"
+    android:paddingBottom="@dimen/margin_10"
     android:paddingLeft="@dimen/margin_10"
     android:paddingRight="@dimen/margin_10"
-    android:paddingTop="@dimen/margin_20">
+    android:paddingTop="@dimen/margin_10">
 
     <LinearLayout
         android:id="@+id/ll_orderListSelect"

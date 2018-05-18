@@ -73,7 +73,7 @@
                     android:layout_marginLeft="@dimen/margin_10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/textsize_18"
+                    android:textSize="@dimen/textsize_16"
                     android:textColor="@color/black_33"
                     android:text="历史搜索"/>
             </LinearLayout>

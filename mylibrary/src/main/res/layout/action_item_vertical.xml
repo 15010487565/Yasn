@@ -39,7 +39,7 @@
             android:layout_marginRight="@dimen/topbar_create_multi_chat_text_margin_right"
             android:gravity="left|center_vertical"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_18" />
+            android:textSize="@dimen/textsize_16" />
     </LinearLayout>
     <!--<View-->
         <!--android:id="@+id/bg_view"-->

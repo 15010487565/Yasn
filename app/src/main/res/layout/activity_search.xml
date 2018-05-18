@@ -61,6 +61,7 @@
                         android:background="@color/white"
                         app:tabIndicatorColor="@color/orange"
                         app:tabMode="scrollable"
+                        android:layout_marginBottom="@dimen/margin_10"
                         app:tabSelectedTextColor="@color/orange"
                         app:tabTextAppearance="@style/TabLayoutTextStyle"
                         app:tabTextColor="@color/black_33">
@@ -69,8 +70,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/height_45"
-                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_height="@dimen/height_40"
                         android:background="@color/white"
                         android:orientation="horizontal">
 

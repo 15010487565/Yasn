@@ -19,19 +19,21 @@ public class GlideImageLoader extends ImageLoader {
         Log.e("TAG_轮播图","url="+url);
         Glide.with(context.getApplicationContext())
                 .load(url)
+                .fitCenter()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.mipmap.errorimage)
                 .error(R.mipmap.errorimage)
                 .into(imageView);
     }
 
-//    @Override
-//    public ImageView createImageView(Context context) {
-//
-//        ImageView imageView = new ImageView(context);
-//        imageView.setBackgroundResource(R.mipmap.login_y_yasn);
-//        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-//
-//        return imageView;
-//    }
+    @Override
+    public ImageView createImageView(Context context) {
+
+        ImageView imageView = new ImageView(context);
+        imageView.setBackgroundResource(R.mipmap.login_y_yasn);
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+        return imageView;
+    }
 }

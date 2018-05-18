@@ -102,7 +102,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
             textView.setText(dataBean.getKey_word());
             textView.setTextColor(ContextCompat.getColor(this, R.color.black_66));
             textView.setBackgroundResource(R.drawable.text_n_f5);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             textView.setGravity(Gravity.CENTER);
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override

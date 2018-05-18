@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.ImageView;
@@ -564,6 +565,14 @@ public class HomeFragment extends SimpleTopbarFragment implements
     }
 
     private void initViewPagerImage() {
+        WindowManager wm = getActivity().getWindowManager();//获取屏幕宽高
+        int width1 = wm.getDefaultDisplay().getWidth();
+//        int height1 = wm.getDefaultDisplay().getHeight();
+        ViewGroup.LayoutParams para = home_banner.getLayoutParams();//获取drawerlayout的布局
+        para.height = width1 * 330 / 750;//修改宽度
+//        para.height = height1;//修改高度
+        home_banner.setLayoutParams(para); //设置修改后的布局。
+
         List<HomeModel.AdvsBean> advs = homemodel.getAdvs();
         Log.e("TAG_轮播图", "advs=" + advs.size());
         if (advs != null && advs.size() > 0) {
@@ -602,7 +611,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                             int indexOfGoods = strarray[i].indexOf("=");
                             String substringGoods = strarray[i].substring(indexOfGoods+1);
                             Log.e("TAG_轮播图详情页id","详情页="+substringGoods);
-                            SharePrefHelper.getInstance(getActivity()).putSpInt("GOODSFRAGMENTID", 0);
+//                            SharePrefHelper.getInstance(getActivity()).putSpInt("GOODSFRAGMENTID", 0);
                             Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
                             SharePrefHelper.getInstance(getActivity()).putSpString("GOODSID", substringGoods);
                             startActivity(intent);
@@ -867,7 +876,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 return;
             }
             //itemPosition 教你卖好、成功案例、语音讲解对应的Position
-            SharePrefHelper.getInstance(getActivity()).putSpInt("GOODSFRAGMENTID", itemPosition);
+//            SharePrefHelper.getInstance(getActivity()).putSpInt("GOODSFRAGMENTID", itemPosition);
             String goodsid = homeRecyModel.getGoodsid();
             Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
             SharePrefHelper.getInstance(getActivity()).putSpString("GOODSID", goodsid);
@@ -936,24 +945,28 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onCancelResult() {
+        mSwipeRefreshLayout.setRefreshing(false);
         rlMainError.setVisibility(View.VISIBLE);
         clHome.setVisibility(View.GONE);
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
+        mSwipeRefreshLayout.setRefreshing(false);
         rlMainError.setVisibility(View.VISIBLE);
         clHome.setVisibility(View.GONE);
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
+        mSwipeRefreshLayout.setRefreshing(false);
         rlMainError.setVisibility(View.VISIBLE);
         clHome.setVisibility(View.GONE);
     }
 
     @Override
     public void onFinishResult() {
+        mSwipeRefreshLayout.setRefreshing(false);
         rlMainError.setVisibility(View.VISIBLE);
         clHome.setVisibility(View.GONE);
     }

@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.gxz.PagerSlidingTabStrip;
 import com.xyzlf.share.library.bean.ShareEntity;
 import com.xyzlf.share.library.interfaces.ShareConstant;
@@ -36,6 +37,7 @@ import com.yasn.purchasetest.goods.fragment.GoodsDetailFragment;
 import com.yasn.purchasetest.goods.fragment.GoodsInfoFragment;
 import com.yasn.purchasetest.help.SobotUtil;
 import com.yasn.purchasetest.model.EventBusMsg;
+import com.yasn.purchasetest.model.GoodsDetailsOtherModel;
 import com.yasn.purchasetest.model.SobotModel;
 import com.yasn.purchasetest.utils.ToastUtil;
 import com.yasn.purchasetest.view.BadgeView;
@@ -67,7 +69,8 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     private GoodsInfoFragment goodsInfoFragment = new GoodsInfoFragment();
     private GoodsDetailFragment goodsDetailFragment = new GoodsDetailFragment();
     private GoodsCommentFragment goodsCommentFragment = new GoodsCommentFragment();
-    private String[] titles = new String[]{"商品详情", "教你卖好", "成功案例"};
+    private String[] titlesNSucceed = new String[]{"商品详情", "教你卖好"};
+    private String[] titlesYSucceed = new String[]{"商品详情", "教你卖好", "成功案例"};
     /**
      * 初始化分享弹出框
      */
@@ -122,10 +125,17 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         });
         main_tabitem_redpoint = (BadgeView) findViewById(R.id.main_tabitem_redpoint);
         main_tabitem_redpoint.setVisibility(View.GONE);
-        init();
         initTabLayout();
         initBottomView();
 
+    }
+
+    @Override
+    protected void afterSetContentView() {
+        super.afterSetContentView();
+        String goodsid = SharePrefHelper.getInstance(this).getSpString("GOODSID");
+        Map<String, Object> params = new HashMap<String, Object>();
+        okHttpGet(103, Config.GOODSDETAILSOTHER+ goodsid, params);
     }
 
     /**
@@ -195,23 +205,35 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         titleSucceed.setOnClickListener(this);
     }
 
-    private void init() {
+    /**
+     * isSuccessCase == 0存在成功案例
+     * @param isSuccessCase
+     */
+    private void initSucceed(int isSuccessCase) {
         fragmentList.add(goodsInfoFragment);
         fragmentList.add(goodsDetailFragment);
-        fragmentList.add(goodsCommentFragment);
-        viewPager.setAdapter(new ItemTitlePagerAdapter(getSupportFragmentManager(),
-                fragmentList, titles));
+        if (isSuccessCase == 1){
+            fragmentList.add(goodsCommentFragment);
+            viewPager.setAdapter(new ItemTitlePagerAdapter(getSupportFragmentManager(),
+                        fragmentList, titlesYSucceed));
+            titleSucceed.setVisibility(View.VISIBLE);
+        }else {
+            viewPager.setAdapter(new ItemTitlePagerAdapter(getSupportFragmentManager(),
+                    fragmentList, titlesNSucceed));
+            titleSucceed.setVisibility(View.GONE);
+        }
+
         viewPager.setOffscreenPageLimit(3);
         titleTabs.setViewPager(viewPager);
         goodsInfoFragment.setsetCartNum(this);
-        int goodsfragmentid = SharePrefHelper.getInstance(this).getSpInt("GOODSFRAGMENTID");
-        if (goodsfragmentid == 1) {
-            viewPager.setCurrentItem(1);
-        } else if (goodsfragmentid == 2) {
-            viewPager.setCurrentItem(2);
-        } else {
+//        int goodsfragmentid = SharePrefHelper.getInstance(this).getSpInt("GOODSFRAGMENTID");
+//        if (goodsfragmentid == 1) {
+//            viewPager.setCurrentItem(1);
+//        } else if (goodsfragmentid == 2) {
+//            viewPager.setCurrentItem(2);
+//        } else {
             viewPager.setCurrentItem(0);
-        }
+//        }
     }
 
     public void operaTitleBar(boolean scroAble, boolean titleVisiable, boolean tanVisiable) {
@@ -502,27 +524,38 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                     ToastUtil.showToast(returnMsg);
                 }
                 break;
+            case 103:
+                if (returnCode == 200) {
+                    GoodsDetailsOtherModel goodsdetailsothermodel = JSON.parseObject(returnData, GoodsDetailsOtherModel.class);
+                    GoodsDetailsOtherModel.GoodsIntroBean goodsIntro = goodsdetailsothermodel.getGoodsIntro();
+                    int isSuccessCase = goodsIntro.getIsSuccessCase();
+                    initSucceed(isSuccessCase);
+                } else {
+                    initSucceed(0);
+                    ToastUtil.showToast(returnMsg);
+                }
+                break;
         }
     }
 
     @Override
     public void onCancelResult() {
-
+        initSucceed(0);
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
-
+        initSucceed(0);
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
-
+        initSucceed(0);
     }
 
     @Override
     public void onFinishResult() {
-
+        initSucceed(0);
     }
 
     @Override

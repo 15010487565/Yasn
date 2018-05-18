@@ -22,7 +22,7 @@
         android:text=""
         android:textStyle="normal"
         android:textColor="@color/white"
-        android:textSize="@dimen/textsize_17" />
+        android:textSize="@dimen/textsize_serach" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:paddingLeft="@dimen/margin_10"
             android:lines="1"
             android:textColor="@color/black_33"
-            android:textSize="@dimen/textsize_17"
+            android:textSize="@dimen/textsize_serach"
             android:gravity="center_vertical"
             android:textColorHint="@color/black_66" />
 
@@ -54,7 +54,7 @@
             android:paddingRight="@dimen/height_20"
             android:text="搜索"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_17" />
+            android:textSize="@dimen/textsize_serach" />
     </LinearLayout>
 
 

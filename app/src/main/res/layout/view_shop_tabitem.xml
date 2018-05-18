@@ -24,8 +24,7 @@
                 android:layout_width="@dimen/main_tabwidget_image_size"
                 android:layout_height="@dimen/main_tabwidget_image_size"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/margin_5"
-                android:background="@mipmap/obligation"/>
+                android:layout_marginBottom="@dimen/margin_5" />
 
             <TextView
                 android:id="@+id/shop_tabitem_text"
@@ -34,7 +33,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:textColor="@color/black_66"
-                android:textSize="@dimen/textsize_16"
+                android:textSize="@dimen/textsize_14"
                 android:layout_centerInParent="true"
                 android:text="XXX"/>
         </LinearLayout>

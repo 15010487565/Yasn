@@ -483,11 +483,11 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         EventBus.getDefault().unregister(this);
     }
 
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-////        super.onSaveInstanceState(outState);
-//
-//    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {

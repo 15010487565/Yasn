@@ -742,7 +742,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
                     return;
                 }
                 String id = dataBean.getId();
-                SharePrefHelper.getInstance(this).putSpInt("GOODSFRAGMENTID", 0);
+//                SharePrefHelper.getInstance(this).putSpInt("GOODSFRAGMENTID", 0);
                 Intent intent = new Intent(this, GoodsDetailsActivity.class);
                 SharePrefHelper.getInstance(this).putSpString("GOODSID", id);
                 startActivity(intent);

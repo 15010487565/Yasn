@@ -7,14 +7,14 @@ package com.yasn.purchasetest.common;
  */
 public class Config {
 
-//    public static final String IP = "http://shop.yasn.com:9100/api/composite-service/";//正式
-//    public static final String URLCAIGOU = "http://caigou.yasn.com/";//正式服
-//    public static final String URL = "http://shop.yasn.com/";//正式服
-//    public final static String SEARCH = "http://47.93.233.216:9998/search/solr/goods/list?";//正式服搜索页面
-    public static final String IP = "http://shoptest.yasn.com:9100/api/composite-service/";//测试
-    public static final String URLCAIGOU = "http://shoptt.yasn.com/";//测试首服
-    public static final String URL = "http://shoptt.yasn.com:81/";//测试首服
-    public final static String SEARCH = "http://47.93.192.134:9998/search/solr/goods/list?";//测试服搜索页面
+    public static final String IP = "http://shop.yasn.com:9100/api/composite-service/";//正式
+    public static final String URLCAIGOU = "http://caigou.yasn.com/";//正式服
+    public static final String URL = "http://shop.yasn.com/";//正式服
+    public final static String SEARCH = "http://47.93.233.216:9998/search/solr/goods/list?";//正式服搜索页面
+//    public static final String IP = "http://shoptest.yasn.com:9100/api/composite-service/";//测试
+//    public static final String URLCAIGOU = "http://shoptt.yasn.com/";//测试首服
+//    public static final String URL = "http://shoptt.yasn.com:81/";//测试首服
+//    public final static String SEARCH = "http://47.93.192.134:9998/search/solr/goods/list?";//测试服搜索页面
 //    //欢迎界面图片
     public static final String url = "http://caigou.yasn.com/";//正式服
     //欢迎界面图片

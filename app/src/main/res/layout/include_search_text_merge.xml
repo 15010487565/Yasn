@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
     <LinearLayout
         android:id="@+id/topbar_left"
-        android:layout_width="@dimen/top_search_height"
+        android:layout_width="40dp"
         android:layout_height="@dimen/top_search_height"
         android:layout_alignParentLeft="true"
         android:gravity="center"
@@ -39,7 +39,7 @@
             android:paddingLeft="@dimen/margin_10"
             android:lines="1"
             android:textColor="@color/black_33"
-            android:textSize="@dimen/textsize_17"
+            android:textSize="@dimen/textsize_serach"
             android:textColorHint="@color/black_66" />
 
         <TextView
@@ -52,7 +52,7 @@
             android:paddingRight="@dimen/height_20"
             android:text="搜索"
             android:textColor="@color/white"
-            android:textSize="@dimen/textsize_17" />
+            android:textSize="@dimen/textsize_serach" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/topbar_right"

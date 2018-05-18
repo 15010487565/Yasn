@@ -153,8 +153,8 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="@dimen/height_23"
-            android:layout_height="@dimen/height_23"
+            android:layout_width="@dimen/height_20"
+            android:layout_height="@dimen/height_20"
             android:background="@mipmap/collect" />
 
         <TextView
@@ -175,8 +175,8 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="@dimen/height_23"
-            android:layout_height="@dimen/height_23"
+            android:layout_width="@dimen/height_20"
+            android:layout_height="@dimen/height_20"
             android:background="@mipmap/service_white" />
 
         <TextView

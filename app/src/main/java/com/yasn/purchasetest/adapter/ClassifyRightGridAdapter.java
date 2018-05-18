@@ -1,7 +1,6 @@
 package com.yasn.purchasetest.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,6 @@ public class ClassifyRightGridAdapter extends BaseAdapter{
     }
 
     public void setData(List<ClassifyRightModel> contentList) {
-        Log.e("TAG_分类右","contentList="+contentList.toString());
         this.rightList = contentList;
         notifyDataSetChanged();
     }
@@ -71,6 +69,8 @@ public class ClassifyRightGridAdapter extends BaseAdapter{
             String rightClassifyBrandImg = classifyRightModel.getRightClassifyBrandImg();
             Glide.with(context.getApplicationContext())
                     .load(rightClassifyBrandImg)
+                    .fitCenter()
+                    .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.mipmap.errorimage)
                     .error(R.mipmap.errorimage)
@@ -81,6 +81,8 @@ public class ClassifyRightGridAdapter extends BaseAdapter{
             String imageUrl = classifyRightModel.getRightClassifyImg();
             Glide.with(context.getApplicationContext())
                     .load(imageUrl)
+                    .fitCenter()
+                    .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.mipmap.errorimage)
                     .error(R.mipmap.errorimage)

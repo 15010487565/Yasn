@@ -3,7 +3,6 @@ package com.yasn.purchasetest.adapter;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +76,6 @@ public class ClassifyLeftAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Log.e("TAG_分类","左侧");
         switch (getItemViewType(position)) {
             case 1:
                 ViewHolder leftholder = (ViewHolder) holder;
