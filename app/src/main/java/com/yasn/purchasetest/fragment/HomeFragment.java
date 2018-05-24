@@ -107,6 +107,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
     private RelativeLayout rlMainError;//错误布局
     private GestureDetector gd;
     private CoordinatorLayout clHome;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_home;
@@ -395,7 +396,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 //                if (digital_member == 0) {//未开通雅森帮
 //                    startWebViewActivity(Config.DREDGEYASNHELP);
 //                } else {
-                    startWebViewActivity(Config.YASNBANG);
+                startWebViewActivity(Config.YASNBANG);
 //                }
                 break;
             case R.id.home_collect://收藏
@@ -406,7 +407,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 SobotUtil.startSobot(getActivity(), null);
                 break;
             case R.id.orderStateLinear:
-                startWebViewActivity(Config.MEORDER);
+                startWebViewActivity(Config.MEORDERWEB);
                 break;
         }
     }
@@ -447,7 +448,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     List<HomeRecyModel> homerecyList = new ArrayList<>();//储存转换后的数据格式
     List<String> tabTextList = new ArrayList<>();
-
+    private TabLayout.OnTabSelectedListener listener;
     //tablayout和Recycler赋值
     private void initTabLayout(List<HomeModel.SubjectsBean> subjects, HomeModel.PriceDataBean priceData, HomeModel.MemberBean member) {
         if (homerecyList != null) {
@@ -460,6 +461,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
             priceDisplayMsg = priceData.getPriceDisplayMsg();
         }
         tablayout.removeAllTabs();
+        listener = this;
         tablayout.addOnTabSelectedListener(this);
         for (int i = 0, j = subjects.size(); i < j; i++) {
 
@@ -598,57 +600,57 @@ public class HomeFragment extends SimpleTopbarFragment implements
          * goods_list.html?brand=527&region=0  品保搜索页
          * goods_list.html?keyword=赫狮&region=0 关键字搜索页
          */
-        if (url != null && !"".equals(url)&&!"#".equals(url)) {
+        if (url != null && !"".equals(url) && !"#".equals(url)) {
             int indexOf = url.indexOf("?");
-            if (indexOf !=-1){
-                String substring = url.substring(indexOf+1);
+            if (indexOf != -1) {
+                String substring = url.substring(indexOf + 1);
                 Log.e("TAG_轮播图substring", "substring=" + substring);
-                String[] strarray=substring.split("&");
+                String[] strarray = substring.split("&");
                 for (int i = 0; i < strarray.length; i++) {
-                    Log.e("TAG_轮播图strarray", i+"=" + strarray[i]);
-                    if (url.indexOf("goods.html")!=-1){
-                        if (strarray[i].length()>"id=".length()){
+                    Log.e("TAG_轮播图strarray", i + "=" + strarray[i]);
+                    if (url.indexOf("goods.html") != -1) {
+                        if (strarray[i].length() > "id=".length()) {
                             int indexOfGoods = strarray[i].indexOf("=");
-                            String substringGoods = strarray[i].substring(indexOfGoods+1);
-                            Log.e("TAG_轮播图详情页id","详情页="+substringGoods);
+                            String substringGoods = strarray[i].substring(indexOfGoods + 1);
+                            Log.e("TAG_轮播图详情页id", "详情页=" + substringGoods);
 //                            SharePrefHelper.getInstance(getActivity()).putSpInt("GOODSFRAGMENTID", 0);
                             Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
                             SharePrefHelper.getInstance(getActivity()).putSpString("GOODSID", substringGoods);
                             startActivity(intent);
                             return;
                         }
-                    }else if (url.indexOf("goods_list.html")!=-1){
-                        if (url.indexOf("brand")!=-1){//品牌搜索
-                            if (strarray[i].length()>"brand=".length()){
+                    } else if (url.indexOf("goods_list.html") != -1) {
+                        if (url.indexOf("brand") != -1) {//品牌搜索
+                            if (strarray[i].length() > "brand=".length()) {
                                 int indexOfBrand = strarray[i].indexOf("=");
-                                String substringBrand = strarray[i].substring(indexOfBrand+1);
-                                Log.e("TAG_轮播图品牌","品牌="+substringBrand);
-                                Intent intent = new Intent(getActivity(),SearchActivity.class);
-                                intent.putExtra("SECARCHBRAND",substringBrand);
-                                intent.putExtra("SECARCHTOPTAB",false);//是否显示搜索页顶部TabLayout
+                                String substringBrand = strarray[i].substring(indexOfBrand + 1);
+                                Log.e("TAG_轮播图品牌", "品牌=" + substringBrand);
+                                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                                intent.putExtra("SECARCHBRAND", substringBrand);
+                                intent.putExtra("SECARCHTOPTAB", false);//是否显示搜索页顶部TabLayout
                                 startActivity(intent);
                                 return;
                             }
 
-                        }else if (url.indexOf("keyword")!=-1){//关键字搜索
-                            if (strarray[i].length()>"keyword=".length()){
+                        } else if (url.indexOf("keyword") != -1) {//关键字搜索
+                            if (strarray[i].length() > "keyword=".length()) {
                                 int indexOfKeyword = strarray[i].indexOf("=");
-                                String substringKeyword = strarray[i].substring(indexOfKeyword+1);
-                                Log.e("TAG_轮播图关键字","关键字="+substringKeyword);
-                                Intent intent = new Intent(getActivity(),SearchActivity.class);
-                                intent.putExtra("SECARCHCONTEXT",substringKeyword);
-                                intent.putExtra("SECARCHTOPTAB",false);//是否显示搜索页顶部TabLayout
+                                String substringKeyword = strarray[i].substring(indexOfKeyword + 1);
+                                Log.e("TAG_轮播图关键字", "关键字=" + substringKeyword);
+                                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                                intent.putExtra("SECARCHCONTEXT", substringKeyword);
+                                intent.putExtra("SECARCHTOPTAB", false);//是否显示搜索页顶部TabLayout
                                 startActivity(intent);
                                 return;
                             }
                         }
-                    }else {
+                    } else {
                         startWebViewActivity(Config.URL + url);
                         return;
                     }
                 }
 
-            }else {
+            } else {
                 startWebViewActivity(Config.URL + url);
             }
         }
@@ -707,7 +709,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         rlMainError.setVisibility(View.GONE);
-        Log.e("TAG_home","onSuccessResult="+requestCode);
+        Log.e("TAG_home", "onSuccessResult=" + requestCode);
         switch (requestCode) {
             case 100:
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -721,7 +723,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     if (place != null && !"".equals(place)) {
                         String regionName = place.getRegionName();
                         address.setText(regionName == null ? "" : regionName);
-                        SharePrefHelper.getInstance(getActivity()).putSpString("regionName", (regionName==null?"":regionName));
+                        SharePrefHelper.getInstance(getActivity()).putSpString("regionName", (regionName == null ? "" : regionName));
                     } else {
                         address.setText("");
                         SharePrefHelper.getInstance(getActivity()).putSpString("regionName", "");
@@ -1054,6 +1056,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     recyclerview.smoothScrollBy(0, top);
                 }
             }
+
             //表示是否能向上滚动，true表示能滚动，false表示已经滚动到底部
             boolean canScrollVertically = recyclerview.canScrollVertically(1);
             Log.e("TAG_首页上滑", "canScrollVertically=" + canScrollVertically + ";direction=" + direction);
@@ -1088,6 +1091,36 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 if (0 <= n && n < recyclerview.getChildCount()) {
                     int top = recyclerview.getChildAt(n).getTop();
                     recyclerview.scrollBy(0, top);
+                }
+            }
+            //            if (newState == RecyclerView.SCROLL_STATE_IDLE ){
+            //获取最后一个可见view的位置
+            int lastItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
+            //获取第一个可见view的位置
+            int firstItemPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
+            int selectedTabPosition = tablayout.getSelectedTabPosition();
+            Log.e("TAG_滚动定位","last="+lastItemPosition+";first="+firstItemPosition+";selected="+selectedTabPosition);
+            TabLayout.Tab tabAt = tablayout.getTabAt(selectedTabPosition);
+//                for (int i = firstItemPosition; i < lastItemPosition; i++) {
+            HomeRecyModel homeRecyModel = homerecyList.get(firstItemPosition);
+            if (!tabAt.getText().equals(homeRecyModel.getText())) {
+                int itemType = homeRecyModel.getItemType();
+                if (itemType == 1){
+                    //列表楼层名称
+                    String text = homeRecyModel.getText();
+                    Log.e("TAG_列表楼层名称","text="+text);
+                    for (int j = 0,k = tablayout.getTabCount(); j < k; j++) {
+                        //tab名称
+                        TabLayout.Tab tabAt1 = tablayout.getTabAt(j);
+                        String s = tabAt1.getText().toString();
+                        Log.e("TAG_tab名称","s="+s);
+                        if (text.equals(s)){
+                            tablayout.removeOnTabSelectedListener(listener);
+                            tabAt1.select();
+                            tablayout.addOnTabSelectedListener(listener);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -1199,7 +1232,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
             isFrist = true;
             home_collect.setVisibility(View.GONE);
             OkHttpDemand();
-        }else if ("refresh".equals(msg)){
+        } else if ("refresh".equals(msg)) {
             isFrist = true;
             OkHttpDemand();
         }

@@ -22,6 +22,7 @@
     <dimen name="height_60">60dp</dimen>
     <dimen name="height_55">55dp</dimen>
     <dimen name="height_50">50dp</dimen>
+    <dimen name="height_48">48dp</dimen>
     <dimen name="height_45">45dp</dimen>
     <dimen name="height_40">40dp</dimen>
     <dimen name="height_35">35dp</dimen>
@@ -166,7 +167,8 @@
     <dimen name="main_tabitem">12sp</dimen>
     <dimen name="main_tabwidget_separator_height">1dp</dimen>
     <dimen name="main_tabwidget_image_size_60">60dp</dimen>
-    <dimen name="main_tabwidget_image_size">30dp</dimen>
+    <dimen name="main_tabwidget_height">48dp</dimen>
+    <dimen name="main_tabwidget_image_size">25dp</dimen>
     <dimen name="main_tabwidget_image_padding">2dp</dimen>
     <dimen name="main_tabwidget_image_margin">4dp</dimen>
     <dimen name="main_tabwidget_redpoint_size">14dp</dimen>

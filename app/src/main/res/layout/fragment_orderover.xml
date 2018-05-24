@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.yasn.purchasetest.view.MultiSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_OrderOver"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:addStatesFromChildren="true"
+    android:alpha="1"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/view_simple_topbar" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rc_OrderOver"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+        <include
+            layout="@layout/order_error"/>
+    </LinearLayout>
+</com.yasn.purchasetest.view.MultiSwipeRefreshLayout>

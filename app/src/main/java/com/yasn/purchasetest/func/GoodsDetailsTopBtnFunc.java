@@ -56,7 +56,7 @@ public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
         quickAction.addActionItem(new BaseActionItem(1, getActivity().getString(R.string.classify),
                 ContextCompat.getDrawable(getActivity(), R.mipmap.goods_classify)));
         if (state==1){
-            quickAction.addActionItem(new BaseActionItem(2, getActivity().getString(R.string.order),
+            quickAction.addActionItem(new BaseActionItem(2, getActivity().getString(R.string.shopcar),
                     ContextCompat.getDrawable(getActivity(), R.mipmap.goods_order)));
             quickAction.addActionItem(new BaseActionItem(3, getActivity().getString(R.string.vipcenter),
                     ContextCompat.getDrawable(getActivity(), R.mipmap.goods_shop)));

@@ -3,6 +3,7 @@ package com.yasn.purchasetest.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchasetest.R;
+import com.yasn.purchasetest.activity.MyOrderActivity;
 import com.yasn.purchasetest.adapter.ShopFuncAdapter;
 import com.yasn.purchasetest.common.Config;
 import com.yasn.purchasetest.help.LoginOut;
@@ -34,7 +36,7 @@ import com.yasn.purchasetest.listener.OnRcItemClickListener;
 import com.yasn.purchasetest.model.EventBusMsg;
 import com.yasn.purchasetest.model.ShopInfoModel;
 import com.yasn.purchasetest.utils.ToastUtil;
-import com.yasn.purchasetest.view.BadgeView;
+import www.xcd.com.mylibrary.view.BadgeView;
 import com.yasn.purchasetest.view.MultiSwipeRefreshLayout;
 import com.yasn.purchasetest.view.RcDecoration;
 
@@ -726,20 +728,30 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         @Override
         public void onTabSelectionChanged(int tabIndex) {
             switch (tabIndex){
-                case 0:
-                    startWebViewActivity(Config.MEORDERUNPAYMENT);
+                case 0://待付款
+                    startActivity(1);
+//                    startWebViewActivity(Config.MEORDERUNPAYMENTWEB);
                     break;
-                case 1:
-                    startWebViewActivity(Config.MEORDERUNSHIPMENTS);
+                case 1://代发货
+                    startActivity(2);
+//                    startWebViewActivity(Config.MEORDERUNSHIPMENTSWEB);
                     break;
-                case 2:
-                    startWebViewActivity(Config.MEORDERUNSIGNFOR);
+                case 2://待收货
+                    startActivity(3);
+//                    startWebViewActivity(Config.MEORDERUNSIGNFORWEB);
                     break;
-                case 3:
-                    startWebViewActivity(Config.MEORDER);
+                case 3://全部订单
+                    startActivity(0);
+//                    startWebViewActivity(Config.MEORDERWEB);
                     break;
             }
         }
+    }
+
+    protected void startActivity(int tabIndex){
+        Intent intent = new Intent(getActivity(), MyOrderActivity.class);
+        intent.putExtra("tabIndex",tabIndex);
+        startActivity(intent);
     }
 
     //我的创客

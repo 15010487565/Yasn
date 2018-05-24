@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:layout_gravity="center">
 
     <FrameLayout
@@ -17,6 +18,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/main_tabwidget_image_margin"
             android:layout_marginRight="@dimen/main_tabwidget_image_margin"
+            android:layout_marginBottom="@dimen/margin_2"
             android:orientation="vertical"
             android:paddingTop="@dimen/margin_5">
 
@@ -49,6 +51,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/main_tabwidget_image_margin"
             android:layout_marginRight="@dimen/main_tabwidget_image_margin"
+            android:layout_marginBottom="@dimen/margin_2"
             android:alpha="0"
             android:orientation="vertical"
             android:paddingTop="@dimen/margin_5">
@@ -74,13 +77,13 @@
                 android:padding="@dimen/margin_1dp" />
 
         </RelativeLayout>
-        <com.yasn.purchasetest.view.BadgeView
+        <www.xcd.com.mylibrary.view.BadgeView
             android:id="@+id/main_tabitem_redpoint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|top"
-            android:layout_marginRight="@dimen/main_tabwidget_redpoint_margin_top"
-            android:layout_marginTop="@dimen/margin_30"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_3"
             android:gravity="center"
             android:minHeight="@dimen/main_tabwidget_redpoint_size"
             android:minWidth="@dimen/main_tabwidget_redpoint_size"
@@ -88,5 +91,4 @@
             android:textSize="@dimen/main_tabwidget_redpoint_text"
             android:visibility="gone" />
     </FrameLayout>
-
 </RelativeLayout>

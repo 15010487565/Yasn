@@ -40,7 +40,7 @@ import com.yasn.purchasetest.model.EventBusMsg;
 import com.yasn.purchasetest.model.GoodsDetailsOtherModel;
 import com.yasn.purchasetest.model.SobotModel;
 import com.yasn.purchasetest.utils.ToastUtil;
-import com.yasn.purchasetest.view.BadgeView;
+import www.xcd.com.mylibrary.view.BadgeView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

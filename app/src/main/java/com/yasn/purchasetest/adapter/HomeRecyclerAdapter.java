@@ -185,6 +185,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                }
                 Glide.with(context.getApplicationContext())
                         .load(homeRecy.getImage()==null?"":homeRecy.getImage())
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(R.mipmap.errorimage)
                         .error(R.mipmap.errorimage)

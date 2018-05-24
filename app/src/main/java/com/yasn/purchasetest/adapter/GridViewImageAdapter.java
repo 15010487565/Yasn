@@ -65,6 +65,8 @@ public class GridViewImageAdapter extends BaseAdapter {
             if (holder.imageView != null) {
                 Glide.with(mContext)
                         .load(imageUrl)
+                        .fitCenter()
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.imageView);
 //                holder.tv_spec.setOnClickListener(new View.OnClickListener() {

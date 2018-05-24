@@ -92,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center"
-                    android:text="@string/order"
+                    android:text="@string/shopcar"
                     android:textColor="@android:color/black"
                     android:textSize="12sp" />
             </FrameLayout>

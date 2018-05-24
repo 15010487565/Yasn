@@ -7,14 +7,14 @@ package com.yasn.purchasetest.common;
  */
 public class Config {
 
-    public static final String IP = "http://shop.yasn.com:9100/api/composite-service/";//正式
-    public static final String URLCAIGOU = "http://caigou.yasn.com/";//正式服
-    public static final String URL = "http://shop.yasn.com/";//正式服
-    public final static String SEARCH = "http://47.93.233.216:9998/search/solr/goods/list?";//正式服搜索页面
-//    public static final String IP = "http://shoptest.yasn.com:9100/api/composite-service/";//测试
-//    public static final String URLCAIGOU = "http://shoptt.yasn.com/";//测试首服
-//    public static final String URL = "http://shoptt.yasn.com:81/";//测试首服
-//    public final static String SEARCH = "http://47.93.192.134:9998/search/solr/goods/list?";//测试服搜索页面
+//    public static final String IP = "http://shop.yasn.com:9100/api/composite-service/";//正式
+//    public static final String URLCAIGOU = "http://caigou.yasn.com/";//正式服
+//    public static final String URL = "http://shop.yasn.com/";//正式服
+//    public final static String SEARCH = "http://47.93.233.216:9998/search/solr/goods/list?";//正式服搜索页面
+    public static final String IP = "http://shoptest.yasn.com:9100/api/composite-service/";//测试
+    public static final String URLCAIGOU = "http://shoptt.yasn.com/";//测试首服
+    public static final String URL = "http://shoptt.yasn.com:81/";//测试首服
+    public final static String SEARCH = "http://47.93.192.134:9998/search/solr/goods/list?";//测试服搜索页面
 //    //欢迎界面图片
     public static final String url = "http://caigou.yasn.com/";//正式服
     //欢迎界面图片
@@ -97,13 +97,14 @@ public class Config {
     //常购清单
     public static final String SHOPLIST =  URL+"shopList.html";
     //我的订单
-    public static final String MEORDER =  URLCAIGOU+"orderlist.html";
+    public static final String MEORDERWEB =  URLCAIGOU+"orderlist.html";
+    public static final String MEORDER =  IP+"order/list?";
     //待付款
-    public static final String MEORDERUNPAYMENT =  URLCAIGOU+"orderlist.html?status=1";
+    public static final String MEORDERUNPAYMENTWEB =  URLCAIGOU+"orderlist.html?status=1";
     //代发货
-    public static final String MEORDERUNSHIPMENTS =  URLCAIGOU+"orderlist.html?status=2";
+    public static final String MEORDERUNSHIPMENTSWEB =  URLCAIGOU+"orderlist.html?status=2";
     //待收货
-    public static final String MEORDERUNSIGNFOR =  URLCAIGOU+"orderlist.html?status=3";
+    public static final String MEORDERUNSIGNFORWEB =  URLCAIGOU+"orderlist.html?status=3";
     //首页更多
     public static final String ONCLICKTABMORE =  URL+"subject.html";
     //详情页

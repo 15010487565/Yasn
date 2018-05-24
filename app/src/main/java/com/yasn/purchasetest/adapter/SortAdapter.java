@@ -55,6 +55,8 @@ public class SortAdapter extends RecyclerView.Adapter<SortAdapter.ViewHolder> {
 //        Log.e("TAG_车型图片","logo="+logo);
         Glide.with(mContext.getApplicationContext())
                 .load(logo)
+                .fitCenter()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into( holder.sortlogo);
 

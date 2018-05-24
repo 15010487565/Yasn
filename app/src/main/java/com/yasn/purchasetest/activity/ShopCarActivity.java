@@ -100,7 +100,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
 
     @Override
     protected Object getTopbarTitle() {
-        return R.string.order;
+        return R.string.shopcar;
     }
 
     @Override

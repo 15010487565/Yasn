@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/height_45"
+    android:layout_height="@dimen/height_40"
     android:alpha="0.65"
     android:background="@color/black"
     android:gravity="center_vertical">
@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_3"
+            android:layout_marginLeft="@dimen/margin_5"
             android:text="积分"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_16" />
@@ -52,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="反馈"
+            android:layout_marginLeft="@dimen/margin_5"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_16" />
     </LinearLayout>
@@ -81,6 +82,7 @@
             android:layout_height="wrap_content"
             android:text="客服"
             android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/margin_5"
             android:textSize="@dimen/textsize_16" />
     </LinearLayout>
 
@@ -107,7 +109,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_3"
+            android:layout_marginLeft="@dimen/margin_5"
             android:text="@string/collect"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_16" />

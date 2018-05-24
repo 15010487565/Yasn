@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yasn.purchasetest.activityold.LoadWebViewErrListener;
@@ -23,7 +23,6 @@ import com.yasn.purchasetest.fragment.HomeFragment;
 import com.yasn.purchasetest.fragment.ShopCarFragment;
 import com.yasn.purchasetest.fragment.ShopFragment;
 import com.yasn.purchasetest.model.EventBusMsg;
-import com.yasn.purchasetest.view.BadgeView;
 import com.yonyou.sns.im.util.common.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,8 +37,8 @@ import java.util.Map;
 import www.xcd.com.mylibrary.R;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
-import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
+import www.xcd.com.mylibrary.view.BadgeView;
 import www.xcd.com.mylibrary.widget.SnsTabWidget;
 
 public class MainActivityNew extends SimpleTopbarActivity implements LoadWebViewErrListener {
@@ -63,7 +62,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
             R.string.home,
             R.string.classify,
             R.string.find,
-            R.string.order,
+            R.string.shopcar,
             R.string.shop
     };
     /**
@@ -168,7 +167,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     @Override
     protected void onResume() {
         super.onResume();
-        tabWidget.getBackground().setAlpha(0);
+//        tabWidget.getBackground().setAlpha(0);
     }
 
     @Override
@@ -220,6 +219,8 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     /**
      * 初始化Tab
      */
+    LinearLayout main_tabitem_find;
+    LinearLayout main_tabitem_findH;
     protected void initTabWidget() {
         // LayoutInflater
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -233,6 +234,9 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         tabWidget.setCurrentTab(currentItem);
         // 添加监听
         tabWidget.setTabSelectionListener(new MainTabSelectionListener());
+        //放大版发现
+        main_tabitem_find = (LinearLayout) findViewById(R.id.main_tabitem_find);
+        main_tabitem_findH = (LinearLayout) findViewById(R.id.main_tabitem_findH);
     }
 
     /**
@@ -257,20 +261,20 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         ImageView imageViewHl = (ImageView) view.findViewById(R.id.main_tabitem_iconhl);
         // 非高亮图标
         imageView.setImageResource(MAIN_TAB_IMAGE[index]);
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
         // 高亮图标
         imageViewHl.setImageResource(MAIN_TAB_IMAGEHL[index]);
-        RelativeLayout.LayoutParams lpHl = (RelativeLayout.LayoutParams) imageViewHl.getLayoutParams();
-        if (index == 2) {
-            int dip2px = HelpUtils.imageDip2px(this, 60);
-            Log.e("TAG_首页2", "dip2px=" + dip2px);
-            lp.width = dip2px;
-            lp.height = dip2px;
-            lpHl.width = dip2px;
-            lpHl.height = dip2px;
+        if (index == 2){
+            textView.setVisibility(View.INVISIBLE);
+            textViewHl.setVisibility(View.INVISIBLE);
+            imageView.setVisibility(View.INVISIBLE);
+            imageViewHl.setVisibility(View.INVISIBLE);
+        }else {
+            textView.setVisibility(View.VISIBLE);
+            textViewHl.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.VISIBLE);
+            imageViewHl.setVisibility(View.VISIBLE);
         }
-        imageView.setLayoutParams(lp);
-        imageViewHl.setLayoutParams(lpHl);
+
         resetTextViewStyle(view, index, isCur);
     }
 
@@ -442,10 +446,6 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
 //                viewPager.setCurrentItem(tabIndex, false);
                 clickFragmentBtn(tabIndex);
             }
-
-//            if (!viewPager.hasFocus()) {
-//                viewPager.requestFocus();
-//            }
         }
     }
 
@@ -456,6 +456,13 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
 
         for (int i = 0; i < fragmentList.size(); i++) {
             if (i == tabIndex){
+                if (tabIndex == 2){
+                    main_tabitem_find.setAlpha(0);
+                    main_tabitem_findH.setAlpha(1);
+                }else {
+                    main_tabitem_find.setAlpha(1);
+                    main_tabitem_findH.setAlpha(0);
+                }
                 fragmentTransaction.show(fragmentList.get(i));
                 resetTextViewAlpha(tabWidget.getChildAt(i),1);
             }else {

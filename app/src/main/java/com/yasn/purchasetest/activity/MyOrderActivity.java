@@ -9,11 +9,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.yasn.purchasetest.R;
-import com.yasn.purchasetest.fragment.AllOrderFragment;
-import com.yasn.purchasetest.fragment.ObligationFragment;
-import com.yasn.purchasetest.fragment.OverhangFragment;
-import com.yasn.purchasetest.fragment.WaitreceivingFragment;
-import com.yasn.purchasetest.func.CallService;
+import com.yasn.purchasetest.fragment.OrderAllFragment;
+import com.yasn.purchasetest.fragment.OrderObligFragment;
+import com.yasn.purchasetest.fragment.OrderOverFragment;
+import com.yasn.purchasetest.fragment.OrderWaitFragment;
 import com.yonyou.sns.im.log.YYIMLogger;
 
 import java.io.IOException;
@@ -24,45 +23,38 @@ import java.util.Map;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 
-public class AllorderActivity extends SimpleTopbarActivity implements
+public class MyOrderActivity extends SimpleTopbarActivity implements
         ViewPager.OnPageChangeListener ,TabLayout.OnTabSelectedListener{
 
     private final int[] TITLE = { R.string.all, R.string.obligation,
             R.string.overhang,R.string.waitreceiving};
     private List<BaseFragment> fragmentList = new ArrayList<BaseFragment>();
     public static Class<?> fragmentArray[] = {
-            AllOrderFragment.class,
-            ObligationFragment.class,
-            OverhangFragment.class,
-            WaitreceivingFragment.class
+            OrderAllFragment.class,
+            OrderObligFragment.class,
+            OrderOverFragment.class,
+            OrderWaitFragment.class
     };
     private ViewPager pager;
     private TabLayout tableLayout;
 
-    private static Class<?> rightFuncArray[] = {CallService.class};
-
-    @Override
-    protected Class<?>[] getTopbarRightFuncArray() {
-        return rightFuncArray;
-    }
-
     @Override
     protected Object getTopbarTitle() {
-        return "订单";
+        return R.string.myorder;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_allorder);
+        setContentView(R.layout.activity_myorder);
     }
 
     @Override
     protected void afterSetContentView() {
         super.afterSetContentView();
         initFragments();
-        pager = (ViewPager)findViewById(R.id.pager);
-        tableLayout = (TabLayout) findViewById(R.id.table);
+        pager = (ViewPager)findViewById(R.id.vp_MyOrder);
+        tableLayout = (TabLayout) findViewById(R.id.tab_MyOrder);
 //        FindPagerAdapter adapter = new FindPagerAdapter(getActivity().getSupportFragmentManager());
 //        pager.setOffscreenPageLimit(0);//设置ViewPager的缓存界面数,默认缓存为2
 //        pager.setAdapter(adapter);
@@ -79,13 +71,13 @@ public class AllorderActivity extends SimpleTopbarActivity implements
             @Override
             public Fragment getItem(int position) {
                 if (position == 0){
-                    return new AllOrderFragment();
+                    return new OrderAllFragment();
                 }else if (position == 1){
-                    return new ObligationFragment();
+                    return new OrderObligFragment();
                 }else if (position == 2){
-                    return new OverhangFragment();
+                    return new OrderOverFragment();
                 } else{
-                    return new WaitreceivingFragment();
+                    return new OrderWaitFragment();
                 }
             }
 

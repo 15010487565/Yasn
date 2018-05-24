@@ -15,9 +15,7 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
  * Created by gs on 2018/2/3.
  */
 
-public abstract class SimpleTopbarFragment extends BaseFragment
-//        implements View.OnClickListener, LoadWebViewErrListener
-{
+public abstract class SimpleTopbarFragment extends BaseFragment {
 
 
     public String token;
@@ -33,6 +31,7 @@ public abstract class SimpleTopbarFragment extends BaseFragment
         resetTokenTime = SharePrefHelper.getInstance(getActivity()).getSpString("resetTokenTime");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
     protected void startWebViewActivity(String webViewUrl){
         Intent intent = new Intent(getActivity(), WebViewActivity.class);
         intent.putExtra("webViewUrl",webViewUrl);

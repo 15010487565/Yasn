@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_7"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_Pay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/margin_10"
+        android:gravity="center_vertical|right">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_10"
+            android:text="订单总金额:"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/black_66" />
+
+        <TextView
+            android:id="@+id/tv_NeedPayMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="@dimen/textsize_16"
+            android:textColor="@color/orange" />
+
+        <TextView
+            android:id="@+id/tv_totalMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/black_66" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|right"
+        android:padding="@dimen/margin_10"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_LookOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_black_white"
+            android:text="查看订单"
+            android:layout_marginRight="@dimen/margin_10"
+            android:textColor="@color/black_66" />
+        <TextView
+            android:id="@+id/tv_PayMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_oranger_white"
+            android:text="立即支付"
+            android:layout_marginRight="@dimen/margin_10"
+            android:textColor="@color/orange" />
+    </LinearLayout>
+</LinearLayout>

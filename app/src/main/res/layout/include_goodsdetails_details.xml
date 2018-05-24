@@ -82,9 +82,9 @@
                         android:background="@mipmap/order_orange"/>
                     <TextView
                         style="@style/include_goodsdetails_details_text"
-                        android:text="@string/order"/>
+                        android:text="@string/shopcar"/>
                 </LinearLayout>
-                <com.yasn.purchasetest.view.BadgeView
+                <www.xcd.com.mylibrary.view.BadgeView
                     android:id="@+id/main_tabitem_redpoint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

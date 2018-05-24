@@ -25,7 +25,9 @@ import com.yasn.purchasetest.common.Config;
 import com.yasn.purchasetest.listener.OnRcItemClickListener;
 import com.yasn.purchasetest.model.SearchModel;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
@@ -49,6 +51,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     String regionName;
     private String place = " ";
     private int placeNum = 3;
+    private Map viewHolderMap = new HashMap<>();
 
     public SearchAdapter(Context context,LinearLayoutManager linearLayoutManager) {
         super();
@@ -76,6 +79,16 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             this.list = list;
         }
         notifyDataSetChanged();
+    }
+
+    private Map getViewHolderMap() {
+        return viewHolderMap;
+    }
+    public void upFootText(){
+        Map viewHolderMap = getViewHolderMap();
+        FootViewHolder holder = (FootViewHolder) viewHolderMap.get("holder");
+        holder.progressBar.setVisibility(View.GONE);
+        holder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
     }
 
     public List<SearchModel.DataBean> getData(){
@@ -228,6 +241,8 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 Glide.with(context)
                         .load(dataBean.getThumbnail())
+                        .fitCenter()
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(R.mipmap.errorimage)
                         .error(R.mipmap.errorimage)
@@ -245,7 +260,6 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         footviewholder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
                     }else {
                         int visibleItemCount = linearLayoutManager.getChildCount();
-                        Log.e("TAG_底部adapter2","visibleItemCount="+visibleItemCount);
                         if (visibleItemCount != list.size()){
                             footviewholder.progressBar.setVisibility(View.GONE);
                             footviewholder.footText.setText(context.getResources().getString(R.string.pullup_to_load));
@@ -263,7 +277,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return list==null?0:list.size()+1;
+        return list==null?0:(list.size()+1);
     }
 
 

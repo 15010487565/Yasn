@@ -1,4 +1,4 @@
-package com.yasn.purchasetest.view;
+package www.xcd.com.mylibrary.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -77,8 +77,8 @@ public class FindFragment extends SimpleTopbarFragment implements
 //    }
     @Override
     protected void initView(LayoutInflater inflater, View view) {
-        pager = (ViewPager)view. findViewById(R.id.pager);
-        tableLayout = (TabLayout) view.findViewById(R.id.table);
+        pager = (ViewPager)view. findViewById(R.id.vp_Find);
+        tableLayout = (TabLayout) view.findViewById(R.id.tab_Find);
         pager.setOnPageChangeListener(this);
         //Viewpager的监听（这个接听是为Tablayout专门设计的）
         tableLayout.setupWithViewPager(pager);

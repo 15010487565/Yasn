@@ -55,6 +55,9 @@
     <string name="choiceness">精选</string>
     <string name="video">视频</string>
 
+
+    <string name="myorder">我的订单</string>
+    <string name="myorderall">全部</string>
     <string name="obligation">待付款</string>
     <string name="overhang">待发货</string>
     <string name="waitreceiving">待收货</string>
@@ -87,4 +90,5 @@
 </string>
     <string name="shopcartitlehint">亲~当日16:00之前完成支付，当日发货；16:00之后完成支付的订单，将于次日发货，请悉知~</string>
     <string name="shopcartitlemail">满%1$s包邮，还差</string>
+
 </resources>

@@ -187,7 +187,6 @@ public class SearchActivity extends SimpleTopbarActivity implements
         recyclerview_serrch.setLayoutManager(mLinearLayoutManager);
         adapter = new SearchAdapter(this,mLinearLayoutManager);
         adapter.setOnItemClickListener(this);
-        //当前屏幕所看到的子项个数
         recyclerview_serrch.setAdapter(adapter);
     }
 
@@ -658,49 +657,24 @@ public class SearchActivity extends SimpleTopbarActivity implements
 
     @Override
     public void onCancelResult() {
-
-        if (isDownPull) {
-            swipe_layout.setRefreshing(false);
-            isDownPull = false;
-
-        }
-        if (isUpPull) {
-            isUpPull = false;
-            swipe_layout.setLoading(false);
-        }
+        cancelUpdate();
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
-
-        if (isDownPull) {
-            swipe_layout.setRefreshing(false);
-            isDownPull = false;
-
-        }
-        if (isUpPull) {
-            isUpPull = false;
-            swipe_layout.setLoading(false);
-        }
+        cancelUpdate();
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
-
-        if (isDownPull) {
-            swipe_layout.setRefreshing(false);
-            isDownPull = false;
-
-        }
-        if (isUpPull) {
-            isUpPull = false;
-            swipe_layout.setLoading(false);
-        }
+        cancelUpdate();
     }
 
     @Override
     public void onFinishResult() {
-
+        cancelUpdate();
+    }
+    private void cancelUpdate(){
         if (isDownPull) {
             swipe_layout.setRefreshing(false);
             isDownPull = false;

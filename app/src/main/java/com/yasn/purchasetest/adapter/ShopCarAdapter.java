@@ -81,11 +81,11 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         switch (viewType) {
             case TYPE_ITEMTITLE:
-                view = LayoutInflater.from(context).inflate(R.layout.recycleritem_order, parent, false);
+                view = LayoutInflater.from(context).inflate(R.layout.recycleritem_shopcartitle, parent, false);
                 holder = new TitleViewHolder(view);
                 break;
             case TYPE_ITEMLIST:
-                view = LayoutInflater.from(context).inflate(R.layout.recycleritem_orderlist, parent, false);
+                view = LayoutInflater.from(context).inflate(R.layout.recycleritem_shopcarlist, parent, false);
                 holder = new ListViewHolder(view);
                 break;
         }
@@ -250,6 +250,8 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 String imageDefault = shopCarAdapterModel.getImageDefault();
                 Glide.with(context.getApplicationContext())
                         .load(imageDefault)
+                        .fitCenter()
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(R.mipmap.errorimage)
                         .error(R.mipmap.errorimage)

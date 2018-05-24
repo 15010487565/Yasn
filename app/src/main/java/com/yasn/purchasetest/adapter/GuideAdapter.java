@@ -59,7 +59,11 @@ public class GuideAdapter extends PagerAdapter {
         View view = inflater.inflate(R.layout.item_guide, container, false);
         if (imageUrls != null && imageUrls.size() > 0) {
             ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-            Glide.with(context).load(imageUrls.get(position)).into(imageView);
+            Glide.with(context)
+                    .load(imageUrls.get(position))
+                    .fitCenter()
+                    .dontAnimate()
+                    .into(imageView);
         } else {
             view.findViewById(R.id.imageView).setBackgroundResource(images[position]);
         }

@@ -23,23 +23,80 @@
 
     <!--</www.xcd.com.mylibrary.view.NoScrollPreloadViewPager>-->
 
-    <www.xcd.com.mylibrary.widget.SnsTabWidget
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_50"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:showDividers="none" />
     <TextView
+        android:id="@+id/tv_MainLin"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_1.5"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/height_50"
+        android:layout_marginBottom="@dimen/main_tabwidget_height"
         android:background="@color/line_gray"/>
     <www.xcd.com.mylibrary.widget.SnsTabWidget
         android:id="@+id/main_tabwidget"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_80"
+        android:layout_height="@dimen/main_tabwidget_height"
         android:layout_alignParentBottom="true"
-        android:background="@color/transparent"
+        android:background="@color/white"
         android:showDividers="none" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height_65"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:focusable="false">
+
+        <LinearLayout
+            android:id="@+id/main_tabitem_find"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="@dimen/height_40"
+                android:layout_height="@dimen/height_40"
+                android:padding="@dimen/margin_1dp"
+                android:background="@mipmap/icon_tab_find"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/find"
+                android:gravity="bottom"
+                android:paddingBottom="@dimen/margin_3"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/main_tabitem" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_tabitem_findH"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:alpha="0">
+            <ImageView
+                android:id="@+id/main_tabitem_iconhl"
+                android:layout_width="@dimen/height_40"
+                android:layout_height="@dimen/height_40"
+                android:padding="@dimen/margin_1dp"
+                android:background="@mipmap/icon_tab_find_press" />
+            <TextView
+                android:id="@+id/main_tabitem_texthl"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_3"
+                android:gravity="bottom"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/main_tabitem"
+                android:text="@string/find"/>
+        </LinearLayout>
+    </FrameLayout>
 </RelativeLayout>

@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 /**
  * Created by gs on 2017/12/26.
- * 高毛利商品
+ * 首页楼层model
  */
 
-public class OrderModel implements Serializable {
+public class GoodsFloorModel implements Serializable {
     private String text;
     private String image;
     private int itemType;
@@ -67,14 +67,14 @@ public class OrderModel implements Serializable {
     public void setMoney(String money) {
         this.money = money;
     }
-    public OrderModel() {
+    public GoodsFloorModel() {
     }
-    public OrderModel(String text, int itemType, String money) {
+    public GoodsFloorModel(String text, int itemType, String money) {
         this.text = text;
         this.itemType = itemType;
     }
 
-    public OrderModel(String text, int itemType, String money, String image) {
+    public GoodsFloorModel(String text, int itemType, String money, String image) {
         this.text = text;
         this.itemType = itemType;
         this.image = image;

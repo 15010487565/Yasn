@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
@@ -9,13 +10,14 @@
     <include
         layout="@layout/view_simple_topbar" />
     <android.support.design.widget.TabLayout
-        android:id="@+id/table"
+        android:id="@+id/tab_MyOrder"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_45"
-        >
+        app:tabIndicatorColor="@color/orange"
+        app:tabSelectedTextColor="@color/orange">
     </android.support.design.widget.TabLayout>
     <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+        android:id="@+id/vp_MyOrder"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
