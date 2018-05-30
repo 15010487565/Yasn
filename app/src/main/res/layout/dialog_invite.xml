@@ -41,7 +41,7 @@
                 android:paddingTop="@dimen/margin_5"
                 android:paddingBottom="@dimen/margin_5"
                 android:text="同意"
-                android:background="@drawable/text_orange_white_yuanjiao2"
+                android:background="@drawable/shape2_orange_white"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/textsize_18" />
             <TextView

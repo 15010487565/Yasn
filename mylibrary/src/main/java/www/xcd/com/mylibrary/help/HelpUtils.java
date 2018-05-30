@@ -318,6 +318,15 @@ public class HelpUtils {
         return sf.format(d);
     }
 
+    public static String getDateToString1(long time) {
+        if (String.valueOf(time).length() < 13) {
+            time = time * 1000;
+        }
+        Date d = new Date(time);
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return sf.format(d);
+    }
+
     //获取网络时间
     public static boolean getNetworkTime(String time) {
         try {

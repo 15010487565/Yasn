@@ -340,10 +340,17 @@ public class SearchActivity extends SimpleTopbarActivity implements
     }
 
     private void initTabLayout() {
-
+        token = SharePrefHelper.getInstance(this).getSpString("token");
+        resetToken = SharePrefHelper.getInstance(this).getSpString("resetToken");
+        resetTokenTime = SharePrefHelper.getInstance(this).getSpString("resetTokenTime");
         if (secarchtoptab) {
             tablayout.setVisibility(View.VISIBLE);
             Map<String, Object> params = new HashMap<String, Object>();
+            if (token != null && !"".equals(token)) {
+                params.put("access_token", token);
+            } else if (resetToken != null && !"".equals(resetToken)) {
+                params.put("access_token", resetToken);
+            }
             okHttpGet(102, Config.CLASSIFY+"/"+secarchcarid, params);
         } else {
             tablayout.setVisibility(View.GONE);

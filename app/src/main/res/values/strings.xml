@@ -62,6 +62,7 @@
     <string name="overhang">待发货</string>
     <string name="waitreceiving">待收货</string>
     <string name="allorder">全部订单</string>
+    <string name="orderdetails">订单详情</string>
 
     <string name="mejifen">我的积分</string>
     <string name="shouhuo_addressv">收货地址</string>

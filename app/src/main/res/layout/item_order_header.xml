@@ -17,10 +17,20 @@
 
     <TextView
         android:id="@+id/tv_orderNumber"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:singleLine="true"
         android:textSize="@dimen/textsize_14"
         android:textColor="@color/black_66" />
+    <TextView
+        android:id="@+id/tv_orderPayType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:singleLine="true"
+        android:layout_marginRight="@dimen/margin_10"
+        android:textSize="@dimen/textsize_14"
+        android:textColor="@color/orange" />
 </LinearLayout>

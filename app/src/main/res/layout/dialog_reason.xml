@@ -44,7 +44,7 @@
             android:paddingBottom="@dimen/margin_5"
             android:layout_weight="1"
             android:text="重新认证"
-            android:background="@drawable/text_orange_white_yuanjiao2"
+            android:background="@drawable/shape2_orange_white"
             android:textColor="@color/orange"
             android:textSize="@dimen/textsize_18" />
 

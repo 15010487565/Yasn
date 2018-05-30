@@ -3,7 +3,6 @@ package com.yasn.purchasetest.fragment;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +49,7 @@ public class FindFragment extends SimpleTopbarFragment implements
 
     @Override
     protected void OkHttpDemand() {
-        Log.e("TAG_initView","FIND_OkHttp");
+//        Log.e("TAG_initView","FIND_OkHttp");
         Map<String, Object> params = new HashMap<String, Object>();
         okHttpGet(100, Config.FIND+findId+"/"+pageCount, params);
     }

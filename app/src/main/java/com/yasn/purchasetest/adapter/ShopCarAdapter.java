@@ -123,7 +123,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         setResidueDoubleFormat(residueDoubleFormat);
                         String freeShipMoneyFormat = String.format("%.2f", Double.valueOf(freeShipMoney));
                         String tvMmailHin = String.format(tvMmailHintString, freeShipMoneyFormat);
-                        Log.e("TAG_购物车",residueDoubleFormat+"=="+residueDoubleFormat.length());
+//                        Log.e("TAG_购物车",residueDoubleFormat+"=="+residueDoubleFormat.length());
                         titleViewHolder.tvMmailHint.setText(tvMmailHin);
                         titleViewHolder.tvMailHintPrice.setText(residueDoubleFormat + "元");
                     } else {

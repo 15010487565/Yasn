@@ -40,7 +40,6 @@ import com.yasn.purchasetest.model.EventBusMsg;
 import com.yasn.purchasetest.model.GoodsDetailsOtherModel;
 import com.yasn.purchasetest.model.SobotModel;
 import com.yasn.purchasetest.utils.ToastUtil;
-import www.xcd.com.mylibrary.view.BadgeView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -56,6 +55,7 @@ import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
+import www.xcd.com.mylibrary.view.BadgeView;
 import www.xcd.com.mylibrary.view.NoScrollViewPager;
 
 
@@ -347,14 +347,14 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         Integer integerGoodsNum = Integer.valueOf(goodsNum);
         int smallSale = goodsInfoFragment.getSmallSale();
         int step = goodsInfoFragment.getStep();
-        Log.e("TAG_activity", "加入进货单goodsNum=" + integerGoodsNum + ";smallSale=" + smallSale + "；step=" + step);
+//        Log.e("TAG_activity", "加入进货单goodsNum=" + integerGoodsNum + ";smallSale=" + smallSale + "；step=" + step);
         if (integerGoodsNum < smallSale) {
             ToastUtil.showToast("最小起订量为" + smallSale + "件，请输入正确数量！");
             return;
         }
         if (smallSale > 0) {
             int remainder = (integerGoodsNum - smallSale) % step;
-            Log.e("TAG_activity", "加入进货单remainder=" + remainder);
+//            Log.e("TAG_activity", "加入进货单remainder=" + remainder);
             if (remainder > 0) {
                 ToastUtil.showToast("最小起订量为" + smallSale + "件，每次加减不得少于"+step+"件，请输入正确数量！");
                 return;
@@ -584,7 +584,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         Log.e("TAG_详情页", "msg=" + msg);
        if ("carNum".equals(msg)) {
            Integer cartNum = Integer.valueOf(event.getCarNum());
-           Log.e("TAG_详情页", "cartNum=" + cartNum);
+//           Log.e("TAG_详情页", "cartNum=" + cartNum);
            if (cartNum == 0) {
                main_tabitem_redpoint.setVisibility(View.GONE);
            } else {
@@ -605,7 +605,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
      * @param isBeforeSale 是否預售 , 0否1是
      */
     public void setTvAddShopCar(boolean isOnclick, boolean isBeforeSale) {
-        Log.e("TAG_加入进货单", "isBeforeSale=" + isBeforeSale);
+//        Log.e("TAG_加入进货单", "isBeforeSale=" + isBeforeSale);
         if ("0".equals(loginState)) {
             if (isOnclick) {//库存大于0
                 tvAddShopCar.setEnabled(true);

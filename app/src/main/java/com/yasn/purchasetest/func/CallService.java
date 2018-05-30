@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.view.View;
 
 import com.yasn.purchasetest.R;
-import com.yasn.purchasetest.activity.OftenShopActivity;
+import com.yasn.purchasetest.activity.OrderDetailsActivity;
+import com.yasn.purchasetest.help.SobotUtil;
 
 import www.xcd.com.mylibrary.func.BaseTopImageBtnFunc;
 
@@ -30,7 +31,11 @@ public class CallService extends BaseTopImageBtnFunc {
 
     @Override
     public void onclick(View v) {
-
-        ( (OftenShopActivity)getActivity()).callService();
+        if (getActivity() instanceof OrderDetailsActivity){
+            OrderDetailsActivity activity = (OrderDetailsActivity)getActivity();
+            activity.startSobot();
+        }else {
+            SobotUtil.startSobot(getActivity(),null);
+        }
     }
 }

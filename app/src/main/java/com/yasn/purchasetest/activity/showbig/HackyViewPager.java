@@ -3,7 +3,6 @@ package com.yasn.purchasetest.activity.showbig;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 /**
@@ -34,15 +33,15 @@ public class HackyViewPager extends ViewPager {
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		try {
-			Log.e("TAG_===HackyViewPager","onInterceptTouchEvent="+super.onInterceptTouchEvent(ev));
+//			Log.e("TAG_===HackyViewPager","onInterceptTouchEvent="+super.onInterceptTouchEvent(ev));
 			return super.onInterceptTouchEvent(ev);
 		}  catch (IllegalArgumentException e) {
 			//不理会
-			Log.e("TAG_===HackyViewPager","Illegal=不理会");
+//			Log.e("TAG_===HackyViewPager","Illegal=不理会");
 			return false;
 		}catch(ArrayIndexOutOfBoundsException e ){
 			//不理会
-			Log.e("TAG_===HackyViewPager","Array=不理会");
+//			Log.e("TAG_===HackyViewPager","Array=不理会");
 			return false;
 		}
 	}

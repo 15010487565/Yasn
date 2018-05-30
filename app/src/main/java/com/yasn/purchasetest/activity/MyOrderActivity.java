@@ -13,7 +13,6 @@ import com.yasn.purchasetest.fragment.OrderAllFragment;
 import com.yasn.purchasetest.fragment.OrderObligFragment;
 import com.yasn.purchasetest.fragment.OrderOverFragment;
 import com.yasn.purchasetest.fragment.OrderWaitFragment;
-import com.yonyou.sns.im.log.YYIMLogger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,10 +23,10 @@ import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 
 public class MyOrderActivity extends SimpleTopbarActivity implements
-        ViewPager.OnPageChangeListener ,TabLayout.OnTabSelectedListener{
+        ViewPager.OnPageChangeListener, TabLayout.OnTabSelectedListener {
 
-    private final int[] TITLE = { R.string.all, R.string.obligation,
-            R.string.overhang,R.string.waitreceiving};
+    private final int[] TITLE = {R.string.all, R.string.obligation,
+            R.string.overhang, R.string.waitreceiving};
     private List<BaseFragment> fragmentList = new ArrayList<BaseFragment>();
     public static Class<?> fragmentArray[] = {
             OrderAllFragment.class,
@@ -53,11 +52,8 @@ public class MyOrderActivity extends SimpleTopbarActivity implements
     protected void afterSetContentView() {
         super.afterSetContentView();
         initFragments();
-        pager = (ViewPager)findViewById(R.id.vp_MyOrder);
+        pager = (ViewPager) findViewById(R.id.vp_MyOrder);
         tableLayout = (TabLayout) findViewById(R.id.tab_MyOrder);
-//        FindPagerAdapter adapter = new FindPagerAdapter(getActivity().getSupportFragmentManager());
-//        pager.setOffscreenPageLimit(0);//设置ViewPager的缓存界面数,默认缓存为2
-//        pager.setAdapter(adapter);
         pager.setOnPageChangeListener(this);
         //Viewpager的监听（这个接听是为Tablayout专门设计的）
         tableLayout.setupWithViewPager(pager);
@@ -66,32 +62,13 @@ public class MyOrderActivity extends SimpleTopbarActivity implements
          * TabLayout.MODE_FIXED     不支持，默认不支持水平滑动
          */
         tableLayout.setTabMode(TabLayout.MODE_FIXED);
-        tableLayout.setTabTextColors(Color.BLACK,Color.RED);
-        pager.setAdapter(new AllorderPagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                if (position == 0){
-                    return new OrderAllFragment();
-                }else if (position == 1){
-                    return new OrderObligFragment();
-                }else if (position == 2){
-                    return new OrderOverFragment();
-                } else{
-                    return new OrderWaitFragment();
-                }
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return getResources().getString(TITLE[position]);
-            }
-
-            @Override
-            public int getCount() {
-                return TITLE.length;
-            }
-        });
+        tableLayout.setTabTextColors(Color.BLACK, Color.RED);
+        AllorderPagerAdapter allorderPagerAdapter = new AllorderPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(allorderPagerAdapter);
+        int tabIndex = getIntent().getIntExtra("tabIndex", 0);
+        pager.setCurrentItem(tabIndex);
     }
+
     protected void initFragments() {
         // 初始化fragments
         for (int i = 0; i < fragmentArray.length; i++) {
@@ -100,7 +77,7 @@ public class MyOrderActivity extends SimpleTopbarActivity implements
                 fragment = (BaseFragment) fragmentArray[i].newInstance();
                 fragment.setActivity(this);
             } catch (Exception e) {
-                YYIMLogger.d(e);
+
             }
             fragmentList.add(fragment);
         }
@@ -177,5 +154,9 @@ public class MyOrderActivity extends SimpleTopbarActivity implements
             return fragmentList.size();
         }
 
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return getResources().getString(TITLE[position]);
+        }
     }
 }

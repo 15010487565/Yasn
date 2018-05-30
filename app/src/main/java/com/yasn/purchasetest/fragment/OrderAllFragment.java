@@ -19,6 +19,7 @@ import com.yasn.purchasetest.model.order.OrderMainModel;
 import com.yasn.purchasetest.model.order.OrderMainPayInfoModel;
 import com.yasn.purchasetest.model.order.OrderShopNameModel;
 import com.yasn.purchasetest.view.MultiSwipeRefreshLayout;
+import com.yasn.purchasetest.view.RecyclerViewDecoration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -93,6 +94,10 @@ public class OrderAllFragment extends OrderFragment implements
         adapter = new OrderMainAdapter(getActivity(),linearLayoutManager);
         adapter.setOnItemClickListener(this);
         rcAllOrder.setAdapter(adapter);
+        //rc线
+        RecyclerViewDecoration recyclerViewDecoration = new RecyclerViewDecoration(
+                getFragmentActivity(), LinearLayoutManager.HORIZONTAL, 1, getResources().getColor(R.color.line_gray));
+        rcAllOrder.addItemDecoration(recyclerViewDecoration);
 
         rcAllOrder.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -325,10 +330,9 @@ public class OrderAllFragment extends OrderFragment implements
         Object o = allOrderList.get(position);
         if (o instanceof OrderMainPayInfoModel){
             OrderMainPayInfoModel  infoModel = (OrderMainPayInfoModel) o;
-            String sn = infoModel.getSn();
-            Log.e("TAG_查看全部订单","SN="+sn);
             int orderId = infoModel.getOrderId();
-            Log.e("TAG_查看全部订单","orderId="+orderId);
+            Log.e("TAG_查看订单","orderId="+orderId);
+            startOrderDetailsActivity(orderId,1);
         }
     }
     //立即支付
@@ -337,16 +341,16 @@ public class OrderAllFragment extends OrderFragment implements
         Object o = allOrderList.get(position);
         if (o instanceof OrderMainPayInfoModel){
             OrderMainPayInfoModel  infoModel = (OrderMainPayInfoModel) o;
-            String sn = infoModel.getSn();
-            Log.e("TAG_全部订单支付","SN="+sn);
             int orderId = infoModel.getOrderId();
-            Log.e("TAG_全部订单支付","orderId="+orderId);
+            Log.e("TAG_立即支付","orderId="+orderId);
+//            startOrderDetailsActivity(orderId,true);
         }
     }
     //查看主订单
     @Override
     public void OnLookMainOrderClick(int position) {
     }
+
     //下拉刷新
     @Override
     public void onRefresh() {

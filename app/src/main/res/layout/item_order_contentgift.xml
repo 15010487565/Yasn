@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:lee="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:layout_marginBottom="@dimen/margin_1"
     android:gravity="center"
@@ -10,7 +9,7 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/iv_orderContent"
+        android:id="@+id/iv_orderGift"
         android:layout_width="80dp"
         android:layout_height="80dp"
         />
@@ -22,36 +21,34 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_orderContentName"
+            android:id="@+id/tv_orderGiftName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/margin_10"
             android:maxLines="2"
             android:text=""
             android:textColor="@color/black_66" />
-        <com.yasn.purchasetest.view.TagsLayout
-            android:id="@+id/tl_OrderDetails"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:minHeight="@dimen/height_15"
+            android:gravity="center_vertical"
             android:paddingLeft="@dimen/margin_10"
-            android:paddingTop="@dimen/margin_10"
-            lee:tagHorizontalSpace="5dp"
-            lee:tagVerticalSpace="5dp" />
-        <TextView
-            android:id="@+id/tv_orderContentNum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:paddingLeft="@dimen/margin_10"
-            android:textColor="@color/black_66" />
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="赠送"
+                android:background="@drawable/shape_white_red"
+                android:textColor="@color/red" />
+            <TextView
+                android:id="@+id/tv_orderGiftNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginLeft="@dimen/margin_15"
+                android:textColor="@color/black_66" />
 
+        </LinearLayout>
     </LinearLayout>
 
-    <!--<View-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/margin_1"-->
-    <!--android:background="@color/line_gray"-->
-    <!--/>-->
 </LinearLayout>

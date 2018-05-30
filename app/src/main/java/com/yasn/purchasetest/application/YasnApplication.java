@@ -21,7 +21,7 @@ public class YasnApplication extends BaseApplication {
     // 替换成bugly上注册的appid
 //    public static final String APP_ID = "2b3b07943f";
     // 测试appid
-    public static final String APP_ID = "4408947e15";
+    public static final String APP_ID = "8e4914468a";
     public static YasnApplication getInstance() {
         if (instance == null) {
             instance = new YasnApplication();

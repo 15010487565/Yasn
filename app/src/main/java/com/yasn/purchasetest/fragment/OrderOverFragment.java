@@ -19,6 +19,7 @@ import com.yasn.purchasetest.model.order.OrderShopNameModel;
 import com.yasn.purchasetest.model.order.OrderSonModel;
 import com.yasn.purchasetest.model.order.OrderSonPayInfoModel;
 import com.yasn.purchasetest.view.MultiSwipeRefreshLayout;
+import com.yasn.purchasetest.view.RecyclerViewDecoration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -88,6 +89,10 @@ public class OrderOverFragment extends OrderFragment implements
         adapter = new OrderSonAdapter(getActivity(), linearLayoutManager);
         adapter.setOnItemClickListener(this);
         rcOrderOver.setAdapter(adapter);
+        //rc线
+        RecyclerViewDecoration recyclerViewDecoration = new RecyclerViewDecoration(
+                getFragmentActivity(), LinearLayoutManager.HORIZONTAL, 1, getResources().getColor(R.color.line_gray));
+        rcOrderOver.addItemDecoration(recyclerViewDecoration);
 
         rcOrderOver.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -282,10 +287,9 @@ public class OrderOverFragment extends OrderFragment implements
         Object o = orderoverList.get(position);
         if (o instanceof OrderSonPayInfoModel){
             OrderSonPayInfoModel  infoModel = (OrderSonPayInfoModel) o;
-            String sn = infoModel.getSn();
-            Log.e("TAG_查看待发货主订单","SN="+sn);
             int orderId = infoModel.getOrderId();
-            Log.e("TAG_查看待发货主订单","orderId="+orderId);
+            Log.e("TAG_查看订单","orderId="+orderId);
+            startOrderDetailsActivity(orderId,2);
         }
     }
 
@@ -301,10 +305,9 @@ public class OrderOverFragment extends OrderFragment implements
         Object o = orderoverList.get(position);
         if (o instanceof OrderSonPayInfoModel){
             OrderSonPayInfoModel  infoModel = (OrderSonPayInfoModel) o;
-            String sn = infoModel.getSn();
-            Log.e("TAG_查看待发货主订单","SN="+sn);
             int orderId = infoModel.getOrderId();
-            Log.e("TAG_查看待发货主订单","orderId="+orderId);
+            Log.e("TAG_查看主订单","orderId="+orderId);
+            startOrderDetailsActivity(orderId,3);
         }
     }
 

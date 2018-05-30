@@ -141,11 +141,6 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction tran = fm.beginTransaction();
 
-//        HomeFragment homeFragment = new HomeFragment();
-//        ClassifyFragment classifyFragment = new ClassifyFragment();
-//        FindTestFragment findTestFragment = new FindTestFragment();
-//        ShopCarFragment shopCarFragment = new ShopCarFragment();
-//        ShopFragment shopFragment = new ShopFragment();
         //R.id.relative为布局
         tran.add(R.id.frame_content, fragmentList.get(0), "home").show(fragmentList.get(0))
                 .add(R.id.frame_content, fragmentList.get(1), "classify").hide(fragmentList.get(1))
@@ -503,7 +498,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         if ("loginout".equals(msg)) {
             setCartNum(0);
         } else if ("carNum".equals(msg)) {
-            Log.e("TAG_Main","CarNum="+event.getCarNum());
+//            Log.e("TAG_Main","CarNum="+event.getCarNum());
             setCartNum(Integer.valueOf(event.getCarNum()));
 
         } else if ("webViewBack".equals(msg)) {//返回页

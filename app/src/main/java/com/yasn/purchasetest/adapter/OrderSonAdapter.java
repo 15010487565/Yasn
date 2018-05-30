@@ -6,13 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yasn.purchasetest.R;
+import com.yasn.purchasetest.holder.OrderContentHolder;
+import com.yasn.purchasetest.holder.OrderHeaderHolder;
+import com.yasn.purchasetest.holder.OrderShopNameHolder;
 import com.yasn.purchasetest.listener.OnRcOrderItemClickListener;
 import com.yasn.purchasetest.model.order.OrderGoodsContentModel;
 import com.yasn.purchasetest.model.order.OrderHeaderModel;
@@ -194,37 +196,37 @@ public class OrderSonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return count;
     }
 
-    class OrderHeaderHolder extends RecyclerView.ViewHolder {
-        private TextView tvOrderNumber;
-        public OrderHeaderHolder(View view) {
-            super(view);
-            tvOrderNumber = (TextView) view.findViewById(R.id.tv_orderNumber);
-        }
-    }
-
-    class OrderShopNameHolder extends RecyclerView.ViewHolder {
-
-        private TextView tvOrderShopName;
-
-        public OrderShopNameHolder(View view) {
-            super(view);
-            tvOrderShopName = (TextView) view.findViewById(R.id.tv_orderShopName);
-        }
-    }
-
-    class OrderContentHolder extends RecyclerView.ViewHolder {
-
-        private ImageView ivOrderContent;
-        private TextView tvOrderContentName;
-        private TextView tvOrderContentNum;
-
-        public OrderContentHolder(View view) {
-            super(view);
-            ivOrderContent = (ImageView) view.findViewById(R.id.iv_orderContent);
-            tvOrderContentName = (TextView) view.findViewById(R.id.tv_orderContentName);
-            tvOrderContentNum = (TextView) view.findViewById(R.id.tv_orderContentNum);
-        }
-    }
+//    class OrderHeaderHolder extends RecyclerView.ViewHolder {
+//        private TextView tvOrderNumber;
+//        public OrderHeaderHolder(View view) {
+//            super(view);
+//            tvOrderNumber = (TextView) view.findViewById(R.id.tv_orderNumber);
+//        }
+//    }
+//
+//    class OrderShopNameHolder extends RecyclerView.ViewHolder {
+//
+//        private TextView tvOrderShopName;
+//
+//        public OrderShopNameHolder(View view) {
+//            super(view);
+//            tvOrderShopName = (TextView) view.findViewById(R.id.tv_orderShopName);
+//        }
+//    }
+//
+//    class OrderContentHolder extends RecyclerView.ViewHolder {
+//
+//        private ImageView ivOrderContent;
+//        private TextView tvOrderContentName;
+//        private TextView tvOrderContentNum;
+//
+//        public OrderContentHolder(View view) {
+//            super(view);
+//            ivOrderContent = (ImageView) view.findViewById(R.id.iv_orderContent);
+//            tvOrderContentName = (TextView) view.findViewById(R.id.tv_orderContentName);
+//            tvOrderContentNum = (TextView) view.findViewById(R.id.tv_orderContentNum);
+//        }
+//    }
 
     class OrderPayHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 

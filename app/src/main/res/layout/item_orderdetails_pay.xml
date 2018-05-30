@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingLeft="@dimen/margin_10"
+    android:orientation="vertical">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minHeight="40dp"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="商品金额："
+            style="@style/text_orderdetailspay1" />
+        <TextView
+            android:id="@+id/tv_orderDetailsGoodsMoney"
+            style="@style/text_orderdetailspay2"
+            android:gravity="right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minHeight="40dp"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            style="@style/text_orderdetailspay1"
+            android:text="积分抵现："/>
+        <TextView
+            android:id="@+id/tv_orderDetailsDeductMoney"
+            style="@style/text_orderdetailspay2"
+            android:gravity="right" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minHeight="40dp"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            style="@style/text_orderdetailspay1"
+            android:text="运费总额："/>
+        <TextView
+            android:id="@+id/tv_orderDetailsShippingTotal"
+            style="@style/text_orderdetailspay2"
+            android:gravity="right"/>
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/margin_10"
+        android:gravity="center_vertical|right">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_10"
+            android:text="小计:"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/black_66" />
+
+        <TextView
+            android:id="@+id/tv_NeedPayMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="@dimen/textsize_16"
+            android:textColor="@color/orange" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_10"
+        android:gravity="center_vertical|right">
+        <TextView
+            android:id="@+id/tv_DetailsApply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:background="@drawable/shape_black_white"
+            android:text="申请售后"
+            android:textColor="@color/black_66"
+            android:textSize="@dimen/textsize_14" />
+        <TextView
+            android:id="@+id/tv_DetailsRemind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:background="@drawable/shape_black_white"
+            android:text="提醒发货"
+            android:textColor="@color/black_66"
+            android:textSize="@dimen/textsize_14" />
+        <TextView
+            android:id="@+id/tv_DetailsLookOver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:background="@drawable/shape_black_white"
+            android:text="查看物流"
+            android:textColor="@color/black_66"
+            android:textSize="@dimen/textsize_14" />
+        <TextView
+            android:id="@+id/tv_DetailsOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:background="@drawable/shape_black_orange"
+            android:text="确认发货"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/textsize_14" />
+    </LinearLayout>
+
+</LinearLayout>

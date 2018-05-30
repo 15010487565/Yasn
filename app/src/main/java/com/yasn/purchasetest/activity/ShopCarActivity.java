@@ -594,9 +594,141 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         adapter.setData(shopCarAdapterList);
         llShopcarNodata.setVisibility(View.GONE);
         //顶部titile是否选中
-//        upDataSelected();
+        initTitleSelected();
         //总价
         upDataMoney();
+    }
+
+    private void initTitleSelected() {
+//        if (shopCarAdapterList.size() == 2) {
+//            Log.e("TAG_首次", "j=" + shopCarAdapterList.size());
+//            String tag = (String) ivStoreNameSelect.getTag();
+//            ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(0);
+//            if (tag == null) {
+//                //title
+//                shopCarAdapterModel.setIsCheck(1);
+//                ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_checked);
+//                //商品
+//                ShopCarAdapterModel shopCarGood = shopCarAdapterList.get(1);
+//                int productIdGood = shopCarGood.getProductId();
+//                shopCarGood.setIsCheck(1);
+//                ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_checked);
+//                ivStoreNameSelect.setTag("");
+//                isSelected(String.valueOf(productIdGood), "");
+//            } else {
+//                //title
+//                shopCarAdapterModel.setIsCheck(0);
+//                ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_unchecked);
+//                //商品
+//                ShopCarAdapterModel shopCarGood = shopCarAdapterList.get(1);
+//                int productIdGood = shopCarGood.getProductId();
+//                shopCarGood.setIsCheck(0);
+//                ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_unchecked);
+//                ivStoreNameSelect.setTag(null);
+//                isSelected("", String.valueOf(productIdGood));
+//            }
+//
+//        } else {
+            //临时标记全选按钮状态
+            boolean typeCheckAll = true;
+            //预售个数
+            int beforeSaleNum = 0;
+            //下架个数
+            int goodsOffNum = 0;
+            //无货个数
+            int enableStoreNum = 0;
+            //普通选中商品
+            int generalNum = 0;
+            //title个数
+            int titleNum = 0;
+            //临时存储title位置
+            int titlePosition = 0;
+            for (int i = 0, j = shopCarAdapterList.size(); i < j; i++) {
+                ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(i);
+                int store_id = shopCarAdapterModel.getStore_id();
+                int isCheck = shopCarAdapterModel.getIsCheck();
+                //预售
+                String beforeSale = shopCarAdapterModel.getBeforeSale();
+                //顶部title
+                int itmeType = shopCarAdapterModel.getItmeType();
+                //库存
+                int enableStore = shopCarAdapterModel.getEnableStore();
+                //是否下架 1下架 0上架
+                int goodsOff = shopCarAdapterModel.getGoodsOff();
+                if (itmeType == 1) {
+                    //预售个数
+                    beforeSaleNum = 0;
+                    //下架个数
+                    goodsOffNum = 0;
+                    //无货个数
+                    enableStoreNum = 0;
+                    //普通选中商品
+                    generalNum = 0;
+                    //title个数
+//                titleNum = 0;
+
+                    titleNum++;
+                    titlePosition = i;
+
+                } else {
+                    if (beforeSale == null || "".equals(beforeSale)) {//非预售
+                        if (goodsOff == 1) {//1下架
+                            goodsOffNum++;
+                        } else {//上架
+                            if (enableStore > 0) {//有库存
+                                if (isCheck == 1) {
+                                    generalNum++;
+                                }
+                            } else {//无库存
+                                enableStoreNum++;
+                            }
+                        }
+                    } else {//预售
+                        beforeSaleNum++;
+                    }
+                }
+                if (i + 1 < j) {
+                    ShopCarAdapterModel shopCarNext = shopCarAdapterList.get(i + 1);
+                    int store_idNext = shopCarNext.getStore_id();
+                    if (store_id != store_idNext) {
+                        ShopCarAdapterModel shopCarTitleModel = shopCarAdapterList.get(titlePosition);
+                        int goodsNum = shopCarTitleModel.getGoodsNum();
+                        if (goodsNum - beforeSaleNum - goodsOffNum - enableStoreNum == generalNum) {
+                            if (generalNum == 0) {//有库存且选中的个数为0
+                                shopCarTitleModel.setIsCheck(0);
+                                typeCheckAll = false;
+                            } else {
+                                shopCarTitleModel.setIsCheck(1);
+                            }
+                        } else {
+                            shopCarTitleModel.setIsCheck(0);
+                            typeCheckAll = false;
+                        }
+                    }
+                } else if (i + 1 == j) {
+                    ShopCarAdapterModel shopCarTitleModel = shopCarAdapterList.get(titlePosition);
+                    int goodsNum = shopCarTitleModel.getGoodsNum();
+                    if (goodsNum - beforeSaleNum - goodsOffNum - enableStoreNum == generalNum) {
+                        if (generalNum == 0) {//有库存且选中的个数为0
+                            shopCarTitleModel.setIsCheck(0);
+                            typeCheckAll = false;
+                        } else {
+                            shopCarTitleModel.setIsCheck(1);
+                        }
+                    } else {
+                        shopCarTitleModel.setIsCheck(0);
+                        typeCheckAll = false;
+                    }
+                }
+            }
+
+            if (!typeCheckAll) {
+                ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_unchecked);
+            } else {
+                ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_checked);
+            }
+//        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override

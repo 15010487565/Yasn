@@ -1,5 +1,7 @@
 package com.yasn.purchasetest.model.order;
 
+import java.util.List;
+
 /**
  * OrderGoodsContentModel 表示小订单中的商品
  * Created by admin on 2016/11/8.
@@ -11,7 +13,34 @@ public class OrderGoodsContentModel {
     private String name;//商品名称
     private int num;//订单数量
     private String price;
+    private List<OrderGoodsValueBean> list;
 
+    public List<OrderGoodsValueBean> getList() {
+        return list;
+    }
+
+    public void setList(List<OrderGoodsValueBean> list) {
+        this.list = list;
+    }
+
+    public static class OrderGoodsValueBean{
+        private String value;
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return "OrderGoodsValueBean{" +
+                    "value='" + value + '\'' +
+                    '}';
+        }
+    }
     public String getShopName() {
         return ShopName;
     }
@@ -50,5 +79,17 @@ public class OrderGoodsContentModel {
 
     public void setNum(int num) {
         this.num = num;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderGoodsContentModel{" +
+                "ShopName='" + ShopName + '\'' +
+                ", image='" + image + '\'' +
+                ", name='" + name + '\'' +
+                ", num=" + num +
+                ", price='" + price + '\'' +
+                ", list=" + list +
+                '}';
     }
 }

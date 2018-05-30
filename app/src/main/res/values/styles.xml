@@ -207,5 +207,19 @@
         <item name="android:windowEnterAnimation">@anim/home_in_anim</item>
         <item name="android:windowExitAnimation">@anim/home_out_anim</item>
     </style>
+    <style name="text_orderdetailspay">
 
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/black_66</item>
+        <item name="android:textSize">@dimen/textsize_14</item>
+    </style>
+    <style name="text_orderdetailspay1" parent="@style/text_orderdetailspay">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="text_orderdetailspay2" parent="@style/text_orderdetailspay">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingRight">@dimen/margin_10</item>
+    </style>
 </resources>

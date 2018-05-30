@@ -120,6 +120,14 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
     };
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        isShowState = true;
+        flag = false;
+        isFirstOpen();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         isShowState = true;
@@ -148,18 +156,15 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
             @Override
             public void run() {
                 flag = true;
-
                 boolean userGuideShow = SharePrefHelper.getInstance(context).getSpBoolean("is_user_guide_show", false);
                 Log.e("TAG_isShowState","isShowState="+isShowState);
                 if (isShowState){
                     if (!userGuideShow) {
                         startActivityForResult(new Intent(LaunchActivity.this, GuideActivity.class), GUIDEACTIVITYCODE);
-
                     } else {
                         startActivity();
                     }
                 }
-
             }
         };
         handler.postDelayed(runnable, skipTime);
@@ -208,6 +213,7 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.skip_btn:
+                Log.e("TAG_flag","flag="+flag);
                 if (flag) {
                     return;
                 }

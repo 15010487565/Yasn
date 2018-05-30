@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:gravity="center_vertical"
+    android:minHeight="40dp">
+    <ImageView
+        android:id="@+id/iv_isCheck"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:clickable="false"
+        android:focusable="false"
+        android:background="@mipmap/checkbox_checked"/>
+    <TextView
+        android:id="@+id/tv_Reason"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:textColor="@color/black_66"
+        android:textSize="@dimen/textsize_16"
+        android:text="原因" />
+
+</LinearLayout>

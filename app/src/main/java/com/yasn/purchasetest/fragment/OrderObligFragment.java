@@ -19,6 +19,7 @@ import com.yasn.purchasetest.model.order.OrderMainModel;
 import com.yasn.purchasetest.model.order.OrderMainPayInfoModel;
 import com.yasn.purchasetest.model.order.OrderShopNameModel;
 import com.yasn.purchasetest.view.MultiSwipeRefreshLayout;
+import com.yasn.purchasetest.view.RecyclerViewDecoration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -88,6 +89,10 @@ public class OrderObligFragment extends OrderFragment implements
         adapter = new OrderMainAdapter(getActivity(),linearLayoutManager);
         adapter.setOnItemClickListener(this);
         rcOrderOblig.setAdapter(adapter);
+        //rc线
+        RecyclerViewDecoration recyclerViewDecoration = new RecyclerViewDecoration(
+                getFragmentActivity(), LinearLayoutManager.HORIZONTAL, 1, getResources().getColor(R.color.line_gray));
+        rcOrderOblig.addItemDecoration(recyclerViewDecoration);
 
         rcOrderOblig.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -320,10 +325,9 @@ public class OrderObligFragment extends OrderFragment implements
         Object o = orderObligList.get(position);
         if (o instanceof OrderMainPayInfoModel){
             OrderMainPayInfoModel  infoModel = (OrderMainPayInfoModel) o;
-            String sn = infoModel.getSn();
-            Log.e("TAG_查看待付款","SN="+sn);
             int orderId = infoModel.getOrderId();
-            Log.e("TAG_查看待付款","orderId="+orderId);
+            Log.e("TAG_查看订单","orderId="+orderId);
+            startOrderDetailsActivity(orderId,1);
         }
     }
     //立即支付
@@ -332,10 +336,9 @@ public class OrderObligFragment extends OrderFragment implements
         Object o = orderObligList.get(position);
         if (o instanceof OrderMainPayInfoModel){
             OrderMainPayInfoModel  infoModel = (OrderMainPayInfoModel) o;
-            String sn = infoModel.getSn();
-            Log.e("TAG_查看待付款","SN="+sn);
             int orderId = infoModel.getOrderId();
-            Log.e("TAG_查看待付款","orderId="+orderId);
+            Log.e("TAG_立即支付","orderId="+orderId);
+//            startOrderDetailsActivity(orderId,true);
         }
     }
     //查看主订单
@@ -354,7 +357,7 @@ public class OrderObligFragment extends OrderFragment implements
     //上拉加载
     @Override
     public void onLoad() {
-        Log.e("TAG_待付款","onLoad="+(rcOrderOblig !=null)+( rcOrderOblig.getAdapter() != null));
+//        Log.e("TAG_待付款","onLoad="+(rcOrderOblig !=null)+( rcOrderOblig.getAdapter() != null));
         if (rcOrderOblig !=null&& rcOrderOblig.getAdapter() != null){
             isUpPull = true;
             slOrderOblig.setLoading(true);

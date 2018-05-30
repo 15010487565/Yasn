@@ -65,11 +65,11 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
 
     @Override
     protected void lazyLoad() {
-//        if(!isPrepared || !isVisible) {
-//            return;
-//        }
+        if(!isPrepared || !isVisible) {
+            return;
+        }
         //填充各控件的数据
-        if ((brandList ==null||brandList.size()==0)||(classifyModelCats ==null&&classifyModelCats.size()==0)){
+        if ((brandList ==null||brandList.size()==0)||(classifyModelCats ==null||classifyModelCats.size()==0)){
             OkHttpDemand();
         }
     }
@@ -95,6 +95,9 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
         Log.e("TAG_onHiddenChanged", "CLASSIFY=" + hidden);
         if (!hidden) { //隐藏时所作的事情
             lazyLoad();
+            isVisible = false;
+        }else {
+            isVisible = true;
         }
     }
 
@@ -116,7 +119,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
 
     @Override
     protected void initView(LayoutInflater inflater, View view) {
-        Log.e("TAG_initView", "CLASSIFY_initView");
+//        Log.e("TAG_initView", "CLASSIFY_initView");
         //搜索输入框
         topsearch = (TextView) view.findViewById(R.id.topsearch);
         topsearch.setOnClickListener(this);
@@ -254,7 +257,14 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
             }
         }
         //右侧顶部图片
-        ClassifyModel.CatsBean catsBean = classifyModelCats.get(position - 1);
+        ClassifyModel.CatsBean catsBean;
+        if (brandList != null && brandList.size() > 0) {
+            //右侧顶部图片
+            catsBean = classifyModelCats.get(position - 1);
+        }else {
+            //右侧顶部图片
+            catsBean = classifyModelCats.get(position);
+        }
         initViewPagerImage(catsBean.getAdv_image());
         List<ClassifyModel.CatsBean.ChildrenBean> children = catsBean.getChildren();
         for (int k = 0, l = children.size(); k < l; k++) {

@@ -36,7 +36,6 @@ import com.yasn.purchasetest.listener.OnRcItemClickListener;
 import com.yasn.purchasetest.model.EventBusMsg;
 import com.yasn.purchasetest.model.ShopInfoModel;
 import com.yasn.purchasetest.utils.ToastUtil;
-import www.xcd.com.mylibrary.view.BadgeView;
 import com.yasn.purchasetest.view.MultiSwipeRefreshLayout;
 import com.yasn.purchasetest.view.RcDecoration;
 
@@ -56,6 +55,7 @@ import java.util.TimerTask;
 
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
+import www.xcd.com.mylibrary.view.BadgeView;
 import www.xcd.com.mylibrary.widget.SnsTabWidget;
 
 
@@ -145,9 +145,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
 
     @Override
     protected void lazyLoad() {
-//        if (!isPrepared || !isVisible) {
-//            return;
-//        }
+        if (!isPrepared || !isVisible) {
+            return;
+        }
         //填充各控件的数据
         OkHttpDemand();
     }
@@ -156,8 +156,11 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         Log.e("TAG_onHiddenChanged","shop="+hidden);
-        if (!hidden){ //隐藏时所作的事情
+        if (!hidden) { //隐藏时所作的事情
             lazyLoad();
+            isVisible = false;
+        }else {
+            isVisible = true;
         }
     }
 
@@ -295,12 +298,6 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                 break;
             case R.id.collect://收藏
                 startWebViewActivity(Config.HOMECOLLECT);
-                break;
-            case R.id.totalMoney://采购金额
-                break;
-            case R.id.goodsNum: //采购数量
-                break;
-            case R.id.orderNum://订单数
                 break;
             case R.id.lookall://统计查看更多
                 startWebViewActivity(Config.STATISTICSLOOKALL);
@@ -887,7 +884,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
 
     private void showAuthDialog(String reasonString) {
         LayoutInflater factor = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View serviceView = factor.inflate(R.layout.reason_dialog, null);
+        View serviceView = factor.inflate(R.layout.dialog_reason, null);
         TextView reason = (TextView) serviceView.findViewById(R.id.reason);
         if ((reasonString == null || "".equals(reasonString))){
             reason.setText("认证审核失败！");
@@ -938,7 +935,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(),R.color.orange)), 27+admin.length(),27+admin.length()+dutyAuth.length() ,
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         tvInvitehint.setText(span);
-        Log.e("TAG_邀请","tvInvitehint="+tvInvitehint.getText().toString());
+//        Log.e("TAG_邀请","tvInvitehint="+tvInvitehint.getText().toString());
         TextView agree = (TextView) serviceView.findViewById(R.id.agree);
         agree.setOnClickListener(new View.OnClickListener() {
             @Override

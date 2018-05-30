@@ -40,6 +40,7 @@ import com.yasn.purchasetest.R;
 import com.yasn.purchasetest.activity.GoodsDetailsActivity;
 import com.yasn.purchasetest.activity.HotLableActivity;
 import com.yasn.purchasetest.activity.MainActivityNew;
+import com.yasn.purchasetest.activity.MyOrderActivity;
 import com.yasn.purchasetest.activity.SearchActivity;
 import com.yasn.purchasetest.adapter.HomeRecyclerAdapter;
 import com.yasn.purchasetest.application.YasnApplication;
@@ -407,7 +408,10 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 SobotUtil.startSobot(getActivity(), null);
                 break;
             case R.id.orderStateLinear:
-                startWebViewActivity(Config.MEORDERWEB);
+//                startWebViewActivity(Config.MEORDERWEB);
+                intent = new Intent(getActivity(), MyOrderActivity.class);
+                intent.putExtra("tabIndex",0);
+                startActivity(intent);
                 break;
         }
     }
@@ -428,7 +432,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                Log.e("STATE", state.name());
+//                Log.e("STATE", state.name());
                 if (state == State.EXPANDED) {
                     //展开状态
                     isOpen = true;
@@ -549,21 +553,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
         HomeRecyModel footView = new HomeRecyModel();
         footView.setItemType(Config.TYPE_FOOTVIEW);
         homerecyList.add(footView);
-        if (member == null) {
-            adapter.setData(homerecyList, "登录看价格");
-            SharePrefHelper.getInstance(getActivity()).putSpString("loginState", "登录看价格");
-        } else {
-            int priceDisplayType1 = member.getPriceDisplayType();
-            if (priceDisplayType1 == 0) {
-                adapter.setData(homerecyList, "0");
-                SharePrefHelper.getInstance(getActivity()).putSpString("loginState", "0");
-            } else {
-                String priceDisplayMsg1 = member.getPriceDisplayMsg();
-                adapter.setData(homerecyList, priceDisplayMsg1);
-                SharePrefHelper.getInstance(getActivity()).putSpString("loginState", priceDisplayMsg1);
-            }
-        }
-
     }
 
     private void initViewPagerImage() {
@@ -576,7 +565,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
         home_banner.setLayoutParams(para); //设置修改后的布局。
 
         List<HomeModel.AdvsBean> advs = homemodel.getAdvs();
-        Log.e("TAG_轮播图", "advs=" + advs.size());
         if (advs != null && advs.size() > 0) {
             home_banner.setImages(advs)
                     .setImageLoader(new GlideImageLoader())
@@ -604,15 +592,15 @@ public class HomeFragment extends SimpleTopbarFragment implements
             int indexOf = url.indexOf("?");
             if (indexOf != -1) {
                 String substring = url.substring(indexOf + 1);
-                Log.e("TAG_轮播图substring", "substring=" + substring);
+//                Log.e("TAG_轮播图substring", "substring=" + substring);
                 String[] strarray = substring.split("&");
                 for (int i = 0; i < strarray.length; i++) {
-                    Log.e("TAG_轮播图strarray", i + "=" + strarray[i]);
+//                    Log.e("TAG_轮播图strarray", i + "=" + strarray[i]);
                     if (url.indexOf("goods.html") != -1) {
                         if (strarray[i].length() > "id=".length()) {
                             int indexOfGoods = strarray[i].indexOf("=");
                             String substringGoods = strarray[i].substring(indexOfGoods + 1);
-                            Log.e("TAG_轮播图详情页id", "详情页=" + substringGoods);
+//                            Log.e("TAG_轮播图详情页id", "详情页=" + substringGoods);
 //                            SharePrefHelper.getInstance(getActivity()).putSpInt("GOODSFRAGMENTID", 0);
                             Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
                             SharePrefHelper.getInstance(getActivity()).putSpString("GOODSID", substringGoods);
@@ -624,7 +612,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                             if (strarray[i].length() > "brand=".length()) {
                                 int indexOfBrand = strarray[i].indexOf("=");
                                 String substringBrand = strarray[i].substring(indexOfBrand + 1);
-                                Log.e("TAG_轮播图品牌", "品牌=" + substringBrand);
+//                                Log.e("TAG_轮播图品牌", "品牌=" + substringBrand);
                                 Intent intent = new Intent(getActivity(), SearchActivity.class);
                                 intent.putExtra("SECARCHBRAND", substringBrand);
                                 intent.putExtra("SECARCHTOPTAB", false);//是否显示搜索页顶部TabLayout
@@ -636,7 +624,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                             if (strarray[i].length() > "keyword=".length()) {
                                 int indexOfKeyword = strarray[i].indexOf("=");
                                 String substringKeyword = strarray[i].substring(indexOfKeyword + 1);
-                                Log.e("TAG_轮播图关键字", "关键字=" + substringKeyword);
+//                                Log.e("TAG_轮播图关键字", "关键字=" + substringKeyword);
                                 Intent intent = new Intent(getActivity(), SearchActivity.class);
                                 intent.putExtra("SECARCHCONTEXT", substringKeyword);
                                 intent.putExtra("SECARCHTOPTAB", false);//是否显示搜索页顶部TabLayout
@@ -740,6 +728,23 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     } else {
                         tablayout.setVisibility(View.GONE);
                     }
+                    if (member == null) {
+                        Log.e("TAG_Home","loginState=登录看价格");
+                        adapter.setData(homerecyList, "登录看价格");
+                        SharePrefHelper.getInstance(getActivity()).putSpString("loginState", "登录看价格");
+                    } else {
+                        int priceDisplayType1 = member.getPriceDisplayType();
+                        if (priceDisplayType1 == 0) {
+                            Log.e("TAG_Home","loginState=0");
+                            adapter.setData(homerecyList, "0");
+                            SharePrefHelper.getInstance(getActivity()).putSpString("loginState", "0");
+                        } else {
+                            Log.e("TAG_Home","loginState=priceDisplayMsg1");
+                            String priceDisplayMsg1 = member.getPriceDisplayMsg();
+                            adapter.setData(homerecyList, priceDisplayMsg1);
+                            SharePrefHelper.getInstance(getActivity()).putSpString("loginState", priceDisplayMsg1);
+                        }
+                    }
                     //轮播图
                     initViewPagerImage();
                 } else if (returnCode == 401) {
@@ -747,7 +752,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     OkHttpDemand();
                 } else {
                     rlMainError.setVisibility(View.VISIBLE);
-                    home_banner.setVisibility(View.GONE);
+                    clHome.setVisibility(View.GONE);
                 }
                 break;
         }
@@ -1130,7 +1135,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     private void showUpgradeDialog(String reasonString) {
         LayoutInflater factor = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View serviceView = factor.inflate(R.layout.reason_dialog, null);
+        View serviceView = factor.inflate(R.layout.dialog_reason, null);
         TextView reason = (TextView) serviceView.findViewById(R.id.reason);
         if ((reasonString == null || "".equals(reasonString))) {
             reason.setText("认证审核失败！");

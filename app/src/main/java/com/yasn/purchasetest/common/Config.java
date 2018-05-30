@@ -99,6 +99,10 @@ public class Config {
     //我的订单
     public static final String MEORDERWEB =  URLCAIGOU+"orderlist.html";
     public static final String MEORDER =  IP+"order/list?";
+    //订单详情
+    public static final String ORDERDETAILS =  IP+"order/details?";
+    //取消订单
+    public static final String ORDERCANCEL =  IP+"order/cancel?";
     //待付款
     public static final String MEORDERUNPAYMENTWEB =  URLCAIGOU+"orderlist.html?status=1";
     //代发货
