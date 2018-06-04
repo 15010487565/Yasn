@@ -12,7 +12,7 @@
 
     <include layout="@layout/include_hometitle" />
 
-    <com.yasn.purchasetest.view.MultiSwipeRefreshLayout
+    <com.yasn.purchase.view.MultiSwipeRefreshLayout
         android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -102,6 +102,6 @@
             <include layout="@layout/include_error" />
         </RelativeLayout>
 
-    </com.yasn.purchasetest.view.MultiSwipeRefreshLayout>
+    </com.yasn.purchase.view.MultiSwipeRefreshLayout>
 </LinearLayout>
 

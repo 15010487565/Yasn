@@ -3,7 +3,7 @@ package com.chijiao.cp188.yl188;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.yasn.purchasetest.activity.MainActivityNew;
+import com.yasn.purchase.activity.MainActivityNew;
 
 import org.junit.Rule;
 import org.junit.Test;

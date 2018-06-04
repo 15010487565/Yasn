@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.yasn.purchasetest.view.MultiSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.yasn.purchase.view.MultiSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipe_Order"
     android:layout_width="match_parent"
@@ -26,4 +26,4 @@
         <include
             layout="@layout/order_error"/>
     </LinearLayout>
-</com.yasn.purchasetest.view.MultiSwipeRefreshLayout>
+</com.yasn.purchase.view.MultiSwipeRefreshLayout>

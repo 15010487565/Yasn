@@ -67,6 +67,7 @@
                 android:background="@color/line_gray" />
 
             <LinearLayout
+                android:id="@+id/ll_BillType"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:paddingLeft="@dimen/margin_20"
@@ -86,11 +87,19 @@
 
                 <TextView
                     android:id="@+id/tv_billType"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:textColor="@color/black_66"
                     android:textSize="@dimen/textsize_14" />
+                <ImageView
+                    android:layout_width="@dimen/margin_15"
+                    android:layout_height="@dimen/margin_15"
+                    android:layout_marginLeft="@dimen/margin_15"
+                    android:background="@mipmap/home_top_arrows"
+                    android:contentDescription="@null"
+                    android:duplicateParentState="true" />
             </LinearLayout>
 
             <View

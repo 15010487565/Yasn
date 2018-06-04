@@ -203,9 +203,13 @@
         <item name="android:layout_height">@dimen/height_25</item>
     </style>
 
-    <style name="mypopwindow_anim_style">
+    <style name="popwindow_anim_leftandright">
         <item name="android:windowEnterAnimation">@anim/home_in_anim</item>
         <item name="android:windowExitAnimation">@anim/home_out_anim</item>
+    </style>
+    <style name="popwindow_anim_topanddown">
+        <item name="android:windowEnterAnimation">@anim/top_in_anim</item>
+        <item name="android:windowExitAnimation">@anim/down_out_anim</item>
     </style>
     <style name="text_orderdetailspay">
 

@@ -15,7 +15,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true">
 
-        <com.yasn.purchasetest.goods.view.SlideDetailsLayout
+        <com.yasn.purchase.goods.view.SlideDetailsLayout
             android:id="@+id/slideDetailsLayout"
             android:visibility="gone"
             android:layout_width="match_parent"
@@ -344,7 +344,7 @@
                             android:textColor="@color/black_99"
                             android:textSize="@dimen/textsize_12" />
 
-                        <com.yasn.purchasetest.view.ShoppingSelectView
+                        <com.yasn.purchase.view.ShoppingSelectView
                             android:id="@+id/label_include"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -354,7 +354,7 @@
                             android:paddingBottom="@dimen/margin_10"
                             android:paddingTop="@dimen/margin_5">
 
-                        </com.yasn.purchasetest.view.ShoppingSelectView>
+                        </com.yasn.purchase.view.ShoppingSelectView>
 
                     </LinearLayout>
 
@@ -701,7 +701,7 @@
                 </LinearLayout>
             </ScrollView>
             <include layout="@layout/include_item_tab" />
-        </com.yasn.purchasetest.goods.view.SlideDetailsLayout>
+        </com.yasn.purchase.goods.view.SlideDetailsLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>

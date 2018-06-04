@@ -40,7 +40,7 @@ android {
     buildToolsVersion globalConfiguration.androidBuildToolsVersion
 
     defaultConfig {
-        applicationId "com.yasn.purchasetest"
+        applicationId "com.yasn.purchase"
         minSdkVersion globalConfiguration.androidMinSdkVersion
         targetSdkVersion globalConfiguration.androidTargetSdkVersion
 //        minSdkVersion 19

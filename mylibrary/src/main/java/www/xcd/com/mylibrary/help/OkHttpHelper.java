@@ -155,9 +155,9 @@ public class OkHttpHelper {
                     requestUrl = url + tempParams.toString();
                 }
                 try {
-                    Log.e("TAG_url", "requestUrl=" + requestUrl);
+                    Log.e("TAG_url", "Authorization=" + requestUrl);
                     if (!"".equals(token)) {
-                        Log.e("TAG_urltoken", "token=" + token);
+                        Log.e("TAG_urltoken", "Bearer=" + token);
                     }
                     Request.Builder builder = new Request.Builder();
                     builder.url(requestUrl);

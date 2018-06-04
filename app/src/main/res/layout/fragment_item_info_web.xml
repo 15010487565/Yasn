@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.yasn.purchasetest.goods.view.ItemWebView
+    <com.yasn.purchase.goods.view.ItemWebView
         android:id="@+id/detail_webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

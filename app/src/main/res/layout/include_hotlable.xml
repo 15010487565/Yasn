@@ -24,7 +24,7 @@
             android:textSize="@dimen/textsize_16" />
     </LinearLayout>
 
-    <com.yasn.purchasetest.view.TagsLayout
+    <com.yasn.purchase.view.TagsLayout
         android:id="@+id/hotlabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

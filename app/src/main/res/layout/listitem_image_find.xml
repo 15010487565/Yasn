@@ -5,7 +5,7 @@
     android:orientation="vertical">
     <include
         layout="@layout/listitem_context_find"/>
-    <com.yasn.purchasetest.view.NoScrollGridView
+    <com.yasn.purchase.view.NoScrollGridView
         android:id="@+id/iamge_gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,5 +17,5 @@
         android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginRight="@dimen/margin_10"
         android:src="@mipmap/errorimage">
-    </com.yasn.purchasetest.view.NoScrollGridView>
+    </com.yasn.purchase.view.NoScrollGridView>
 </LinearLayout>

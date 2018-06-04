@@ -29,7 +29,7 @@
             android:maxLines="2"
             android:text=""
             android:textColor="@color/black_66" />
-        <com.yasn.purchasetest.view.TagsLayout
+        <com.yasn.purchase.view.TagsLayout
             android:id="@+id/tl_OrderDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

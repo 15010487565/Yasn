@@ -29,7 +29,7 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <com.yasn.purchasetest.video.SampleVideo
+    <com.yasn.purchase.video.SampleVideo
         android:id="@+id/detail_player"
         android:layout_width="match_parent"
         android:layout_height="@dimen/post_media_height" />

@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yasn.purchasetest.activity.GuideActivity">
+    tools:context="com.yasn.purchase.activity.GuideActivity">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.yasn.purchasetest.custom.indicator.CirclePageIndicator
+    <com.yasn.purchase.custom.indicator.CirclePageIndicator
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
