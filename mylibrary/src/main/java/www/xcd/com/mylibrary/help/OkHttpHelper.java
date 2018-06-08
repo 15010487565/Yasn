@@ -12,8 +12,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.SecureRandom;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -60,6 +67,14 @@ public class OkHttpHelper {
      */
     public static OkHttpClient getOkhttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(10, TimeUnit.SECONDS);
+        builder.sslSocketFactory(createSSLSocketFactory());
+        builder.hostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
         OkHttpClient client = builder.readTimeout(10, TimeUnit.SECONDS)
                 .addInterceptor(new Interceptor() {
                     @Override
@@ -83,37 +98,19 @@ public class OkHttpHelper {
                 .build();
         return client;
     }
-//    private Handler handler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            switch (msg.what) {
-//                //请求错误
-//                case HttpConfig.REQUESTERROR:
-//                    IOException error = (IOException) msg.obj;
-//                    okHttpFaceHelper.onErrorResult(HttpConfig.REQUESTERROR, error);
-//                    break;
-//                //解析错误
-//                case HttpConfig.PARSEERROR:
-//                    okHttpFaceHelper.onParseErrorResult(HttpConfig.PARSEERROR);
-//                    break;
-//                //网络错误
-//                case HttpConfig.NETERROR:
-//                    break;
-//                //请求成功
-//                case HttpConfig.SUCCESSCODE:
-//                    Bundle bundle = msg.getData();
-//                    int requestCode = bundle.getInt("requestCode");
-//                    int returnCode = bundle.getInt("returnCode");
-//                    String returnMsg = bundle.getString("returnMsg");
-//                    String returnData = bundle.getString("returnData");
-//                    Map<String, Object> paramsMaps = (Map) msg.obj;
-//                    Log.e("Handler", returnData);
-//                    okHttpFaceHelper.onSuccessResult(requestCode, returnCode, returnMsg, returnData, paramsMaps);
-//                    break;
-//            }
-//        }
-//    };
+    private static SSLSocketFactory createSSLSocketFactory() {
+        SSLSocketFactory ssfFactory = null;
 
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, new TrustManager[]{new TrustAllCerts()}, new SecureRandom());
+
+            ssfFactory = sc.getSocketFactory();
+        } catch (Exception e) {
+        }
+
+        return ssfFactory;
+    }
     /**
      * 异步GET请求
      *
@@ -189,7 +186,7 @@ public class OkHttpHelper {
      * @param url        请求路径
      * @param paramsMaps 请求参数
      */
-    public void postAsyncHttp(final int requestCode, final String url, final Map<String, Object> paramsMaps, final Handler mHandler) {
+    public void postAsyncHttp(final int requestCode, final String url, final Map<String, String> paramsMaps, final Handler mHandler) {
         Runnable runnablePost = new Runnable() {
             @Override
             public void run() {
@@ -211,6 +208,7 @@ public class OkHttpHelper {
                 }
                 Request request = builder.build();
                 Call postCall = client.newCall(request);
+
                 postCall.enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException error) {
@@ -218,6 +216,7 @@ public class OkHttpHelper {
                         message.what = HttpConfig.REQUESTERROR;
                         message.obj = error;
                         mHandler.sendMessage(message);
+                        Log.e("TAG_url", "onFailure=" + error.toString());
                     }
 
                     @Override

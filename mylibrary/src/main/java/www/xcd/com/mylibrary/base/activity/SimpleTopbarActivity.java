@@ -388,7 +388,7 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 	 * @param url        地址
 	 * @param paramsMaps 参数
 	 */
-	public void okHttpPost(final int requestCode, String url, final Map<String, Object> paramsMaps) {
+	public void okHttpPost(final int requestCode, String url, final Map<String, String> paramsMaps) {
 		if (NetUtil.getNetWorking(SimpleTopbarActivity.this) == false) {
 			showToast("请检查网络。。。");
 			dialogDissmiss();

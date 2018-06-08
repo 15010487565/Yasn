@@ -409,7 +409,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 	 * @param url        地址
 	 * @param paramsMaps 参数
 	 */
-	public void okHttpPost(final int requestCode, String url, final Map<String, Object> paramsMaps) {
+	public void okHttpPost(final int requestCode, String url, final Map<String, String> paramsMaps) {
 		if (NetUtil.getNetWorking(getActivity()) == false) {
 			showToast("请检查网络。。。");
 			return;

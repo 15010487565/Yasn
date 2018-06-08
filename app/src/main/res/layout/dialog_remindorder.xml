@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@color/white">
+    <ImageView
+        android:id="@+id/iv_dismissReminOrder"
+        android:layout_width="@dimen/margin_20"
+        android:layout_height="@dimen/margin_20"
+        android:background="@mipmap/search_deleted"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/margin_10"
+      />
+    <ImageView
+        android:id="@+id/iv_ReminOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/remind_shipping"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/margin_10"
+        android:layout_below="@id/iv_dismissReminOrder" />
+    <TextView
+        android:id="@+id/tv_ReminOrder"
+        android:layout_below="@id/iv_ReminOrder"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margin_20"
+        android:paddingRight="@dimen/margin_20"
+        android:paddingTop="@dimen/margin_5"
+        android:paddingBottom="@dimen/margin_5"
+        android:text="禀万岁，臣已领旨，马上快马加鞭去发货！"
+        android:textColor="@color/black_66"
+        android:textSize="@dimen/textsize_16" />
+
+        <TextView
+            android:id="@+id/tv_ReminOrderOk"
+            android:layout_below="@id/tv_ReminOrder"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_30"
+            android:layout_marginBottom="@dimen/height_30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin_20"
+            android:paddingRight="@dimen/margin_20"
+            android:paddingTop="@dimen/margin_5"
+            android:paddingBottom="@dimen/margin_5"
+            android:text="我知道了"
+            android:background="@drawable/shape2_orange_white"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/textsize_16" />
+
+    <!--</LinearLayout>-->
+</RelativeLayout>

@@ -12,6 +12,15 @@ public class OrderDetailsPayModel implements Serializable {
     private String goodsAmount;//商品总额
     private String needPayMoney;//消极
     private int status;
+    private int orderId;//订单号
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
 
     public int getStatus() {
         return status;

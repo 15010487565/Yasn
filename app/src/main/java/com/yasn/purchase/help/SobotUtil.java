@@ -109,10 +109,14 @@ public class SobotUtil {
         if (sobotGoodsDescribe !=null&&!"".equals(sobotGoodsDescribe)){
             consultingContent.setSobotGoodsDescribe(sobotGoodsDescribe);
         }
-        //金额
-        String sobotGoodsLable = sobotModel.getSobotGoodsLable();
-        if (Double.valueOf(sobotGoodsLable) > 0 ){
-            consultingContent.setSobotGoodsLable("￥"+sobotGoodsLable);
+        try {
+            //金额
+            String sobotGoodsLable = sobotModel.getSobotGoodsLable();
+            if (sobotGoodsLable.indexOf("看价格")==-1&&Double.valueOf(sobotGoodsLable) > 0 ){
+                consultingContent.setSobotGoodsLable("￥"+sobotGoodsLable);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
         //可以设置为null
         info.setConsultingContent(consultingContent);
