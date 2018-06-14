@@ -72,6 +72,7 @@
 
     <dimen name="top_search_padding">7dp</dimen>
     <dimen name="top_search_height">35dp</dimen>
+    <dimen name="top_search_width">40dp</dimen>
     <dimen name="top_bar_height">46dp</dimen>
     <dimen name="top_bar_title">19sp</dimen>
     <dimen name="top_bar_title_margin">44dp</dimen>

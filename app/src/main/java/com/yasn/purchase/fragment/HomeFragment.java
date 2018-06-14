@@ -633,13 +633,13 @@ public class HomeFragment extends SimpleTopbarFragment implements
                             }
                         }
                     } else {
-                        startWebViewActivity(Config.URL + url);
+                        startWebViewActivity(Config.IP+"/" + url);
                         return;
                     }
                 }
 
             } else {
-                startWebViewActivity(Config.URL + url);
+                startWebViewActivity(Config.IP +"/"+ url);
             }
         }
     }

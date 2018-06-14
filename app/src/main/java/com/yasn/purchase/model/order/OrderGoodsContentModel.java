@@ -14,6 +14,24 @@ public class OrderGoodsContentModel {
     private int num;//订单数量
     private String price;
     private List<OrderGoodsValueBean> list;
+    private String goodsId;
+    private int orderId;
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
 
     public List<OrderGoodsValueBean> getList() {
         return list;

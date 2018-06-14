@@ -34,6 +34,15 @@ public class ShopCarAdapterModel implements Serializable {
     private int hasDiscount;//是否有抢购   1 有  0没有
     private int limitnum;//限购数量
     private int goodsNum;//同一店铺下商品个数
+    private double shippingTotal;//运费
+
+    public double getShippingTotal() {
+        return shippingTotal;
+    }
+
+    public void setShippingTotal(double shippingTotal) {
+        this.shippingTotal = shippingTotal;
+    }
 
     public int getBeforeSaleNum() {
         return beforeSaleNum;

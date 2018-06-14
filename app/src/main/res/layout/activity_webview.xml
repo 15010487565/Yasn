@@ -16,7 +16,7 @@
             android:layout_height="match_parent">
 
             <com.github.lzyzsd.jsbridge.BridgeWebView
-                android:id="@+id/bridge_webView"
+                android:id="@+id/webView_br"
                 android:overScrollMode="never"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

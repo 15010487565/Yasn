@@ -125,6 +125,7 @@ public class OkHttpHelper {
                 StringBuilder tempParams;
                 String requestUrl = "";
                 String token = "";
+                String android_client = null;
                 int pos = 0;
                 if (paramsMaps == null) {
                     //补全请求地址
@@ -132,7 +133,9 @@ public class OkHttpHelper {
                 } else {
                     tempParams = new StringBuilder();
                     for (String key : paramsMaps.keySet()) {
-                        if ("access_token".equals(key)) {
+                        if ("User-Agent".equals(key)){
+                            android_client = (String) paramsMaps.get(key);
+                        }else if ("access_token".equals(key)) {
                             token = (String) paramsMaps.get(key);
                         } else {
                             if (pos > 0) {
@@ -156,11 +159,17 @@ public class OkHttpHelper {
                     if (!"".equals(token)) {
                         Log.e("TAG_urltoken", "Bearer=" + token);
                     }
+                    if (!"".equals(android_client)) {
+                        Log.e("TAG_android_client", "android_client=" + android_client);
+                    }
                     Request.Builder builder = new Request.Builder();
                     builder.url(requestUrl);
                     if (token != null && !"".equals(token)) {
                         builder.addHeader("Authorization", "Bearer" +
                                 "" + token);
+                    } 
+                    if (android_client != null && !"".equals(android_client)) {
+                        builder.addHeader("User-Agent", android_client);
                     }
                     Request request = builder.build();
                     Call callRequest = client.newCall(request);
@@ -294,20 +303,33 @@ public class OkHttpHelper {
                 result = response.body().string();
             }
             HelpUtils.loge("TAG_result",result);
-            JSONObject jsonObject = new JSONObject(result);
-            String returnMsg = jsonObject.optString("message");
-            String returnData = result;
-            Message message = new Message();
-            Bundle bundle = new Bundle();
-            bundle.putInt("returnCode", returnCode);
+            int i = result.indexOf("{");
+            Log.e("TAG_Code", "i=" + i);
+            if (i == 0){
+                JSONObject jsonObject = new JSONObject(result);
+                String returnMsg = jsonObject.optString("message");
+                Message message = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putInt("returnCode", returnCode);
 
-            bundle.putInt("requestCode", requestCode);
-            bundle.putString("returnMsg", returnMsg);
-            bundle.putString("returnData", returnData);
-            message.setData(bundle);
-            message.what = HttpConfig.SUCCESSCODE;
-            message.obj = paramsMaps;
-            mHandler.sendMessage(message);
+                bundle.putInt("requestCode", requestCode);
+                bundle.putString("returnMsg", returnMsg);
+                bundle.putString("returnData", result);
+                message.setData(bundle);
+                message.what = HttpConfig.SUCCESSCODE;
+                message.obj = paramsMaps;
+                mHandler.sendMessage(message);
+            }else {
+                Message message = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putInt("returnCode", returnCode);
+                bundle.putInt("requestCode", requestCode);
+                bundle.putString("returnData", result);
+                message.setData(bundle);
+                message.what = HttpConfig.SUCCESSCODE;
+                message.obj = paramsMaps;
+                mHandler.sendMessage(message);
+            }
         } catch (Exception e) {
             mHandler.sendEmptyMessage(HttpConfig.PARSEERROR);
         }

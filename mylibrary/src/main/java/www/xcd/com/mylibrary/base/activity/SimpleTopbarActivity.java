@@ -450,6 +450,7 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 		OkHttpHelper.getInstance().getAsyncHttp(requestCode, url, paramsMaps, new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
+				Log.e("TAG_支付","msg.what="+msg.what);
 				switch (msg.what) {
 					//请求错误
 					case HttpConfig.REQUESTERROR:

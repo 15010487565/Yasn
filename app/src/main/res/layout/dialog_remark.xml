@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/background_f3f3f3"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:background="@drawable/edit_text_black"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_245">
+        <EditText
+            android:id="@+id/et_Remark"
+            android:layout_margin="@dimen/margin_20"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColorHint="@color/black_99"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/black_66"
+            android:hint="选填，填写留言备注（限100字）"
+            android:padding="@dimen/margin_10"
+            android:gravity="left"
+            android:background="@color/white"
+            android:maxLength="100" />
+        <TextView
+            android:id="@+id/tv_RemarkCun"
+            android:layout_above="@id/et_Remark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/black_99"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/margin_10"
+            android:layout_margin="@dimen/margin_20"
+            android:background="@color/white"
+            android:gravity="right"
+            android:text="0/100"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_RemarkOk"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_40"
+        android:gravity="center"
+        android:layout_margin="@dimen/margin_20"
+        android:background="@drawable/shape_orange5"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14"
+        android:text="确定"/>
+
+</LinearLayout>

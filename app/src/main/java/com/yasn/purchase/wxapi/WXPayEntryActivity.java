@@ -10,6 +10,7 @@ import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.yasn.purchase.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,6 +24,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         super.onCreate(savedInstanceState);
         api = WXAPIFactory.createWXAPI(this, APP_ID);
         api.handleIntent(getIntent(), this);
+
     }
 
     @Override
@@ -48,6 +50,10 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     break;
                 case -2://用户取消
                     EventBus.getDefault().post("-2");
+                    break;
+                default:
+                    ToastUtil.showToast("未安装威信！");
+                    setResult(RESULT_OK);
                     break;
             }
             this.finish();

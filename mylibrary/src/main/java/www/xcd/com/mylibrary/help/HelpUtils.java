@@ -24,6 +24,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
+import android.webkit.WebSettings;
 import android.widget.EditText;
 
 import java.io.BufferedReader;
@@ -46,6 +47,7 @@ import okhttp3.Response;
 import www.xcd.com.mylibrary.config.HttpConfig;
 
 import static android.content.Context.TELEPHONY_SERVICE;
+import static www.xcd.com.mylibrary.utils.SharePrefHelper.context;
 
 
 /**
@@ -551,5 +553,27 @@ public class HelpUtils {
         } else {
             Log.e(tag, "result=" + result);
         }
+    }
+    public static String getUserAgent() {
+        String userAgent = "";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            try {
+                userAgent = WebSettings.getDefaultUserAgent(context);
+            } catch (Exception e) {
+                userAgent = System.getProperty("http.agent");
+            }
+        } else {
+            userAgent = System.getProperty("http.agent");
+        }
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0, length = userAgent.length(); i < length; i++) {
+            char c = userAgent.charAt(i);
+            if (c <= '\u001f' || c >= '\u007f') {
+                sb.append(String.format("\\u%04x", (int) c));
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }

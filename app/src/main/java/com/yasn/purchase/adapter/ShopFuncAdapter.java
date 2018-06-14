@@ -76,7 +76,7 @@ public class ShopFuncAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             topImage = (ImageView)view.findViewById(R.id.topImage);
         }
     }
-    protected void onItemEventClick(final RecyclerView.ViewHolder holder) {
+    private void onItemEventClick(final RecyclerView.ViewHolder holder) {
         final int position = holder.getLayoutPosition();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -89,7 +89,7 @@ public class WebViewActivity extends PhotoActivity implements View.OnClickListen
     }
 
     private void initView() {
-        mWebView = (BridgeWebView) findViewById(R.id.bridge_webView);
+        mWebView = (BridgeWebView) findViewById(R.id.webView_br);
         errorView = findViewById(R.id.error_page);
         errorText = (TextView) findViewById(R.id.load_again_web);
         fragment_layout = (FrameLayout) findViewById(R.id.fragment_layout);

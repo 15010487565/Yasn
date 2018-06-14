@@ -264,9 +264,10 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                         mainOrderDetails(returnData);
                     } else if (isMainOrder == 2) {//子订单
                         sonOrderDetails(returnData, 2);
-                    } else if (isMainOrder == 3) {//主订单
-                        sonOrderDetails(returnData, 3);
                     }
+//                    else if (isMainOrder == 3) {//主订单
+//                        sonOrderDetails(returnData, 3);
+//                    }
 //                    Log.e("TAG_statusTop", "statusTop=" + statusTop + ";paymentName=" + paymentName);
                     switch (statusTop) {
                         case 0:
@@ -338,13 +339,16 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }else {
+                    ToastUtil.showToast(returnMsg);
                 }
                 break;
             case 103://确认收货
                 if (returnCode == 200) {
                     getOrderDetails();
-                    ToastUtil.showToast(returnMsg);
                 }
+                    ToastUtil.showToast(returnMsg);
+
                 break;
 
         }
@@ -544,6 +548,10 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
             //商品价格
             double price = orderItemBean1.getPrice();
             orderGoodsContentModel.setPrice(String.format("%.2f", price));
+            //商品詳情id
+            int goodsId = orderItemBean1.getGoodsId();
+            Log.e("TAG_商品詳情id","子訂單goodsId="+goodsId);
+            orderGoodsContentModel.setGoodsId(String.valueOf(goodsId));
             //商品信息
             orderDetailsList.add(orderGoodsContentModel);
 
@@ -551,7 +559,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
         goodsAdapter.setData(orderDetailsList);
     }
 
-    //根据总订单状态判断底部为确认发货or确认付款
+    //根据总订单状态判断底部为确认收货or确认付款
     int statusTop;
     //主订单支付方式
     String paymentName;
@@ -704,23 +712,29 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
             }
             //列表
             List<OrderDetailsMainModel.OrderDetailsBean.ChildOrderListBean.OrderItemBean> orderItem = childOrderListBean.getOrderItem();
-            for (int k = 0, l = orderItem.size(); k < l; k++) {
-                OrderDetailsMainModel.OrderDetailsBean.ChildOrderListBean.OrderItemBean orderItemBean = orderItem.get(k);
-                OrderGoodsContentModel orderGoodsContentModel = new OrderGoodsContentModel();
-                //商品图片
-                String image = orderItemBean.getImage();
-                orderGoodsContentModel.setImage(image);
-                //商品名称
-                String name = orderItemBean.getName();
-                orderGoodsContentModel.setName(name);
-                //商品数量
-                int num = orderItemBean.getNum();
-                orderGoodsContentModel.setNum(num);
-                //商品价格
-                double price = orderItemBean.getPrice();
-                orderGoodsContentModel.setPrice(String.format("%.2f", price));
-                //商品信息
-                orderDetailsList.add(orderGoodsContentModel);
+            if (orderItem !=null){
+                for (int k = 0, l = orderItem.size(); k < l; k++) {
+                    OrderDetailsMainModel.OrderDetailsBean.ChildOrderListBean.OrderItemBean orderItemBean = orderItem.get(k);
+                    OrderGoodsContentModel orderGoodsContentModel = new OrderGoodsContentModel();
+                    //商品图片
+                    String image = orderItemBean.getImage();
+                    orderGoodsContentModel.setImage(image);
+                    //商品名称
+                    String name = orderItemBean.getName();
+                    orderGoodsContentModel.setName(name);
+                    //商品数量
+                    int num = orderItemBean.getNum();
+                    orderGoodsContentModel.setNum(num);
+                    //商品价格
+                    double price = orderItemBean.getPrice();
+                    orderGoodsContentModel.setPrice(String.format("%.2f", price));
+                    //商品詳情id
+                    int goodsId = orderItemBean.getGoodsId();
+                    Log.e("TAG_商品詳情id","goodsId="+goodsId);
+                    orderGoodsContentModel.setGoodsId(String.valueOf(goodsId));
+                    //商品信息
+                    orderDetailsList.add(orderGoodsContentModel);
+                }
             }
             //赠品
             OrderDetailsMainModel.OrderDetailsBean.ChildOrderListBean.ActivityGiftBean activityGiftBean = childOrderListBean.getActivityGift();
@@ -827,6 +841,18 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
             OrderDetailsPayModel payModel = (OrderDetailsPayModel) o;
             int orderId = payModel.getOrderId();
             confirmReapDialog(orderId);
+        }
+    }
+
+    @Override
+    public void OnItemClick(View view, int position) {
+        Object o = orderDetailsList.get(position);
+        if (o instanceof OrderGoodsContentModel) {
+            OrderGoodsContentModel contentModel = (OrderGoodsContentModel) o;
+            String goodsId = contentModel.getGoodsId();
+            Intent intent = new Intent(this, GoodsDetailsActivity.class);
+            SharePrefHelper.getInstance(this).putSpString("GOODSID", goodsId);
+            startActivity(intent);
         }
     }
 

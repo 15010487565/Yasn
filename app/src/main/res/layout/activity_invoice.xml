@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <include
+        layout="@layout/view_simple_topbar"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_40"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/height_15"
+        android:text="发票类型"/>
+    <com.yasn.purchase.view.NoScrollGridView
+        android:id="@+id/gv_Invoice"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnWidth="60dp"
+        android:stretchMode="columnWidth"
+        android:layout_marginLeft="@dimen/height_15"
+        android:layout_marginRight="@dimen/height_15"
+        android:numColumns="3"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv_InvoiceNo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_40"
+            android:gravity="center"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/white"
+            android:background="@drawable/shape_orange5"
+            android:layout_marginLeft="@dimen/height_20"
+            android:layout_marginRight="@dimen/height_20"
+            android:layout_marginTop="@dimen/height_80"
+            android:text="确定"/>
+
+        <FrameLayout
+            android:id="@+id/frame_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/topbat_parent">
+        </FrameLayout>
+    </RelativeLayout>
+
+</LinearLayout>

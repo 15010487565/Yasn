@@ -559,7 +559,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                                         this.goodsNum.setText("￥" + String.format("%.2f",goodsNum));
                                         goodsHint.setText("待支付金额");
                                     } else {
-                                        this.goodsNum.setText(String.valueOf(goodsNum) + "件");
+                                        this.goodsNum.setText(((int)goodsNum) + "件");
                                         goodsHint.setText("采购商品数");
                                     }
                                 }

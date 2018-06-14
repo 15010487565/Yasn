@@ -164,6 +164,8 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
                     } else {
                         startActivity();
                     }
+                }else {
+                    startActivity();
                 }
             }
         };

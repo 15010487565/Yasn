@@ -139,6 +139,7 @@ public class OrderMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         .placeholder(R.mipmap.errorimage)
                         .error(R.mipmap.errorimage)
                         .into(contentHolder.ivOrderContent);
+                onItemEventClick(contentHolder);
                 break;
 
             case ITEM_PAY://支付信息
@@ -218,39 +219,6 @@ public class OrderMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return count;
     }
 
-//    class OrderHeaderHolder extends RecyclerView.ViewHolder {
-//        private TextView tvOrderNumber;
-//
-//        public OrderHeaderHolder(View view) {
-//            super(view);
-//            tvOrderNumber = (TextView) view.findViewById(R.id.tv_orderNumber);
-//        }
-//    }
-
-//    class OrderShopNameHolder extends RecyclerView.ViewHolder {
-//
-//        private TextView tvOrderShopName;
-//
-//        public OrderShopNameHolder(View view) {
-//            super(view);
-//            tvOrderShopName = (TextView) view.findViewById(R.id.tv_orderShopName);
-//        }
-//    }
-
-//    class OrderContentHolder extends RecyclerView.ViewHolder {
-//
-//        private ImageView ivOrderContent;
-//        private TextView tvOrderContentName;
-//        private TextView tvOrderContentNum;
-//
-//        public OrderContentHolder(View view) {
-//            super(view);
-//            ivOrderContent = (ImageView) view.findViewById(R.id.iv_orderContent);
-//            tvOrderContentName = (TextView) view.findViewById(R.id.tv_orderContentName);
-//            tvOrderContentNum = (TextView) view.findViewById(R.id.tv_orderContentNum);
-//        }
-//    }
-
     class OrderPayHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvNeedPayMoney, tvTotalMoney, tvLookOrder, tvPayMoney;
@@ -296,5 +264,14 @@ public class OrderMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void setOnItemClickListener(OnRcOrderItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+    private void onItemEventClick(RecyclerView.ViewHolder holder) {
+        final int position = holder.getLayoutPosition();
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.OnLookOrderClick(position);
+            }
+        });
     }
 }

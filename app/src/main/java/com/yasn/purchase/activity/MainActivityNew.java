@@ -149,14 +149,6 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
                 .add(R.id.frame_content, fragmentList.get(4), "shop").hide(fragmentList.get(4));
 
         tran.commit();
-//        clickFragmentBtn(0);
-//        viewPager.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return false;
-//            }
-//        });
-
     }
 
     @Override
@@ -197,19 +189,6 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         }
         initView();
     }
-
-    /**
-     * 初始化ViewPager
-     */
-//    protected void initPager() {
-//
-//        // adapter
-//        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
-//        // 默认选中第一个
-//        viewPager.setCurrentItem(currentItem);
-//        // page change监听
-//        viewPager.setOnPageChangeListener(new MainPageChangeListener());
-//    }
 
     /**
      * 初始化Tab

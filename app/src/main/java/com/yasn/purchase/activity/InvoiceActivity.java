@@ -88,7 +88,7 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
         tran.add(R.id.frame_content, fragmentList.get(0), "commonInvoice").show(fragmentList.get(0))
                 .add(R.id.frame_content, fragmentList.get(1), "specialInvoice").hide(fragmentList.get(1));
 
-//        tran.commit();
+        tran.commit();
     }
 
     @Override

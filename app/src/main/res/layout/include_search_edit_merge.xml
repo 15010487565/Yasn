@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
     <LinearLayout
         android:id="@+id/topbar_left"
-        android:layout_width="@dimen/top_search_height"
+        android:layout_width="@dimen/top_search_width"
         android:layout_height="@dimen/top_search_height"
         android:layout_alignParentLeft="true"
         android:gravity="center"

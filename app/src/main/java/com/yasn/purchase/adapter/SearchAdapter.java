@@ -352,7 +352,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             footText = (TextView) itemView.findViewById(R.id.footText);
         }
     }
-    protected void onItemEventClick(RecyclerView.ViewHolder holder) {
+    private void onItemEventClick(RecyclerView.ViewHolder holder) {
         final int position = holder.getLayoutPosition();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

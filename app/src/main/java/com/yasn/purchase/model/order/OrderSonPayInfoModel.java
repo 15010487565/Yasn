@@ -8,6 +8,15 @@ public class OrderSonPayInfoModel {
 
     private int orderId;
     private String sn;
+    private int parentId;
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
 
     public int getOrderId() {
         return orderId;

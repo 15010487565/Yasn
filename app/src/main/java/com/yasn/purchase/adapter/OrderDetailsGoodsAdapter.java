@@ -191,8 +191,9 @@ public class OrderDetailsGoodsAdapter extends RecyclerView.Adapter<RecyclerView.
                 } else {
                     contentHolder.tlOrderDetails.setVisibility(View.INVISIBLE);
                 }
+                onItemEventClick(contentHolder);
                 break;
-            case ITEM_GIFT://商品信息
+            case ITEM_GIFT://贈品信息
                 GiftViewHolder giftHolder = (GiftViewHolder) holder;
                 OrderDetailsGiftModel giftModel = (OrderDetailsGiftModel) this.list.get(position);
                 giftHolder.tvOrderGiftName.setText(giftModel.getName());
@@ -228,8 +229,6 @@ public class OrderDetailsGoodsAdapter extends RecyclerView.Adapter<RecyclerView.
                     payHolder.llAlert.setVisibility(View.VISIBLE);
                 }else if (isMainOrder == 2){
                     payHolder.llAlert.setVisibility(View.GONE);
-                }else if (isMainOrder == 3){
-                    payHolder.llAlert.setVisibility(View.VISIBLE);
                 }
                 switch (payStatus) {
                     case 0:
@@ -372,7 +371,7 @@ public class OrderDetailsGoodsAdapter extends RecyclerView.Adapter<RecyclerView.
             //查看物流
             tvDetailsLookOver = (TextView) itemView.findViewById(R.id.tv_DetailsLookOver);
             tvDetailsLookOver.setOnClickListener(this);
-            //确认发货
+            //确认收货
             tvDetailsOk = (TextView) itemView.findViewById(R.id.tv_DetailsOk);
             tvDetailsOk.setOnClickListener(this);
             //
@@ -396,7 +395,7 @@ public class OrderDetailsGoodsAdapter extends RecyclerView.Adapter<RecyclerView.
                 case R.id.tv_DetailsLookOver://查看物流
                     onItemClickListener.OnDetailsLookOverClick(view,getLayoutPosition());
                     break;
-                case R.id.tv_DetailsOk://确认发货
+                case R.id.tv_DetailsOk://确认收货
                     onItemClickListener.OnDetailsOkClick(view,getLayoutPosition());
                     break;
             }
@@ -411,6 +410,16 @@ public class OrderDetailsGoodsAdapter extends RecyclerView.Adapter<RecyclerView.
         void OnDetailsRemindClick(View view, int position ,int type);
         void OnDetailsLookOverClick(View view, int position);
         void OnDetailsOkClick(View view, int position);
+        void OnItemClick(View view, int position);
+    }
+    private void onItemEventClick(RecyclerView.ViewHolder holder) {
+        final int position = holder.getLayoutPosition();
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.OnItemClick(v,position);
+            }
+        });
     }
 }
 

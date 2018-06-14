@@ -12,6 +12,15 @@ public class OrderMainPayInfoModel {
     private boolean isNeedPay;
     private int orderId;
     private String sn;
+    private long createTime;
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
 
     public String getSn() {
         return sn;

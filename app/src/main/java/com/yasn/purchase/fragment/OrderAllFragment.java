@@ -1,5 +1,6 @@
 package com.yasn.purchase.fragment;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.PayActivity;
 import com.yasn.purchase.adapter.OrderMainAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.listener.OnRcOrderItemClickListener;
@@ -22,7 +24,9 @@ import com.yasn.purchase.view.MultiSwipeRefreshLayout;
 import com.yasn.purchase.view.RecyclerViewDecoration;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -190,6 +194,8 @@ public class OrderAllFragment extends OrderFragment implements
                     //订单编号
                     String sn = ordersBean.getSn();
                     orderHeaderModel.setOrderCode(sn);
+                    //订单id
+                    int orderId = ordersBean.getOrderId();
                     allOrderList.add(orderHeaderModel);
                     List<OrderMainModel.OrdersBean.ChildOrderListBean> childOrderList = ordersBean.getChildOrderList();
                     if (childOrderList !=null && childOrderList.size()>0){
@@ -218,14 +224,11 @@ public class OrderAllFragment extends OrderFragment implements
                                     //商品价格
                                     double price = orderItemBean.getPrice();
                                     orderGoodsContentModel.setPrice(String.format("%.2f", price));
+                                    orderGoodsContentModel.setOrderId(orderId);
                                     //商品信息
                                     allOrderList.add(orderGoodsContentModel);
                                 }
                             }
-//                            else {
-//                                isRemoveList = true;
-//                                Log.e("TAG_空数据orderItem","isRemoveList="+i);
-//                            }
                         }
                         //支付信息
                         OrderMainPayInfoModel orderMainPayInfoModel = new OrderMainPayInfoModel();
@@ -252,19 +255,13 @@ public class OrderAllFragment extends OrderFragment implements
                             orderMainPayInfoModel.setNeedPay(false);
                         }
                         //订单id
-                        int orderId = ordersBean.getOrderId();
                         orderMainPayInfoModel.setOrderId(orderId);
+                        //订单创建时间
+                        long createTime = ordersBean.getCreateTime();
+                        orderMainPayInfoModel.setCreateTime(createTime);
                         //订单号
                         orderMainPayInfoModel.setSn(sn);
                     }
-//                    else {
-//                        isRemoveList = true;
-//                        Log.e("TAG_空数据childOrderList","isRemoveList="+i);
-//                    }
-//                    if (isRemoveList){
-//                        Log.e("TAG_空数据","isRemoveList="+i);
-//                        allOrderList.remove(i);
-//                    }
                 }
                 if (pageNo >1) {
                     isUpPull = false;
@@ -334,6 +331,11 @@ public class OrderAllFragment extends OrderFragment implements
             int orderId = infoModel.getOrderId();
             Log.e("TAG_查看订单","orderId="+orderId);
             startOrderDetailsActivity(orderId,1);
+        }else if (o instanceof OrderGoodsContentModel){
+            OrderGoodsContentModel  goodsModel = (OrderGoodsContentModel) o;
+            int orderId = goodsModel.getOrderId();
+            Log.e("TAG_查看订单","orderId="+orderId);
+            startOrderDetailsActivity(orderId,1);
         }
     }
     //立即支付
@@ -342,9 +344,20 @@ public class OrderAllFragment extends OrderFragment implements
         Object o = allOrderList.get(position);
         if (o instanceof OrderMainPayInfoModel){
             OrderMainPayInfoModel  infoModel = (OrderMainPayInfoModel) o;
-            int orderId = infoModel.getOrderId();
-            Log.e("TAG_立即支付","orderId="+orderId);
-//            startOrderDetailsActivity(orderId,true);
+            String sn = infoModel.getSn();
+            Log.e("TAG_立即支付","sn="+sn);
+            //支付金额
+            String needPayMoney = infoModel.getNeedPayMoney();
+            //订单创建时间
+            long createTime = infoModel.getCreateTime();
+            SimpleDateFormat df=new SimpleDateFormat("HH:mm:ss");
+            Log.e("TAG_时间","createTime="+df.format(new Date(createTime)));
+            String format = df.format(new Date(createTime + 2 * 60 * 60 * 1000));
+            Intent intent = new Intent(getActivity(), PayActivity.class);
+            intent.putExtra("sn",sn);
+            intent.putExtra("needPayMoney",needPayMoney);
+            intent.putExtra("payTime",format);
+            startActivity(intent);
         }
     }
     //查看主订单

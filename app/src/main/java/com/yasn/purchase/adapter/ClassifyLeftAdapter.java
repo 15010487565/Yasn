@@ -126,7 +126,7 @@ public class ClassifyLeftAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public void onItemEventClick(RecyclerView.ViewHolder holder) {
+    private void onItemEventClick(RecyclerView.ViewHolder holder) {
         final int position = holder.getLayoutPosition();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

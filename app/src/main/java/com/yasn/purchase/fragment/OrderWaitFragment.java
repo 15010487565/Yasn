@@ -207,6 +207,9 @@ public class OrderWaitFragment extends OrderFragment implements
                             //商品价格
                             double price = orderItemBean.getPrice();
                             orderGoodsContentModel.setPrice(String.format("%.2f", price));
+                            //訂單id
+                            int orderId = orderItemBean.getOrderId();
+                            orderGoodsContentModel.setOrderId(orderId);
                             //商品信息
                             orderWaitList.add(orderGoodsContentModel);
                         }
@@ -216,8 +219,12 @@ public class OrderWaitFragment extends OrderFragment implements
                     //订单id
                     int orderId = ordersBean.getOrderId();
                     orderSonPayInfoModel.setOrderId(orderId);
+                    //主订单
+                    int parentId = ordersBean.getParentId();
+                    orderSonPayInfoModel.setParentId(parentId);
                     //订单号
                     orderSonPayInfoModel.setSn(sn);
+
                     orderWaitList.add(orderSonPayInfoModel);
                 }
                 if (pageNo > 1) {
@@ -290,6 +297,11 @@ public class OrderWaitFragment extends OrderFragment implements
             int orderId = infoModel.getOrderId();
             Log.e("TAG_查看订单","orderId="+orderId);
             startOrderDetailsActivity(orderId,2);
+        }else if (o instanceof OrderGoodsContentModel){
+            OrderGoodsContentModel  goodsModel = (OrderGoodsContentModel) o;
+            int orderId = goodsModel.getOrderId();
+            Log.e("TAG_查看订单","orderId="+orderId);
+            startOrderDetailsActivity(orderId,2);
         }
     }
 
@@ -305,9 +317,9 @@ public class OrderWaitFragment extends OrderFragment implements
         Object o = orderWaitList.get(position);
         if (o instanceof OrderSonPayInfoModel){
             OrderSonPayInfoModel  infoModel = (OrderSonPayInfoModel) o;
-            int orderId = infoModel.getOrderId();
-            Log.e("TAG_查看主订单","orderId="+orderId);
-            startOrderDetailsActivity(orderId,3);
+            int parentId = infoModel.getParentId();
+            Log.e("TAG_查看主订单","parentId="+parentId);
+            startOrderDetailsActivity(parentId,1);
         }
     }
 
