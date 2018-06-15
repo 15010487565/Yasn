@@ -22,11 +22,11 @@ import java.util.Map;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 
-public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView.OnItemClickListener{
+public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView.OnItemClickListener {
 
     private NoScrollGridView gv_Invoice;
     private InvoiceGridAdapter adapter;
-    private String[] invoiceType  = {"不开发票","普通发票","专用发票"};
+    private String[] invoiceType = {"不开发票", "普通发票", "专用发票"};
     private static Class<?> rightFuncArray[] = {InvoiceHintTopBtnFunc.class};
     public static Class<?> fragmentArray[] = {
             InvoiceCommonFragment.class,//普通发票
@@ -37,6 +37,7 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
      */
     private List<BaseFragment> fragmentList = new ArrayList<BaseFragment>();
     private TextView tvInvoiceNo;
+
     @Override
     protected Object getTopbarTitle() {
         return "发票";
@@ -63,11 +64,12 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
         initFragments();
         initView();
     }
+
     /**
      * 初始化fragments
      */
     protected void initFragments() {
-        // 初始化fragments
+        // 初始化fragment
         for (int i = 0; i < fragmentArray.length; i++) {
             BaseFragment fragment = null;
             try {
@@ -78,6 +80,7 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
             fragmentList.add(fragment);
         }
     }
+
     private void initView() {
 
         // 为布局添加fragment,开启事物
@@ -94,7 +97,7 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_InvoiceNo:
                 break;
         }
@@ -127,17 +130,18 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        clickFragmentBtn(position+1);
+        clickFragmentBtn(position + 1);
     }
+
     private void clickFragmentBtn(int tabIndex) {
         // 得到Fragment事务管理器
         FragmentTransaction fragmentTransaction = this
                 .getSupportFragmentManager().beginTransaction();
 
         for (int i = 0; i < fragmentList.size(); i++) {
-            if (i == tabIndex){
+            if (i == tabIndex) {
                 fragmentTransaction.show(fragmentList.get(i));
-            }else {
+            } else {
                 fragmentTransaction.hide(fragmentList.get(i));
             }
         }
