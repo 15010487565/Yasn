@@ -22,14 +22,14 @@ public class PayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private LayoutInflater inflater;
-    private List<PayModel.DataBean> list;
+    private List<PayModel> list;
 
     public PayAdapter(Context context) {
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
-    public void setData(List<PayModel.DataBean> list) {
+    public void setData(List<PayModel> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -45,7 +45,7 @@ public class PayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
         ViewHolder viewHolder = (ViewHolder) holder;
-        PayModel.DataBean dataBean = list.get(position);
+        PayModel dataBean = list.get(position);
         String name = dataBean.getName();
         viewHolder.tvItemPayName.setText(name);
         if ("支付宝".equals(name)){

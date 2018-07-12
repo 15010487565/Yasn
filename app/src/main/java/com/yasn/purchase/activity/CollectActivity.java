@@ -15,32 +15,33 @@ import android.widget.TextView;
 
 import com.yasn.purchase.R;
 import com.yasn.purchase.adapter.CollectAdapter;
-import com.yasn.purchase.adapter.HighProfitAdapter;
+import com.yasn.purchase.adapter.HomeMoreAdapter;
 import com.yasn.purchase.func.RemoveAll;
 import com.yasn.purchase.listener.OnRcItemClickListener;
-import com.yasn.purchase.model.HighProfitModel;
 import com.yasn.purchase.utils.ToastUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 
 import static com.yasn.purchase.R.id.shoplistnull;
 
-public class CollectActivity extends SimpleTopbarActivity implements OnRcItemClickListener {
+/**
+ * 收藏
+ */
+public class CollectActivity extends SimpleTopbarActivity
+        implements OnRcItemClickListener {
 
-    private HighProfitAdapter adapternull;
+    private HomeMoreAdapter adapternull;
     private CollectAdapter adapter;
     private LinearLayoutManager mLinearLayoutManager,nullLinearLayoutManager;
     private RecyclerView recyclerview,collect_recy;
-    private List<HighProfitModel> myDataset;
     private static Class<?> rightFuncArray[] = {RemoveAll.class};
     private LinearLayout collectnull;
     private boolean typeshow = false;//临时记录显示空布局或者收藏布局
     private boolean removeallbool = false;//是否显示删除全部按钮
+
     @Override
     protected Class<?>[] getTopbarRightFuncArray() {
         if (removeallbool){
@@ -74,28 +75,6 @@ public class CollectActivity extends SimpleTopbarActivity implements OnRcItemCli
         collectnull = (LinearLayout) findViewById(R.id.collectnull);
         collectnull.setOnClickListener(this);
         recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
-        //初始化数据
-        myDataset = new ArrayList<HighProfitModel>();
-        for (int i = 0; i < 10; i++) {
-            if (i==0){
-                myDataset.add(new HighProfitModel("高毛利商品",1,"￥0.0"));
-            }else {
-                HighProfitModel homelistviewinfo = new HighProfitModel(i+"",2,"","￥0.0");
-                if (i==1){
-                    homelistviewinfo.setText(i+"");
-                    homelistviewinfo.setImage("http://g.hiphotos.baidu.com/image/h%3D300/sign=8166baec8826cffc762ab9b289014a7d/b3fb43166d224f4a1687bf6603f790529822d1ad.jpg");
-                }else if (i==2){
-                    homelistviewinfo.setText("#商品#大师2342傅胜多124345456754634234gdgfdfdfgdf");
-                    homelistviewinfo.setImage("http://c.hiphotos.baidu.com/image/h%3D300/sign=b37d89c4b83533faeab6952e98d1fdca/9f510fb30f2442a77396fd6fd843ad4bd013025b.jpg");
-                } else {
-                    homelistviewinfo.setText("商品sdadaadaads213213sssasdadd大师傅胜231231313123多");
-                    homelistviewinfo.setImage("http://a.hiphotos.baidu.com/image/h%3D300/sign=98d086fb45086e0675a8394b32097b5a/023b5bb5c9ea15ce169afac3bf003af33b87b287.jpg");
-                }
-
-                homelistviewinfo.setMoney("￥0.0"+i);
-                myDataset.add(homelistviewinfo);
-            }
-        }
         /**
          * 创建空Adapter
          * 高毛利商品
@@ -103,7 +82,7 @@ public class CollectActivity extends SimpleTopbarActivity implements OnRcItemCli
         nullLinearLayoutManager = new LinearLayoutManager(this);
         nullLinearLayoutManager.setAutoMeasureEnabled(true);
         recyclerview.setLayoutManager(nullLinearLayoutManager);
-        adapternull = new HighProfitAdapter(myDataset,this);
+        adapternull = new HomeMoreAdapter(this,nullLinearLayoutManager);
         adapternull.setOnItemClickListener(this);
         recyclerview.setAdapter(adapternull);
         /**
@@ -113,7 +92,7 @@ public class CollectActivity extends SimpleTopbarActivity implements OnRcItemCli
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setAutoMeasureEnabled(true);
         collect_recy.setLayoutManager(mLinearLayoutManager);
-        adapter = new CollectAdapter(myDataset,this);
+        adapter = new CollectAdapter(this,mLinearLayoutManager);
         adapter.setOnItemClickListener(this);
         collect_recy.setAdapter(adapter);
         //
@@ -176,21 +155,7 @@ public class CollectActivity extends SimpleTopbarActivity implements OnRcItemCli
 
     @Override
     public void OnClickRecyButton(int itemPosition, int listPosition) {
-        HighProfitModel info = myDataset.get(listPosition);
-        switch (itemPosition){
-            case 1:
-                ToastUtil.showToast(info.getButton1());
-                break;
-            case 2:
-                ToastUtil.showToast(info.getButton2());
-                break;
-            case 3:
-                ToastUtil.showToast(info.getButton3());
-                break;
-            case 4:
-                ToastUtil.showToast("点击了删除按钮"+listPosition);
-                break;
-        }
+
     }
 
     @Override

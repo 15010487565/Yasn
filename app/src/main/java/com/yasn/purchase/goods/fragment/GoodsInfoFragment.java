@@ -1815,6 +1815,19 @@ public class GoodsInfoFragment extends BaseFragment implements
         formatLongToTimeStr = HelpUtils.formatLongToTime((long) duration);
         voice_time.setText("语音讲解");
     }
+    //商品价格
+    public boolean getGoodsMoney() {
+        Double aDouble = Double.valueOf(soldout_money.getText().toString().substring(1));
+        Double aDouble1 = Double.valueOf(originalprice.getText().toString().substring(1));
+        Double aDouble2 = Double.valueOf(originalprice2.getText().toString().substring(1));
+        if (aDouble >0 && aDouble1 > 0 && aDouble2 > 0 ){
+            return true;
+
+        }else {
+            return false;
+
+        }
+    }
 
     public String getGoodsNum() {
         return etGoodsNum.getText().toString().trim();

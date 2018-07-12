@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.AddressActivity;
 import com.yasn.purchase.activity.MyOrderActivity;
 import com.yasn.purchase.adapter.ShopFuncAdapter;
 import com.yasn.purchase.common.Config;
@@ -818,7 +819,8 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     startWebViewActivity(Config.SHOPINTEGRAL);
                     break;
                 case 1://收货地址
-                    startWebViewActivity(Config.SHOPPLACEOFRECEIPT);
+//                    startWebViewActivity(Config.SHOPPLACEOFRECEIPT);
+                    startActivity(new Intent(getActivity(), AddressActivity.class));
                     break;
 //                case 2://数字会员
 //                    if (digital_member == 0) {//未开通雅森帮

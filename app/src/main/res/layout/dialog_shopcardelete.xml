@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_Delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/margin_20"

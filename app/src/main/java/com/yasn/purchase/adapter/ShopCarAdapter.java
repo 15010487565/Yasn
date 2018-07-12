@@ -134,10 +134,10 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     titleViewHolder.llMail.setVisibility(View.GONE);
                 }
                 if (isCheck == 1) {
-                    titleViewHolder.ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_checked);
-                } else {
-                    titleViewHolder.ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_unchecked);
-                }
+                titleViewHolder.ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_checked);
+            } else {
+                titleViewHolder.ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_unchecked);
+            }
                 break;
             case TYPE_ITEMLIST:
                 ListViewHolder listViewHolder = (ListViewHolder) holder;

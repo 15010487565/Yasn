@@ -195,9 +195,11 @@ public abstract class BaseActivity  extends AppCompatActivity implements View.On
     public void onFocusChange(View view, boolean hasFocus) {
         EditText textView = (EditText) view;
         if (textView==null){
+            Log.e("TAG_键盘","EditText==null");
             return;
         }
         if (textView.getHint()==null){
+            Log.e("TAG_键盘","textView.getHint()==null");
             return;
         }
         String hint = textView.getHint().toString();

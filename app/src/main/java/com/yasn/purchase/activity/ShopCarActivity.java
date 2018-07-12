@@ -192,20 +192,30 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                 initImageStoreNameSelect();
                 break;
             case R.id.tv_addShopCar:
-                boolean isCheckBeforeSale = false;//是否存在预售商品
+//                boolean isCheckBeforeSale = false;//是否存在预售商品
+                boolean isPrice = false;//选中商品是否存在价格为零商品
                 int isCheckNum = 0;//选中商品数量
                 for (int i = 0, j = shopCarAdapterList.size(); i < j; i++) {
                     ShopCarAdapterModel shopCarAdapterGood = shopCarAdapterList.get(i);
-                    String beforeSale = shopCarAdapterGood.getBeforeSale();
+//                    String beforeSale = shopCarAdapterGood.getBeforeSale();
                     int isCheck = shopCarAdapterGood.getIsCheck();
                     int itmeType = shopCarAdapterGood.getItmeType();
                     if (isCheck == 1 && itmeType == 2) {//选中
-                        if (beforeSale != null && !"".equals(beforeSale)) {
-                            //预售
-                            isCheckBeforeSale = true;
-                        }
+//                        if (beforeSale != null && !"".equals(beforeSale)) {
+//                            //预售
+//                            isCheckBeforeSale = true;
+//                        }
                         isCheckNum++;
+                        double price = shopCarAdapterGood.getPrice();
+                        if (price<=0){
+                            isPrice = true;
+                            return;
+                        }
                     }
+                }
+                if (isPrice){
+                    ToastUtil.showToast("0元商品暂不可购买，请联系客服400-9973-315或删除0元商品后提交！");
+                    return;
                 }
                 Log.e("TAG_提交訂單","isCheckNum="+isCheckNum);
 //                if (isCheckBeforeSale&&isCheckNum > 1) {
@@ -218,10 +228,11 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                         Map<String, Object> params = new HashMap<String, Object>();
                         if (token != null && !"".equals(token)) {
                             params.put("access_token", token);
-                            okHttpGet(106, Config.SHOPPCARINVALIDGOODS, params);
+                            okHttpGet(106, Config.SHOPPCARCLOSEANACCOUNT, params);
                         } else if (resetToken != null && !"".equals(resetToken)) {
                             params.put("access_token", resetToken);
-                            okHttpGet(106, Config.SHOPPCARINVALIDGOODS, params);
+                            okHttpGet(106, Config.SHOPPCARCLOSEANACCOUNT, params);
+//                            okHttpGet(106, Config.SHOPPCARINVALIDGOODS, params);
                         } else {
                             ToastUtil.showToast("登录过期，请重新登录");
                         }
@@ -448,7 +459,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                 if (returnCode == 200) {
 //                    startWebViewActivity(Config.CHECKOUTSHOPCAR);
                     Intent intent = new Intent(ShopCarActivity.this,ShopcarPayActivity.class);
-                    intent.putExtra("order","");
+                    intent.putExtra("returnData",returnData);
                     startActivity(intent);
                 } else {
                     try {
@@ -886,8 +897,27 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
 //                        if (storeId == store_id) {
 //                            ToastUtil.showToast("预售商品请单独下单！");
 //                        }
-                        int beforeSaleisCheck = shopCarAdapterGood.getIsCheck();
-                        if (beforeSaleisCheck == 1) {
+//                        int beforeSaleisCheck = shopCarAdapterGood.getIsCheck();
+//                        if (beforeSaleisCheck == 1) {
+//                            firstCancelIds++;
+//                            if (firstCancelIds == 1) {
+//                                sbCancelIds.append(String.valueOf(productId));
+//                            } else {
+//                                sbCancelIds.append(",");
+//                                sbCancelIds.append(String.valueOf(productId));
+//                            }
+//                            shopCarAdapterGood.setIsCheck(0);
+//                        }
+                        if (isCheck == 0) {
+                            firstCheckIds++;
+                            if (firstCheckIds == 1) {
+                                sbCheckIds.append(String.valueOf(productId));
+                            } else {
+                                sbCheckIds.append(",");
+                                sbCheckIds.append(String.valueOf(productId));
+                            }
+                            shopCarAdapterGood.setIsCheck(1);
+                        }else {
                             firstCancelIds++;
                             if (firstCancelIds == 1) {
                                 sbCancelIds.append(String.valueOf(productId));

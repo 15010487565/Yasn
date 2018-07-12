@@ -227,7 +227,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView  autotrophy,purchase,presell;
         public ViewHolderTwo(View itemView) {
             super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.titleimage);
+            imageView = (ImageView) itemView.findViewById(R.id.iv_HomeMoreLest);
 //            iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
 //            Drawable background = iv_shroud.getBackground();
 //            background.setAlpha(255);

@@ -58,7 +58,7 @@
                     android:textColor="@color/black_99"
                     android:textSize="@dimen/textsize_16" />
                 <LinearLayout
-                    android:id="@+id/linearmoney"
+                    android:id="@+id/ll_HomeMoreMoney"
                     android:layout_below="@id/spec_oftenshop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_below="@id/linearmoney"
+                    android:layout_below="@id/ll_HomeMoreMoney"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_5">

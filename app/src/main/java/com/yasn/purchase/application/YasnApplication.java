@@ -8,6 +8,7 @@ import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.smtt.sdk.QbSdk;
 import com.yasn.purchase.R;
+import com.yasn.purchase.superfileview.ExceptionHandler;
 
 
 /**
@@ -38,11 +39,11 @@ public class YasnApplication extends BaseApplication {
         }
         super.onCreate();
         instance = this;
-//        try {
-//            ExceptionHandler.getInstance().initConfig(this);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            ExceptionHandler.getInstance().initConfig(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //增加这句话
         try {
             QbSdk.initX5Environment(this,null);

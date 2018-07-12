@@ -346,6 +346,11 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     }
 
     private void addShopCarRequest() {
+        boolean goodsMoney = goodsInfoFragment.getGoodsMoney();
+        if (!goodsMoney){
+            ToastUtil.showToast("0元商品暂不可购买，请联系客服400-9973-315!");
+           return;
+        }
         int productId = goodsInfoFragment.getProductId();
         Log.e("TAG_详情加入规格", "productId=" + productId);
         if (productId == 0) {

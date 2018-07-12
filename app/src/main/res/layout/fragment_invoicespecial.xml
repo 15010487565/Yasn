@@ -1,9 +1,286 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_simple_topbar" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="专用发票"/>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_20"
+                android:layout_marginLeft="@dimen/height_20"
+                android:layout_marginTop="@dimen/height_20"
+                android:gravity="center_vertical"
+                android:text="发票内容"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/height_20"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@drawable/shape_oranger_white"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/margin_5"
+                android:paddingLeft="@dimen/margin_20"
+                android:paddingRight="@dimen/margin_20"
+                android:paddingTop="@dimen/margin_5"
+                android:text="明细"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/textsize_14" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/height_15"
+                android:background="@color/white">
+                <TextView
+                    android:id="@+id/tv_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_40"
+                    android:background="@color/black_f7"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/height_20"
+                    android:text="专票资质信息（审核通过后才可以开票）"
+                    android:textColor="@color/black_66"
+                    android:textSize="@dimen/textsize_14" />
+                <LinearLayout
+                    android:id="@+id/ll_Auditing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_hint"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/height_20">
+
+                        <TextView
+                            style="@style/text_invoicespecialauditing_left"
+                            android:text="单位名称：" />
+
+                        <TextView
+                            android:id="@+id/tv_InvoicespTitle"
+                            style="@style/text_invoicespecialauditing_right"
+                            android:text="****" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/height_20">
+
+                        <TextView
+                            style="@style/text_invoicespecialauditing_left"
+                            android:text="纳税识别号：" />
+
+                        <TextView
+                            android:id="@+id/tv_InvoicespNum"
+                            style="@style/text_invoicespecialauditing_right"
+                            android:text="****" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/height_20">
+
+                        <TextView
+
+                            style="@style/text_invoicespecialauditing_left"
+                            android:text="注册地址：" />
+
+                        <TextView
+                            android:id="@+id/tv_InvoicespAddress"
+                            style="@style/text_invoicespecialauditing_right"
+                            android:text="****" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/height_20">
+
+                        <TextView
+
+                            style="@style/text_invoicespecialauditing_left"
+                            android:text="注册电话：" />
+
+                        <TextView
+                            android:id="@+id/tv_InvoicespMobile"
+                            style="@style/text_invoicespecialauditing_right"
+                            android:text="****" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/height_20">
+
+                        <TextView
+
+                            style="@style/text_invoicespecialauditing_left"
+                            android:text="开户银行：" />
+
+                        <TextView
+                            android:id="@+id/tv_InvoicespBank"
+                            style="@style/text_invoicespecialauditing_right"
+                            android:text="****" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/height_20">
+
+                        <TextView
+
+                            style="@style/text_invoicespecialauditing_left"
+                            android:text="银行账户：" />
+
+                        <TextView
+                            android:id="@+id/tv_InvoicespBankNum"
+                            style="@style/text_invoicespecialauditing_right"
+                            android:text="****" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_Audit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_hint"
+                    android:padding="@dimen/margin_10"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    android:background="@color/white">
+                    <LinearLayout
+                        style="@style/ll_invoicespecialaudit_one">
+
+                        <TextView
+                            android:id="@+id/tv_InvoicespAuditTitle_left"
+                            android:text="*单位名称："
+                            style="@style/text_invoicespecialaudit_left" />
+
+                        <EditText
+                            android:id="@+id/tv_InvoicespAuditTitle_right"
+                            android:hint="请填写单位名称"
+                            style="@style/text_invoicespecialaudit_right" />
+                    </LinearLayout>
+                    <LinearLayout
+                        style="@style/ll_invoicespecialaudit_two">
+                        <TextView
+                            android:id="@+id/tv_InvoicespAuditNum_left"
+                            android:text="*纳税识别号："
+                            style="@style/text_invoicespecialaudit_left"/>
+
+                        <EditText
+                            android:id="@+id/tv_InvoicespAuditNum_right"
+                            style="@style/text_invoicespecialaudit_right"
+                            android:hint="请填写纳税识别号"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        style="@style/ll_invoicespecialaudit_two">
+
+                        <TextView
+                            android:id="@+id/tv_InvoicespAuditAddress_left"
+                            android:text="*注册地址："
+                            style="@style/text_invoicespecialaudit_left"/>
+
+                        <EditText
+                            android:id="@+id/tv_InvoicespAuditAddress_right"
+                            style="@style/text_invoicespecialaudit_right"
+                            android:hint="请填写注册地址" />
+                    </LinearLayout>
+                    <LinearLayout
+                        style="@style/ll_invoicespecialaudit_two">
+
+                        <TextView
+                            android:id="@+id/tv_InvoicespAuditMobile_left"
+                            android:text="*注册电话："
+                            style="@style/text_invoicespecialaudit_left"/>
+
+                        <EditText
+                            android:id="@+id/tv_InvoicespAuditMobile_right"
+                            style="@style/text_invoicespecialaudit_right"
+                            android:inputType="phone"
+                            android:hint="请填写注册电话" />
+                    </LinearLayout>
+                    <LinearLayout
+                        style="@style/ll_invoicespecialaudit_two">
+
+                        <TextView
+                            android:id="@+id/tv_InvoicespAuditBank_left"
+                            android:text="*开户银行："
+                            style="@style/text_invoicespecialaudit_left"/>
+
+                        <EditText
+                            android:id="@+id/tv_InvoicespAuditBank_right"
+                            style="@style/text_invoicespecialaudit_right"
+                            android:hint="请填写开户银行" />
+                    </LinearLayout>
+                    <LinearLayout
+                        style="@style/ll_invoicespecialaudit_two">
+
+                        <TextView
+                            android:id="@+id/tv_InvoicespauditBankNum_left"
+                            android:text="*银行账户："
+                            style="@style/text_invoicespecialaudit_left"/>
+
+                        <EditText
+                            android:id="@+id/tv_InvoicespauditBankNum_right"
+                            style="@style/text_invoicespecialaudit_right"
+                            android:hint="请填写银行账户" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black_f7"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_40"
+                    android:textSize="@dimen/textsize_14"
+                    android:textColor="@color/black_99"
+                    android:paddingLeft="@dimen/height_20"
+                    android:paddingRight="@dimen/height_20"
+                    android:layout_marginTop="@dimen/height_25"
+                    android:text="发票在您收到货30天后通过平邮寄出，请注意查收 (注：内容不全默认为不索取发票)"/>
+                <TextView
+                    android:id="@+id/tv_InvoiceSpecial"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_40"
+                    android:layout_marginLeft="@dimen/height_20"
+                    android:layout_marginRight="@dimen/height_20"
+                    android:layout_marginTop="@dimen/height_30"
+                    android:layout_marginBottom="@dimen/height_80"
+                    android:background="@drawable/shape_orange5"
+                    android:gravity="center"
+                    android:text="确定"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textsize_14" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

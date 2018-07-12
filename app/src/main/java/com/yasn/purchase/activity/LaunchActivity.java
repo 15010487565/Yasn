@@ -225,16 +225,14 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
         }
     }
     private void startActivity(){
-//        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25" +
-//                "hbWUiOiIxODIxMDg3NDQ1MiIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSIsIn" +
-//                "RydXN0Il0sImV4cCI6MTUzMDg1NjMxMSwiYXV0aG9yaXRpZXMiOlsiWUFTT" +
-//                "l9TSE9QX0NMSUVOVCIsIllBU05fU0hPUF9UUlVTVEVEX0NMSUVOVCJdLCJqdG" +
-//                "kiOiI2ZjUzNjU3MC03YzY2LTQ5NWQtOWU0Mi1hZWQxZGE0MDZjYTMiLCJjbGl" +
-//                "lbnRfaWQiOiJ5YXNuLXNob3AiLCJtZW1iZXJJZCI6MjQ3ODZ9.0o7L9XgJAmWw" +
-//                "cCBZrgfUh_H2ct8homic8BGWBBHCrLo";
+//        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIx" +
+//                "MjM0NTYiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJleHAiOjE1" +
+//                "MzM5NzY5MjgsImF1dGhvcml0aWVzIjpbIllBU05fU0hPUF9DTElFTlQiLCJZQVNOX1" +
+//                "NIT1BfVFJVU1RFRF9DTElFTlQiXSwianRpIjoiMWU4OTIzNTQtOTAzNi00Y2UxLWFhY2ItN2Q1YTMxNzAwMDY1IiwiY2xpZ" +
+//                "W50X2lkIjoieWFzbi1zaG9wIiwibWVtYmVySWQiOjI4fQ.-Js19_xMHrvkNKEatVbEz9EPibNBG-XHCthLR7QIoCM";
 //        SharePrefHelper.getInstance(this).putSpString("token",token);
         ActivityHelper.init(LaunchActivity.this).startActivity(MainActivityNew.class);
-//        ActivityHelper.init(LaunchActivity.this).startActivity(ShopCarActivity.class);
+//        ActivityHelper.init(LaunchActivity.this).startActivity(MainActivityOld.class);
         LaunchActivity.this.finish();
     }
     private void checkForUpdates() {

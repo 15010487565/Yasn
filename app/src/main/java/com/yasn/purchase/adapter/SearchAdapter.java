@@ -73,6 +73,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public void addData( List<SearchModel.DataBean> list) {
         this.addList = list;
+
         if (this.list != null){
             this.list.addAll(list);
         }else {
@@ -292,10 +293,10 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public ViewHolderSearch(View itemView) {
             super(itemView);
             searchTitle = (TextView) itemView.findViewById(R.id.title);
-            searchmoney = (TextView) itemView.findViewById(R.id.search_money);
+            searchmoney = (TextView) itemView.findViewById(R.id.tv_HomeMoreMoney);
             searchmoney.setOnClickListener(this);
-            searchAdvert = (TextView) itemView.findViewById(R.id.search_action);
-            searchcount = (TextView) itemView.findViewById(R.id.search_count);
+            searchAdvert = (TextView) itemView.findViewById(R.id.tv_HomeMoreAction);
+            searchcount = (TextView) itemView.findViewById(R.id.tv_HomeMoreCount);
 
             button1 = (TextView) itemView.findViewById(R.id.lable_button1);
             button1.setOnClickListener(this);
@@ -307,12 +308,12 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             autotrophy = (TextView) itemView.findViewById(R.id.autotrophy);
             purchase = (TextView) itemView.findViewById(R.id.purchase);
             presell = (TextView) itemView.findViewById(R.id.presell);
-            titleimage = (ImageView) itemView.findViewById(R.id.titleimage);
+            titleimage = (ImageView) itemView.findViewById(R.id.iv_HomeMoreLest);
 //            iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
 //            Drawable background = iv_shroud.getBackground();
 //            background.setAlpha(255);
-            buyingspreeLinear = (LinearLayout) itemView.findViewById(R.id.buyingspreeLinear);
-            buyingspreeMoney = (TextView) itemView.findViewById(R.id.buyingspreeMoney);
+            buyingspreeLinear = (LinearLayout) itemView.findViewById(R.id.ll_HomeMoreBuy);
+            buyingspreeMoney = (TextView) itemView.findViewById(R.id.tv_HomeMoreBuyMoney);
         }
 
         @Override
@@ -330,7 +331,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 case addshopcar:
                     onItemClickListener.OnClickRecyButton(4, getLayoutPosition());
                     break;
-                case R.id.search_money:
+                case R.id.tv_HomeMoreMoney:
                     String trim = searchmoney.getText().toString().trim();
                     if ("登录看价格".equals(trim)){
                         startWebViewActivity(Config.LOGINWEBVIEW);

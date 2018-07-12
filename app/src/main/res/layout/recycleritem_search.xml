@@ -12,7 +12,7 @@
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content">-->
         <ImageView
-            android:id="@+id/titleimage"
+            android:id="@+id/iv_HomeMoreLest"
             android:layout_width="@dimen/image_size"
             android:layout_height="@dimen/image_size"
             android:src="@mipmap/errorimage" />
@@ -45,7 +45,7 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/search_action"
+                android:id="@+id/tv_HomeMoreAction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_10"
@@ -56,7 +56,7 @@
                 android:textSize="@dimen/textsize_12" />
 
             <LinearLayout
-                android:id="@+id/linearmoney"
+                android:id="@+id/ll_HomeMoreMoney"
                 android:paddingLeft="@dimen/margin_10"
                 android:paddingTop="@dimen/margin_3"
                 android:paddingBottom="@dimen/margin_3"
@@ -65,7 +65,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/search_money"
+                    android:id="@+id/tv_HomeMoreMoney"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="￥XX.XX"
@@ -73,7 +73,7 @@
                     android:textSize="@dimen/textsize_14" />
 
                 <TextView
-                    android:id="@+id/search_count"
+                    android:id="@+id/tv_HomeMoreCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_20"
@@ -85,7 +85,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/buyingspreeLinear"
+                android:id="@+id/ll_HomeMoreBuy"
                 android:layout_marginTop="@dimen/margin_5"
                 android:layout_marginLeft="@dimen/margin_10"
                 android:paddingLeft="@dimen/margin_10"
@@ -106,7 +106,7 @@
                     android:textSize="@dimen/textsize_12" />
 
                 <TextView
-                    android:id="@+id/buyingspreeMoney"
+                    android:id="@+id/tv_HomeMoreBuyMoney"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"

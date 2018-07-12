@@ -14,15 +14,16 @@ import com.yasn.purchase.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import static com.yasn.purchase.pay.PayConfig.WEIXIN_APP_ID;
+
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
-    public static final String APP_ID = "wxfaf772b01b93fb55";
     private IWXAPI api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        api = WXAPIFactory.createWXAPI(this, APP_ID);
+        api = WXAPIFactory.createWXAPI(this, WEIXIN_APP_ID);
         api.handleIntent(getIntent(), this);
 
     }

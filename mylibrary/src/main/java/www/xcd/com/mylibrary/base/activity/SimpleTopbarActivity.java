@@ -436,6 +436,59 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
 	}
 
 	/**
+	 * POST网络请求
+	 *	请求头
+	 * @param url        地址
+	 * @param paramsMaps 参数
+	 */
+	public void okHttpPostHeader(final int requestCode, String url, final Map<String, String> paramsMaps) {
+		if (NetUtil.getNetWorking(SimpleTopbarActivity.this) == false) {
+			showToast("请检查网络。。。");
+			dialogDissmiss();
+			return;
+		}
+		OkHttpHelper.getInstance().postAsyncHttpHeader(requestCode, url, paramsMaps,new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+					//请求错误
+					case HttpConfig.REQUESTERROR:
+						IOException error = (IOException) msg.obj;
+						onErrorResult(HttpConfig.REQUESTERROR, error);
+						ToastUtil.showToast("请求错误");
+						dialogDissmiss();
+						break;
+					//解析错误
+					case HttpConfig.PARSEERROR:
+						onParseErrorResult(HttpConfig.PARSEERROR);
+						ToastUtil.showToast("解析错误");
+						dialogDissmiss();
+						break;
+					//网络错误
+					case HttpConfig.NETERROR:
+						ToastUtil.showToast("网络错误");
+						dialogDissmiss();
+						break;
+					//请求成功
+					case HttpConfig.SUCCESSCODE:
+						dialogDissmiss();
+						Bundle bundle = msg.getData();
+						int requestCode = bundle.getInt("requestCode");
+						int returnCode = bundle.getInt("returnCode");
+						String returnMsg = bundle.getString("returnMsg");
+						String returnData = bundle.getString("returnData");
+						Map<String, Object> paramsMaps = (Map) msg.obj;
+						onSuccessResult(requestCode, returnCode, returnMsg, returnData, paramsMaps);
+						break;
+					default:
+						dialogDissmiss();
+						break;
+				}
+			}
+		});
+	}
+
+	/**
 	 * GET网络请求
 	 *
 	 * @param url        地址

@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     android:orientation="vertical">
 
     <include layout="@layout/view_simple_topbar" />
@@ -33,21 +35,36 @@
                 android:textSize="@dimen/textsize_14" />
 
             <RelativeLayout
+                android:id="@+id/rl_StartAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/iv_AddressStart"
+                    android:layout_width="@dimen/margin_15"
+                    android:layout_height="@dimen/margin_15"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_15"
+                    android:background="@mipmap/home_top_arrows"
+                    android:contentDescription="@null"
+                    android:duplicateParentState="true" />
 
                 <LinearLayout
                     android:id="@+id/ll_SignforName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/iv_AddressStart"
+                    android:paddingLeft="@dimen/margin_10"
+                    android:minHeight="@dimen/height_40"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/height_40"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/margin_10"
                         android:text="收货人："
                         android:textColor="@color/black_66"
                         android:textSize="@dimen/textsize_14" />
@@ -67,14 +84,16 @@
                     android:id="@+id/ll_SignforAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="@dimen/height_40"
+                    android:padding="@dimen/margin_10"
+                    android:layout_toLeftOf="@id/iv_AddressStart"
                     android:layout_below="@id/ll_SignforName"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/height_40"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/margin_10"
                         android:text="收货地址："
                         android:textColor="@color/black_66"
                         android:textSize="@dimen/textsize_14" />
@@ -90,15 +109,6 @@
                         android:textSize="@dimen/textsize_14" />
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="@dimen/margin_15"
-                    android:layout_height="@dimen/margin_15"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/margin_15"
-                    android:background="@mipmap/home_top_arrows"
-                    android:contentDescription="@null"
-                    android:duplicateParentState="true" />
             </RelativeLayout>
 
             <TextView
@@ -253,8 +263,9 @@
                     android:gravity="center_vertical"
                     android:paddingRight="@dimen/margin_10"
                     android:singleLine="true"
-                    android:text="选填，填写留言备注（限100字）"
-                    android:textColor="@color/black_99"
+                    android:hint="选填，填写留言备注（限100字）"
+                    android:textColor="@color/black_66"
+                    android:textColorHint="@color/black_99"
                     android:textSize="@dimen/textsize_14" />
             </LinearLayout>
         </LinearLayout>
@@ -306,6 +317,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_StartPay"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

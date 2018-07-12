@@ -130,7 +130,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
         isMainOrder = getIntent().getIntExtra("isMainOrder", 0);
         //rc线
         RecyclerViewDecoration recyclerViewDecoration = new RecyclerViewDecoration(
-                this, LinearLayoutManager.HORIZONTAL, 1, getResources().getColor(R.color.line_gray));
+                this, LinearLayoutManager.HORIZONTAL, 2, getResources().getColor(R.color.line_gray));
         //顶部订单详情
         rcOrderDetails = (RecyclerView) findViewById(R.id.rc_OrderDetails);
         rcOrderDetails.setLayoutManager(new LinearLayoutManager(this));

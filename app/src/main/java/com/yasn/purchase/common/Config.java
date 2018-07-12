@@ -11,16 +11,22 @@ public class Config {
 //    public static final String URLCAIGOU = "http://caigou.yasn.com/";//正式服
 //    public final static String SEARCH = "http://47.93.233.216:9998/search/solr/goods/list?";//正式服搜索页面
 //    public final static String IPPORTPAY = "http://39.106.213.117:10800/";//测试服支付接口
+//    public static final String IP = "http://192.168.50.166";//本地测试
     public static final String IP = "http://shoptest.yasn.com";//测试
     public static final String URLCAIGOU = "http://shoptt.yasn.com/";//测试首服
+//    public static final String URLCAIGOU81 = "http://shoptt.yasn.com:81/";//测试首服
     public final static String SEARCH = "http://47.93.192.134:9998/search/solr/goods/list?";//测试服搜索页面
     public final static String IPPORTPAY = "http://47.93.192.134:10800/";//测试服支付接口
     //端口
     public static final String IPPORT = IP+":9100/api/composite-service/";//9100端口
     //欢迎界面图片
     public final static String LAUNCHIMAGE = URLCAIGOU+"api/base/app/geturl.do";
+    //城市列表
+    public static final String REGIONLIST = IPPORT +"region/listRegions?";
     //首页
     public static final String HOME = IPPORT +"home/index";
+    //首页更多
+    public static final String ONCLICKTABMORE =  IPPORT+"goods/subject?";
     //分类页面
     public final static String CLASSIFY = IPPORT +"goods/cat/list";
     //分类页面推荐品牌
@@ -37,8 +43,24 @@ public class Config {
     public final static String SHOPPCARONECHECK = IPPORT +"cart/check-cancel?";
     //结算页前判断是否有失效商品
     public final static String SHOPPCARINVALIDGOODS = IPPORT +"cart/invalid-goods";
+    //收货地址
+    public final static String ADDRESS = IPPORT +"MemberAddress/list";
+    //当前订单使⽤用的收货地址
+    public final static String ADDRESSNOW = IPPORT +"MemberAddress/update-in-use/";
+    //默认地址收货地址
+    public final static String ADDRESSDEFAULT  = IPPORT +"MemberAddress/isdefaddr/";
+    //当删除收货地址
+    public final static String ADDRESSNOWDELETE = IPPORT +"MemberAddress/delete/";
+    //新增或编辑收货地址
+    public final static String  ADDRESSUPDATA= IPPORT +"MemberAddress/editOrAdd/";
     //进货单结算页
     public final static String SHOPPCARCLOSEANACCOUNT = IPPORT +"order/list-to-create-orders";
+    //结算按钮创建订单
+    public final static String SHOPPCARCREATEORDER = IPPORT +"order/create";
+    //发票获取接
+    public final static String GETINVOICE = IPPORT +"order/get-invoice/";
+    //发票获取接
+    public final static String SAVERECEIPT = IPPORT +"order/save-invoice";
     //进货单删除
     public final static String SHOPPCARDELETECART = IPPORT +"cart/delete-cart?";
     //进货单总价
@@ -81,7 +103,7 @@ public class Config {
     public final static int TYPE_FOOTVIEW = 10000;
 
     //    public static final String HOMEVIEW = "http://caigou.yasn.com";//首页
-    public static final String HOMEVIEW = "http://shoptt.yasn.com/";//测试首页2
+    public static final String HOMEVIEW = "http://shoptt.yasn.com:81/";//测试首页2
     public static final String HOMEVIEWDOMAIN = "caigou.yasn.com";//首页
     public static final String UPDATE = "http://caigou.yasn.com/android/update.txt";//正式更新
     public static final String HOMEVIEW2 = "http://caigou.yasn.com/classify.html";//产品分类
@@ -89,9 +111,10 @@ public class Config {
     public static final String HOMEVIEW4 = "http://caigou.yasn.com/member.html";//会员中心
 
     //登录
+//    public static final String LOGINWEBVIEW = URLCAIGOU+"login.html";
     public static final String LOGINWEBVIEW = URLCAIGOU+"login.html";
     //注册
-    public static final String REGISTERWEBVIEW = URLCAIGOU+"login_c.html?changehead=home";
+    public static final String REGISTERWEBVIEW = URLCAIGOU+"login_c.html?key=register";
     //退出登录
     public static final String LOGINOUTWEBVIEW = URLCAIGOU+"memberSet.html";
     //开通雅森帮
@@ -122,7 +145,7 @@ public class Config {
     //待收货
     public static final String MEORDERUNSIGNFORWEB =  URLCAIGOU+"orderlist.html?status=3";
     //首页更多
-    public static final String ONCLICKTABMORE =  IP+"/subject.html";
+//    public static final String ONCLICKTABMORE =  IP+"/subject.html";
     //详情页
     public final static String GOODSDETAILS = IPPORT +"goods/details/";
     //分享详情页

@@ -12,6 +12,8 @@
         android:layout_height="@dimen/height_40"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/height_15"
+        android:textColor="@color/black_33"
+        android:textSize="@dimen/textsize_16"
         android:text="发票类型"/>
     <com.yasn.purchase.view.NoScrollGridView
         android:id="@+id/gv_Invoice"

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.BuildConfig;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -156,18 +157,16 @@ public class OkHttpHelper {
                 }
                 try {
                     Log.e("TAG_url", "Authorization=" + requestUrl);
-                    if (!"".equals(token)) {
-                        Log.e("TAG_urltoken", "Bearer=" + token);
-                    }
                     if (!"".equals(android_client)) {
                         Log.e("TAG_android_client", "android_client=" + android_client);
                     }
                     Request.Builder builder = new Request.Builder();
                     builder.url(requestUrl);
-                    if (token != null && !"".equals(token)) {
+                    if (!TextUtils.isEmpty(token)) {
+                        Log.e("TAG_urltoken", "Bearer=" + token);
                         builder.addHeader("Authorization", "Bearer" +
                                 "" + token);
-                    } 
+                    }
                     if (android_client != null && !"".equals(android_client)) {
                         builder.addHeader("User-Agent", android_client);
                     }
@@ -201,16 +200,27 @@ public class OkHttpHelper {
             public void run() {
                 Request.Builder builder = new Request.Builder();
                 builder.url(url);
+                Log.e("TAG_url", "url=" + url);
                 if (paramsMaps == null || paramsMaps.size() == 0) {
 //                    builder.post(null);
                 } else {
                     okhttp3.FormBody.Builder formEncodingBuilder = new okhttp3.FormBody.Builder();
                     for (String key : paramsMaps.keySet()) {
                         String value = "";
-                        if (paramsMaps.get(key) != null) {
-                            value = paramsMaps.get(key).toString();
+                        if ("access_token".equals(key)){
+                            if (paramsMaps.get(key) != null) {
+                                String tokenValue = paramsMaps.get(key).toString();
+                                Log.e("TAG_tokenValue", "Bearer=" + tokenValue);
+                                builder.addHeader("authorization", "Bearer" + "" + tokenValue);
+                            }
+                        }else {
+                            if (paramsMaps.get(key) != null) {
+
+                                value = paramsMaps.get(key).toString();
+                            }
+                            formEncodingBuilder.add(key, value);
                         }
-                        formEncodingBuilder.add(key, value);
+
                         Log.e("TAG_", "KEY=" + key + ";value=" + value);
                     }
                     builder.post(formEncodingBuilder.build());
@@ -291,6 +301,73 @@ public class OkHttpHelper {
         Thread thread = new Thread(runnablePost);
         thread.start();
     }
+    /**
+     * post请求
+     *  请求头
+     * @param url        请求路径
+     * @param paramsMaps 请求参数
+     */
+    public void postAsyncHttpHeader(final int requestCode, final String url, final Map<String, String> paramsMaps, final Handler mHandler) {
+        Runnable runnablePost = new Runnable() {
+            @Override
+            public void run() {
+                StringBuilder tempParams = new StringBuilder();
+                    String tokenValue = "";
+                    int pos = 0;
+                    for (String key : paramsMaps.keySet()) {
+                        if ("access_token".equals(key)){
+                            if (paramsMaps.get(key) != null) {
+                                tokenValue = paramsMaps.get(key).toString();
+                                Log.e("TAG_tokenValue", "Bearer=" + tokenValue);
+                            }
+                        }else {
+
+                            if (paramsMaps.get(key) != null) {
+                                if (pos > 0) {
+                                    tempParams.append("&");
+                                }
+                                try {
+                                    Log.e("TAG_tempParams", key+"=" + paramsMaps.get(key));
+                                    tempParams.append(String.format("%s=%s", key, URLEncoder.encode(((String) paramsMaps.get(key)), "utf-8")));
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                                pos++;
+                            }
+                        }
+                    }
+                    Log.e("TAG_POSTurl", "url=" + url);
+                    Log.e("TAG_tempParams", "tempParams=" + tempParams.toString());
+                    MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+                    RequestBody body = RequestBody.create(mediaType, tempParams.toString());
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(body)
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .addHeader("Authorization", "Bearer"+tokenValue)
+                            .addHeader("Cache-Control", "no-cache")
+                            .build();
+                Call postCall = client.newCall(request);
+                postCall.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException error) {
+                        Log.e("TAG_", "error=" + error);
+                        Message message = new Message();
+                        message.what = HttpConfig.REQUESTERROR;
+                        message.obj = error;
+                        mHandler.sendMessage(message);
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        getJsonData(response, requestCode, paramsMaps, mHandler);
+                    }
+                });
+            }
+        };
+        Thread thread = new Thread(runnablePost);
+        thread.start();
+    }
 
     public void getJsonData(Response response, int requestCode, Map paramsMaps, Handler mHandler) {
         try {
@@ -308,6 +385,10 @@ public class OkHttpHelper {
             if (i == 0){
                 JSONObject jsonObject = new JSONObject(result);
                 String returnMsg = jsonObject.optString("message");
+                int code = jsonObject.optInt("code");
+                if (code != 0){
+                    returnCode = code;
+                }
                 Message message = new Message();
                 Bundle bundle = new Bundle();
                 bundle.putInt("returnCode", returnCode);

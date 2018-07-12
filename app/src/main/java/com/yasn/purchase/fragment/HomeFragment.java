@@ -38,9 +38,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.GoodsDetailsActivity;
+import com.yasn.purchase.activity.HomeMoreActivity;
 import com.yasn.purchase.activity.HotLableActivity;
 import com.yasn.purchase.activity.MainActivityNew;
-import com.yasn.purchase.activity.MyOrderActivity;
 import com.yasn.purchase.activity.SearchActivity;
 import com.yasn.purchase.adapter.HomeRecyclerAdapter;
 import com.yasn.purchase.application.YasnApplication;
@@ -408,10 +408,10 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 SobotUtil.startSobot(getActivity(), null);
                 break;
             case R.id.orderStateLinear:
-//                startWebViewActivity(Config.MEORDERWEB);
-                intent = new Intent(getActivity(), MyOrderActivity.class);
-                intent.putExtra("tabIndex",0);
-                startActivity(intent);
+                startWebViewActivity(Config.MEORDERWEB);
+//                intent = new Intent(getActivity(), MyOrderActivity.class);
+//                intent.putExtra("tabIndex",0);
+//                startActivity(intent);
                 break;
         }
     }
@@ -858,11 +858,13 @@ public class HomeFragment extends SimpleTopbarFragment implements
         }
         HomeRecyModel homeRecyModel = homerecyList.get(listPosition);
         int subject_id = homeRecyModel.getSubject_id();
-        String text = homeRecyModel.getText();
-        startWebViewActivity(Config.ONCLICKTABMORE + "?id=" + subject_id + "&title=" + text);
-//        if ("高毛利商品".equals(text)) {
-//            startActivity(new Intent(getActivity(), HighProfitActivity.class));
-//        }
+        String title = homeRecyModel.getText();
+//        startWebViewActivity(Config.ONCLICKTABMORE + "?id=" + subject_id + "&title=" + text);
+        Intent intent = new Intent(getActivity(), HomeMoreActivity.class);
+        intent.putExtra("subjectId",String.valueOf(subject_id));
+        intent.putExtra("title",title);
+        startActivity(intent);
+
     }
 
     @Override

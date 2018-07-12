@@ -54,6 +54,7 @@
         android:textSize="@dimen/textsize_12"
         android:gravity="center_vertical"
         android:text="(请在%s前完成付款，否则订单将会取消)"/>
+
     <TextView
         android:id="@+id/tv_OkPay"
         android:layout_width="match_parent"

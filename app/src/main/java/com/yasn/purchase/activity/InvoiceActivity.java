@@ -1,10 +1,12 @@
 package com.yasn.purchase.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.yasn.purchase.R;
@@ -16,15 +18,18 @@ import com.yasn.purchase.view.NoScrollGridView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 
+import static com.yasn.purchase.R.id.tv_InvoiceNo;
+
 public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView.OnItemClickListener {
 
-    private NoScrollGridView gv_Invoice;
+    private NoScrollGridView gvInvoice;
     private InvoiceGridAdapter adapter;
     private String[] invoiceType = {"不开发票", "普通发票", "专用发票"};
     private static Class<?> rightFuncArray[] = {InvoiceHintTopBtnFunc.class};
@@ -37,6 +42,8 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
      */
     private List<BaseFragment> fragmentList = new ArrayList<BaseFragment>();
     private TextView tvInvoiceNo;
+    private FrameLayout frame_content;
+    private List<Map<String,String>> list = new ArrayList<>();
 
     @Override
     protected Object getTopbarTitle() {
@@ -52,17 +59,32 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invoice);
-        gv_Invoice = (NoScrollGridView) findViewById(R.id.gv_Invoice);
+        gvInvoice = (NoScrollGridView) findViewById(R.id.gv_Invoice);
         //实例化adapter
         adapter = new InvoiceGridAdapter(this);
-        adapter.setData(invoiceType);
-        gv_Invoice.setAdapter(adapter);
+        for (int i = 0; i < invoiceType.length; i++) {
+            Map<String,String> map = new HashMap<>();
+            map.put("name",invoiceType[i]);
+            if (i == 0){
+                map.put("isCheck","1");
+            }else {
+                map.put("isCheck","0");
+            }
+            list.add(map);
+    }
+        adapter.setData(list);
+        gvInvoice.setAdapter(adapter);
+        gvInvoice.setOnItemClickListener(this);
         //无发票
         tvInvoiceNo = (TextView) findViewById(R.id.tv_InvoiceNo);
         tvInvoiceNo.setOnClickListener(this);
+        //fragment预留布局
+        frame_content = (FrameLayout) findViewById(R.id.frame_content);
         // 初始化fragments
         initFragments();
         initView();
+        frame_content.setVisibility(View.GONE);
+        tvInvoiceNo.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -98,7 +120,11 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.tv_InvoiceNo:
+            case tv_InvoiceNo:
+                Intent intent = new Intent();
+                intent.putExtra("invoice", "不开发票"); //将计算的值回传回去
+                setResult(0,intent);
+                finish();
                 break;
         }
     }
@@ -130,7 +156,28 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        clickFragmentBtn(position + 1);
+        if (list !=null&&list.size()>0){
+            list.clear();
+        }
+        for (int i = 0; i < invoiceType.length; i++) {
+            Map<String,String> map = new HashMap<>();
+            map.put("name",invoiceType[i]);
+            if (i == position){
+                map.put("isCheck","1");
+            }else {
+                map.put("isCheck","0");
+            }
+            list.add(map);
+        }
+        adapter.setData(list);
+        if (position == 0){
+            frame_content.setVisibility(View.GONE);
+            tvInvoiceNo.setVisibility(View.VISIBLE);
+        }else {
+            frame_content.setVisibility(View.VISIBLE);
+            tvInvoiceNo.setVisibility(View.GONE);
+            clickFragmentBtn(position-1);
+        }
     }
 
     private void clickFragmentBtn(int tabIndex) {

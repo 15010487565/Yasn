@@ -212,7 +212,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
         searchsalesvolume.setOnClickListener(this);
         searchsalesvolume.setTextColor(ContextCompat.getColor(this, R.color.black_66));
         //价格
-        searchmoney = (ArrowsSpinner) findViewById(R.id.search_money);
+        searchmoney = (ArrowsSpinner) findViewById(R.id.tv_HomeMoreMoney);
         searchmoney.setOnClickListener(this);
         searchmoney.setTextColor(ContextCompat.getColor(this, R.color.black_66));
         //筛选
@@ -435,7 +435,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
                 }
 //                searchmoney.animateArrow(false);//重置价格箭头
                 break;
-            case R.id.search_money://价格
+            case R.id.tv_HomeMoreMoney://价格
                 tabType = 3;
                 priceArrow = searchmoney.isArrowHide();
                 searchsynthesis.setTextColor(ContextCompat.getColor(this, R.color.black_33));
@@ -723,7 +723,6 @@ public class SearchActivity extends SimpleTopbarActivity implements
                     return;
                 }
                 String id = dataBean.getId();
-//                SharePrefHelper.getInstance(this).putSpInt("GOODSFRAGMENTID", 0);
                 Intent intent = new Intent(this, GoodsDetailsActivity.class);
                 SharePrefHelper.getInstance(this).putSpString("GOODSID", id);
                 startActivity(intent);

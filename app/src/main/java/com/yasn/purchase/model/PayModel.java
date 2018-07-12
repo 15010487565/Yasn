@@ -1,7 +1,6 @@
 package com.yasn.purchase.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by gs on 2018/6/12.
@@ -9,17 +8,7 @@ import java.util.List;
 
 public class PayModel implements Serializable{
 
-    private List<DataBean> data;
 
-    public List<DataBean> getData() {
-        return data;
-    }
-
-    public void setData(List<DataBean> data) {
-        this.data = data;
-    }
-
-    public static class DataBean {
         /**
          * id : 8
          * name : 支付宝
@@ -82,5 +71,5 @@ public class PayModel implements Serializable{
         public void setIsLastPayment(int isLastPayment) {
             this.isLastPayment = isLastPayment;
         }
-    }
+
 }

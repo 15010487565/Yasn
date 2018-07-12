@@ -111,7 +111,7 @@
                             android:background="@color/white">
 
                             <org.angmarch.views.ArrowsSpinner
-                                android:id="@+id/search_money"
+                                android:id="@+id/tv_HomeMoreMoney"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_centerHorizontal="true"

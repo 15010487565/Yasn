@@ -10,7 +10,7 @@
     android:padding="@dimen/margin_15">
 
     <ImageView
-        android:id="@+id/titleimage"
+        android:id="@+id/iv_HomeMoreLest"
         android:layout_width="60dp"
         android:layout_height="90dp"
         android:src="@mipmap/qqfriends" />
@@ -47,7 +47,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/linearmoney"
+                android:id="@+id/ll_HomeMoreMoney"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -75,7 +75,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_below="@id/linearmoney"
+                android:layout_below="@id/ll_HomeMoreMoney"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_5">
