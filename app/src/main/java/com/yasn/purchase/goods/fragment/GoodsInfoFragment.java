@@ -638,7 +638,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         int[] screenSize = HelpUtils.getScreenSize(getActivity());
         // 利用layoutInflater获得View
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.popwindowlayout, null);
+        View view = inflater.inflate(R.layout.popwindow_goodscartype, null);
         final PopupWindow window = new PopupWindow(view,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);
@@ -664,7 +664,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         for (GoodsDetailsModel.GoodsDetailsBean.CarTypesBean cartypesbean : carTypesList) {
             cartypeList.add(cartypesbean.getCarName());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter(getActivity(), R.layout.goodscartypeitem, cartypeList);
+        ArrayAdapter<String> adapter = new ArrayAdapter(getActivity(), R.layout.popwindow_goodscartype_item, cartypeList);
         goodsCartlist.setAdapter(adapter);
         if (carTypesList != null) {
             int listViewHeight = setListViewHeight(goodsCartlist, adapter, carTypesList.size());

@@ -32,7 +32,7 @@ import com.yasn.purchase.adapter.OrderDetailsAdapter;
 import com.yasn.purchase.adapter.OrderDetailsGoodsAdapter;
 import com.yasn.purchase.adapter.SetSimpleAdapter;
 import com.yasn.purchase.common.Config;
-import com.yasn.purchase.func.CallService;
+import com.yasn.purchase.func.CallServiceFunc;
 import com.yasn.purchase.help.SobotUtil;
 import com.yasn.purchase.model.SobotModel;
 import com.yasn.purchase.model.order.OrderDetailsGiftModel;
@@ -67,7 +67,7 @@ import www.xcd.com.mylibrary.utils.ToastUtil;
 public class OrderDetailsActivity extends SimpleTopbarActivity
         implements OrderDetailsGoodsAdapter.OnRcOrderDetailsClickListener, AdapterView.OnItemClickListener {
 
-    private static Class<?> rightFuncArray[] = {CallService.class};
+    private static Class<?> rightFuncArray[] = {CallServiceFunc.class};
     private RecyclerView rcOrderDetails, rcOrderGoodsDetails;
     private OrderDetailsAdapter adapter;
     private OrderDetailsGoodsAdapter goodsAdapter;

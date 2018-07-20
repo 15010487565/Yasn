@@ -69,7 +69,7 @@ public class GuideAdapter extends PagerAdapter {
         }
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
         ImageView main = (ImageView) view.findViewById(R.id.main);
-        ImageView register = (ImageView) view.findViewById(R.id.register);
+        ImageView register = (ImageView) view.findViewById(R.id.tv_HomeRegister);
         if (imageUrls != null && imageUrls.size() > 0) {
             if (position == (imageUrls.size() - 1)) {
                 linearLayout.setVisibility(View.VISIBLE);

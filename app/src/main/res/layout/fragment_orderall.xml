@@ -24,6 +24,6 @@
 
         </android.support.v7.widget.RecyclerView>
         <include
-            layout="@layout/order_error"/>
+            layout="@layout/include_order_error"/>
     </LinearLayout>
 </com.yasn.purchase.view.MultiSwipeRefreshLayout>

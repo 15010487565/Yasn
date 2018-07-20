@@ -1,4 +1,4 @@
-package com.yasn.purchase.pay;
+package com.yasn.purchase.pay.wexin;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;

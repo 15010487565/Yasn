@@ -1,75 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
-    <include
-        layout="@layout/view_simple_topbar"/>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/collectnull"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@color/black_f7"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="@dimen/height_30"
-                android:paddingBottom="@dimen/height_15"
-                android:gravity="center"
-                android:background="@color/white">
-                <View
-                    android:layout_width="@dimen/height_70"
-                    android:layout_height="2dp"
-                    android:background="@color/black_D0"/>
-                <ImageView
-                    android:layout_width="@dimen/height_70"
-                    android:layout_height="@dimen/height_70"
-                    android:background="@mipmap/collect"
-                    android:layout_marginLeft="@dimen/margin_20"
-                    android:layout_marginRight="@dimen/margin_20"/>
-                <View
-                    android:layout_width="@dimen/height_70"
-                    android:layout_height="1dp"
-                    android:background="@color/black_D0"/>
 
+    <include layout="@layout/view_simple_topbar" />
+
+    <com.yasn.purchase.view.MultiSwipeRefreshLayout
+        android:id="@+id/swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:addStatesFromChildren="true"
+        android:alpha="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/ll_Collectnull"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black_f7"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/height_15"
+                    android:paddingTop="@dimen/height_30">
+
+                    <View
+                        android:layout_width="@dimen/height_70"
+                        android:layout_height="2dp"
+                        android:background="@color/black_D0" />
+
+                    <ImageView
+                        android:layout_width="@dimen/height_40"
+                        android:layout_height="@dimen/height_40"
+                        android:layout_marginLeft="@dimen/margin_20"
+                        android:layout_marginRight="@dimen/margin_20"
+                        android:background="@mipmap/collect" />
+
+                    <View
+                        android:layout_width="@dimen/height_70"
+                        android:layout_height="1dp"
+                        android:background="@color/black_D0" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="您还未收藏过商品哦"
+                    android:textColor="@color/black_66"
+                    android:textSize="@dimen/textsize_14" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/margin_20"
+                    android:paddingTop="@dimen/margin_5"
+                    android:text="我们为您推荐了高毛利商品。赶快去采购吧"
+                    android:textColor="@color/black_66"
+                    android:textSize="@dimen/textsize_14" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rc_NullCollect"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:background="@color/black_f7" />
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black_66"
-                android:gravity="center"
-                android:textSize="@dimen/textsize_16"
-                android:background="@color/white"
-                android:text="您还未收藏过商品哦"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black_66"
-                android:paddingBottom="@dimen/margin_20"
-                android:gravity="center"
-                android:paddingTop="@dimen/margin_5"
-                android:textSize="@dimen/textsize_16"
-                android:background="@color/white"
-                android:text="我们为您推荐了高毛利商品。赶快去采购吧"/>
+
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerview"
-                android:layout_marginTop="@dimen/margin_5"
+                android:id="@+id/rc_Collect"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/black_f7"   />
-        </LinearLayout>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/collect_recy"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/black_f7"   />
-    </RelativeLayout>
+                android:visibility="gone"
+                android:background="@color/black_f7" />
+        </RelativeLayout>
+    </com.yasn.purchase.view.MultiSwipeRefreshLayout>
 
 </LinearLayout>

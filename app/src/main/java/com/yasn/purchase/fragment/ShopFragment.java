@@ -28,7 +28,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.AddressActivity;
-import com.yasn.purchase.activity.MyOrderActivity;
+import com.yasn.purchase.activity.MainActivityNew;
 import com.yasn.purchase.adapter.ShopFuncAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.help.LoginOut;
@@ -72,18 +72,18 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     private LinearLayout lookall,maker;
     private RecyclerView shoprecy;
     private MultiSwipeRefreshLayout mSwipeRefreshLayout;
-    private int imageUrl[] = {R.mipmap.jifen, R.mipmap.help
-            , R.mipmap.phoneconsult, R.mipmap.serviceing, R.mipmap.zhuanpiao};
+    private int imageUrl[] = {R.mipmap.jifen, R.mipmap.help, R.mipmap.phoneconsult
+            , R.mipmap.serviceing, R.mipmap.zhuanpiao,R.mipmap.oil};
     private int nameTitle[] = {R.string.mejifen,  R.string.help
-            , R.string.phoneconsult, R.string.serviceing, R.string.zhuanpiao};
+            , R.string.phoneconsult, R.string.serviceing, R.string.zhuanpiao,R.string.yongyouquery};
     private int imageUrlAuth[] = {R.mipmap.jifen, R.mipmap.shouhuo_address,
 //            R.mipmap.numbervip,
-            R.mipmap.help,
-            R.mipmap.phoneconsult, R.mipmap.serviceing, R.mipmap.zhuanpiao};
+            R.mipmap.help, R.mipmap.phoneconsult, R.mipmap.serviceing
+            , R.mipmap.zhuanpiao,R.mipmap.oil};
     private int nameTitleAuth[] = {R.string.mejifen, R.string.shouhuo_addressv,
 //            R.string.numbervip,
-            R.string.help
-            , R.string.phoneconsult, R.string.serviceing, R.string.zhuanpiao};
+            R.string.help, R.string.phoneconsult, R.string.serviceing
+            , R.string.zhuanpiao,R.string.yongyouquery};
     private SnsTabWidget tabWidget,makertabwidget;
     private static int[] ORDER_TAB_TEXT = new int[]{
             R.string.obligation, R.string.overhang, R.string.waitreceiving, R.string.allorder
@@ -298,10 +298,10 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                 SobotUtil.startSobot(getActivity(),null);
                 break;
             case R.id.collect://收藏
-                startWebViewActivity(Config.HOMECOLLECT);
+                ((MainActivityNew)getActivity()).startCollectActivity();
                 break;
             case R.id.lookall://统计查看更多
-                startWebViewActivity(Config.STATISTICSLOOKALL);
+                ((MainActivityNew)getActivity()).startStatisticsActivity(String.valueOf(member_id));
                 break;
             case R.id.createstaff:
                 startWebViewActivity(Config.SHOPCREATESTAFF);
@@ -405,6 +405,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     };
     int lv_id = 0;
     int digital_member;
+    int member_id;
     private void initShopData(String returnData) {
         try {
             if (returnData != null) {
@@ -421,6 +422,10 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                 if (shopinfomodel != null) {
                     ShopInfoModel.MemberBean member = shopinfomodel.getMember();
                     if (member != null) {
+                        member_id = member.getMember_id();
+                        //收获地区所在省
+                        int provinceId = member.getProvinceId();
+                            SharePrefHelper.getInstance(getActivity()).putSpString("provinceId", String.valueOf(provinceId));
                         //地方站名字
                         String regionName = member.getRegionName();
                         SharePrefHelper.getInstance(getActivity()).putSpString("regionName",(regionName==null?"":regionName));
@@ -591,7 +596,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         for (int i = 0; i < ORDER_TAB_TEXT.length; i++) {
             // 实例化tabitem
-            View viewShop = inflater.inflate(R.layout.view_shop_tabitem, null);
+            View viewShop = inflater.inflate(R.layout.item_view_shop_tab, null);
             // 为每一个Tab按钮设置图标、文字和内容
             setTextViewStyle(viewShop, i, (i == 0));
             tabWidget.addView(viewShop);
@@ -619,7 +624,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
             if (makerType == 1) {//已开通创客
                 for (int i = 0; i < MAKER_TAB_TEXT.length; i++) {
                     // 实例化tabitem
-                    View viewShop = inflater.inflate(R.layout.view_shop_tabitem, null);
+                    View viewShop = inflater.inflate(R.layout.item_view_shop_tab, null);
                     // 为每一个Tab按钮设置图标、文字和内容
                     setTextViewStyle(viewShop, i, MAKER_TAB_IMAGE,MAKER_TAB_TEXT);
                     // red number
@@ -630,7 +635,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
             }else if (makerType == 2){//未开通创客,但允许
                 for (int i = 0; i < MAKERDREDGE_TAB_TEXT.length; i++) {
                     // 实例化tabitem
-                    View viewShop = inflater.inflate(R.layout.view_shop_tabitem, null);
+                    View viewShop = inflater.inflate(R.layout.item_view_shop_tab, null);
                     // 为每一个Tab按钮设置图标、文字和内容
                     if (i == 0){
                         viewShop.setVisibility(View.VISIBLE);
@@ -727,29 +732,19 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         public void onTabSelectionChanged(int tabIndex) {
             switch (tabIndex){
                 case 0://待付款
-                    startActivity(1);
-//                    startWebViewActivity(Config.MEORDERUNPAYMENTWEB);
+                    ((MainActivityNew)getActivity()).startOrderActivity(1);
                     break;
                 case 1://代发货
-                    startActivity(2);
-//                    startWebViewActivity(Config.MEORDERUNSHIPMENTSWEB);
+                    ((MainActivityNew)getActivity()).startOrderActivity(2);
                     break;
                 case 2://待收货
-                    startActivity(3);
-//                    startWebViewActivity(Config.MEORDERUNSIGNFORWEB);
+                    ((MainActivityNew)getActivity()).startOrderActivity(3);
                     break;
                 case 3://全部订单
-                    startActivity(0);
-//                    startWebViewActivity(Config.MEORDERWEB);
+                    ((MainActivityNew)getActivity()).startOrderActivity(0);
                     break;
             }
         }
-    }
-
-    protected void startActivity(int tabIndex){
-        Intent intent = new Intent(getActivity(), MyOrderActivity.class);
-        intent.putExtra("tabIndex",tabIndex);
-        startActivity(intent);
     }
 
     //我的创客
@@ -841,6 +836,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                 case 5://专票资质
                     startWebViewActivity(Config.SHOPAPTITUDE);
                     break;
+                case 6://用油查询
+                    startWebViewActivity(Config.SHOPINOILQUERY);
+                    break;
             }
         }else {
             switch (position){
@@ -861,6 +859,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     break;
                 case 4://专票资质
                     startWebViewActivity(Config.SHOPAPTITUDE);
+                    break;
+                case 5://用油查询
+                    startWebViewActivity(Config.SHOPINOILQUERY);
                     break;
             }
         }

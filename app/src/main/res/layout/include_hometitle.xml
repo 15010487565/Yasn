@@ -14,7 +14,7 @@
 
 
     <TextView
-        android:id="@+id/address"
+        android:id="@+id/tv_HomeAddress"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -31,7 +31,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/topsearch"
+            android:id="@+id/tv_Topsearch"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

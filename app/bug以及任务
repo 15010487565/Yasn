@@ -1,4 +1,2 @@
-1.汪洋省市区列表跟地区有关，
-2.结算接口返回值意思{"code":200,"message":"操作成功","data":50048,"totalCount":0,"success":true}
-3.普通发票确定{"timestamp":1531123504150,"status":404,"error":"Not Found","message":"Not Found","path":"/order/save-receipt"}
-4.专用发票的状态，修改中or审核通过
+1.收藏两个接口，收藏接口favorite/listGoodsFavoriteByMemberId若为空，请求goods/subject。不算bug，可以合并
+2.常够清单问题同上

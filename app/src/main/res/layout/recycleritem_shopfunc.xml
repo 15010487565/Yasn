@@ -9,7 +9,7 @@
         android:id="@+id/topImage"
         android:layout_width="@dimen/height_40"
         android:layout_height="@dimen/height_40"
-        android:background="@mipmap/qqfriends"/>
+        android:background="@mipmap/errorimage"/>
 
     <TextView
         android:id="@+id/nameTitle"

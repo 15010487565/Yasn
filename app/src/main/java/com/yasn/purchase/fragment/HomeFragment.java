@@ -73,8 +73,6 @@ import java.util.TimerTask;
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
-import static com.yasn.purchase.R.id.appbar;
-
 
 /**
  * Created by Android on 2017/9/5.
@@ -87,23 +85,23 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     private HomeRecyclerAdapter adapter;
     //    private ConvenientBanner homeConvenientBanner;
-    private Banner home_banner;
-    private TabLayout tablayout;
-    private LinearLayout notLogin, linearLayout2, orderStateLinear;
+    private Banner homeBanner;
+    private TabLayout tabHome;
+    private LinearLayout notLogin , orderStateLinear;
     private RelativeLayout home_infomessage;
     private MultiSwipeRefreshLayout mSwipeRefreshLayout;
     private AppBarLayout appBarLayout;
     private RelativeLayout topbat_parent;
     //    private NestedScrollView nestedScrollView;
 //    private RecyclerView recyNested;
-    private RecyclerView recyclerview;
+    private RecyclerView rcHome;
     private RecyclerLayoutManager mLinearLayoutManager, layoutManagerNested;
-    private TextView topsearch, address;
+    private TextView topsearch, tvHomeAddress;
     private boolean move = false;
     private boolean animationBool = true;//定位是否开启动画，默认true
     private int mIndex = 0;
     private FrameLayout topinfomssage;
-    private LinearLayout shoplist, yasnbang, home_collect, home_service;
+    private LinearLayout llHomeOftensShop, llYasnbang, llHomeCollect, llHomeService;
     private CollapsingToolbarLayout collapsingToolbar;
     private RelativeLayout rlMainError;//错误布局
     private GestureDetector gd;
@@ -183,33 +181,33 @@ public class HomeFragment extends SimpleTopbarFragment implements
         topbat_parent.setVisibility(View.GONE);
 
         //地方站
-        address = (TextView) view.findViewById(R.id.address);
+        tvHomeAddress = (TextView) view.findViewById(R.id.tv_HomeAddress);
         //搜索输入框
-        topsearch = (TextView) view.findViewById(R.id.topsearch);
+        topsearch = (TextView) view.findViewById(R.id.tv_Topsearch);
         topsearch.setOnClickListener(this);
         initLoginView(view);
         //收藏
-        home_collect = (LinearLayout) view.findViewById(R.id.home_collect);
-        home_collect.setOnClickListener(this);
-        home_collect.setVisibility(View.GONE);
+        llHomeCollect = (LinearLayout) view.findViewById(R.id.ll_HomeCollect);
+        llHomeCollect.setOnClickListener(this);
+        llHomeCollect.setVisibility(View.GONE);
         //客服
-        home_service = (LinearLayout) view.findViewById(R.id.home_service);
-        home_service.setOnClickListener(this);
+        llHomeService = (LinearLayout) view.findViewById(R.id.ll_HomeService);
+        llHomeService.setOnClickListener(this);
         //常购清单
-        shoplist = (LinearLayout) view.findViewById(R.id.shoplist);
-        shoplist.setOnClickListener(this);
-        yasnbang = (LinearLayout) view.findViewById(R.id.yasnbang);
-        yasnbang.setOnClickListener(this);
+        llHomeOftensShop = (LinearLayout) view.findViewById(R.id.ll_HomeOftensShop);
+        llHomeOftensShop.setOnClickListener(this);
+        llYasnbang = (LinearLayout) view.findViewById(R.id.ll_Yasnbang);
+        llYasnbang.setOnClickListener(this);
         //订单状态
         initViewOrder(view);
         //下拉刷新
         initSwipeRefreshLayout(view);
 //        homeConvenientBanner = (ConvenientBanner) view.findViewById(R.id.home_convenientBanner);
-        home_banner = (Banner) view.findViewById(R.id.home_banner);
+        homeBanner = (Banner) view.findViewById(R.id.home_banner);
         //开始轮播
-        home_banner.startAutoPlay();
+        homeBanner.startAutoPlay();
         //初始化tab
-        tablayout = (TabLayout) view.findViewById(R.id.tablayout);
+        tabHome = (TabLayout) view.findViewById(R.id.tab_Home);
         initRecyclerView(view);
         //error界面
         rlMainError = (RelativeLayout) view.findViewById(R.id.rl_mainError);
@@ -221,23 +219,26 @@ public class HomeFragment extends SimpleTopbarFragment implements
     }
 
     int digital_member;
-
+    int member_id;
     private void initLoginData(HomeModel.MemberBean member) {
         if (member == null || "".equals(member)) {
             notLogin.setVisibility(View.VISIBLE);
             home_infomessage.setVisibility(View.INVISIBLE);
             loginImage.setBackgroundResource(R.mipmap.unlogin);
-            home_collect.setVisibility(View.GONE);
+            llHomeCollect.setVisibility(View.GONE);
         } else {
             loginImage.setBackgroundResource(R.mipmap.login_n_yasn);
             notLogin.setVisibility(View.GONE);
             home_infomessage.setVisibility(View.VISIBLE);
 
-            home_collect.setVisibility(View.VISIBLE);
+            llHomeCollect.setVisibility(View.VISIBLE);
             //
-            int member_id = member.getMember_id();
+            member_id = member.getMember_id();
             SharePrefHelper.getInstance(getActivity()).putSpString("memberid", String.valueOf(member_id));
 //            ((MainActivityNew) getActivity()).setCartNum(Integer.valueOf(member.getCartCount()));
+            //收获地区所在省
+            int provinceId = member.getProvinceId();
+            SharePrefHelper.getInstance(getActivity()).putSpString("provinceId", String.valueOf(provinceId));
             EventBusMsg carNum = new EventBusMsg("carNum");
             carNum.setCarNum(String.valueOf(member.getCartCount()));
             EventBus.getDefault().post(carNum);
@@ -307,25 +308,25 @@ public class HomeFragment extends SimpleTopbarFragment implements
     private TextView whiteTopText;
 
     private void initLoginView(View view) {
-        topinfomssage = (FrameLayout) view.findViewById(R.id.home_topinfomssage);
+        topinfomssage = (FrameLayout) view.findViewById(R.id.fl_HomeTopinfomssage);
         topinfomssage.setOnClickListener(this);
 
-        notLogin = (LinearLayout) view.findViewById(R.id.notlogin);
-        home_infomessage = (RelativeLayout) view.findViewById(R.id.home_infomessage);
+        notLogin = (LinearLayout) view.findViewById(R.id.ll_HomeNotlogin);
+        home_infomessage = (RelativeLayout) view.findViewById(R.id.re_HomeInfomessage);
         home_infomessage.setVisibility(View.INVISIBLE);
         //登陆图片
-        loginImage = (ImageView) view.findViewById(R.id.loginImage);
+        loginImage = (ImageView) view.findViewById(R.id.iv_HomeLogin);
         //登陆
-        login = (TextView) view.findViewById(R.id.login);
+        login = (TextView) view.findViewById(R.id.tv_HomeLogin);
         login.setOnClickListener(this);
         //注册
-        register = (TextView) view.findViewById(R.id.register);
+        register = (TextView) view.findViewById(R.id.tv_HomeRegister);
         register.setOnClickListener(this);
         //账号
-        homeAccount = (TextView) view.findViewById(R.id.home_account);
+        homeAccount = (TextView) view.findViewById(R.id.tv_HomeAccount);
         //星级
-        homeGrade = (TextView) view.findViewById(R.id.home_grade);
-        whiteTopText = (TextView) view.findViewById(R.id.whiteTopText);
+        homeGrade = (TextView) view.findViewById(R.id.tv_HomeGrade);
+        whiteTopText = (TextView) view.findViewById(R.id.tv_HomeWhiteTopText);
         //未开头雅森帮
         undredgeYsenHelp = (TextView) view.findViewById(R.id.undredge_YsenHelp);
         undredgeYsenHelp.setVisibility(View.VISIBLE);
@@ -339,13 +340,13 @@ public class HomeFragment extends SimpleTopbarFragment implements
         //初始化tabRecyclerView
 //        nestedScrollView = (NestedScrollView) view.findViewById(R.id.nestedScrollView);
 //        nestedScrollView.setVisibility(View.VISIBLE);
-        recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
+        rcHome = (RecyclerView) view.findViewById(R.id.rc_Home);
 //        nestedScrollView.setVisibility(View.GONE);
 //        recyNested = (RecyclerView) view.findViewById(R.id.recyNested);
         mLinearLayoutManager = new RecyclerLayoutManager(getActivity());
         mLinearLayoutManager.setScrollEnabled(true);
         mLinearLayoutManager.setAutoMeasureEnabled(true);
-        recyclerview.setLayoutManager(mLinearLayoutManager);
+        rcHome.setLayoutManager(mLinearLayoutManager);
 //        layoutManagerNested = new RecyclerLayoutManager(getActivity());
 //        layoutManagerNested.setScrollEnabled(true);
 //        layoutManagerNested.setAutoMeasureEnabled(true);
@@ -354,9 +355,9 @@ public class HomeFragment extends SimpleTopbarFragment implements
         adapter = new HomeRecyclerAdapter(getActivity());
         adapter.setOnItemClickListener(this);
 
-        recyclerview.setAdapter(adapter);
+        rcHome.setAdapter(adapter);
 //        recyNested.setAdapter(adapter);
-        recyclerview.addOnScrollListener(new RecyclerViewListener());
+        rcHome.addOnScrollListener(new RecyclerViewListener());
     }
 
     @Override
@@ -365,10 +366,10 @@ public class HomeFragment extends SimpleTopbarFragment implements
         String undredgeYsenHelpContext = undredgeYsenHelp.getText().toString();
         Intent intent = null;
         switch (v.getId()) {
-            case R.id.login:
+            case R.id.tv_HomeLogin:
                 startWebViewActivity(Config.LOGINWEBVIEW);
                 break;
-            case R.id.register:
+            case R.id.tv_HomeRegister:
                 startWebViewActivity(Config.REGISTERWEBVIEW);
                 break;
             case R.id.undredge_YsenHelp:
@@ -382,36 +383,31 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     showUpgradeDialog(memssage);
                 }
                 break;
-            case R.id.home_topinfomssage:
+            case R.id.fl_HomeTopinfomssage:
                 break;
-            case R.id.topsearch://搜索按钮
+            case R.id.tv_Topsearch://搜索按钮
                 intent = new Intent(getActivity(), HotLableActivity.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(0, 0);
                 break;
-            case R.id.shoplist://常购清单
-//                startActivity(new Intent(getActivity(), OftenShopActivity.class));
-                startWebViewActivity(Config.SHOPLIST);
+            case R.id.ll_HomeOftensShop://常购清单
+                ((MainActivityNew)getActivity()).startOftenShopActivity(String.valueOf(member_id));
                 break;
-            case R.id.yasnbang://雅森帮
+            case R.id.ll_Yasnbang://雅森帮
 //                if (digital_member == 0) {//未开通雅森帮
 //                    startWebViewActivity(Config.DREDGEYASNHELP);
 //                } else {
                 startWebViewActivity(Config.YASNBANG);
 //                }
                 break;
-            case R.id.home_collect://收藏
-//                startActivity(new Intent(getActivity(), CollectActivity.class));
-                startWebViewActivity(Config.HOMECOLLECT);
+            case R.id.ll_HomeCollect://收藏
+                ((MainActivityNew)getActivity()).startCollectActivity();
                 break;
-            case R.id.home_service://客服
+            case R.id.ll_HomeService://客服
                 SobotUtil.startSobot(getActivity(), null);
                 break;
             case R.id.orderStateLinear:
-                startWebViewActivity(Config.MEORDERWEB);
-//                intent = new Intent(getActivity(), MyOrderActivity.class);
-//                intent.putExtra("tabIndex",0);
-//                startActivity(intent);
+                ((MainActivityNew)getActivity()).startOrderActivity(0);
                 break;
         }
     }
@@ -427,7 +423,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
         clHome = (CoordinatorLayout) view.findViewById(R.id.cl_Home);
         clHome.setVisibility(View.GONE);
 
-        appBarLayout = (AppBarLayout) view.findViewById(appbar);
+        appBarLayout = (AppBarLayout) view.findViewById(R.id.appbar);
 
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
@@ -464,19 +460,19 @@ public class HomeFragment extends SimpleTopbarFragment implements
             priceDisplayType = priceData.getPriceDisplayType();
             priceDisplayMsg = priceData.getPriceDisplayMsg();
         }
-        tablayout.removeAllTabs();
+        tabHome.removeAllTabs();
         listener = this;
-        tablayout.addOnTabSelectedListener(this);
+        tabHome.addOnTabSelectedListener(this);
         for (int i = 0, j = subjects.size(); i < j; i++) {
 
             HomeModel.SubjectsBean subjectsBean = subjects.get(i);
             String title = subjectsBean.getTitle();
             tabTextList.add(title);
-            TabLayout.Tab tab = tablayout.newTab().setText(title);
+            TabLayout.Tab tab = tabHome.newTab().setText(title);
             if (i == 0) {
-                tablayout.addTab(tab, true);
+                tabHome.addTab(tab, true);
             } else {
-                tablayout.addTab(tab, false);
+                tabHome.addTab(tab, false);
             }
             HomeRecyModel homerecyTab = new HomeRecyModel();
             homerecyTab.setItemType(1);
@@ -559,19 +555,19 @@ public class HomeFragment extends SimpleTopbarFragment implements
         WindowManager wm = getActivity().getWindowManager();//获取屏幕宽高
         int width1 = wm.getDefaultDisplay().getWidth();
 //        int height1 = wm.getDefaultDisplay().getHeight();
-        ViewGroup.LayoutParams para = home_banner.getLayoutParams();//获取drawerlayout的布局
+        ViewGroup.LayoutParams para = homeBanner.getLayoutParams();//获取drawerlayout的布局
         para.height = width1 * 330 / 750;//修改宽度
 //        para.height = height1;//修改高度
-        home_banner.setLayoutParams(para); //设置修改后的布局。
+        homeBanner.setLayoutParams(para); //设置修改后的布局。
 
         List<HomeModel.AdvsBean> advs = homemodel.getAdvs();
         if (advs != null && advs.size() > 0) {
-            home_banner.setImages(advs)
+            homeBanner.setImages(advs)
                     .setImageLoader(new GlideImageLoader())
                     .setOnBannerListener(this)
                     .start();
         } else {
-            home_banner.setVisibility(View.GONE);
+            homeBanner.setVisibility(View.GONE);
         }
     }
 
@@ -633,13 +629,13 @@ public class HomeFragment extends SimpleTopbarFragment implements
                             }
                         }
                     } else {
-                        startWebViewActivity(Config.IP+"/" + url);
+                        startWebViewActivity(Config.URLCAIGOU + url);
                         return;
                     }
                 }
 
             } else {
-                startWebViewActivity(Config.IP +"/"+ url);
+                startWebViewActivity(Config.URLCAIGOU + url);
             }
         }
     }
@@ -657,7 +653,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 //        homeConvenientBanner.stopTurning();
 //        getActivity().overridePendingTransition(0, 0);
         //结束轮播
-        home_banner.stopAutoPlay();
+        homeBanner.stopAutoPlay();
     }
 
     @Override
@@ -710,10 +706,10 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     initLoginData(member1);
                     if (place != null && !"".equals(place)) {
                         String regionName = place.getRegionName();
-                        address.setText(regionName == null ? "" : regionName);
+                        tvHomeAddress.setText(regionName == null ? "" : regionName);
                         SharePrefHelper.getInstance(getActivity()).putSpString("regionName", (regionName == null ? "" : regionName));
                     } else {
-                        address.setText("");
+                        tvHomeAddress.setText("");
                         SharePrefHelper.getInstance(getActivity()).putSpString("regionName", "");
                     }
                     //订单状态
@@ -724,9 +720,9 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     HomeModel.MemberBean member = homemodel.getMember();
                     if (subjects != null && subjects.size() > 0) {
                         initTabLayout(subjects, priceData, member);
-                        tablayout.setVisibility(View.VISIBLE);
+                        tabHome.setVisibility(View.VISIBLE);
                     } else {
-                        tablayout.setVisibility(View.GONE);
+                        tabHome.setVisibility(View.GONE);
                     }
                     if (member == null) {
 //                        Log.e("TAG_Home","loginState=登录看价格");
@@ -1001,7 +997,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
             return;
         }
         mIndex = n;
-        recyclerview.stopScroll();
+        rcHome.stopScroll();
         isOpen = true;//recy位置发生改变
         if (animationBool) {
             smoothMoveToPosition(n);
@@ -1017,12 +1013,12 @@ public class HomeFragment extends SimpleTopbarFragment implements
         int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
         Log.e("TAG_Scroll", "firstItem=" + firstItem + ";position=" + position + ";lastItem=" + lastItem);
         if (position <= firstItem) {
-            recyclerview.smoothScrollToPosition(position);
+            rcHome.smoothScrollToPosition(position);
         } else if (position <= lastItem) {
-            int top = recyclerview.getChildAt(position - firstItem).getTop();
-            recyclerview.smoothScrollBy(0, top);
+            int top = rcHome.getChildAt(position - firstItem).getTop();
+            rcHome.smoothScrollBy(0, top);
         } else {
-            recyclerview.smoothScrollToPosition(position);
+            rcHome.smoothScrollToPosition(position);
             move = true;
         }
     }
@@ -1035,14 +1031,14 @@ public class HomeFragment extends SimpleTopbarFragment implements
         //然后区分情况
         if (position <= firstItem) {
             //当要置顶的项在当前显示的第一个项的前面时
-            recyclerview.scrollToPosition(position);
+            rcHome.scrollToPosition(position);
         } else if (position <= lastItem) {
             //当要置顶的项已经在屏幕上显示时
-            int top = recyclerview.getChildAt(position - firstItem).getTop();
-            recyclerview.scrollBy(0, top);
+            int top = rcHome.getChildAt(position - firstItem).getTop();
+            rcHome.scrollBy(0, top);
         } else {
             //当要置顶的项在当前显示的最后一项的后面时
-            recyclerview.scrollToPosition(position);
+            rcHome.scrollToPosition(position);
             //这里这个变量是用在RecyclerView滚动监听里面的
             move = true;
         }
@@ -1054,25 +1050,25 @@ public class HomeFragment extends SimpleTopbarFragment implements
     class RecyclerViewListener extends RecyclerView.OnScrollListener {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerViewB, int newState) {
-            super.onScrollStateChanged(recyclerview, newState);
+            super.onScrollStateChanged(rcHome, newState);
             if (move && newState == RecyclerView.SCROLL_STATE_IDLE && animationBool) {
                 move = false;
                 int n = mIndex - mLinearLayoutManager.findFirstVisibleItemPosition();
-                if (0 <= n && n < recyclerview.getChildCount()) {
-                    int top = recyclerview.getChildAt(n).getTop();
-                    recyclerview.smoothScrollBy(0, top);
+                if (0 <= n && n < rcHome.getChildCount()) {
+                    int top = rcHome.getChildAt(n).getTop();
+                    rcHome.smoothScrollBy(0, top);
                 }
             }
 
             //表示是否能向上滚动，true表示能滚动，false表示已经滚动到底部
-            boolean canScrollVertically = recyclerview.canScrollVertically(1);
+            boolean canScrollVertically = rcHome.canScrollVertically(1);
 //            Log.e("TAG_首页上滑", "canScrollVertically=" + canScrollVertically + ";direction=" + direction);
             if (!canScrollVertically && direction == 1) {
                 appBarLayout.setExpanded(false, true);
                 return;
             }
             //表示是否能向下滚动，true表示能滚动，false表示已经滚动到顶部
-            boolean scrollVertically = recyclerview.canScrollVertically(-1);
+            boolean scrollVertically = rcHome.canScrollVertically(-1);
 
 //            Log.e("TAG_首页下滑", "scrollVertically=" + scrollVertically + ";isOpen=" + isOpen);
             if (!isOpen && !scrollVertically && newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -1091,13 +1087,13 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
         @Override
         public void onScrolled(RecyclerView recyclerViewB, int dx, int dy) {
-            super.onScrolled(recyclerview, dx, dy);
+            super.onScrolled(rcHome, dx, dy);
             if (move && !animationBool) {
                 move = false;
                 int n = mIndex - mLinearLayoutManager.findFirstVisibleItemPosition();
-                if (0 <= n && n < recyclerview.getChildCount()) {
-                    int top = recyclerview.getChildAt(n).getTop();
-                    recyclerview.scrollBy(0, top);
+                if (0 <= n && n < rcHome.getChildCount()) {
+                    int top = rcHome.getChildAt(n).getTop();
+                    rcHome.scrollBy(0, top);
                 }
             }
             //            if (newState == RecyclerView.SCROLL_STATE_IDLE ){
@@ -1105,9 +1101,9 @@ public class HomeFragment extends SimpleTopbarFragment implements
             int lastItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
             //获取第一个可见view的位置
             int firstItemPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
-            int selectedTabPosition = tablayout.getSelectedTabPosition();
+            int selectedTabPosition = tabHome.getSelectedTabPosition();
 //            Log.e("TAG_滚动定位","last="+lastItemPosition+";first="+firstItemPosition+";selected="+selectedTabPosition);
-            TabLayout.Tab tabAt = tablayout.getTabAt(selectedTabPosition);
+            TabLayout.Tab tabAt = tabHome.getTabAt(selectedTabPosition);
 //                for (int i = firstItemPosition; i < lastItemPosition; i++) {
             HomeRecyModel homeRecyModel = homerecyList.get(firstItemPosition);
             if (!tabAt.getText().equals(homeRecyModel.getText())) {
@@ -1116,15 +1112,15 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     //列表楼层名称
                     String text = homeRecyModel.getText();
 //                    Log.e("TAG_列表楼层名称","text="+text);
-                    for (int j = 0,k = tablayout.getTabCount(); j < k; j++) {
+                    for (int j = 0, k = tabHome.getTabCount(); j < k; j++) {
                         //tab名称
-                        TabLayout.Tab tabAt1 = tablayout.getTabAt(j);
+                        TabLayout.Tab tabAt1 = tabHome.getTabAt(j);
                         String s = tabAt1.getText().toString();
 //                        Log.e("TAG_tab名称","s="+s);
                         if (text.equals(s)){
-                            tablayout.removeOnTabSelectedListener(listener);
+                            tabHome.removeOnTabSelectedListener(listener);
                             tabAt1.select();
-                            tablayout.addOnTabSelectedListener(listener);
+                            tabHome.addOnTabSelectedListener(listener);
                             break;
                         }
                     }
@@ -1237,7 +1233,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
             OkHttpDemand();
         } else if ("loginout".equals(msg)) {
             isFrist = true;
-            home_collect.setVisibility(View.GONE);
+            llHomeCollect.setVisibility(View.GONE);
             OkHttpDemand();
         } else if ("refresh".equals(msg)) {
             isFrist = true;

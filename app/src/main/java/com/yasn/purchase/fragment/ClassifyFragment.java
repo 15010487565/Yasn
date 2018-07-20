@@ -121,7 +121,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     protected void initView(LayoutInflater inflater, View view) {
 //        Log.e("TAG_initView", "CLASSIFY_initView");
         //搜索输入框
-        topsearch = (TextView) view.findViewById(R.id.topsearch);
+        topsearch = (TextView) view.findViewById(R.id.tv_Topsearch);
         topsearch.setOnClickListener(this);
         topbat_parent = (RelativeLayout) view.findViewById(R.id.topbat_parent);
         topbat_parent.setVisibility(View.GONE);
@@ -171,7 +171,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.topsearch://搜索按钮
+            case R.id.tv_Topsearch://搜索按钮
                 Intent intent = new Intent(getActivity(), HotLableActivity.class);
 //                startActivityForResult(intent,TOPSEARCHCode);
                 startActivity(intent);

@@ -15,6 +15,6 @@
         android:layout_margin="8dp"
         android:text="@string/screen"
         android:textColor="@color/white"
-        android:textSize="@dimen/textsize_16" />
+        android:textSize="@dimen/textsize_14" />
 
 </LinearLayout>

@@ -198,7 +198,7 @@ public class OrderExpressActivity extends SimpleTopbarActivity implements
         }
     }
     private View tabIcon(int position){
-        View newtab =  LayoutInflater.from(this).inflate(R.layout.icon_view,null);
+        View newtab =  LayoutInflater.from(this).inflate(R.layout.icon_tabview,null);
         TextView tv = (TextView) newtab.findViewById(R.id.tabtext);
         tv.setText("包裹"+(position+1));
         ImageView im = (ImageView)newtab.findViewById(R.id.tabicon);

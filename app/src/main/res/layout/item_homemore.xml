@@ -9,7 +9,7 @@
     android:orientation="horizontal"
     android:padding="@dimen/margin_15">
     <ImageView
-        android:id="@+id/iv_HomeMoreLest"
+        android:id="@+id/iv_HomeMoreLeft"
         android:layout_width="@dimen/image_size"
         android:layout_height="@dimen/image_size"
         android:src="@mipmap/errorimage" />
@@ -112,7 +112,7 @@
                 android:paddingLeft="@dimen/margin_10"
                 android:layout_marginTop="@dimen/margin_5">
 
-                <include layout="@layout/threelable" />
+                <include layout="@layout/include_threelable" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

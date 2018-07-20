@@ -2,6 +2,7 @@ package com.yasn.purchase.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +23,7 @@ import com.yasn.purchase.R;
 import com.yasn.purchase.activityold.WebViewActivity;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.listener.OnRcItemClickListener;
-import com.yasn.purchase.model.HomeMoreModel;
+import com.yasn.purchase.model.OftenModel;
 
 import java.util.List;
 
@@ -39,8 +40,8 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public final static int TYPE_ITEM = 1;
     public final static int TYPE_FOOTER = 2;
     private Context context;
-    private List<HomeMoreModel.SubjectBean.ContentBean> list;
-    private List<HomeMoreModel.SubjectBean.ContentBean> addList;
+    private List<OftenModel.DataBean.RegularPurcaseBean> list;
+    private List<OftenModel.DataBean.RegularPurcaseBean> addList;
     private OnRcItemClickListener onItemClickListener;
     private LinearLayoutManager linearLayoutManager;
     private String loginState;
@@ -60,13 +61,13 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setData(List<HomeMoreModel.SubjectBean.ContentBean> list) {
+    public void setData(List<OftenModel.DataBean.RegularPurcaseBean> list) {
         this.addList = list;
         this.list = list;
         notifyDataSetChanged();
     }
 
-    public void addData(List<HomeMoreModel.SubjectBean.ContentBean> list) {
+    public void addData(List<OftenModel.DataBean.RegularPurcaseBean> list) {
         this.addList = list;
         if (this.list != null) {
             this.list.addAll(list);
@@ -91,7 +92,7 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         RecyclerView.ViewHolder holder = null;
         switch (viewType) {
             case TYPE_ITEM:
-                view = LayoutInflater.from(context).inflate(R.layout.item_homemore, parent, false);
+                view = LayoutInflater.from(context).inflate(R.layout.recycleritem_oftenshop, parent, false);
                 holder = new ViewHolderItem(view);
                 break;
             case TYPE_FOOTER:
@@ -106,16 +107,16 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case TYPE_ITEM:
-                final ViewHolderItem holderOneItem = (ViewHolderItem) holder;
-                HomeMoreModel.SubjectBean.ContentBean contentBean = list.get(position);
+                ViewHolderItem holderItem = (ViewHolderItem) holder;
+                OftenModel.DataBean.RegularPurcaseBean regularPurcaseBean = list.get(position);
                 StringBuffer sb = new StringBuffer();
                 int goneNum = 0;
-                int store_id = contentBean.getStore_id();
+                int store_id = regularPurcaseBean.getStore_id();
                 if (store_id == 1) {
                     sb.append("自营" + place);
                     goneNum += placeNum;
-                    holderOneItem.autotrophy.setVisibility(View.VISIBLE);
-                    holderOneItem.autotrophy.setText("自营");
+                    holderItem.autotrophy.setVisibility(View.VISIBLE);
+                    holderItem.autotrophy.setText("自营");
                 }
                 else {
 //                    if (store_id!=99){
@@ -129,103 +130,121 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 //                            goneNum =goneNum+ regionName.length()+placeNum;
 //                        }
 //                    }else {
-                    holderOneItem.autotrophy.setText("");
-                    holderOneItem.autotrophy.setVisibility(View.GONE);
+                    holderItem.autotrophy.setText("");
+                    holderItem.autotrophy.setVisibility(View.GONE);
 //                }
         }
-                int is_limit_buy = contentBean.getIs_limit_buy();
+                int is_limit_buy = regularPurcaseBean.getIs_limit_buy();
                 if (is_limit_buy > 0) {
-                    holderOneItem.purchase.setVisibility(View.VISIBLE);
+                    holderItem.purchase.setVisibility(View.VISIBLE);
                     sb.append("限购" + place);
                     goneNum += placeNum;
                 } else {
-                    holderOneItem.purchase.setVisibility(View.GONE);
+                    holderItem.purchase.setVisibility(View.GONE);
                 }
-                int is_before_sale = contentBean.getIs_before_sale();
+                int is_before_sale = regularPurcaseBean.getIs_before_sale();
                 if (is_before_sale == 1) {
-                    holderOneItem.presell.setVisibility(View.VISIBLE);
+                    holderItem.presell.setVisibility(View.VISIBLE);
                     goneNum += placeNum;
                     sb.append("预售" + place);
                 } else {
-                    holderOneItem.presell.setVisibility(View.GONE);
+                    holderItem.presell.setVisibility(View.GONE);
                 }
-                SpannableStringBuilder span = new SpannableStringBuilder(sb + contentBean.getGoods_name());
+                SpannableStringBuilder span = new SpannableStringBuilder(sb + regularPurcaseBean.getName());
                 span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.white)), 0, goneNum,
                         Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                holderOneItem.homeMoreTitle.setText(span);
+                holderItem.oftenshopTitle.setText(span);
 
-                String advert = contentBean.getAdvert();
-                if (advert == null || "".equals(advert)) {
-                    holderOneItem.tvAdvert.setVisibility(View.GONE);
-                } else {
-                    holderOneItem.tvAdvert.setText(advert);
-                    holderOneItem.tvAdvert.setVisibility(View.VISIBLE);
-                }
-
-
-                String minNumberString = String.format("已售%s笔", String.valueOf(contentBean.getTotal_buy_count()));
+                String minNumberString = String.format("已售%s笔", String.valueOf(regularPurcaseBean.getSold_num()));
                 SpannableStringBuilder countRecySpan = new SpannableStringBuilder(minNumberString);
                 countRecySpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.black_99)), 0, 2,
                         Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 countRecySpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.black_99)), minNumberString.length() - 1, minNumberString.length(),
                         Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                holderOneItem.searchcount.setText(countRecySpan);
+                holderItem.searchcount.setText(countRecySpan);
 
-                int has_discount = contentBean.getHas_discount();
+                int has_discount = regularPurcaseBean.getHas_discount();
                 //抢购价
-                String discount_price = contentBean.getDiscount_price();
+//                String discount_price = regularPurcaseBean.getDiscount_price();
                 //正常价格
-                double price = contentBean.getPrice();
-                if (has_discount == 1) {
-                    holderOneItem.llBuy.setVisibility(View.VISIBLE);
-                    holderOneItem.tvbuyMoney.setText("￥" + String.format("%.2f", Double.valueOf(discount_price)));
+                double price = regularPurcaseBean.getPrice();
+//                if (has_discount == 1) {
+//                    holderItem.llBuy.setVisibility(View.VISIBLE);
+//                    holderItem.tvbuyMoney.setText("￥" + String.format("%.2f", Double.valueOf(discount_price)));
                     if ("0".equals(loginState)) {
-                        holderOneItem.homeMoreMoney.setText("￥" + String.format("%.2f", price));
-                        holderOneItem.llBuy.setVisibility(View.VISIBLE);
+                        holderItem.oftenshopMoney.setText("￥" + String.format("%.2f", price));
+//                        holderItem.llBuy.setVisibility(View.VISIBLE);
                     } else {
-                        holderOneItem.homeMoreMoney.setText(loginState == null ? "登录看价格" : loginState);
-                        holderOneItem.llBuy.setVisibility(View.GONE);
+                        holderItem.oftenshopMoney.setText(loginState == null ? "登录看价格" : loginState);
+//                        holderItem.llBuy.setVisibility(View.GONE);
                     }
-                } else {
-                    if ("0".equals(loginState)) {
-                        holderOneItem.homeMoreMoney.setText("￥" + String.format("%.2f", price));
-                    } else {
-                        holderOneItem.homeMoreMoney.setText(loginState == null ? "登录看价格" : loginState);
-                    }
-                    holderOneItem.tvbuyMoney.setText("");
-                    holderOneItem.llBuy.setVisibility(View.GONE);
-                }
-                int have_voice = contentBean.getHave_voice();//是否有音频 1：有
+//                } else {
+//                    if ("0".equals(loginState)) {
+//                        holderItem.oftenshopMoney.setText("￥" + String.format("%.2f", price));
+//                    } else {
+//                        holderItem.oftenshopMoney.setText(loginState == null ? "登录看价格" : loginState);
+//                    }
+//                    holderItem.tvbuyMoney.setText("");
+//                    holderItem.llBuy.setVisibility(View.GONE);
+//                }
+                int have_voice = regularPurcaseBean.getHave_voice();//是否有音频 1：有
                 if (have_voice == 1) {
-                    holderOneItem.button3.setVisibility(View.VISIBLE);
+                    holderItem.button3.setVisibility(View.VISIBLE);
                 } else {
-                    holderOneItem.button3.setVisibility(View.GONE);
+                    holderItem.button3.setVisibility(View.GONE);
                 }
-                int is_success_case = contentBean.getIs_success_case(); //是否成功案例 1：有
+                int is_success_case = regularPurcaseBean.getIs_success_case(); //是否成功案例 1：有
                 if (is_success_case == 1) {
-                    holderOneItem.button2.setVisibility(View.VISIBLE);
+                    holderItem.button2.setVisibility(View.VISIBLE);
                 } else {
-                    holderOneItem.button2.setVisibility(View.GONE);
+                    holderItem.button2.setVisibility(View.GONE);
                 }
-                int market_enable = contentBean.getMarket_enable();
+                int market_enable = regularPurcaseBean.getMarket_enable();
                 if (market_enable == 0) {//上架1, 下架0
-                    holderOneItem.iv_shroud.setVisibility(View.VISIBLE);
+                    holderItem.iv_shroud.setVisibility(View.VISIBLE);
                 } else {
-                    holderOneItem.iv_shroud.setVisibility(View.GONE);
+                    holderItem.iv_shroud.setVisibility(View.GONE);
                 }
+                //规格
+//                holderItem.specOftenShop.removeAllViews();
+                String spec_value = regularPurcaseBean.getSpec_value();
+                holderItem.specOftenShop.setText(spec_value);
+//                if (specList != null && specList.size() > 0) {
+//                    ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                    for (int i = 0, j = specList.size(); i < j; i++) {
+//                        String sprcTextString = specList.get(i);
+//                        Log.e("TAG_规格","sprcTextString="+sprcTextString+";position="+position);
+//                        if (!TextUtils.isEmpty(sprcTextString)){
+//                            final TextView tvSprc = new TextView(context.getApplicationContext());
+//                            tvSprc.setText(sprcTextString);
+//                            if (goodsOff == 0) {
+//                                tvSprc.setTextColor(ContextCompat.getColor(context, R.color.black_66));
+//                                tvSprc.setBackgroundResource(R.drawable.text_n_f5);
+//                            } else {
+//                                tvSprc.setTextColor(ContextCompat.getColor(context, R.color.black_99));
+//                                tvSprc.setBackgroundResource(R.drawable.text_n_f5);
+//                            }
+//                            tvSprc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+//                            tvSprc.setGravity(Gravity.CENTER);
+//                            tvSprc.setTag(list.get(i));
+//                            lp.setMargins(10, 10, 10,0);
+//                            listViewHolder.shopcarLabel.addView(tvSprc, lp);
+//                        }
+//                    }
+//                }
 
                 Glide.with(context)
-                        .load(contentBean.getSmall())
+                        .load(regularPurcaseBean.getSmall())
                         .fitCenter()
                         .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(R.mipmap.errorimage)
                         .error(R.mipmap.errorimage)
-                        .into(holderOneItem.ivLeft);
-                onItemEventClick(holderOneItem);
+                        .into(holderItem.ivLeft);
+                onItemEventClick(holderItem);
                 break;
             case TYPE_FOOTER:
-                SearchAdapter.FootViewHolder footviewholder = (SearchAdapter.FootViewHolder) holder;
+                FootViewHolder footviewholder = (FootViewHolder) holder;
                 if (list == null || list.size() == 0) {
                     footviewholder.footView.setVisibility(View.GONE);
                 } else {
@@ -254,21 +273,19 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     class ViewHolderItem extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView homeMoreTitle;
-        TextView homeMoreMoney, tvAdvert, searchcount;
+        TextView oftenshopTitle;
+        TextView oftenshopMoney, searchcount;
         TextView button1, button2, button3;
         TextView autotrophy, purchase, presell;
         ImageView ivLeft, iv_shroud;
-        LinearLayout llBuy;
-        TextView tvbuyMoney;
-
+//        TagsLayout specOftenShop;
+        TextView specOftenShop;
         public ViewHolderItem(View itemView) {
             super(itemView);
-            homeMoreTitle = (TextView) itemView.findViewById(R.id.title);
-            homeMoreMoney = (TextView) itemView.findViewById(R.id.tv_HomeMoreMoney);
-            homeMoreMoney.setOnClickListener(this);
-            tvAdvert = (TextView) itemView.findViewById(R.id.tv_HomeMoreAction);
-            searchcount = (TextView) itemView.findViewById(R.id.tv_HomeMoreCount);
+            oftenshopTitle = (TextView) itemView.findViewById(R.id.title);
+            oftenshopMoney = (TextView) itemView.findViewById(R.id.tv_OftenshopMoney);
+            oftenshopMoney.setOnClickListener(this);
+            searchcount = (TextView) itemView.findViewById(R.id.tv_OftenshopCount);
 
             button1 = (TextView) itemView.findViewById(R.id.lable_button1);
             button1.setOnClickListener(this);
@@ -280,12 +297,13 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             autotrophy = (TextView) itemView.findViewById(R.id.autotrophy);
             purchase = (TextView) itemView.findViewById(R.id.purchase);
             presell = (TextView) itemView.findViewById(R.id.presell);
-            ivLeft = (ImageView) itemView.findViewById(R.id.iv_HomeMoreLest);
-//            iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
-//            Drawable background = iv_shroud.getBackground();
-//            background.setAlpha(255);
-            llBuy = (LinearLayout) itemView.findViewById(R.id.ll_HomeMoreBuy);
-            tvbuyMoney = (TextView) itemView.findViewById(R.id.tv_HomeMoreBuyMoney);
+            ivLeft = (ImageView) itemView.findViewById(R.id.iv_Oftenshop);
+            iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
+            Drawable background = iv_shroud.getBackground();
+            background.setAlpha(255);
+            //规格布局
+//            specOftenShop = (TagsLayout) itemView.findViewById(R.id.spec_OftenShop);
+            specOftenShop = (TextView) itemView.findViewById(R.id.spec_OftenShop);
         }
 
         @Override
@@ -300,8 +318,8 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 case R.id.lable_button3:
                     onItemClickListener.OnClickRecyButton(3, getLayoutPosition());
                     break;
-                case R.id.tv_HomeMoreMoney:
-                    String trim = homeMoreMoney.getText().toString().trim();
+                case R.id.tv_OftenshopMoney:
+                    String trim = oftenshopMoney.getText().toString().trim();
                     if ("登录看价格".equals(trim)) {
                         startWebViewActivity(Config.LOGINWEBVIEW);
                     } else if ("认证看价格".equals(trim)) {

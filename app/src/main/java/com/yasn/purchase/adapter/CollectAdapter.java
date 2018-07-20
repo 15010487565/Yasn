@@ -2,7 +2,6 @@ package com.yasn.purchase.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +22,7 @@ import com.yasn.purchase.R;
 import com.yasn.purchase.activityold.WebViewActivity;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.listener.OnRcItemClickListener;
-import com.yasn.purchase.model.HomeMoreModel;
+import com.yasn.purchase.model.CollectModel;
 
 import java.util.List;
 
@@ -38,8 +37,8 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public final static int TYPE_ITEM = 1;
     public final static int TYPE_FOOTER = 2;
     private Context context;
-    private List<HomeMoreModel.SubjectBean.ContentBean> list;
-    private List<HomeMoreModel.SubjectBean.ContentBean> addList;
+    private List<CollectModel.ListFavoriteBean> list;
+    private List<CollectModel.ListFavoriteBean> addList;
     private OnRcItemClickListener onItemClickListener;
     private LinearLayoutManager linearLayoutManager;
     private String loginState;
@@ -59,13 +58,13 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setData(List<HomeMoreModel.SubjectBean.ContentBean> list) {
+    public void setData(List<CollectModel.ListFavoriteBean> list) {
         this.addList = list;
         this.list = list;
         notifyDataSetChanged();
     }
 
-    public void addData(List<HomeMoreModel.SubjectBean.ContentBean> list) {
+    public void addData(List<CollectModel.ListFavoriteBean> list) {
         this.addList = list;
         if (this.list != null) {
             this.list.addAll(list);
@@ -90,7 +89,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         RecyclerView.ViewHolder holder = null;
         switch (viewType) {
             case TYPE_ITEM:
-                view = LayoutInflater.from(context).inflate(R.layout.item_homemore, parent, false);
+                view = LayoutInflater.from(context).inflate(R.layout.item_collect, parent, false);
                 holder = new ViewHolderItem(view);
                 break;
             case TYPE_FOOTER:
@@ -106,10 +105,10 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         switch (getItemViewType(position)) {
             case TYPE_ITEM:
                 final ViewHolderItem holderOneItem = (ViewHolderItem) holder;
-                HomeMoreModel.SubjectBean.ContentBean contentBean = list.get(position);
+                CollectModel.ListFavoriteBean listFavoriteBean = list.get(position);
                 StringBuffer sb = new StringBuffer();
                 int goneNum = 0;
-                int store_id = contentBean.getStore_id();
+                int store_id = listFavoriteBean.getStore_id();
                 if (store_id == 1) {
                     sb.append("自营" + place);
                     goneNum += placeNum;
@@ -132,7 +131,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     holderOneItem.autotrophy.setVisibility(View.GONE);
 //                }
         }
-                int is_limit_buy = contentBean.getIs_limit_buy();
+                int is_limit_buy = listFavoriteBean.getIs_limit_buy();
                 if (is_limit_buy > 0) {
                     holderOneItem.purchase.setVisibility(View.VISIBLE);
                     sb.append("限购" + place);
@@ -140,7 +139,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 } else {
                     holderOneItem.purchase.setVisibility(View.GONE);
                 }
-                int is_before_sale = contentBean.getIs_before_sale();
+                int is_before_sale = listFavoriteBean.getIs_before_sale();
                 if (is_before_sale == 1) {
                     holderOneItem.presell.setVisibility(View.VISIBLE);
                     goneNum += placeNum;
@@ -148,12 +147,12 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 } else {
                     holderOneItem.presell.setVisibility(View.GONE);
                 }
-                SpannableStringBuilder span = new SpannableStringBuilder(sb + contentBean.getGoods_name());
+                SpannableStringBuilder span = new SpannableStringBuilder(sb + listFavoriteBean.getName());
                 span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.white)), 0, goneNum,
                         Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                holderOneItem.homeMoreTitle.setText(span);
+                holderOneItem.tvCollectTitle.setText(span);
 
-                String advert = contentBean.getAdvert();
+                String advert = listFavoriteBean.getAdvert();
                 if (advert == null || "".equals(advert)) {
                     holderOneItem.tvAdvert.setVisibility(View.GONE);
                 } else {
@@ -162,59 +161,59 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
 
 
-                String minNumberString = String.format("已售%s笔", String.valueOf(contentBean.getTotal_buy_count()));
+                String minNumberString = String.format("已售%s笔", String.valueOf(listFavoriteBean.getTotalBuyCount()));
                 SpannableStringBuilder countRecySpan = new SpannableStringBuilder(minNumberString);
                 countRecySpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.black_99)), 0, 2,
                         Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 countRecySpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.black_99)), minNumberString.length() - 1, minNumberString.length(),
                         Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                holderOneItem.searchcount.setText(countRecySpan);
+                holderOneItem.tvCollectCount.setText(countRecySpan);
 
-                int has_discount = contentBean.getHas_discount();
+                int has_discount = listFavoriteBean.getHas_discount();
                 //抢购价
-                String discount_price = contentBean.getDiscount_price();
+                String discount_price = listFavoriteBean.getDiscount_price();
                 //正常价格
-                double price = contentBean.getPrice();
+                double price = listFavoriteBean.getPrice();
                 if (has_discount == 1) {
                     holderOneItem.llBuy.setVisibility(View.VISIBLE);
                     holderOneItem.tvbuyMoney.setText("￥" + String.format("%.2f", Double.valueOf(discount_price)));
                     if ("0".equals(loginState)) {
-                        holderOneItem.homeMoreMoney.setText("￥" + String.format("%.2f", price));
+                        holderOneItem.tvCollectMoney.setText("￥" + String.format("%.2f", price));
                         holderOneItem.llBuy.setVisibility(View.VISIBLE);
                     } else {
-                        holderOneItem.homeMoreMoney.setText(loginState == null ? "登录看价格" : loginState);
+                        holderOneItem.tvCollectMoney.setText(loginState == null ? "登录看价格" : loginState);
                         holderOneItem.llBuy.setVisibility(View.GONE);
                     }
                 } else {
                     if ("0".equals(loginState)) {
-                        holderOneItem.homeMoreMoney.setText("￥" + String.format("%.2f", price));
+                        holderOneItem.tvCollectMoney.setText("￥" + String.format("%.2f", price));
                     } else {
-                        holderOneItem.homeMoreMoney.setText(loginState == null ? "登录看价格" : loginState);
+                        holderOneItem.tvCollectMoney.setText(loginState == null ? "登录看价格" : loginState);
                     }
                     holderOneItem.tvbuyMoney.setText("");
                     holderOneItem.llBuy.setVisibility(View.GONE);
                 }
-                int have_voice = contentBean.getHave_voice();//是否有音频 1：有
+                int have_voice = listFavoriteBean.getHave_voice();//是否有音频 1：有
                 if (have_voice == 1) {
                     holderOneItem.button3.setVisibility(View.VISIBLE);
                 } else {
                     holderOneItem.button3.setVisibility(View.GONE);
                 }
-                int is_success_case = contentBean.getIs_success_case(); //是否成功案例 1：有
+                int is_success_case = listFavoriteBean.getIs_success_case(); //是否成功案例 1：有
                 if (is_success_case == 1) {
                     holderOneItem.button2.setVisibility(View.VISIBLE);
                 } else {
                     holderOneItem.button2.setVisibility(View.GONE);
                 }
-                int market_enable = contentBean.getMarket_enable();
-                if (market_enable == 0) {//上架1, 下架0
-                    holderOneItem.iv_shroud.setVisibility(View.VISIBLE);
-                } else {
-                    holderOneItem.iv_shroud.setVisibility(View.GONE);
-                }
+//                int market_enable = listFavoriteBean.getMarket_enable();
+//                if (market_enable == 0) {//上架1, 下架0
+//                    holderOneItem.iv_shroud.setVisibility(View.VISIBLE);
+//                } else {
+//                    holderOneItem.iv_shroud.setVisibility(View.GONE);
+//                }
 
                 Glide.with(context)
-                        .load(contentBean.getSmall())
+                        .load(listFavoriteBean.getSmall())
                         .fitCenter()
                         .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -253,59 +252,65 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     class ViewHolderItem extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView homeMoreTitle;
-        TextView homeMoreMoney, tvAdvert, searchcount;
+        TextView tvCollectTitle;
+        TextView tvCollectMoney, tvAdvert, tvCollectCount;
         TextView button1, button2, button3;
         TextView autotrophy, purchase, presell;
-        ImageView ivLeft, iv_shroud;
+        ImageView ivLeft, iv_shroud,ivCollectClean;
         LinearLayout llBuy;
         TextView tvbuyMoney;
 
         public ViewHolderItem(View itemView) {
             super(itemView);
-            homeMoreTitle = (TextView) itemView.findViewById(R.id.title);
-            homeMoreMoney = (TextView) itemView.findViewById(R.id.tv_HomeMoreMoney);
-            homeMoreMoney.setOnClickListener(this);
-            tvAdvert = (TextView) itemView.findViewById(R.id.tv_HomeMoreAction);
-            searchcount = (TextView) itemView.findViewById(R.id.tv_HomeMoreCount);
+            tvCollectTitle = (TextView) itemView.findViewById(R.id.title);
+            tvCollectMoney = (TextView) itemView.findViewById(R.id.tv_CollectMoney);
+            tvCollectMoney.setOnClickListener(this);
+            tvAdvert = (TextView) itemView.findViewById(R.id.tv_CollectAction);
+            tvCollectCount = (TextView) itemView.findViewById(R.id.tv_CollectCount);
 
             button1 = (TextView) itemView.findViewById(R.id.lable_button1);
-            button1.setOnClickListener(this);
+//            button1.setOnClickListener(this);
             button2 = (TextView) itemView.findViewById(R.id.lable_button2);
-            button2.setOnClickListener(this);
+//            button2.setOnClickListener(this);
             button3 = (TextView) itemView.findViewById(R.id.lable_button3);
-            button3.setOnClickListener(this);
+//            button3.setOnClickListener(this);
 
             autotrophy = (TextView) itemView.findViewById(R.id.autotrophy);
             purchase = (TextView) itemView.findViewById(R.id.purchase);
             presell = (TextView) itemView.findViewById(R.id.presell);
-            ivLeft = (ImageView) itemView.findViewById(R.id.iv_HomeMoreLest);
-            iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
-            Drawable background = iv_shroud.getBackground();
-            background.setAlpha(255);
-            llBuy = (LinearLayout) itemView.findViewById(R.id.ll_HomeMoreBuy);
-            tvbuyMoney = (TextView) itemView.findViewById(R.id.tv_HomeMoreBuyMoney);
+            ivLeft = (ImageView) itemView.findViewById(R.id.iv_CollectLeft);
+//            iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
+//            Drawable background = iv_shroud.getBackground();
+//            background.setAlpha(255);
+            llBuy = (LinearLayout) itemView.findViewById(R.id.ll_CollectBuy);
+            tvbuyMoney = (TextView) itemView.findViewById(R.id.tv_CollectBuyMoney);
+            //删除
+            ivCollectClean = (ImageView) itemView.findViewById(R.id.iv_CollectClean);
+            ivCollectClean.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.lable_button1:
-                    onItemClickListener.OnClickRecyButton(1, getLayoutPosition());
-                    break;
-                case R.id.lable_button2:
-                    onItemClickListener.OnClickRecyButton(2, getLayoutPosition());
-                    break;
-                case R.id.lable_button3:
-                    onItemClickListener.OnClickRecyButton(3, getLayoutPosition());
-                    break;
-                case R.id.tv_HomeMoreMoney:
-                    String trim = homeMoreMoney.getText().toString().trim();
+//                case R.id.lable_button1:
+//                    onItemClickListener.OnClickRecyButton(1, getLayoutPosition());
+//                    break;
+//                case R.id.lable_button2:
+//                    onItemClickListener.OnClickRecyButton(2, getLayoutPosition());
+//                    break;
+//                case R.id.lable_button3:
+//                    onItemClickListener.OnClickRecyButton(3, getLayoutPosition());
+//                    break;
+                case R.id.tv_CollectMoney:
+                    String trim = tvCollectMoney.getText().toString().trim();
                     if ("登录看价格".equals(trim)) {
                         startWebViewActivity(Config.LOGINWEBVIEW);
                     } else if ("认证看价格".equals(trim)) {
                         startWebViewActivity(Config.ATTESTATION);
                     }
+                    break;
+                case R.id.iv_CollectClean:
+                    onItemClickListener.OnItemLongClick(v,getLayoutPosition());
                     break;
             }
         }

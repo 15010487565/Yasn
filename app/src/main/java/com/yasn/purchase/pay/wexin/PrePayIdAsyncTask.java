@@ -1,4 +1,4 @@
-package com.yasn.purchase.pay;
+package com.yasn.purchase.pay.wexin;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.util.Xml;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.yasn.purchase.pay.PayConfig;
 import com.yasn.purchase.utils.ToastUtil;
 
 import org.apache.http.NameValuePair;

@@ -1,4 +1,4 @@
-package com.yasn.purchase.pay;
+package com.yasn.purchase.pay.wexin;
 
 import java.security.MessageDigest;
 

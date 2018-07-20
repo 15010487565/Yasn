@@ -545,7 +545,7 @@ public class MainActivityOld extends PhotoActivity
         Window window = mShareDialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setWindowAnimations(R.style.share_animation);
-        View view = View.inflate(this, R.layout.lay_share, null);
+        View view = View.inflate(this, R.layout.dialog_lay_share, null);
         share_wexin = (TextView) view.findViewById(R.id.share_wexin);
         share_wexin.setOnClickListener(this);
         share_wexinfriends = (TextView) view.findViewById(R.id.share_wexinfriends);

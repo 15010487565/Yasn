@@ -31,7 +31,6 @@ import java.util.Map;
 
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
-import static com.yasn.purchase.R.id.addshopcar;
 
 
 /**
@@ -293,10 +292,10 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public ViewHolderSearch(View itemView) {
             super(itemView);
             searchTitle = (TextView) itemView.findViewById(R.id.title);
-            searchmoney = (TextView) itemView.findViewById(R.id.tv_HomeMoreMoney);
+            searchmoney = (TextView) itemView.findViewById(R.id.tv_SearchMoney);
             searchmoney.setOnClickListener(this);
-            searchAdvert = (TextView) itemView.findViewById(R.id.tv_HomeMoreAction);
-            searchcount = (TextView) itemView.findViewById(R.id.tv_HomeMoreCount);
+            searchAdvert = (TextView) itemView.findViewById(R.id.tv_SearchAction);
+            searchcount = (TextView) itemView.findViewById(R.id.tv_SearchCount);
 
             button1 = (TextView) itemView.findViewById(R.id.lable_button1);
             button1.setOnClickListener(this);
@@ -308,12 +307,12 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             autotrophy = (TextView) itemView.findViewById(R.id.autotrophy);
             purchase = (TextView) itemView.findViewById(R.id.purchase);
             presell = (TextView) itemView.findViewById(R.id.presell);
-            titleimage = (ImageView) itemView.findViewById(R.id.iv_HomeMoreLest);
+            titleimage = (ImageView) itemView.findViewById(R.id.iv_SearchLeft);
 //            iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
 //            Drawable background = iv_shroud.getBackground();
 //            background.setAlpha(255);
-            buyingspreeLinear = (LinearLayout) itemView.findViewById(R.id.ll_HomeMoreBuy);
-            buyingspreeMoney = (TextView) itemView.findViewById(R.id.tv_HomeMoreBuyMoney);
+            buyingspreeLinear = (LinearLayout) itemView.findViewById(R.id.ll_SearchBuy);
+            buyingspreeMoney = (TextView) itemView.findViewById(R.id.tv_SearchBuyMoney);
         }
 
         @Override
@@ -328,10 +327,10 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 case R.id.lable_button3:
                     onItemClickListener.OnClickRecyButton(3, getLayoutPosition());
                     break;
-                case addshopcar:
-                    onItemClickListener.OnClickRecyButton(4, getLayoutPosition());
-                    break;
-                case R.id.tv_HomeMoreMoney:
+//                case addshopcar:
+//                    onItemClickListener.OnClickRecyButton(4, getLayoutPosition());
+//                    break;
+                case R.id.tv_SearchMoney:
                     String trim = searchmoney.getText().toString().trim();
                     if ("登录看价格".equals(trim)){
                         startWebViewActivity(Config.LOGINWEBVIEW);

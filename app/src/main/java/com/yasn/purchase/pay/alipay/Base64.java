@@ -1,4 +1,4 @@
-package com.yasn.purchase.pay;
+package com.yasn.purchase.pay.alipay;
 
 public final class Base64 {
 

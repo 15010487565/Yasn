@@ -71,11 +71,12 @@
     <string name="help">帮助中心</string>
     <string name="serviceing">在线客服</string>
     <string name="zhuanpiao">专票资质</string>
+    <string name="yongyouquery">用油查询</string>
     <string name="numbervip">数字会员</string>
     <string name="collect">收藏</string>
     <string name="callphone">电话咨询</string>
     <string name="callservice">在线客服</string>
-
+    <string name="statistics">统计</string>
 
     <string name="makerdredge">开通创客</string>
     <string name="makerqrcode">推广二维码</string>

@@ -13,15 +13,15 @@ import www.xcd.com.mylibrary.func.BaseTopImageBtnFunc;
  * Created by gs on 2017/12/29.
  */
 
-public class CallService extends BaseTopImageBtnFunc {
+public class CallServiceFunc extends BaseTopImageBtnFunc {
 
-    public CallService(Activity activity) {
+    public CallServiceFunc(Activity activity) {
         super(activity);
     }
 
     @Override
     public int getFuncId() {
-        return R.id.callservice;
+        return R.id.callservicefunc;
     }
 
     @Override

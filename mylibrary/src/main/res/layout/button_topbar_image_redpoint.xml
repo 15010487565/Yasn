@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/topbar_func_icon"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:background="@color/top_bar_background"
+        android:contentDescription="@null"
+        android:padding="10dp"
+        android:scaleType="centerInside" />
+    <www.xcd.com.mylibrary.view.BadgeView
+        android:id="@+id/topbar_func_icon_redpoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
+        android:layout_marginLeft="@dimen/margin_30"
+        android:layout_marginTop="@dimen/margin_10"
+        android:gravity="center"
+        android:minHeight="@dimen/main_tabwidget_redpoint_size"
+        android:minWidth="@dimen/main_tabwidget_redpoint_size"
+        android:textColor="@color/white"
+        android:textSize="@dimen/main_tabwidget_redpoint_text"
+        android:visibility="gone" />
+</RelativeLayout>

@@ -223,6 +223,15 @@ public class ShopInfoModel implements Serializable {
         private int haveMemberData;
         private int is_inviteCustomer;
         private String regionName;
+        private int provinceId;
+
+        public int getProvinceId() {
+            return provinceId;
+        }
+
+        public void setProvinceId(int provinceId) {
+            this.provinceId = provinceId;
+        }
 
         public String getRegionName() {
             return regionName;

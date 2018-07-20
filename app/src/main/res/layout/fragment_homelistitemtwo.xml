@@ -13,7 +13,7 @@
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content">-->
         <ImageView
-            android:id="@+id/iv_HomeMoreLest"
+            android:id="@+id/iv_HomeMoreLeft"
             android:layout_width="@dimen/image_size"
             android:layout_height="@dimen/image_size"
             android:src="@mipmap/errorimage" />
@@ -124,7 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_5">
 
-            <include layout="@layout/threelable" />
+            <include layout="@layout/include_threelable" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -134,7 +134,7 @@ public class AddressUpdataActivity extends BaseThreeActivity {
         }
         setUpViews();
         //城市列表
-        String regionId = SharePrefHelper.getInstance(this).getSpString("regionId");
+        String regionId = SharePrefHelper.getInstance(this).getSpString("provinceId");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("regionId", regionId);
         okHttpGet(100, Config.REGIONLIST, params);

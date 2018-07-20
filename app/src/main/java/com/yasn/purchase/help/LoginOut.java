@@ -36,5 +36,6 @@ public class LoginOut {
         SharePrefHelper.getInstance(activity).putSpString("regionName","");
         SharePrefHelper.getInstance(activity).putSpInt("lv_id",-1);
         SharePrefHelper.getInstance(activity).putSpString("JavaShopUser","");
+        SharePrefHelper.getInstance(activity).putSpString("provinceId", "");
     }
 }

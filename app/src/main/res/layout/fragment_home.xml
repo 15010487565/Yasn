@@ -71,7 +71,7 @@
                     </android.support.design.widget.CollapsingToolbarLayout>
 
                     <android.support.design.widget.TabLayout
-                        android:id="@+id/tablayout"
+                        android:id="@+id/tab_Home"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/height_45"
                         android:background="@color/white"
@@ -90,7 +90,7 @@
                 </android.support.design.widget.AppBarLayout>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerview"
+                    android:id="@+id/rc_Home"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_anchor="@id/appbar"

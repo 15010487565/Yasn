@@ -1,5 +1,4 @@
-package com.yasn.purchase.pay;
-
+package com.yasn.purchase.pay.alipay;
 
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -23,8 +22,8 @@ public class SignUtils {
 		try {
 			PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(
 					Base64.decode(privateKey));
-			KeyFactory keyf = KeyFactory.getInstance(ALGORITHM, "BC");
-			PrivateKey priKey = keyf.generatePrivate(priPKCS8);
+			KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM, "BC");
+			PrivateKey priKey = keyFactory.generatePrivate(priPKCS8);
 
 			java.security.Signature signature = java.security.Signature
 					.getInstance(getAlgorithms(rsa2));

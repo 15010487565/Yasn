@@ -32,7 +32,7 @@ public class PictrueFragment extends Fragment{
 							 Bundle savedInstanceState) {
 
 		View view = LayoutInflater.from(getActivity()).inflate(
-				R.layout.shoebig_scale_pic_item, null);
+				R.layout.shopbig_scale_pic_item, null);
 		initView(view);
 		return view;
 	}

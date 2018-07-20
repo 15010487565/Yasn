@@ -13,7 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
 import com.yasn.purchase.adapter.HomeMoreAdapter;
 import com.yasn.purchase.common.Config;
-import com.yasn.purchase.func.CallService;
+import com.yasn.purchase.func.CallServiceFunc;
 import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.HomeMoreModel;
 import com.yasn.purchase.utils.ToastUtil;
@@ -40,7 +40,7 @@ public class HomeMoreActivity extends SimpleTopbarActivity
     private LinearLayoutManager mLinearLayoutManager,nullLinearLayoutManager;
     private RecyclerView rcHomeMore;
 //    private List<HomeMoreModel> myDataset;
-    private static Class<?> rightFuncArray[] = {CallService.class};
+    private static Class<?> rightFuncArray[] = {CallServiceFunc.class};
     private LinearLayout shoplistnull;
     private boolean typeshow = false;;//临时记录显示空布局常购清单布局
     private MultiSwipeRefreshLayout swipe_layout;
@@ -127,12 +127,12 @@ public class HomeMoreActivity extends SimpleTopbarActivity
                 }
                 boolean isBottom = recyclerView.canScrollVertically(1);//返回false表示不能往上滑动，即代表到底部了；
                 //屏幕中最后一个可见子项的position
-                int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
+//                int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
                 //当前屏幕所看到的子项个数
                 int visibleItemCount = mLinearLayoutManager.getChildCount();
                 //当前RecyclerView的所有子项个数
                 int totalItemCount = mLinearLayoutManager.getItemCount();
-                Log.e("TAG_底部","isBottom="+isBottom+"；visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
+//                Log.e("TAG_底部","isBottom="+isBottom+"；visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
                 if (isBottom ){
                     swipe_layout.setBottom(false);
                 }else {
@@ -144,16 +144,6 @@ public class HomeMoreActivity extends SimpleTopbarActivity
                 }
             }
         });
-    }
-
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()){
-            case R.id.shoplistnull:
-
-                break;
-        }
     }
 
     @Override
@@ -250,21 +240,25 @@ public class HomeMoreActivity extends SimpleTopbarActivity
     @Override
     public void onCancelResult() {
         swipe_layout.setRefreshing(false);
+        swipe_layout.setLoading(false);
     }
 
     @Override
     public void onErrorResult(int errorCode, IOException errorExcep) {
         swipe_layout.setRefreshing(false);
+        swipe_layout.setLoading(false);
     }
 
     @Override
     public void onParseErrorResult(int errorCode) {
         swipe_layout.setRefreshing(false);
+        swipe_layout.setLoading(false);
     }
 
     @Override
     public void onFinishResult() {
         swipe_layout.setRefreshing(false);
+        swipe_layout.setLoading(false);
     }
 
     @Override

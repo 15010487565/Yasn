@@ -284,7 +284,7 @@ class ViewHolderItem extends RecyclerView.ViewHolder implements View.OnClickList
         autotrophy = (TextView) itemView.findViewById(R.id.autotrophy);
         purchase = (TextView) itemView.findViewById(R.id.purchase);
         presell = (TextView) itemView.findViewById(R.id.presell);
-        ivLeft = (ImageView) itemView.findViewById(R.id.iv_HomeMoreLest);
+        ivLeft = (ImageView) itemView.findViewById(R.id.iv_HomeMoreLeft);
 //        iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
 //        Drawable background = iv_shroud.getBackground();
 //        background.setAlpha(255);

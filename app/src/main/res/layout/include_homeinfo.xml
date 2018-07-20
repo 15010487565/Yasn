@@ -9,26 +9,26 @@
     android:padding="@dimen/margin_15">
 
     <ImageView
-        android:id="@+id/loginImage"
+        android:id="@+id/iv_HomeLogin"
         android:layout_width="@dimen/height_45"
         android:layout_height="@dimen/height_45"
         android:background="@mipmap/unlogin" />
 
     <FrameLayout
-        android:id="@+id/home_topinfomssage"
+        android:id="@+id/fl_HomeTopinfomssage"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/margin_10"
         android:layout_weight="1">
 
         <LinearLayout
-            android:id="@+id/notlogin"
+            android:id="@+id/ll_HomeNotlogin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/login"
+                android:id="@+id/tv_HomeLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_10"
@@ -42,7 +42,7 @@
                 android:textSize="@dimen/textsize_14" />
 
             <TextView
-                android:id="@+id/register"
+                android:id="@+id/tv_HomeRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_20"
@@ -57,13 +57,13 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/home_infomessage"
+            android:id="@+id/re_HomeInfomessage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/home_account"
+                android:id="@+id/tv_HomeAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lines="1"
@@ -75,15 +75,15 @@
                 android:id="@+id/account_grade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/home_account"
-                android:layout_alignTop="@id/home_account"
+                android:layout_alignBottom="@id/tv_HomeAccount"
+                android:layout_alignTop="@id/tv_HomeAccount"
                 android:layout_marginLeft="@dimen/margin_5"
-                android:layout_toRightOf="@id/home_account"
+                android:layout_toRightOf="@id/tv_HomeAccount"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/home_grade"
+                    android:id="@+id/tv_HomeGrade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_black66"
@@ -99,7 +99,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/whiteTopText"
+                android:id="@+id/tv_HomeWhiteTopText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/account_grade"
@@ -112,10 +112,10 @@
                 android:id="@+id/undredge_YsenHelp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/whiteTopText"
+                android:layout_alignBaseline="@id/tv_HomeWhiteTopText"
                 android:layout_below="@id/account_grade"
                 android:layout_marginTop="@dimen/margin_10"
-                android:layout_toRightOf="@id/whiteTopText"
+                android:layout_toRightOf="@id/tv_HomeWhiteTopText"
                 android:background="@drawable/text_orange_black"
                 android:paddingBottom="@dimen/margin_3"
                 android:paddingLeft="@dimen/margin_10"
@@ -130,10 +130,10 @@
                 android:id="@+id/okdredge_YsenHelp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/whiteTopText"
+                android:layout_alignBaseline="@id/tv_HomeWhiteTopText"
                 android:layout_below="@id/account_grade"
                 android:layout_marginTop="@dimen/margin_10"
-                android:layout_toRightOf="@id/whiteTopText"
+                android:layout_toRightOf="@id/tv_HomeWhiteTopText"
                 android:paddingBottom="@dimen/margin_3"
                 android:paddingRight="@dimen/margin_10"
                 android:paddingTop="@dimen/margin_3"
@@ -146,7 +146,7 @@
 
 
     <LinearLayout
-        android:id="@+id/home_collect"
+        android:id="@+id/ll_HomeCollect"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -167,7 +167,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/home_service"
+        android:id="@+id/ll_HomeService"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/margin_15"

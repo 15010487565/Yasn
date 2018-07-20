@@ -23,7 +23,7 @@
 
             <include
                 android:id="@+id/error_page"
-                layout="@layout/state_error_forweb"
+                layout="@layout/include_state_error_forweb"
                 android:visibility="gone" />
 
             <ImageView

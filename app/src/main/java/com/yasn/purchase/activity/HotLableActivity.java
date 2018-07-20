@@ -39,8 +39,6 @@ import java.util.Map;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.help.HelpUtils;
 
-import static com.yasn.purchase.R.id.recyclerview;
-
 public class HotLableActivity extends SimpleTopbarActivity implements View.OnClickListener, OnRcItemClickListener ,TextWatcher{
 
     private EditText topsearch;
@@ -67,7 +65,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
         topbar_left = (LinearLayout) findViewById(R.id.topbar_left);
         topbar_left.setOnClickListener(this);
         //文本输入框
-        topsearch = (EditText) findViewById(R.id.topsearch);
+        topsearch = (EditText) findViewById(R.id.tv_Topsearch);
         topsearch.setOnFocusChangeListener(this);
         topsearch.addTextChangedListener(this);
         ivClean = (ImageView) findViewById(R.id.iv_clean);
@@ -78,7 +76,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
         searchbutton.setOnClickListener(this);
         // 4. 历史搜索记录 = ListView显示
         llHistorysearch = (LinearLayout) findViewById(R.id.ll_Historysearch);
-        listView = (RecyclerView) findViewById(recyclerview);
+        listView = (RecyclerView) findViewById(R.id.rc_HotLable);
         //清空历史记录
         cleanhistory = (LinearLayout) findViewById(R.id.cleanhistory);
         cleanhistory.setOnClickListener(this);

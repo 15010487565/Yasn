@@ -95,7 +95,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
      */
     private List<BaseFragment> fragmentList = new ArrayList<BaseFragment>();
 
-//    private NoScrollPreloadViewPager viewPager;
+    //    private NoScrollPreloadViewPager viewPager;
     private SnsTabWidget tabWidget;
 
     /**
@@ -133,7 +133,9 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
 
     public void setCartNum(int cartnum) {
         resetRedPoint(3, cartnum);
+        SharePrefHelper.getInstance(MainActivityNew.this).putSpInt("carNum", cartnum);
     }
+
     private void initView() {
 //        viewPager = (NoScrollPreloadViewPager) findViewById(R.id.main_viewpager);
         tabWidget = (SnsTabWidget) findViewById(R.id.main_tabwidget);
@@ -195,6 +197,7 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
      */
     LinearLayout main_tabitem_find;
     LinearLayout main_tabitem_findH;
+
     protected void initTabWidget() {
         // LayoutInflater
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -237,12 +240,12 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
         imageView.setImageResource(MAIN_TAB_IMAGE[index]);
         // 高亮图标
         imageViewHl.setImageResource(MAIN_TAB_IMAGEHL[index]);
-        if (index == 2){
+        if (index == 2) {
             textView.setVisibility(View.INVISIBLE);
             textViewHl.setVisibility(View.INVISIBLE);
             imageView.setVisibility(View.INVISIBLE);
             imageViewHl.setVisibility(View.INVISIBLE);
-        }else {
+        } else {
             textView.setVisibility(View.VISIBLE);
             textViewHl.setVisibility(View.VISIBLE);
             imageView.setVisibility(View.VISIBLE);
@@ -429,19 +432,19 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
                 .getSupportFragmentManager().beginTransaction();
 
         for (int i = 0; i < fragmentList.size(); i++) {
-            if (i == tabIndex){
-                if (tabIndex == 2){
+            if (i == tabIndex) {
+                if (tabIndex == 2) {
                     main_tabitem_find.setAlpha(0);
                     main_tabitem_findH.setAlpha(1);
-                }else {
+                } else {
                     main_tabitem_find.setAlpha(1);
                     main_tabitem_findH.setAlpha(0);
                 }
                 fragmentTransaction.show(fragmentList.get(i));
-                resetTextViewAlpha(tabWidget.getChildAt(i),1);
-            }else {
+                resetTextViewAlpha(tabWidget.getChildAt(i), 1);
+            } else {
                 fragmentTransaction.hide(fragmentList.get(i));
-                resetTextViewAlpha(tabWidget.getChildAt(i),0);
+                resetTextViewAlpha(tabWidget.getChildAt(i), 0);
             }
         }
         fragmentTransaction.commit();
@@ -473,24 +476,27 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
-        Log.e("TAG_Main","msg="+msg);
+        Log.e("TAG_Main", "msg=" + msg);
         if ("loginout".equals(msg)) {
             setCartNum(0);
         } else if ("carNum".equals(msg)) {
-//            Log.e("TAG_Main","CarNum="+event.getCarNum());
             setCartNum(Integer.valueOf(event.getCarNum()));
 
         } else if ("webViewBack".equals(msg)) {//返回页
 
         }
     }
+
     // 保存MyTouchListener接口的列表
     private ArrayList<MainActivityTouchListener> activityTouchListeners = new ArrayList<MainActivityTouchListener>();
+
     public interface MainActivityTouchListener {
         public void onTouchEvent(MotionEvent event);
     }
+
     /**
      * 提供给Fragment通过getActivity()方法来注册自己的触摸事件的方法
+     *
      * @param listener
      */
     public void registerTouchListener(MainActivityTouchListener listener) {
@@ -499,10 +505,11 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
 
     /**
      * 提供给Fragment通过getActivity()方法来注销自己的触摸事件的方法
+     *
      * @param listener
      */
     public void unRegisterTouchListener(MainActivityTouchListener listener) {
-        activityTouchListeners.remove( listener );
+        activityTouchListeners.remove(listener);
     }
 
     /**
@@ -514,5 +521,46 @@ public class MainActivityNew extends SimpleTopbarActivity implements LoadWebView
             listener.onTouchEvent(ev);
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    //收藏
+    public void startCollectActivity() {
+     startActivity(new Intent( MainActivityNew.this , CollectActivity.class));
+//        startWebViewActivity(Config.HOMECOLLECT);
+    }
+
+    //统计查看更多
+    public void startStatisticsActivity(String memberId) {
+        Intent intent = new Intent( MainActivityNew.this , StatisticsActivity.class);
+        intent.putExtra("memberId",memberId);
+        startActivity(intent);
+//        startWebViewActivity(Config.STATISTICSLOOKALL);
+    }
+    //常购清单
+    public void startOftenShopActivity(String memberId) {
+//        startWebViewActivity(Config.SHOPLIST);
+        Intent intent = new Intent( MainActivityNew.this , OftenShopActivity.class);
+        intent.putExtra("memberId",memberId);
+        startActivity(intent);
+    }
+    //订单
+    public void startOrderActivity(int tabIndex) {
+//        switch (tabIndex) {
+//            case 0:
+//                startWebViewActivity(Config.MEORDERWEB);
+//                break;
+//            case 1:
+//                startWebViewActivity(Config.MEORDERUNPAYMENTWEB);
+//                break;
+//            case 2:
+//                startWebViewActivity(Config.MEORDERUNSHIPMENTSWEB);
+//                break;
+//            case 3:
+//                startWebViewActivity(Config.MEORDERUNSIGNFORWEB);
+//                break;
+//        }
+        Intent intent = new Intent(MainActivityNew.this, MyOrderActivity.class);
+        intent.putExtra("tabIndex", tabIndex);
+        startActivity(intent);
     }
 }

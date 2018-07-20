@@ -197,11 +197,11 @@ public class SearchActivity extends SimpleTopbarActivity implements
         topbar_right = (LinearLayout) findViewById(R.id.topbar_right);
         topbar_right.setOnClickListener(this);
         //搜索输入框
-        topsearch = (TextView) findViewById(R.id.topsearch);
-        topsearchLinear = (LinearLayout) findViewById(R.id.topsearchLinear);
+        topsearch = (TextView) findViewById(R.id.tv_Topsearch);
+        topsearchLinear = (LinearLayout) findViewById(R.id.ll_Topsearch);
         topsearchLinear.setOnClickListener(this);
         //顶部TAB
-        tablayout = (TabLayout) findViewById(R.id.tablayout);
+        tablayout = (TabLayout) findViewById(R.id.tab_Search);
         tablayout.addOnTabSelectedListener(this);
         //综合
         searchsynthesis = (TextView) findViewById(R.id.search_synthesis);
@@ -255,12 +255,12 @@ public class SearchActivity extends SimpleTopbarActivity implements
                 }
                 boolean isBottom = recyclerView.canScrollVertically(1);//返回false表示不能往上滑动，即代表到底部了；
                 //屏幕中最后一个可见子项的position
-                int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
+//                int lastVisibleItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
                 //当前屏幕所看到的子项个数
                 int visibleItemCount = mLinearLayoutManager.getChildCount();
                 //当前RecyclerView的所有子项个数
                 int totalItemCount = mLinearLayoutManager.getItemCount();
-                Log.e("TAG_底部","isBottom="+isBottom+"visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
+//                Log.e("TAG_底部","isBottom="+isBottom+"visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
                 if (isBottom ){
                     swipe_layout.setBottom(false);
                 }else {
@@ -402,7 +402,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
             case R.id.topbar_right:
                 SobotUtil.startSobot(this,null);
                 break;
-            case R.id.topsearchLinear://搜索
+            case R.id.ll_Topsearch://搜索
                 Intent intent = new Intent(this, HotLableActivity.class);
                 startActivity(intent);
                 break;

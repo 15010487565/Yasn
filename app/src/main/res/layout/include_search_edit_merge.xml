@@ -28,7 +28,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/topsearch"
+            android:id="@+id/tv_Topsearch"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

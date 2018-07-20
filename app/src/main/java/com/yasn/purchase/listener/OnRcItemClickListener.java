@@ -11,7 +11,7 @@ public interface OnRcItemClickListener {
 
     void OnItemLongClick(View view, int position);
 
-    //一布局更多点击事件
+    //一布局更多点击事件/删除
     void OnClickTabMore(int listPosition);
 
     //子控件点击事件

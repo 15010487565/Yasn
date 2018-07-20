@@ -12,16 +12,16 @@ import www.xcd.com.mylibrary.func.BaseTopTextViewFunc;
  * Created by gs on 2017/12/29.
  */
 
-public class RemoveAll extends BaseTopTextViewFunc {
+public class CollectRemoveAllFunc extends BaseTopTextViewFunc {
 
 
-    public RemoveAll(Activity activity) {
+    public CollectRemoveAllFunc(Activity activity) {
         super(activity);
     }
 
     @Override
     public int getFuncId() {
-        return R.id.mycollect;
+        return R.id.mycollectfunc;
     }
 
     @Override

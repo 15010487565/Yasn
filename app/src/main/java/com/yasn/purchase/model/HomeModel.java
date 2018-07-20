@@ -233,6 +233,15 @@ public class HomeModel implements Serializable{
         private String priceDisplayMsg;
         private int probationIsOpen;
         private int priceDisplayType;
+        private int provinceId;
+
+        public int getProvinceId() {
+            return provinceId;
+        }
+
+        public void setProvinceId(int provinceId) {
+            this.provinceId = provinceId;
+        }
 
         public int getSeePrice() {
             return seePrice;
