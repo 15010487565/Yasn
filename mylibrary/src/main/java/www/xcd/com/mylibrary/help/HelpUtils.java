@@ -7,11 +7,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
@@ -20,15 +25,18 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.SpannedString;
 import android.text.style.AbsoluteSizeSpan;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.widget.EditText;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
@@ -251,11 +259,13 @@ public class HelpUtils {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
-    public static int imageDip2px(Context context,float dipValue) {
+
+    public static int imageDip2px(Context context, float dipValue) {
         Resources r = context.getResources();
         return (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dipValue, r.getDisplayMetrics());
     }
+
     /**
      * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
      */
@@ -327,6 +337,15 @@ public class HelpUtils {
         }
         Date d = new Date(time);
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return sf.format(d);
+    }
+
+    public static String getDateToHms(long time) {
+        if (String.valueOf(time).length() < 13) {
+            time = time * 1000;
+        }
+        Date d = new Date(time);
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sf.format(d);
     }
 
@@ -554,6 +573,7 @@ public class HelpUtils {
             Log.e(tag, "result=" + result);
         }
     }
+
     public static String getUserAgent() {
         String userAgent = "";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -575,5 +595,58 @@ public class HelpUtils {
             }
         }
         return sb.toString();
+    }
+
+    // 对字节数组字符串进行Base64解码并生成图片
+    public static Bitmap stringtoBitmap(String string) {
+        //将字符串转换成Bitmap类型
+        Bitmap bitmap = null;
+        try {
+            byte[] bitmapArray;
+            bitmapArray = Base64.decode(string, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+    public static String saveToSystemGallery(Context context, Bitmap bmp) {
+        try {
+            // 首先保存图片
+            File appDir = new File(Environment.getExternalStorageDirectory(), "external_storage_root");
+            if (!appDir.exists()) {
+                appDir.mkdir();
+            }
+            String fileName = System.currentTimeMillis() + ".jpg";
+            File file = new File(appDir, fileName);
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+            // 其次把文件插入到系统图库
+            MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                    file.getAbsolutePath(), fileName, null);
+
+            // 最后通知图库更新
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(file.getAbsolutePath())));
+            return file.getPath();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //布局转图片
+    public static String showPic(Context context, View view) {
+        int width = view.getMeasuredWidth();
+        int height = view.getMeasuredHeight();
+        Bitmap b = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(b);
+        view.draw(canvas);
+//        img.setImageBitmap(b);
+        String b1 = saveToSystemGallery(context, b);
+        return b1;
     }
 }

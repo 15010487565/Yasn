@@ -95,4 +95,13 @@
         <!-- Horizontal ProgressBar style. This is a horizontal progress bar. -->
         <attr name="progressBarStyleHorizontal" format="reference" ></attr>
     </declare-styleable>
+    <string-array name="spinnerAuthor">
+        <item>100平以下</item>
+        <item>100-200平</item>
+        <item>201-300平</item>
+        <item>301-500平</item>
+        <item>501-1000平</item>
+        <item>1001平以上</item>
+        <!--<item>请选择营业面积</item>-->
+    </string-array>
 </resources>

@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import www.xcd.com.mylibrary.activity.AlbumPhotoActivity;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
@@ -207,6 +208,17 @@ public class PhotoActivity extends SimpleTopbarActivity {
             viewChoice.findViewById(R.id.account_head_choice_cancel).setOnClickListener(this);
         }
         return viewChoice;
+    }
+    /**
+     * 显示图片的view
+     */
+    private int showViewid;
+    public int getShowViewid() {
+        return  showViewid;
+    }
+
+    public void setShowViewid(int showViewid) {
+        this.showViewid = showViewid;
     }
 
     /**
@@ -408,16 +420,17 @@ public class PhotoActivity extends SimpleTopbarActivity {
     public void onFinishResult() {
 
     }
-
+    //单选还是多选
     public String getTpye() {
         return AlbumPhotoActivity.TYPE_SINGLE;
     }
+
     public void setphotoName(String photoName){
         this.photoName = photoName;
     }
     public String getphotoName() {
-        return photoName;
-//        return UUID.randomUUID().toString();
+//        return photoName;
+        return UUID.randomUUID().toString();
     }
 
     @Override

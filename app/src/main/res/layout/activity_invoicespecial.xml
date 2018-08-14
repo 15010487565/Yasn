@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_simple_topbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_20"
+                android:layout_marginLeft="@dimen/height_20"
+                android:layout_marginTop="@dimen/height_20"
+                android:gravity="center_vertical"
+                android:text="1.我们会在一个工作日内完成审核"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_16" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_20"
+                android:layout_marginLeft="@dimen/height_20"
+                android:layout_marginTop="@dimen/margin_5"
+                android:gravity="center_vertical"
+                android:text="2.一个公司只允许申请一个资质"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_16" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_20"
+                android:layout_marginLeft="@dimen/height_20"
+                android:layout_marginTop="@dimen/margin_5"
+                android:gravity="center_vertical"
+                android:text="3.咨询客服：400-9973-315"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_16" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/height_15"
+                android:orientation="vertical"
+                android:background="@color/white">
+                <LinearLayout
+                    android:id="@+id/ll_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_40"
+                    android:paddingLeft="@dimen/height_20"
+                    android:paddingRight="@dimen/margin_20"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="@dimen/height_40"
+                        android:background="@color/black_f7"
+                        android:gravity="center_vertical"
+                        android:text="专票资质信息"
+                        android:textColor="@color/black_66"
+                        android:textSize="@dimen/textsize_14" />
+                    <TextView
+                        android:id="@+id/tv_InvoicespAuditing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/height_40"
+                        android:background="@color/black_f7"
+                        android:gravity="center_vertical"
+                        android:text="审核中"
+                        android:textColor="@color/orange"
+                        android:textSize="@dimen/textsize_14" />
+                </LinearLayout>
+
+                <include layout="@layout/include_invoicespecial" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black_f7"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_40"
+                    android:textSize="@dimen/textsize_14"
+                    android:textColor="@color/black_99"
+                    android:paddingLeft="@dimen/height_20"
+                    android:paddingRight="@dimen/height_20"
+                    android:layout_marginTop="@dimen/height_25"
+                    android:visibility="invisible"
+                    android:text="发票在您收到货30天后通过平邮寄出，请注意查收 (注：内容不全默认为不索取发票)"/>
+                <TextView
+                    android:id="@+id/tv_InvoiceSpecial"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_40"
+                    android:layout_marginLeft="@dimen/height_20"
+                    android:layout_marginRight="@dimen/height_20"
+                    android:layout_marginTop="@dimen/height_30"
+                    android:layout_marginBottom="@dimen/height_80"
+                    android:background="@drawable/shape_orange5"
+                    android:gravity="center"
+                    android:text="保存"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textsize_14" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

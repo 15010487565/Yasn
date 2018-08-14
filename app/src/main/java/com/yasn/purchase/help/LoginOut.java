@@ -3,7 +3,7 @@ package com.yasn.purchase.help;
 import android.content.Context;
 import android.content.Intent;
 
-import com.yasn.purchase.activity.LaunchActivity;
+import com.yasn.purchase.activity.MainActivity;
 import com.yasn.purchase.model.EventBusMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -17,7 +17,7 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
 public class LoginOut {
     public static void startLoginOut(Context activity){
 
-        activity.startActivity(new Intent(activity, LaunchActivity.class));
+        activity.startActivity(new Intent(activity, MainActivity.class));
         loginOut(activity);
 
     }

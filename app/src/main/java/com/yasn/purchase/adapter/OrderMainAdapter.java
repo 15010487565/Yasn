@@ -8,11 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yasn.purchase.R;
+import com.yasn.purchase.holder.FootViewHolder;
 import com.yasn.purchase.holder.OrderContentHolder;
 import com.yasn.purchase.holder.OrderHeaderHolder;
 import com.yasn.purchase.holder.OrderShopNameHolder;
@@ -56,7 +56,9 @@ public class OrderMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         this.addList = list;
         if (this.list != null) {
-            this.list.addAll(list);
+            if (list !=null && list.size() > 0){
+                this.list.addAll(list);
+            }
         } else {
             this.list = list;
         }
@@ -179,7 +181,7 @@ public class OrderMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         footholder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
                     } else {
                         int visibleItemCount = linearLayoutManager.getChildCount();
-                        if (visibleItemCount != list.size()) {
+                        if (visibleItemCount <= list.size()) {
                             footholder.progressBar.setVisibility(View.GONE);
                             footholder.footText.setText(context.getResources().getString(R.string.pullup_to_load));
                         } else {
@@ -247,18 +249,18 @@ public class OrderMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    class FootViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout footView;
-        ProgressBar progressBar;
-        TextView footText;
-
-        public FootViewHolder(View view) {
-            super(view);
-            footView = (LinearLayout) itemView.findViewById(R.id.footView);
-            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
-            footText = (TextView) itemView.findViewById(R.id.footText);
-        }
-    }
+//    class FootViewHolder extends RecyclerView.ViewHolder {
+//        LinearLayout footView;
+//        ProgressBar progressBar;
+//        TextView footText;
+//
+//        public FootViewHolder(View view) {
+//            super(view);
+//            footView = (LinearLayout) itemView.findViewById(R.id.footView);
+//            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
+//            footText = (TextView) itemView.findViewById(R.id.footText);
+//        }
+//    }
 
     private OnRcOrderItemClickListener onItemClickListener;
 

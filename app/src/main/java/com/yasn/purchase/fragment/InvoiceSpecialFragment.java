@@ -188,12 +188,14 @@ public class InvoiceSpecialFragment extends SimpleTopbarFragment {
                     InvoiceModel.DataBean data = invoiceModel.getData();
                     if (data == null) {
                         llAudit.setVisibility(View.VISIBLE);
+                        tvInvoiceSpecial.setVisibility(View.VISIBLE);
                         llAuditing.setVisibility(View.GONE);
                     } else {
                         //0审核中, 1通过, 2拒绝
                         int invoiceStatus = data.getInvoiceStatus();
                         if (invoiceStatus == 0) {
                             llAudit.setVisibility(View.GONE);
+                            tvInvoiceSpecial.setVisibility(View.GONE);
                             llAuditing.setVisibility(View.VISIBLE);
                             String title = data.getTitle();
                             if (!TextUtils.isEmpty(title)) {
@@ -221,6 +223,7 @@ public class InvoiceSpecialFragment extends SimpleTopbarFragment {
                             }
                         } else {
                             llAudit.setVisibility(View.VISIBLE);
+                            tvInvoiceSpecial.setVisibility(View.VISIBLE);
                             llAuditing.setVisibility(View.GONE);
                         }
                     }

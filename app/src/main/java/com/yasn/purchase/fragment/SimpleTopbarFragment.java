@@ -2,11 +2,16 @@ package com.yasn.purchase.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yasn.purchase.activityold.WebViewActivity;
+import com.yasn.purchase.activityold.WebViewH5Activity;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
@@ -33,8 +38,18 @@ public abstract class SimpleTopbarFragment extends BaseFragment {
     }
 
     protected void startWebViewActivity(String webViewUrl){
-        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+        Intent intent = new Intent(getActivity(), WebViewH5Activity.class);
         intent.putExtra("webViewUrl",webViewUrl);
         startActivity(intent);
     }
+    InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            String speChat = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+            Pattern pattern = Pattern.compile(speChat);
+            Matcher matcher = pattern.matcher(source.toString());
+            if (matcher.find()) return "";
+            else return null;
+        }
+    };
 }

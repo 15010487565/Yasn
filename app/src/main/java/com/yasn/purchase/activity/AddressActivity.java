@@ -271,7 +271,7 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
         LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_shopcardelete, null);
         TextView tvDelete = (TextView) serviceView.findViewById(R.id.tv_Delete);
-        tvDelete.setText("确认要删除此后收货地址吗？");
+        tvDelete.setText("确认要删除此收货地址吗？");
         TextView agree = (TextView) serviceView.findViewById(R.id.agree);
         agree.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -97,7 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/height_40"
-        android:background="@drawable/text_black_white"
+        android:background="@drawable/shape_black_white"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="@dimen/margin_10">

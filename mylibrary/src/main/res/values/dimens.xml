@@ -51,6 +51,7 @@
     <dimen name="margin_1dp">1dp</dimen>
     <dimen name="margin_1">1px</dimen>
     <dimen name="cityselect">1px</dimen>
+    <dimen name="textsize_30">30sp</dimen>
     <dimen name="textsize_26">26sp</dimen>
     <dimen name="textsize_24">24sp</dimen>
     <dimen name="textsize_22">22sp</dimen>

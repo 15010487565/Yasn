@@ -14,18 +14,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yasn.purchase.R;
-import com.yasn.purchase.activityold.WebViewActivity;
-import com.yasn.purchase.common.Config;
+import com.yasn.purchase.activity.AuthorActivity;
+import com.yasn.purchase.activity.HomeMoreActivity;
+import com.yasn.purchase.activity.LoginActivity;
+import com.yasn.purchase.activityold.WebViewH5Activity;
+import com.yasn.purchase.holder.FootViewHolder;
 import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.HomeMoreModel;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
@@ -46,6 +50,7 @@ public class HomeMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private String regionName;
     private String place = " ";
     private int placeNum = 3;
+    private Map viewHolderMap = new HashMap<>();
 
     public HomeMoreAdapter(Context context, LinearLayoutManager linearLayoutManager) {
         super();
@@ -74,6 +79,15 @@ public class HomeMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         notifyDataSetChanged();
     }
+    private Map getViewHolderMap() {
+        return viewHolderMap;
+    }
+    public void upFootText(){
+        Map viewHolderMap = getViewHolderMap();
+        FootViewHolder holder = (FootViewHolder) viewHolderMap.get("holder");
+        holder.progressBar.setVisibility(View.GONE);
+        holder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
+    }
 
     public List<HomeMoreModel.SubjectBean.ContentBean> getData(){
         return this.list;
@@ -100,6 +114,7 @@ public class HomeMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case TYPE_FOOTER:
                 view = LayoutInflater.from(context).inflate(R.layout.item_foot, parent, false);
                 holder = new FootViewHolder(view);
+                viewHolderMap.put("holder", holder);
                 break;
         }
         return holder;
@@ -238,8 +253,10 @@ public class HomeMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 footviewholder.progressBar.setVisibility(View.GONE);
                 footviewholder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
             } else {
+                Log.e("TAG_底部","addList="+(addList.size()));
                 int visibleItemCount = linearLayoutManager.getChildCount();
-                if (visibleItemCount != list.size()) {
+                Log.e("TAG_底部","visibleItemCount="+visibleItemCount+";list="+list.size());
+                if (visibleItemCount <= list.size()&&visibleItemCount<=addList.size()) {
                     footviewholder.progressBar.setVisibility(View.GONE);
                     footviewholder.footText.setText(context.getResources().getString(R.string.pullup_to_load));
                 } else {
@@ -307,28 +324,29 @@ class ViewHolderItem extends RecyclerView.ViewHolder implements View.OnClickList
             case R.id.tv_HomeMoreMoney:
                 String trim = homeMoreMoney.getText().toString().trim();
                 if ("登录看价格".equals(trim)) {
-                    startWebViewActivity(Config.LOGINWEBVIEW);
+                    ((HomeMoreActivity)context).startBaseActivity(context,LoginActivity.class);
                 } else if ("认证看价格".equals(trim)) {
-                    startWebViewActivity(Config.ATTESTATION);
+//                    startWebViewActivity(Config.ATTESTATION);
+                    context.startActivity(new Intent(context,AuthorActivity.class));
                 }
                 break;
         }
     }
 }
 
-class FootViewHolder extends RecyclerView.ViewHolder {
-    LinearLayout footView;
-    ProgressBar progressBar;
-    TextView footText;
-
-    public FootViewHolder(View view) {
-        super(view);
-        footView = (LinearLayout) itemView.findViewById(R.id.footView);
-        progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
-        footText = (TextView) itemView.findViewById(R.id.footText);
-    }
-
-}
+//class FootViewHolder extends RecyclerView.ViewHolder {
+//    LinearLayout footView;
+//    ProgressBar progressBar;
+//    TextView footText;
+//
+//    public FootViewHolder(View view) {
+//        super(view);
+//        footView = (LinearLayout) itemView.findViewById(R.id.footView);
+//        progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
+//        footText = (TextView) itemView.findViewById(R.id.footText);
+//    }
+//
+//}
 
     private void onItemEventClick(RecyclerView.ViewHolder holder) {
         final int position = holder.getLayoutPosition();
@@ -353,7 +371,7 @@ class FootViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void startWebViewActivity(String url) {
-        Intent intent = new Intent(context, WebViewActivity.class);
+        Intent intent = new Intent(context, WebViewH5Activity.class);
         intent.putExtra("webViewUrl", url);
         context.startActivity(intent);
     }

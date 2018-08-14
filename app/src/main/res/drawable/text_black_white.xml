@@ -5,7 +5,4 @@
     <!--边框设置-->
     <stroke android:width="1px"
         android:color="@color/black_66" />
-    <corners
-        android:radius="5dp"
-        />
 </shape>

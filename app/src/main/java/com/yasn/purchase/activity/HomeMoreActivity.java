@@ -138,6 +138,7 @@ public class HomeMoreActivity extends SimpleTopbarActivity
                 }else {
                     if (visibleItemCount == totalItemCount){
                         swipe_layout.setBottom(false);
+                        adapter.upFootText();
                     }else {
                         swipe_layout.setBottom(true);
                     }
@@ -221,10 +222,15 @@ public class HomeMoreActivity extends SimpleTopbarActivity
                         List<HomeMoreModel.SubjectBean.ContentBean> content = subjectBean.getContent();
 //                        adapter.setData(content);
                         if (pageNo >1) {
-                            adapter.addData(content);
+                            if (content==null||content.size()==0){
+                                adapter.upFootText();
+                                swipe_layout.setBottom(false);
+                            }else {
+                                adapter.addData(content);
+                            }
                         } else {
                             if (content==null||content.size()==0){
-                                ToastUtil.showToast("未搜索到该商品名称！");
+//                                adapter.upFootText();
                             }else {
                                 adapter.setData(content);
                             }

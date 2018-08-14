@@ -33,7 +33,7 @@
             <!--android:textSize="@dimen/textsize_12" />-->
 
         <ImageView
-            android:id="@+id/iv_shroud"
+            android:id="@+id/iv_OftenShroud"
             android:layout_width="@dimen/image_size"
             android:layout_height="@dimen/image_size"
             android:background="@mipmap/soldout"
@@ -75,8 +75,7 @@
                     android:id="@+id/spec_OftenShop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#ffffff"
-                    android:paddingRight="@dimen/margin_10" />
+                    android:background="#ffffff" />
                 <LinearLayout
                     android:id="@+id/ll_OftenshopMoney"
                     android:layout_below="@id/spec_OftenShop"
@@ -117,9 +116,9 @@
                     android:id="@+id/iv_Addshopcar"
                     android:layout_width="@dimen/height_40"
                     android:layout_height="@dimen/height_40"
-                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginTop="@dimen/margin_1"
                     android:layout_alignParentRight="true"
-                    android:background="@mipmap/shoplistcar"/>
+                    android:background="@mipmap/oftershop_red"/>
 
             </RelativeLayout>
 

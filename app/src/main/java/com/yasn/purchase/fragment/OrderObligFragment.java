@@ -269,19 +269,19 @@ public class OrderObligFragment extends OrderFragment implements
                     adapter.setData(orderObligList);
                 }
                 if (orderObligList == null|| orderObligList.size() ==0){
-                    llOrderError.setVisibility(View.VISIBLE);
+                    llError.setVisibility(View.VISIBLE);
                     rcOrderOblig.setVisibility(View.GONE);
                 }else {
-                    llOrderError.setVisibility(View.GONE);
+                    llError.setVisibility(View.GONE);
                     rcOrderOblig.setVisibility(View.VISIBLE);
                 }
             }else {
                 if (pageNo>1){
                     adapter.upFootText();
-                    llOrderError.setVisibility(View.GONE);
+                    llError.setVisibility(View.GONE);
                     rcOrderOblig.setVisibility(View.VISIBLE);
                 }else {
-                    llOrderError.setVisibility(View.VISIBLE);
+                    llError.setVisibility(View.VISIBLE);
                     rcOrderOblig.setVisibility(View.GONE);
                 }
             }

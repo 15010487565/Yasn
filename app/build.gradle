@@ -39,6 +39,12 @@ android {
     compileSdkVersion globalConfiguration.androidCompileSdkVersion
     buildToolsVersion globalConfiguration.androidBuildToolsVersion
 
+    aaptOptions {
+        aaptOptions.cruncherEnabled = false
+        aaptOptions.useNewCruncher = false
+
+    }
+
     defaultConfig {
         applicationId "com.yasn.purchase"
         minSdkVersion globalConfiguration.androidMinSdkVersion
@@ -159,6 +165,7 @@ dependencies {
     // Required -- JUnit 4 framework
     compile files('libs/alipaySdk-20170725.jar')
     compile files('libs/wechat-sdk-android-with-mta-1.1.7.jar')
+    compile project(':zxinglite')
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'org.greenrobot:eventbus:3.0.0'

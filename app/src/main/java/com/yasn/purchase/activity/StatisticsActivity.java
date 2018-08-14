@@ -82,7 +82,13 @@ public class StatisticsActivity extends SimpleTopbarActivity {
                     StatisticsModel.DataBean.TotalAllBean totalAll = data.getTotalAll();
                     //采购金额
                     double totalCount = totalAll.getTotalCount();
-                    stotalMoney.setText("￥" + String.format("%.2f", totalCount));
+//                    if (totalCount >= 1000000){
+//                        DecimalFormat f = new DecimalFormat("00.##E0");
+//                        String format = f.format(totalCount);
+//                        stotalMoney.setText("￥" + format);
+//                    }else {
+                        stotalMoney.setText("￥" + String.format("%.2f", totalCount));
+//                    }
                     //总商品数
                     int goodsNum = totalAll.getGoodsNum();
                     statisGoodsNum.setText(goodsNum + "件");

@@ -27,7 +27,7 @@
     <color name="red_login">#dd1818</color>
     <color name="line_gray">#EDF2F6</color>
     <color name="line_c3">#c3c3c3</color>
-    <color name="golden">#FFCD05</color>
+    <color name="golden">#DEA902</color>
     <color name="golden_vip">#EECC6B</color>
     <!-- top bar -->
     <color name="transparent">#00000000</color>
@@ -70,6 +70,7 @@
     !-- 橙色 -->
 
     <color name="orange_un">#F9C7A1</color>
+    <color name="orange_maker">#D77013</color>
     <color name="orange">#ff6600</color>
     <color name="orange_laba">#fef0d8</color>
 </resources>

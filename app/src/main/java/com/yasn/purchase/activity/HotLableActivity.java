@@ -343,7 +343,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         HelpUtils.setEditTextInhibitInputSpeChat(topsearch);
         String trim = topsearch.getText().toString().trim();
-        Log.e("TAG_模糊","trim="+trim);
+        Log.e("TAG_模糊","trimCode="+trim);
         if (TextUtils.isEmpty(trim)){
             ivClean.setVisibility(View.GONE);
         }else {

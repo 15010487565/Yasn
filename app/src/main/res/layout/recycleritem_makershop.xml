@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin_15"
+    android:paddingBottom="@dimen/margin_15"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/text_makershop_left"
+            android:textColor="@color/black_33"
+            android:textSize="@dimen/textsize_14"
+            android:text="店铺名称：" />
+
+        <TextView
+            android:id="@+id/tv_MakerShopName"
+            style="@style/text_makershop_right"
+            android:textColor="@color/black_33"
+            android:text="********" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:orientation="horizontal">
+
+        <TextView
+
+            style="@style/text_makershop_left"
+            android:textSize="@dimen/textsize_14"
+            android:text="所在地区：" />
+
+        <TextView
+            android:id="@+id/tv_MakerShopAddress"
+            style="@style/text_makershop_right"
+            android:text="****" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/text_makershop_left"
+            android:textSize="@dimen/textsize_14"
+            android:text="注册电话：" />
+
+        <TextView
+            android:id="@+id/tv_MakerShopMobile"
+            style="@style/text_makershop_right"
+            android:text="****" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/text_makershop_left"
+            android:textSize="@dimen/textsize_14"
+            android:text="注册时间：" />
+
+        <TextView
+            android:id="@+id/tv_MakerShopTime"
+            style="@style/text_makershop_right"
+            android:text="****" />
+    </LinearLayout>
+</LinearLayout>

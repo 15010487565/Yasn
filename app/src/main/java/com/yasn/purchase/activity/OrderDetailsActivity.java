@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
-import com.yasn.purchase.activityold.WebViewActivity;
+import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.adapter.OrderDetailsAdapter;
 import com.yasn.purchase.adapter.OrderDetailsGoodsAdapter;
 import com.yasn.purchase.adapter.SetSimpleAdapter;
@@ -867,7 +867,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
     }
 
     protected void startWebViewActivity(String webViewUrl) {
-        Intent intent = new Intent(this, WebViewActivity.class);
+        Intent intent = new Intent(this, WebViewH5Activity.class);
         intent.putExtra("webViewUrl", webViewUrl);
         startActivity(intent);
     }
@@ -1019,7 +1019,9 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
     protected AlertDialog showRemindContentDialog;
 
     private void showRemindContentDialog(int type) {
-
+        if (showRemindContentDialog !=null && showRemindContentDialog .isShowing()){
+            showRemindContentDialog.dismiss();
+        }
         LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = factor.inflate(R.layout.dialog_remindorder, null);
 

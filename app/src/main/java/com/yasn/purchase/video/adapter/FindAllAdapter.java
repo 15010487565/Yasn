@@ -67,7 +67,9 @@ public class FindAllAdapter  extends BaseAdapter {
         if (this.list==null){
             this.list = list;
         }else {
-            this.list.addAll(list);
+            if (list !=null && list.size() > 0 ){
+                this.list.addAll(list);
+            }
         }
         notifyDataSetChanged();
     }

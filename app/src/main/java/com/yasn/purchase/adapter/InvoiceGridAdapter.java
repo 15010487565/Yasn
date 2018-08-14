@@ -66,7 +66,7 @@ public class InvoiceGridAdapter extends BaseAdapter{
             viewHolder.tvInvoiceType.setBackgroundResource(R.drawable.text_orange_white);
             viewHolder.tvInvoiceType.setTextColor(ContextCompat.getColor(context,R.color.orange));
         }else {
-            viewHolder.tvInvoiceType.setBackgroundResource(R.drawable.text_black_white);
+            viewHolder.tvInvoiceType.setBackgroundResource(R.drawable.shape_black_white);
             viewHolder.tvInvoiceType.setTextColor(ContextCompat.getColor(context,R.color.black_66));
         }
         return convertView;

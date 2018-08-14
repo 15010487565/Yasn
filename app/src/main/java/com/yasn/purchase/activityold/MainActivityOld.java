@@ -31,7 +31,7 @@ import com.xyzlf.share.library.util.ShareUtil;
 import com.yasn.purchase.R;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.utils.CommonHelper;
-import com.yasn.purchase.utils.MyWebChromeClient2;
+import com.yasn.purchase.utils.MyWebChromeClient;
 import com.yasn.purchase.utils.ReadImgToBinary;
 import com.yasn.purchase.utils.SerializableUtil;
 import com.yasn.purchase.utils.ToastUtil;
@@ -73,9 +73,9 @@ public class MainActivityOld extends PhotoActivity
     private static final int SHOW_IS_NEW_VERSION = 1;
 
 
-    //    MyWebChromeClient2
+    //    MyWebChromeClient
 //        wcc;
-    MyWebChromeClient2 myWebChromeClient2 = new MyWebChromeClient2(this);
+    MyWebChromeClient myWebChromeClient2 = new MyWebChromeClient(this);
 
     @Override
     public boolean isTopbarVisibility() {
@@ -124,7 +124,7 @@ public class MainActivityOld extends PhotoActivity
         mWebView.addJavascriptInterface(myWebChromeClient2, "android");
         // 设置WebViewClient
 //        mWebView.setWebChromeClient(myWebChromeClient2);
-        mWebView.setWebChromeClient(myWebChromeClient2 = new MyWebChromeClient2(this) {
+        mWebView.setWebChromeClient(myWebChromeClient2 = new MyWebChromeClient(this) {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 try {

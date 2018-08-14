@@ -26,7 +26,7 @@ public class CollectRemoveAllFunc extends BaseTopTextViewFunc {
 
     @Override
     protected int getFuncTextRes() {
-        return R.string.removeall;
+        return R.string.collect_removeall;
     }
 
     @Override

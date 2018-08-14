@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_simple_topbar" />
+
+    <TextView
+        android:id="@+id/tv_TopIntegral"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_120"
+        android:background="#FFBC5E"
+        android:gravity="center"
+        android:text="当前可用：0"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_24" />
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_Integral"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_45"
+        android:background="#FEAA34"
+        app:tabTextColor="@color/orange_integ"
+        app:tabSelectedTextColor="@color/white"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_Integral"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

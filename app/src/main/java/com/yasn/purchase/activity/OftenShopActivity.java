@@ -1,9 +1,11 @@
 package com.yasn.purchase.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -21,6 +23,9 @@ import com.yasn.purchase.model.OftenModel;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.MultiSwipeRefreshLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,9 +40,10 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
  */
 public class OftenShopActivity extends SimpleTopbarActivity
         implements OnRcItemClickListener
+        , OftenShopAdapter.OnOftenAddShopCarListener
         , SwipeRefreshLayout.OnRefreshListener
         , MultiSwipeRefreshLayout.OnLoadListener
-        , MultiSwipeRefreshLayout.OnMultiSwipeRefreshClickListener{
+        , MultiSwipeRefreshLayout.OnMultiSwipeRefreshClickListener {
 
     private HomeRecyclerAdapter adapternull;
     private OftenShopAdapter adapter;
@@ -50,6 +56,9 @@ public class OftenShopActivity extends SimpleTopbarActivity
     private MultiSwipeRefreshLayout swipe_layout;
     //推荐商品集合
     List<HomeRecyModel> subjectList;
+    //常够清单集合
+    List<OftenModel.DataBean.RegularPurcaseBean> regularPurcase;
+
     @Override
     protected Class<?>[] getTopbarRightFuncArray() {
         return rightFuncArray;
@@ -68,6 +77,7 @@ public class OftenShopActivity extends SimpleTopbarActivity
         setRedPoint(carNum);
         initOftenRequest();
     }
+
     //获得常购清单
     private void initOftenRequest() {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -76,12 +86,14 @@ public class OftenShopActivity extends SimpleTopbarActivity
         } else if (resetToken != null && !"".equals(resetToken)) {
             params.put("access_token", resetToken);
         }
-//        params.put("pageNo", String.valueOf(pagNo));
-//        params.put("pageSize", "10");
-        okHttpGet(100, Config.SHOPLIST+"/"+pagNo, params);
+        params.put("pageNo", String.valueOf(pagNo));
+        params.put("pageSize", "10");
+        okHttpGet(100, Config.SHOPLISTGET , params);
+//        okHttpGet(100, Config.SHOPLIST + "/" + pagNo, params);
+
     }
 
-    //获得推荐商品
+    //获得推荐商品，更多接口默认获取第一楼层
     private void initGetMoreRequest() {
         Map<String, Object> params = new HashMap<String, Object>();
         if (token != null && !"".equals(token)) {
@@ -123,8 +135,8 @@ public class OftenShopActivity extends SimpleTopbarActivity
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setAutoMeasureEnabled(true);
         rcOftenShop.setLayoutManager(mLinearLayoutManager);
-        adapter = new OftenShopAdapter(this,mLinearLayoutManager);
-        adapter.setOnItemClickListener(this);
+        adapter = new OftenShopAdapter(this, mLinearLayoutManager);
+        adapter.setOnItemClickListener(this, this);
         rcOftenShop.setAdapter(adapter);
         rcOftenShop.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -136,9 +148,9 @@ public class OftenShopActivity extends SimpleTopbarActivity
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 boolean isTop = recyclerView.canScrollVertically(-1);//返回false表示不能往下滑动，即代表到顶部了；
-                if (isTop){
+                if (isTop) {
                     swipe_layout.setEnabled(false);
-                }else {
+                } else {
                     swipe_layout.setEnabled(true);
                 }
                 boolean isBottom = recyclerView.canScrollVertically(1);//返回false表示不能往上滑动，即代表到底部了；
@@ -148,19 +160,21 @@ public class OftenShopActivity extends SimpleTopbarActivity
                 int visibleItemCount = mLinearLayoutManager.getChildCount();
                 //当前RecyclerView的所有子项个数
                 int totalItemCount = mLinearLayoutManager.getItemCount();
-//                Log.e("TAG_底部","isBottom="+isBottom+"visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
-                if (isBottom ){
+                Log.e("TAG_底部Scrolled","isBottom="+isBottom+"visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
+                if (isBottom) {
                     swipe_layout.setBottom(false);
-                }else {
-                    if (visibleItemCount == totalItemCount){
+                } else {
+                    if (visibleItemCount == totalItemCount) {
                         swipe_layout.setBottom(false);
-                    }else {
+                        adapter.upFootText();
+                    } else {
                         swipe_layout.setBottom(true);
                     }
                 }
             }
         });
     }
+
     private void initSwipeRefreshLayout() {
         //搜索列表
         swipe_layout = (MultiSwipeRefreshLayout) findViewById(R.id.swipe_layout);
@@ -176,9 +190,35 @@ public class OftenShopActivity extends SimpleTopbarActivity
 
     @Override
     public void OnItemClick(View view, int position) {
-        ToastUtil.showToast("listview item点击了"+position);
+        if (subjectList != null) {
+            HomeRecyModel homeRecyModel = subjectList.get(position);
+            int itemType = homeRecyModel.getItemType();
+            if (itemType == 1) {
+                return;
+            }
+            int market_enable = homeRecyModel.getMarket_enable();
+            if (market_enable == 0) {
+                ToastUtil.showToast("亲，该商品已经下架了哦~");
+                return;
+            }
+            //itemPosition 教你卖好、成功案例、语音讲解对应的Position
+            String goodsid = homeRecyModel.getGoodsid();
+            Intent intent = new Intent(OftenShopActivity.this, GoodsDetailsActivity.class);
+            SharePrefHelper.getInstance(OftenShopActivity.this).putSpString("GOODSID", goodsid);
+            startActivity(intent);
+            Log.e("TAG_收藏空", "goodsid=" + goodsid);
+        } else if (regularPurcase != null) {
+            List<OftenModel.DataBean.RegularPurcaseBean> data = adapter.getData();
+            OftenModel.DataBean.RegularPurcaseBean regularPurcaseBean = data.get(position);
+            int goods_id = regularPurcaseBean.getGoods_id();
+            Intent intent = new Intent(OftenShopActivity.this, GoodsDetailsActivity.class);
+            SharePrefHelper.getInstance(OftenShopActivity.this).putSpString("GOODSID", String.valueOf(goods_id));
+            startActivity(intent);
+            Log.e("TAG_收藏", "goodsid=" + goods_id);
+        }
     }
 
+    //
     @Override
     public void OnItemLongClick(View view, int position) {
 
@@ -186,7 +226,19 @@ public class OftenShopActivity extends SimpleTopbarActivity
 
     @Override
     public void OnClickTabMore(int listPosition) {
-        ToastUtil.showToast("点击了更多");
+        if (subjectList == null) {
+            return;
+        }
+        HomeRecyModel homeRecyModel = subjectList.get(listPosition);
+        int subject_id = homeRecyModel.getSubject_id();
+        String title = homeRecyModel.getText();
+//        startWebViewActivity(Config.ONCLICKTABMORE + "?id=" + subject_id + "&title=" + text);
+        Intent intent = new Intent(OftenShopActivity.this, HomeMoreActivity.class);
+        intent.putExtra("subjectId", String.valueOf(subject_id));
+        intent.putExtra("title", title);
+        startActivity(intent);
+        Log.e("TAG_常够清单", "subjectId=" + subject_id);
+        Log.e("TAG_常够清单", "title=" + title);
     }
 
     @Override
@@ -200,23 +252,30 @@ public class OftenShopActivity extends SimpleTopbarActivity
             case 100:
                 OftenModel oftenModel = JSON.parseObject(returnData, OftenModel.class);
                 OftenModel.DataBean data = oftenModel.getData();
-                if (data !=null){
-                    List<OftenModel.DataBean.RegularPurcaseBean> regularPurcase = data.getRegularPurcase();
-                    if ((regularPurcase == null || regularPurcase.size() == 0)&& pagNo == 1){
+                if (data != null) {
+                    regularPurcase = data.getRegularPurcase();
+                    if ((regularPurcase == null || regularPurcase.size() == 0) && pagNo == 1) {
                         initGetMoreRequest();
                         rcOftenShop.setVisibility(View.GONE);
                         rcOftenShopNull.setVisibility(View.VISIBLE);
                         refreshRightFunctionZone(false);
-                    }else {
+                    } else {
                         rcOftenShop.setVisibility(View.VISIBLE);
                         rcOftenShopNull.setVisibility(View.GONE);
                         refreshRightFunctionZone(true);
-                        if (pagNo >1) {
-                            adapter.addData(regularPurcase);
-                        } else {
-                            if (regularPurcase == null || regularPurcase.size() == 0){
-                                ToastUtil.showToast("已经全部展示！");
+                        if (pagNo > 1) {
+                            if (regularPurcase == null || regularPurcase.size() == 0) {
+                                adapter.upFootText();
+                                ToastUtil.showToast("商品已全部显示！");
+                                swipe_layout.setBottom(false);
                             }else {
+                                adapter.addData(regularPurcase);
+                            }
+                        } else {
+                            if (regularPurcase == null || regularPurcase.size() == 0) {
+//                                adapter.upFootText();
+                                ToastUtil.showToast("未搜索到商品！");
+                            } else {
                                 adapter.setData(regularPurcase);
                             }
                         }
@@ -235,6 +294,20 @@ public class OftenShopActivity extends SimpleTopbarActivity
                 refreshRightFunctionZone(false);
                 swipe_layout.setLoading(false);
                 swipe_layout.setRefreshing(false);
+                break;
+            case 102:
+                if (returnCode == 200) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(returnData);
+                        int number = jsonObject.optInt("number");
+                        Log.e("TAG_购物车","number="+number);
+                        SharePrefHelper.getInstance(OftenShopActivity.this).putSpInt("carNum", number);
+                        setRedPoint(number);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                ToastUtil.showToast(returnMsg);
                 break;
         }
     }
@@ -319,7 +392,7 @@ public class OftenShopActivity extends SimpleTopbarActivity
                 subjectList.add(homeRecy);
             }
         }
-        adapternull.setData(subjectList,"0");
+        adapternull.setData(subjectList, "0");
     }
 
     @Override
@@ -361,5 +434,22 @@ public class OftenShopActivity extends SimpleTopbarActivity
             pagNo++;
             initOftenRequest();
         }
+    }
+
+    //添加购物车
+    @Override
+    public void OnAddShopCarClick(View view, int position) {
+        List<OftenModel.DataBean.RegularPurcaseBean> data = adapter.getData();
+        OftenModel.DataBean.RegularPurcaseBean regularPurcaseBean = data.get(position);
+        int product_id = regularPurcaseBean.getProduct_id();
+        Map<String, Object> params1 = new HashMap<String, Object>();
+        params1.put("productId", String.valueOf(product_id));
+        params1.put("num", "1");
+        if (token != null && !"".equals(token)) {
+            params1.put("access_token", token);
+        } else if (resetToken != null && !"".equals(resetToken)) {
+            params1.put("access_token", resetToken);
+        }
+        okHttpGet(102, Config.ADDSHOPCAR, params1);
     }
 }

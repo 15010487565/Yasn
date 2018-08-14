@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:imeOptions="actionNext|flagNoExtractUi"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_20"
+            android:gravity="center|left"
+            android:text="恭喜您，员工账号创建成功！请等待被邀请的员工同意后，才会正式生效。"
+            android:textColor="@color/black_66"
+            android:textSize="@dimen/textsize_14" />
+
+        <TextView
+            android:id="@+id/okbtn"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/height_30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin_30"
+            android:paddingRight="@dimen/margin_30"
+            android:paddingTop="@dimen/margin_5"
+            android:paddingBottom="@dimen/margin_5"
+            android:layout_weight="1"
+            android:text="关闭"
+            android:background="@drawable/shape2_orange_white"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/textsize_16" />
+
+    </LinearLayout>
+</LinearLayout>

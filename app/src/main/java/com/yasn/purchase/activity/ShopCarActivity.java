@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
-import com.yasn.purchase.activityold.WebViewActivity;
+import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.adapter.ShopCarAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.help.ShopCarUtils;
@@ -356,7 +356,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
     private void startWebViewActivity(String url) {
 
         if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
-            Intent intent = new Intent(ShopCarActivity.this, WebViewActivity.class);
+            Intent intent = new Intent(ShopCarActivity.this, WebViewH5Activity.class);
             intent.putExtra("webViewUrl", url);
             startActivity(intent);
         }

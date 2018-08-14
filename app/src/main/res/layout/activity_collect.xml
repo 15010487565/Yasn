@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/black_f7"
                 android:gravity="center"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -90,7 +91,6 @@
                 android:id="@+id/rc_Collect"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
                 android:background="@color/black_f7" />
         </RelativeLayout>
     </com.yasn.purchase.view.MultiSwipeRefreshLayout>

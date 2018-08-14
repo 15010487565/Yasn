@@ -235,20 +235,20 @@ public class OrderWaitFragment extends OrderFragment implements
                     adapter.setData(orderWaitList);
                 }
                 if (orderWaitList == null || orderWaitList.size() == 0) {
-                    llOrderError.setVisibility(View.VISIBLE);
+                    llError.setVisibility(View.VISIBLE);
                     rcOrderWait.setVisibility(View.GONE);
                 } else {
-                    llOrderError.setVisibility(View.GONE);
+                    llError.setVisibility(View.GONE);
                     rcOrderWait.setVisibility(View.VISIBLE);
                 }
             } else {
                 if (pageNo > 1) {
                     adapter.upFootText();
                     rcOrderWait.setVisibility(View.VISIBLE);
-                    llOrderError.setVisibility(View.GONE);
+                    llError.setVisibility(View.GONE);
                 } else {
                     rcOrderWait.setVisibility(View.GONE);
-                    llOrderError.setVisibility(View.VISIBLE);
+                    llError.setVisibility(View.VISIBLE);
                 }
             }
         } catch (Exception e) {

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+    <include
+        layout="@layout/view_simple_topbar"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/margin_15"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/ll_MakerFirmFinishnull_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_MakerFirmFillNullTitle_left"
+                        android:text="*单位名称："
+                        style="@style/text_makerfirmfinishnull_left" />
+                    <TextView
+                        android:id="@+id/tv_MakerFirmFillNullNum_left"
+                        android:text="*纳税识别号："
+                        style="@style/text_makerfirmfinishnull_left" />
+                    <TextView
+                        android:id="@+id/tv_MakerFirmFillNullAddress_left"
+                        android:text="*注册地址："
+                        style="@style/text_makerfirmfinishnull_left" />
+                    <TextView
+                        android:id="@+id/tv_MakerFirmFillNullMobile_left"
+                        android:text="*注册电话："
+                        style="@style/text_makerfirmfinishnull_left" />
+                    <TextView
+                        android:id="@+id/tv_MakerFirmFillNullBank_left"
+                        android:text="*开户银行："
+                        style="@style/text_makerfirmfinishnull_left" />
+                    <TextView
+                        android:id="@+id/tv_MakerFirmFillNullBankNum_left"
+                        android:text="*银行账户："
+                        style="@style/text_makerfirmfinishnull_left" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_MakerFirmFinishnull_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/ll_MakerFirmFinishnull_left"
+                    android:orientation="vertical">
+                    <EditText
+                        android:id="@+id/tv_MakerFirmFillNullTitle_right"
+                        android:hint="请填写单位名称"
+                        style="@style/text_makerfirmfinishnull_right" />
+                    <EditText
+                        android:id="@+id/tv_MakerFirmFillNullNum_right"
+                        style="@style/text_makerfirmfinishnull_right"
+                        android:hint="请填写纳税识别号" />
+                    <EditText
+                        android:id="@+id/tv_MakerFirmFillNullAddress_right"
+                        style="@style/text_makerfirmfinishnull_right"
+                        android:hint="请填写注册地址" />
+                    <EditText
+                        android:id="@+id/tv_MakerFirmFillNullMobile_right"
+                        style="@style/text_makerfirmfinishnull_right"
+                        android:inputType="phone"
+                        android:hint="请填写注册电话" />
+
+                    <EditText
+                        android:id="@+id/tv_MakerFirmFillNullBank_right"
+                        style="@style/text_makerfirmfinishnull_right"
+                        android:hint="请填写开户银行" />
+                    <EditText
+                        android:id="@+id/tv_MakerFirmFillNullBankNum_right"
+                        style="@style/text_makerfirmfinishnull_right"
+                        android:inputType="textVisiblePassword"
+                        android:hint="请填写银行账户" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_MakerFirmFillNullHint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/height_40"
+                    android:layout_below="@id/ll_MakerFirmFinishnull_right"
+                    android:text="收款账号用于接收业绩提成转账，提交后不可修改，请认真填写！"/>
+                <TextView
+                    android:id="@+id/tv_MakerFirmFillNullOk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_MakerFirmFillNullHint"
+                    android:background="@drawable/shape_orange5"
+                    android:layout_marginTop="@dimen/margin_3"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textsize_14"
+                    android:padding="@dimen/margin_10"
+                    android:gravity="center"
+                    android:text="确认提交"/>
+            </RelativeLayout>
+        </ScrollView>
+</LinearLayout>

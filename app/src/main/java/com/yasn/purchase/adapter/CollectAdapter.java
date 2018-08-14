@@ -8,23 +8,28 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yasn.purchase.R;
-import com.yasn.purchase.activityold.WebViewActivity;
-import com.yasn.purchase.common.Config;
+import com.yasn.purchase.activity.AuthorActivity;
+import com.yasn.purchase.activity.CollectActivity;
+import com.yasn.purchase.activity.LoginActivity;
+import com.yasn.purchase.activityold.WebViewH5Activity;
+import com.yasn.purchase.holder.FootViewHolder;
 import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.CollectModel;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
@@ -40,11 +45,13 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private List<CollectModel.ListFavoriteBean> list;
     private List<CollectModel.ListFavoriteBean> addList;
     private OnRcItemClickListener onItemClickListener;
+    private OnCollectDeleteListener onDeleteListener;
     private LinearLayoutManager linearLayoutManager;
     private String loginState;
     private String regionName;
     private String place = " ";
     private int placeNum = 3;
+    private Map viewHolderMap = new HashMap<>();
 
     public CollectAdapter(Context context, LinearLayoutManager linearLayoutManager) {
         super();
@@ -54,8 +61,9 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         regionName = SharePrefHelper.getInstance(context).getSpString("regionName");
     }
 
-    public void setOnItemClickListener(OnRcItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(OnRcItemClickListener onItemClickListener,OnCollectDeleteListener onDeleteListener) {
         this.onItemClickListener = onItemClickListener;
+        this.onDeleteListener = onDeleteListener;
     }
 
     public void setData(List<CollectModel.ListFavoriteBean> list) {
@@ -72,6 +80,18 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             this.list = list;
         }
         notifyDataSetChanged();
+    }
+    private Map getViewHolderMap() {
+        return viewHolderMap;
+    }
+    public void upFootText(){
+        Map viewHolderMap = getViewHolderMap();
+        FootViewHolder holder = (FootViewHolder) viewHolderMap.get("holder");
+        holder.progressBar.setVisibility(View.GONE);
+        holder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
+    }
+    public List<CollectModel.ListFavoriteBean> getData(){
+        return this.list;
     }
 
     @Override
@@ -95,6 +115,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case TYPE_FOOTER:
                 view = LayoutInflater.from(context).inflate(R.layout.item_foot, parent, false);
                 holder = new FootViewHolder(view);
+                viewHolderMap.put("holder", holder);
                 break;
         }
         return holder;
@@ -233,7 +254,8 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         footviewholder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
                     } else {
                         int visibleItemCount = linearLayoutManager.getChildCount();
-                        if (visibleItemCount != list.size()) {
+                        Log.e("TAG_底部","visibleItemCount="+visibleItemCount+";list="+list.size());
+                        if (visibleItemCount <= list.size()&&visibleItemCount<=addList.size()) {
                             footviewholder.progressBar.setVisibility(View.GONE);
                             footviewholder.footText.setText(context.getResources().getString(R.string.pullup_to_load));
                         } else {
@@ -304,31 +326,32 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 case R.id.tv_CollectMoney:
                     String trim = tvCollectMoney.getText().toString().trim();
                     if ("登录看价格".equals(trim)) {
-                        startWebViewActivity(Config.LOGINWEBVIEW);
+                        ((CollectActivity)context).startBaseActivity(context,LoginActivity.class);
                     } else if ("认证看价格".equals(trim)) {
-                        startWebViewActivity(Config.ATTESTATION);
+//                        startWebViewActivity(Config.ATTESTATION);
+                        context.startActivity(new Intent(context,AuthorActivity.class));
                     }
                     break;
                 case R.id.iv_CollectClean:
-                    onItemClickListener.OnItemLongClick(v,getLayoutPosition());
+                    onDeleteListener.OnItemDeleteClick(v,getLayoutPosition());
                     break;
             }
         }
     }
 
-    class FootViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout footView;
-        ProgressBar progressBar;
-        TextView footText;
-
-        public FootViewHolder(View view) {
-            super(view);
-            footView = (LinearLayout) itemView.findViewById(R.id.footView);
-            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
-            footText = (TextView) itemView.findViewById(R.id.footText);
-        }
-
-    }
+//    class FootViewHolder extends RecyclerView.ViewHolder {
+//        LinearLayout footView;
+//        ProgressBar progressBar;
+//        TextView footText;
+//
+//        public FootViewHolder(View view) {
+//            super(view);
+//            footView = (LinearLayout) itemView.findViewById(R.id.footView);
+//            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
+//            footText = (TextView) itemView.findViewById(R.id.footText);
+//        }
+//
+//    }
 
     private void onItemEventClick(RecyclerView.ViewHolder holder) {
         final int position = holder.getLayoutPosition();
@@ -353,8 +376,12 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     private void startWebViewActivity(String url) {
-        Intent intent = new Intent(context, WebViewActivity.class);
+        Intent intent = new Intent(context, WebViewH5Activity.class);
         intent.putExtra("webViewUrl", url);
         context.startActivity(intent);
+    }
+    public interface OnCollectDeleteListener {
+        //删除
+        void OnItemDeleteClick(View view, int position);
     }
 }

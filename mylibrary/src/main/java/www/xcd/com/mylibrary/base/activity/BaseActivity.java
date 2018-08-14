@@ -1,6 +1,7 @@
 package www.xcd.com.mylibrary.base.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -220,5 +221,10 @@ public abstract class BaseActivity  extends AppCompatActivity implements View.On
             imm.showSoftInput(view, 0);
         }
 
+    }
+
+    public void startBaseActivity(Context context,Class<?> cla){
+//        startWebViewActivity(Config.LOGINWEBVIEW);
+        startActivity(new Intent(context,cla));
     }
 }

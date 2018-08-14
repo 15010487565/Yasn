@@ -128,6 +128,7 @@ public class OrderAllFragment extends OrderFragment implements
                 int totalItemCount = linearLayoutManager.getItemCount();
                 if (isBottom ){
                     slOrderAll.setBottom(false);
+
                 }else {
                     if (visibleItemCount == totalItemCount){
                         slOrderAll.setBottom(false);
@@ -271,19 +272,19 @@ public class OrderAllFragment extends OrderFragment implements
                     adapter.setData(allOrderList);
                 }
                 if (allOrderList == null||allOrderList.size() ==0){
-                    llOrderError.setVisibility(View.VISIBLE);
+                    llError.setVisibility(View.VISIBLE);
                     rcAllOrder.setVisibility(View.GONE);
                 }else {
-                    llOrderError.setVisibility(View.GONE);
+                    llError.setVisibility(View.GONE);
                     rcAllOrder.setVisibility(View.VISIBLE);
                 }
             }else {
                 if (pageNo>1){
-                    llOrderError.setVisibility(View.GONE);
+                    llError.setVisibility(View.GONE);
                     rcAllOrder.setVisibility(View.VISIBLE);
                     adapter.upFootText();
                 }else {
-                    llOrderError.setVisibility(View.VISIBLE);
+                    llError.setVisibility(View.VISIBLE);
                     rcAllOrder.setVisibility(View.GONE);
                 }
             }

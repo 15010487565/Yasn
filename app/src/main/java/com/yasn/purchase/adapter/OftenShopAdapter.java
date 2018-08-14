@@ -9,23 +9,27 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yasn.purchase.R;
-import com.yasn.purchase.activityold.WebViewActivity;
-import com.yasn.purchase.common.Config;
+import com.yasn.purchase.activity.AuthorActivity;
+import com.yasn.purchase.activity.LoginActivity;
+import com.yasn.purchase.activity.OftenShopActivity;
+import com.yasn.purchase.activityold.WebViewH5Activity;
+import com.yasn.purchase.holder.FootViewHolder;
 import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.OftenModel;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
@@ -43,11 +47,13 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<OftenModel.DataBean.RegularPurcaseBean> list;
     private List<OftenModel.DataBean.RegularPurcaseBean> addList;
     private OnRcItemClickListener onItemClickListener;
+    private OnOftenAddShopCarListener onAddListener;
     private LinearLayoutManager linearLayoutManager;
     private String loginState;
     private String regionName;
     private String place = " ";
     private int placeNum = 3;
+    private Map viewHolderMap = new HashMap<>();
 
     public OftenShopAdapter(Context context, LinearLayoutManager linearLayoutManager) {
         super();
@@ -57,8 +63,9 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         regionName = SharePrefHelper.getInstance(context).getSpString("regionName");
     }
 
-    public void setOnItemClickListener(OnRcItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(OnRcItemClickListener onItemClickListener,OnOftenAddShopCarListener onAddListener) {
         this.onItemClickListener = onItemClickListener;
+        this.onAddListener = onAddListener;
     }
 
     public void setData(List<OftenModel.DataBean.RegularPurcaseBean> list) {
@@ -75,6 +82,20 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             this.list = list;
         }
         notifyDataSetChanged();
+    }
+
+    private Map getViewHolderMap() {
+        return viewHolderMap;
+    }
+    public void upFootText(){
+        Map viewHolderMap = getViewHolderMap();
+        FootViewHolder holder = (FootViewHolder) viewHolderMap.get("holder");
+        holder.progressBar.setVisibility(View.GONE);
+        holder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
+    }
+
+    public List<OftenModel.DataBean.RegularPurcaseBean> getData(){
+        return this.list;
     }
 
     @Override
@@ -98,6 +119,7 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             case TYPE_FOOTER:
                 view = LayoutInflater.from(context).inflate(R.layout.item_foot, parent, false);
                 holder = new FootViewHolder(view);
+                viewHolderMap.put("holder", holder);
                 break;
         }
         return holder;
@@ -161,7 +183,7 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 countRecySpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.black_99)), minNumberString.length() - 1, minNumberString.length(),
                         Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                holderItem.searchcount.setText(countRecySpan);
+                holderItem.tvOftenCount.setText(countRecySpan);
 
                 int has_discount = regularPurcaseBean.getHas_discount();
                 //抢购价
@@ -200,38 +222,44 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     holderItem.button2.setVisibility(View.GONE);
                 }
                 int market_enable = regularPurcaseBean.getMarket_enable();
-                if (market_enable == 0) {//上架1, 下架0
-                    holderItem.iv_shroud.setVisibility(View.VISIBLE);
+                int beforeSale = regularPurcaseBean.getIs_before_sale();//是否有预售(0否1是)
+                int enableStore = regularPurcaseBean.getEnable_store();
+                if (market_enable == 1) {//上架1, 下架0
+                    if ( beforeSale == 0){//没有预售
+                        if (enableStore <= 0 ){
+
+                            holderItem.oftenshopTitle.setTextColor(ContextCompat.getColor(context, R.color.black_99));
+                            holderItem.ivOftenShroud.setVisibility(View.VISIBLE);
+                            holderItem.ivOftenShroud.setBackgroundResource(R.mipmap.image_ungoods);
+                            holderItem.oftenshopMoney.setTextColor(ContextCompat.getColor(context, R.color.orange_un));
+
+                            holderItem.ivAddshopcar.setBackgroundResource(R.mipmap.oftershop_black);
+                        }else {
+                            holderItem.oftenshopTitle.setTextColor(ContextCompat.getColor(context, R.color.black_66));
+                            holderItem.ivOftenShroud.setVisibility(View.GONE);
+                            holderItem.oftenshopMoney.setTextColor(ContextCompat.getColor(context, R.color.orange));
+
+                            holderItem.ivAddshopcar.setBackgroundResource(R.mipmap.oftershop_red);
+                        }
+                    }else {//预售
+                        holderItem.oftenshopTitle.setTextColor(ContextCompat.getColor(context, R.color.black_66));
+                        holderItem.ivOftenShroud.setVisibility(View.GONE);
+                        holderItem.oftenshopMoney.setTextColor(ContextCompat.getColor(context, R.color.orange));
+
+                        holderItem.ivAddshopcar.setBackgroundResource(R.mipmap.oftershop_red);
+                    }
                 } else {
-                    holderItem.iv_shroud.setVisibility(View.GONE);
+
+                    holderItem.oftenshopTitle.setTextColor(ContextCompat.getColor(context, R.color.black_99));
+                    holderItem.ivOftenShroud.setVisibility(View.VISIBLE);
+                    holderItem.ivOftenShroud.setBackgroundResource(R.mipmap.soldout);
+                    holderItem.oftenshopMoney.setTextColor(ContextCompat.getColor(context, R.color.orange_un));
+
+                    holderItem.ivAddshopcar.setBackgroundResource(R.mipmap.oftershop_black);
                 }
                 //规格
-//                holderItem.specOftenShop.removeAllViews();
                 String spec_value = regularPurcaseBean.getSpec_value();
                 holderItem.specOftenShop.setText(spec_value);
-//                if (specList != null && specList.size() > 0) {
-//                    ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//                    for (int i = 0, j = specList.size(); i < j; i++) {
-//                        String sprcTextString = specList.get(i);
-//                        Log.e("TAG_规格","sprcTextString="+sprcTextString+";position="+position);
-//                        if (!TextUtils.isEmpty(sprcTextString)){
-//                            final TextView tvSprc = new TextView(context.getApplicationContext());
-//                            tvSprc.setText(sprcTextString);
-//                            if (goodsOff == 0) {
-//                                tvSprc.setTextColor(ContextCompat.getColor(context, R.color.black_66));
-//                                tvSprc.setBackgroundResource(R.drawable.text_n_f5);
-//                            } else {
-//                                tvSprc.setTextColor(ContextCompat.getColor(context, R.color.black_99));
-//                                tvSprc.setBackgroundResource(R.drawable.text_n_f5);
-//                            }
-//                            tvSprc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-//                            tvSprc.setGravity(Gravity.CENTER);
-//                            tvSprc.setTag(list.get(i));
-//                            lp.setMargins(10, 10, 10,0);
-//                            listViewHolder.shopcarLabel.addView(tvSprc, lp);
-//                        }
-//                    }
-//                }
 
                 Glide.with(context)
                         .load(regularPurcaseBean.getSmall())
@@ -249,12 +277,15 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     footviewholder.footView.setVisibility(View.GONE);
                 } else {
                     footviewholder.footView.setVisibility(View.VISIBLE);
+                    Log.e("TAG_底部","addList="+(addList==null));
                     if (addList == null || addList.size() == 0) {
                         footviewholder.progressBar.setVisibility(View.GONE);
                         footviewholder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
                     } else {
+                        Log.e("TAG_底部","addList="+(addList.size()));
                         int visibleItemCount = linearLayoutManager.getChildCount();
-                        if (visibleItemCount != list.size()) {
+                        Log.e("TAG_底部","visibleItemCount="+visibleItemCount+";list="+list.size());
+                        if (visibleItemCount <= list.size() && visibleItemCount <= addList.size()) {
                             footviewholder.progressBar.setVisibility(View.GONE);
                             footviewholder.footText.setText(context.getResources().getString(R.string.pullup_to_load));
                         } else {
@@ -274,10 +305,10 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     class ViewHolderItem extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView oftenshopTitle;
-        TextView oftenshopMoney, searchcount;
+        TextView oftenshopMoney, tvOftenCount;
         TextView button1, button2, button3;
         TextView autotrophy, purchase, presell;
-        ImageView ivLeft, iv_shroud;
+        ImageView ivLeft, ivOftenShroud,ivAddshopcar;
 //        TagsLayout specOftenShop;
         TextView specOftenShop;
         public ViewHolderItem(View itemView) {
@@ -285,64 +316,71 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             oftenshopTitle = (TextView) itemView.findViewById(R.id.title);
             oftenshopMoney = (TextView) itemView.findViewById(R.id.tv_OftenshopMoney);
             oftenshopMoney.setOnClickListener(this);
-            searchcount = (TextView) itemView.findViewById(R.id.tv_OftenshopCount);
+            tvOftenCount = (TextView) itemView.findViewById(R.id.tv_OftenshopCount);
 
             button1 = (TextView) itemView.findViewById(R.id.lable_button1);
-            button1.setOnClickListener(this);
+//            button1.setOnClickListener(this);
             button2 = (TextView) itemView.findViewById(R.id.lable_button2);
-            button2.setOnClickListener(this);
+//            button2.setOnClickListener(this);
             button3 = (TextView) itemView.findViewById(R.id.lable_button3);
-            button3.setOnClickListener(this);
+//            button3.setOnClickListener(this);
 
             autotrophy = (TextView) itemView.findViewById(R.id.autotrophy);
             purchase = (TextView) itemView.findViewById(R.id.purchase);
             presell = (TextView) itemView.findViewById(R.id.presell);
             ivLeft = (ImageView) itemView.findViewById(R.id.iv_Oftenshop);
-            iv_shroud = (ImageView) itemView.findViewById(R.id.iv_shroud);
-            Drawable background = iv_shroud.getBackground();
+            ivOftenShroud = (ImageView) itemView.findViewById(R.id.iv_OftenShroud);
+            Drawable background = ivOftenShroud.getBackground();
             background.setAlpha(255);
             //规格布局
 //            specOftenShop = (TagsLayout) itemView.findViewById(R.id.spec_OftenShop);
             specOftenShop = (TextView) itemView.findViewById(R.id.spec_OftenShop);
+            //添加购物车
+            ivAddshopcar = (ImageView) itemView.findViewById(R.id.iv_Addshopcar);
+            ivAddshopcar.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.lable_button1:
-                    onItemClickListener.OnClickRecyButton(1, getLayoutPosition());
-                    break;
-                case R.id.lable_button2:
-                    onItemClickListener.OnClickRecyButton(2, getLayoutPosition());
-                    break;
-                case R.id.lable_button3:
-                    onItemClickListener.OnClickRecyButton(3, getLayoutPosition());
-                    break;
+//                case R.id.lable_button1:
+//                    onItemClickListener.OnClickRecyButton(1, getLayoutPosition());
+//                    break;
+//                case R.id.lable_button2:
+//                    onItemClickListener.OnClickRecyButton(2, getLayoutPosition());
+//                    break;
+//                case R.id.lable_button3:
+//                    onItemClickListener.OnClickRecyButton(3, getLayoutPosition());
+//                    break;
                 case R.id.tv_OftenshopMoney:
                     String trim = oftenshopMoney.getText().toString().trim();
                     if ("登录看价格".equals(trim)) {
-                        startWebViewActivity(Config.LOGINWEBVIEW);
+                        ((OftenShopActivity)context).startBaseActivity(context,LoginActivity.class);
                     } else if ("认证看价格".equals(trim)) {
-                        startWebViewActivity(Config.ATTESTATION);
+//                        startWebViewActivity(Config.ATTESTATION);
+                        context.startActivity(new Intent(context,AuthorActivity.class));
                     }
+                    break;
+                case R.id.iv_Addshopcar://添加购物车
+                    onAddListener.OnAddShopCarClick(v,getLayoutPosition());
                     break;
             }
         }
     }
 
-    class FootViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout footView;
-        ProgressBar progressBar;
-        TextView footText;
-
-        public FootViewHolder(View view) {
-            super(view);
-            footView = (LinearLayout) itemView.findViewById(R.id.footView);
-            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
-            footText = (TextView) itemView.findViewById(R.id.footText);
-        }
-
-    }
+//    class FootViewHolder extends RecyclerView.ViewHolder {
+//        LinearLayout footView;
+//        ProgressBar progressBar;
+//        TextView footText;
+//
+//        public FootViewHolder(View view) {
+//            super(view);
+//            footView = (LinearLayout) itemView.findViewById(R.id.footView);
+//            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
+//            footText = (TextView) itemView.findViewById(R.id.footText);
+//        }
+//
+//    }
 
     private void onItemEventClick(RecyclerView.ViewHolder holder) {
         final int position = holder.getLayoutPosition();
@@ -367,9 +405,13 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void startWebViewActivity(String url) {
-        Intent intent = new Intent(context, WebViewActivity.class);
+        Intent intent = new Intent(context, WebViewH5Activity.class);
         intent.putExtra("webViewUrl", url);
         context.startActivity(intent);
+    }
+    public interface OnOftenAddShopCarListener {
+        //添加购物车
+        void OnAddShopCarClick(View view, int position);
     }
 }
 

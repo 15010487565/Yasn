@@ -507,7 +507,7 @@
                             android:layout_height="@dimen/height_40"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:background="@drawable/text_black_white">
+                            android:background="@drawable/shape_black_white">
                             <LinearLayout
                                 android:id="@+id/iv_subtractNum"
                                 android:layout_width="match_parent"

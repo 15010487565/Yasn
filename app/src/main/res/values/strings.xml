@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">雅森测试版</string>
+    <string name="app_name">雅森车品宝</string>
     <string name="data_failure_tip">数据加载失败,请稍后再试或检查网络</string>
     <string name="press_back_again_to_quit">再按一次退出程序</string>
     <string name="clear_sucess">缓存已清空</string>
@@ -47,8 +47,8 @@
 
     <string name="unknown">未知</string>
     <string name="shoplist">常购清单</string>
-    <string name="mycollect">我的收藏</string>
-    <string name="removeall">删除全部</string>
+    <string name="me_collect">我的收藏</string>
+    <string name="collect_removeall">删除全部</string>
     <string name="highprofit">高毛利商品</string>
 
     <string name="all">全部</string>
@@ -56,8 +56,8 @@
     <string name="video">视频</string>
 
 
-    <string name="myorder">我的订单</string>
-    <string name="myorderall">全部</string>
+    <string name="me_order">我的订单</string>
+    <string name="me_orderall">全部</string>
     <string name="obligation">待付款</string>
     <string name="overhang">待发货</string>
     <string name="waitreceiving">待收货</string>
@@ -72,11 +72,14 @@
     <string name="serviceing">在线客服</string>
     <string name="zhuanpiao">专票资质</string>
     <string name="yongyouquery">用油查询</string>
-    <string name="numbervip">数字会员</string>
+    <string name="numbervip">雅森帮</string>
     <string name="collect">收藏</string>
     <string name="callphone">电话咨询</string>
     <string name="callservice">在线客服</string>
     <string name="statistics">统计</string>
+
+    <string name="staff_create">创建员工</string>
+    <string name="staff_message">管理员工</string>
 
     <string name="makerdredge">开通创客</string>
     <string name="makerqrcode">推广二维码</string>
@@ -85,12 +88,14 @@
     <string name="makershoporder">门店订单</string>
 
     <string name="newinvitehint">您好，帐号为%1$s的用户，邀请您成为他在雅森车品宝开设门店的%2$s，
-        您同意后您在雅森车品宝的所有信息将同步成邀请您公司的信息。
-</string>
+        您同意后您在雅森车品宝的所有信息将同步成邀请您公司的信息。</string>
     <string name="oldinvitehint">您好，帐号为%1$s的用户，邀请您成为他在雅森车品宝开设门店的%2$s，
-        您同意后您在雅森车品宝的所有信息将同步成邀请您公司的信息。如果拒绝，该帐号作废，需重新申请帐号。
-</string>
+        您同意后您在雅森车品宝的所有信息将同步成邀请您公司的信息。如果拒绝，该帐号作废，需重新申请帐号。</string>
     <string name="shopcartitlehint">亲~当日16:00之前完成支付，当日发货；16:00之后完成支付的订单，将于次日发货，请悉知~</string>
     <string name="shopcartitlemail">满%1$s包邮，还差</string>
+    <string name="password">qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM</string>
+
+    <string name="authordialogsubmit">尊敬的用户：\n您的认证地区为%1$s，并且您的收货地址也只能在%2$s内添加和修改，请再次确认！</string>
+    <string name="probationhint">试用截止日期%1$s，在此期间您可正常购买商品</string>
 
 </resources>

@@ -27,7 +27,7 @@
         android:paddingRight="@dimen/margin_10"
         android:background="@color/white">
         <LinearLayout
-            android:id="@+id/createstaff"
+            android:id="@+id/ll_createstaff"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_3"
-                android:text="创建员工"
+                android:text="@string/staff_create"
                 android:textColor="@color/black_66"
                 android:textSize="@dimen/textsize_14" />
         </LinearLayout>
@@ -54,7 +54,7 @@
 
 
         <LinearLayout
-            android:id="@+id/meanagestaff"
+            android:id="@+id/ll_meanagestaff"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -72,7 +72,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="管理员工"
+                android:text="@string/staff_message"
                 android:textColor="@color/black_66"
                 android:textSize="@dimen/textsize_14" />
         </LinearLayout>

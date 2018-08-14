@@ -281,7 +281,6 @@ public class SearchActivity extends SimpleTopbarActivity implements
 
     private void initRightDrawerLayout() {
         Rect frame = new Rect();getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-        int statusBarHeight = frame.top;
         menu_layout_right = (LinearLayout) findViewById(R.id.menu_layout_right);
         WindowManager wm = this.getWindowManager();//获取屏幕宽高
         int width1 = wm.getDefaultDisplay().getWidth();
@@ -607,9 +606,19 @@ public class SearchActivity extends SimpleTopbarActivity implements
                     if (page >1) {
                         isUpPull = false;
                         swipe_layout.setLoading(false);
-                        adapter.addData(data);
+                        if (data == null || data.size() == 0) {
+                            adapter.upFootText();
+                            ToastUtil.showToast("商品已全部显示！");
+                            swipe_layout.setBottom(false);
+                        }else {
+                            adapter.addData(data);
+                        }
                     } else {
                         if (data==null||data.size()==0){
+                            if (page >1) {
+                                adapter.upFootText();
+                                swipe_layout.setBottom(false);
+                            }
                             ToastUtil.showToast("未搜索到该商品名称！");
                         }else {
                             adapter.setData(data);

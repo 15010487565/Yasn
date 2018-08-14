@@ -43,6 +43,7 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
  */
 public class CollectActivity extends SimpleTopbarActivity
         implements OnRcItemClickListener
+        ,CollectAdapter.OnCollectDeleteListener
         , SwipeRefreshLayout.OnRefreshListener
         , MultiSwipeRefreshLayout.OnLoadListener
         , MultiSwipeRefreshLayout.OnMultiSwipeRefreshClickListener{
@@ -68,7 +69,7 @@ public class CollectActivity extends SimpleTopbarActivity
 
     @Override
     protected Object getTopbarTitle() {
-        return R.string.mycollect;
+        return R.string.me_collect;
     }
 
     @Override
@@ -150,7 +151,7 @@ public class CollectActivity extends SimpleTopbarActivity
         mLinearLayoutManager.setAutoMeasureEnabled(true);
         rcCollect.setLayoutManager(mLinearLayoutManager);
         adapter = new CollectAdapter(this,mLinearLayoutManager);
-        adapter.setOnItemClickListener(this);
+        adapter.setOnItemClickListener(this,this);
         rcCollect.setAdapter(adapter);
         rcCollect.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -180,6 +181,7 @@ public class CollectActivity extends SimpleTopbarActivity
                 }else {
                     if (visibleItemCount == totalItemCount){
                         swipe_layout.setBottom(false);
+                        adapter.upFootText();
                     }else {
                         swipe_layout.setBottom(true);
                     }
@@ -208,7 +210,8 @@ public class CollectActivity extends SimpleTopbarActivity
             startActivity(intent);
             Log.e("TAG_收藏空","goodsid="+goodsid);
         }else if (listFavorite != null){
-            CollectModel.ListFavoriteBean listFavoriteBean = listFavorite.get(position);
+            List<CollectModel.ListFavoriteBean> data = adapter.getData();
+            CollectModel.ListFavoriteBean listFavoriteBean = data.get(position);
             int goods_id = listFavoriteBean.getGoods_id();
             Intent intent = new Intent(CollectActivity.this, GoodsDetailsActivity.class);
             SharePrefHelper.getInstance(CollectActivity.this).putSpString("GOODSID", String.valueOf(goods_id));
@@ -216,10 +219,16 @@ public class CollectActivity extends SimpleTopbarActivity
             Log.e("TAG_收藏","goodsid="+goods_id);
         }
     }
-    //删除
+
     @Override
     public void OnItemLongClick(View view, int position) {
-        CollectModel.ListFavoriteBean listFavoriteBean = listFavorite.get(position);
+
+    }
+    //删除
+    @Override
+    public void OnItemDeleteClick(View view, int position) {
+        List<CollectModel.ListFavoriteBean> data = adapter.getData();
+        CollectModel.ListFavoriteBean listFavoriteBean = data.get(position);
         int goods_id = listFavoriteBean.getGoods_id();
         Map<String, Object> params = new HashMap<String, Object>();
         if (token != null && !"".equals(token)) {
@@ -268,10 +277,16 @@ public class CollectActivity extends SimpleTopbarActivity
                     llCollectnull.setVisibility(View.GONE);
                     refreshRightFunctionZone(true);
                     if (pageNo >1) {
-                        adapter.addData(listFavorite);
+                        if (listFavorite == null || listFavorite.size() == 0){
+                            adapter.upFootText();
+                            ToastUtil.showToast("收藏商品已全部显示！");
+                        }else {
+                            adapter.addData(listFavorite);
+                        }
                     } else {
                         if (listFavorite == null || listFavorite.size() == 0){
-                            ToastUtil.showToast("未搜索到该商品名称！");
+//                            adapter.upFootText();
+                            ToastUtil.showToast("未搜索到收藏商品！");
                         }else {
                             adapter.setData(listFavorite);
                         }

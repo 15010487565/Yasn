@@ -277,7 +277,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             listViewHolder.tvOrderListName.setTextColor(ContextCompat.getColor(context, R.color.black_66));
                             listViewHolder.ivShroud.setVisibility(View.GONE);
                             listViewHolder.tvOrderListPrice.setTextColor(ContextCompat.getColor(context, R.color.orange));
-                            listViewHolder.llNum.setBackgroundResource(R.drawable.text_black_white);
+                            listViewHolder.llNum.setBackgroundResource(R.drawable.shape_black_white);
                             listViewHolder.ivAddNum.setBackgroundResource(R.mipmap.addblack);
                             listViewHolder.llAddNum.setEnabled(true);
                             listViewHolder.ivSubtractNum.setBackgroundResource(R.mipmap.subtractimage);
@@ -289,7 +289,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         listViewHolder.tvOrderListName.setTextColor(ContextCompat.getColor(context, R.color.black_66));
                         listViewHolder.ivShroud.setVisibility(View.GONE);
                         listViewHolder.tvOrderListPrice.setTextColor(ContextCompat.getColor(context, R.color.orange));
-                        listViewHolder.llNum.setBackgroundResource(R.drawable.text_black_white);
+                        listViewHolder.llNum.setBackgroundResource(R.drawable.shape_black_white);
                         listViewHolder.ivAddNum.setBackgroundResource(R.mipmap.addblack);
                         listViewHolder.llAddNum.setEnabled(true);
                         listViewHolder.ivSubtractNum.setBackgroundResource(R.mipmap.subtractimage);

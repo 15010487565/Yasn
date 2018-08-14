@@ -14,13 +14,14 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_Hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="@dimen/margin_30"
             android:text="认证失败"
             android:textColor="@color/orange"
-            android:textSize="@dimen/textsize_18" />
+            android:textSize="@dimen/textsize_16" />
 
         <TextView
             android:id="@+id/reason"
@@ -30,7 +31,7 @@
             android:gravity="center|left"
             android:text="未获取到详细原因！"
             android:textColor="@color/black_66"
-            android:textSize="@dimen/textsize_16" />
+            android:textSize="@dimen/textsize_14" />
 
         <TextView
             android:id="@+id/okbtn"
@@ -46,7 +47,7 @@
             android:text="重新认证"
             android:background="@drawable/shape2_orange_white"
             android:textColor="@color/orange"
-            android:textSize="@dimen/textsize_18" />
+            android:textSize="@dimen/textsize_16" />
 
     </LinearLayout>
 </LinearLayout>

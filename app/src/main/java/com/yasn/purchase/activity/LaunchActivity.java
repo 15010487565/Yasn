@@ -231,8 +231,10 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
 //                "NIT1BfVFJVU1RFRF9DTElFTlQiXSwianRpIjoiMWU4OTIzNTQtOTAzNi00Y2UxLWFhY2ItN2Q1YTMxNzAwMDY1IiwiY2xpZ" +
 //                "W50X2lkIjoieWFzbi1zaG9wIiwibWVtYmVySWQiOjI4fQ.-Js19_xMHrvkNKEatVbEz9EPibNBG-XHCthLR7QIoCM";
 //        SharePrefHelper.getInstance(this).putSpString("token",token);
-        ActivityHelper.init(LaunchActivity.this).startActivity(MainActivityNew.class);
-//        ActivityHelper.init(LaunchActivity.this).startActivity(MainActivityOld.class);
+        ActivityHelper.init(LaunchActivity.this).startActivity(MainActivity.class);
+//        Intent intent = new Intent(LaunchActivity.this, WebViewH5Activity.class);
+//        intent.putExtra("webViewUrl", Config.HOMEVIEW);
+//        startActivity(intent);
         LaunchActivity.this.finish();
     }
     private void checkForUpdates() {

@@ -28,13 +28,13 @@
                 <include layout="@layout/include_storetabtop" />
 
                 <include layout="@layout/include_shoptwofunc" />
-
+                <!--我的订单-->
                 <include layout="@layout/include_shopmyorder" />
-
+                <!--我的创客-->
                 <include layout="@layout/include_shopmymaker" />
-
+                <!--员工管理-->
                 <include layout="@layout/include_shopstaffmanage" />
-
+                <!--统计-->
                 <include layout="@layout/include_shopstatistics" />
 
                 <android.support.v7.widget.RecyclerView

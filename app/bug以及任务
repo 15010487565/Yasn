@@ -1,2 +1,6 @@
 1.收藏两个接口，收藏接口favorite/listGoodsFavoriteByMemberId若为空，请求goods/subject。不算bug，可以合并
 2.常够清单问题同上
+
+1.支付功能未接入（订单页面和进货单页面）
+2.登录注册功能
+3.创客订单分页加载

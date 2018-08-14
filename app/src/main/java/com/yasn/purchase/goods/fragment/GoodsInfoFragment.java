@@ -45,9 +45,11 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.AuthorActivity;
 import com.yasn.purchase.activity.GoodsDetailsActivity;
+import com.yasn.purchase.activity.LoginActivity;
 import com.yasn.purchase.activity.showbig.ShowBigPictrueActivitiy;
-import com.yasn.purchase.activityold.WebViewActivity;
+import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.adapter.SimpleRecyclerAdapter;
 import com.yasn.purchase.adapter.TradePriceAdapter;
 import com.yasn.purchase.common.Config;
@@ -604,9 +606,10 @@ public class GoodsInfoFragment extends BaseFragment implements
             case R.id.originalprice2:
                 String trim = originalprice2.getText().toString().trim();
                 if ("登录看价格".equals(trim)) {
-                    startWebViewActivity(Config.LOGINWEBVIEW);
+                    ((GoodsDetailsActivity)getActivity()).startBaseActivity(getActivity(),LoginActivity.class);
                 } else if ("认证看价格".equals(trim)) {
-                    startWebViewActivity(Config.ATTESTATION);
+//                    startWebViewActivity(Config.ATTESTATION);
+                    startActivity(new Intent(getActivity(),AuthorActivity.class));
                 }
                 break;
         }
@@ -1842,7 +1845,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     }
 
     private void startWebViewActivity(String url) {
-        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+        Intent intent = new Intent(getActivity(), WebViewH5Activity.class);
         intent.putExtra("webViewUrl", url);
         getActivity().startActivity(intent);
     }

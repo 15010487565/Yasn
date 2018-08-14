@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin_15"
+    android:paddingBottom="@dimen/margin_15"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/text_makershop_left"
+            android:textColor="@color/black_33"
+            android:textSize="@dimen/textsize_14"
+            android:text="店铺名称：" />
+
+        <TextView
+            android:id="@+id/tv_MakerShopOrderName"
+            style="@style/text_makershop_right"
+            android:textColor="@color/black_33"
+            android:text="********" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:orientation="horizontal">
+
+        <TextView
+
+            style="@style/text_makershop_left"
+            android:textSize="@dimen/textsize_14"
+            android:text="订单号：" />
+
+        <TextView
+            android:id="@+id/tv_MakerShopOrderNumber"
+            style="@style/text_makershop_right"
+            android:text="****" />
+        <TextView
+            android:id="@+id/tv_MakerShopOrderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_14"
+            android:textColor="@color/orange"
+            android:text="***"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:orientation="horizontal">
+
+        <TextView
+
+            style="@style/text_makershop_left"
+            android:textSize="@dimen/textsize_14"
+            android:text="实付金额：" />
+
+        <TextView
+            android:id="@+id/tv_MakerShopOrderMoney"
+            style="@style/text_makershop_right"
+            android:textColor="@color/orange"
+            android:text="****" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/text_makershop_left"
+            android:textSize="@dimen/textsize_14"
+            android:text="下单时间：" />
+
+        <TextView
+            android:id="@+id/tv_MakerShopOrderTime"
+            style="@style/text_makershop_right"
+            android:text="****" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/text_makershop_left"
+            android:textSize="@dimen/textsize_14"
+            android:text="注册电话：" />
+
+        <TextView
+            android:id="@+id/tv_MakerShopOrderMobile"
+            style="@style/text_makershop_right"
+            android:text="****" />
+    </LinearLayout>
+
+</LinearLayout>

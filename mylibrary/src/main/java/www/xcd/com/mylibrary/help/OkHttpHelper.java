@@ -61,6 +61,7 @@ public class OkHttpHelper {
         }
         return instance;
     }
+
     /**
      * 获取okhttp对象设置联网请求超时信息
      *
@@ -99,6 +100,7 @@ public class OkHttpHelper {
                 .build();
         return client;
     }
+
     private static SSLSocketFactory createSSLSocketFactory() {
         SSLSocketFactory ssfFactory = null;
 
@@ -112,6 +114,7 @@ public class OkHttpHelper {
 
         return ssfFactory;
     }
+
     /**
      * 异步GET请求
      *
@@ -134,9 +137,9 @@ public class OkHttpHelper {
                 } else {
                     tempParams = new StringBuilder();
                     for (String key : paramsMaps.keySet()) {
-                        if ("User-Agent".equals(key)){
+                        if ("User-Agent".equals(key)) {
                             android_client = (String) paramsMaps.get(key);
-                        }else if ("access_token".equals(key)) {
+                        } else if ("access_token".equals(key)) {
                             token = (String) paramsMaps.get(key);
                         } else {
                             if (pos > 0) {
@@ -207,13 +210,13 @@ public class OkHttpHelper {
                     okhttp3.FormBody.Builder formEncodingBuilder = new okhttp3.FormBody.Builder();
                     for (String key : paramsMaps.keySet()) {
                         String value = "";
-                        if ("access_token".equals(key)){
+                        if ("access_token".equals(key)) {
                             if (paramsMaps.get(key) != null) {
                                 String tokenValue = paramsMaps.get(key).toString();
                                 Log.e("TAG_tokenValue", "Bearer=" + tokenValue);
                                 builder.addHeader("authorization", "Bearer" + "" + tokenValue);
                             }
-                        }else {
+                        } else {
                             if (paramsMaps.get(key) != null) {
 
                                 value = paramsMaps.get(key).toString();
@@ -301,9 +304,11 @@ public class OkHttpHelper {
         Thread thread = new Thread(runnablePost);
         thread.start();
     }
+
     /**
      * post请求
-     *  请求头
+     * 请求头
+     *
      * @param url        请求路径
      * @param paramsMaps 请求参数
      */
@@ -312,41 +317,41 @@ public class OkHttpHelper {
             @Override
             public void run() {
                 StringBuilder tempParams = new StringBuilder();
-                    String tokenValue = "";
-                    int pos = 0;
-                    for (String key : paramsMaps.keySet()) {
-                        if ("access_token".equals(key)){
-                            if (paramsMaps.get(key) != null) {
-                                tokenValue = paramsMaps.get(key).toString();
-                                Log.e("TAG_tokenValue", "Bearer=" + tokenValue);
-                            }
-                        }else {
+                String tokenValue = "";
+                int pos = 0;
+                for (String key : paramsMaps.keySet()) {
+                    if ("access_token".equals(key)) {
+                        if (paramsMaps.get(key) != null) {
+                            tokenValue = paramsMaps.get(key).toString();
+                            Log.e("TAG_tokenValue", "Bearer=" + tokenValue);
+                        }
+                    } else {
 
-                            if (paramsMaps.get(key) != null) {
-                                if (pos > 0) {
-                                    tempParams.append("&");
-                                }
-                                try {
-                                    Log.e("TAG_tempParams", key+"=" + paramsMaps.get(key));
-                                    tempParams.append(String.format("%s=%s", key, URLEncoder.encode(((String) paramsMaps.get(key)), "utf-8")));
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
-                                pos++;
+                        if (paramsMaps.get(key) != null) {
+                            if (pos > 0) {
+                                tempParams.append("&");
                             }
+                            try {
+                                Log.e("TAG_tempParams", key + "=" + paramsMaps.get(key));
+                                tempParams.append(String.format("%s=%s", key, URLEncoder.encode(((String) paramsMaps.get(key)), "utf-8")));
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            pos++;
                         }
                     }
-                    Log.e("TAG_POSTurl", "url=" + url);
-                    Log.e("TAG_tempParams", "tempParams=" + tempParams.toString());
-                    MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
-                    RequestBody body = RequestBody.create(mediaType, tempParams.toString());
-                    Request request = new Request.Builder()
-                            .url(url)
-                            .post(body)
-                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                            .addHeader("Authorization", "Bearer"+tokenValue)
-                            .addHeader("Cache-Control", "no-cache")
-                            .build();
+                }
+                Log.e("TAG_POSTurl", "url=" + url);
+                Log.e("TAG_tempParams", "tempParams=" + tempParams.toString());
+                MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+                RequestBody body = RequestBody.create(mediaType, tempParams.toString());
+                Request request = new Request.Builder()
+                        .url(url)
+                        .post(body)
+                        .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .addHeader("Authorization", "Bearer" + tokenValue)
+                        .addHeader("Cache-Control", "no-cache")
+                        .build();
                 Call postCall = client.newCall(request);
                 postCall.enqueue(new Callback() {
                     @Override
@@ -379,14 +384,14 @@ public class OkHttpHelper {
             } else {
                 result = response.body().string();
             }
-            HelpUtils.loge("TAG_result",result);
+            HelpUtils.loge("TAG_result", result);
             int i = result.indexOf("{");
-            Log.e("TAG_Code", "i=" + i);
-            if (i == 0){
+            if (i == 0) {
                 JSONObject jsonObject = new JSONObject(result);
                 String returnMsg = jsonObject.optString("message");
-                int code = jsonObject.optInt("code");
-                if (code != 0){
+                int code = jsonObject.optInt("code", -1);
+                Log.e("TAG_Code", "code=" + code);
+                if (code != -1) {
                     returnCode = code;
                 }
                 Message message = new Message();
@@ -400,7 +405,7 @@ public class OkHttpHelper {
                 message.what = HttpConfig.SUCCESSCODE;
                 message.obj = paramsMaps;
                 mHandler.sendMessage(message);
-            }else {
+            } else {
                 Message message = new Message();
                 Bundle bundle = new Bundle();
                 bundle.putInt("returnCode", returnCode);

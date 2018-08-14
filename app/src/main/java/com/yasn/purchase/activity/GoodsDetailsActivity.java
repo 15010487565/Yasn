@@ -30,7 +30,7 @@ import com.xyzlf.share.library.bean.ShareEntity;
 import com.xyzlf.share.library.interfaces.ShareConstant;
 import com.xyzlf.share.library.util.ShareUtil;
 import com.yasn.purchase.R;
-import com.yasn.purchase.activityold.WebViewActivity;
+import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.func.GoodsDetailsTopBtnFunc;
 import com.yasn.purchase.goods.adapter.ItemTitlePagerAdapter;
@@ -320,16 +320,17 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                 if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
                     startActivity(new Intent(GoodsDetailsActivity.this, ShopCarActivity.class));
                 } else {
-                    startWebViewActivity(Config.LOGINWEBVIEW);
+                    startBaseActivity(this,LoginActivity.class);
                 }
                 break;
             case R.id.tv_addShopCar:
                 String trim = tvAddShopCar.getText().toString().trim();
-                Log.e("TAG_详情提交", "trim=" + trim);
+                Log.e("TAG_详情提交", "trimCode=" + trim);
                 if ("去登录".equals(trim)) {
-                    startWebViewActivity(Config.LOGINWEBVIEW);
+                    startBaseActivity(this,LoginActivity.class);
                 } else if ("去认证".equals(trim)) {
-                    startWebViewActivity(Config.ATTESTATION);
+//                    startWebViewActivity(Config.ATTESTATION);
+                    startActivity(new Intent(this,AuthorActivity.class));
                 } else if ("加入进货单".equals(trim)) {
                     /**
                      * productId 货品Id
@@ -417,7 +418,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
 //        if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
 //            startActivity(new Intent(GoodsDetailsActivity.this, ShopCarActivity.class));
 //        } else {
-        Intent intent = new Intent(GoodsDetailsActivity.this, WebViewActivity.class);
+        Intent intent = new Intent(GoodsDetailsActivity.this, WebViewH5Activity.class);
         intent.putExtra("webViewUrl", url);
         startActivity(intent);
 //        }

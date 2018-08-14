@@ -224,6 +224,15 @@ public class ShopInfoModel implements Serializable {
         private int is_inviteCustomer;
         private String regionName;
         private int provinceId;
+        private String mobile;
+
+        public String getMobile() {
+            return mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
+        }
 
         public int getProvinceId() {
             return provinceId;

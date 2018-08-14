@@ -18,8 +18,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yasn.purchase.R;
-import com.yasn.purchase.activityold.WebViewActivity;
-import com.yasn.purchase.common.Config;
+import com.yasn.purchase.activity.AuthorActivity;
+import com.yasn.purchase.activity.LoginActivity;
+import com.yasn.purchase.activity.MainActivity;
+import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.HomeRecyModel;
 
@@ -266,9 +268,10 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 case R.id.home_money:
                     String trim = moneyRecy.getText().toString().trim();
                     if ("登录看价格".equals(trim)){
-                        startWebViewActivity(Config.LOGINWEBVIEW);
+                        ((MainActivity)context).startBaseActivity(context,LoginActivity.class);
                     }else if ("认证看价格".equals(trim)){
-                        startWebViewActivity(Config.ATTESTATION);
+//                        startWebViewActivity(Config.ATTESTATION);
+                        context.startActivity(new Intent(context,AuthorActivity.class));
                     }
                     break;
             }
@@ -303,7 +306,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         });
     }
     private void startWebViewActivity(String url) {
-        Intent intent = new Intent(context, WebViewActivity.class);
+        Intent intent = new Intent(context, WebViewH5Activity.class);
         intent.putExtra("webViewUrl", url);
         context.startActivity(intent);
     }

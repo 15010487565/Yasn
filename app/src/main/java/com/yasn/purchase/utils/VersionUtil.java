@@ -8,6 +8,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 
 import java.io.File;
+import java.util.List;
 
 public class VersionUtil {
 
@@ -50,6 +51,17 @@ public class VersionUtil {
 			e.printStackTrace();
 		}
 		return packInfo != null ? packInfo.versionCode : 0;
+	}
+
+	public static boolean isAvilible(Context context, String packageName) {
+		PackageManager packageManager = context.getPackageManager();
+
+		List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+		for (int i = 0; i < pinfo.size(); i++) {
+			if (((PackageInfo) pinfo.get(i)).packageName.equalsIgnoreCase(packageName))
+				return true;
+		}
+		return false;
 	}
 
 	// 安装apk

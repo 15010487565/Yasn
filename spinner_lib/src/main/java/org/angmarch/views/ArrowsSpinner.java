@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.TextView;
@@ -38,6 +37,7 @@ public class ArrowsSpinner extends TextView {
     private int backgroundSelector;
 
     private Context context;
+    private boolean isArrowAnimate = true;//是否有动画效果
     @SuppressWarnings("ConstantConditions")
     public ArrowsSpinner(Context context) {
         super(context);
@@ -94,7 +94,7 @@ public class ArrowsSpinner extends TextView {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
+        if (event.getAction() == MotionEvent.ACTION_UP && isArrowAnimate) {
             if (!isArrowHide) {
                 animateArrow(!isArrowHide);
 //                setTextColor(ContextCompat.getColor(context,R.color.orange));
@@ -106,8 +106,11 @@ public class ArrowsSpinner extends TextView {
         return super.onTouchEvent(event);
     }
 
+    /**
+     * 箭头方向
+     * @param shouldRotateUp true箭头朝下
+     */
     public void animateArrow(boolean shouldRotateUp) {
-        Log.e("TAG_箭头","shouldRotateUp="+shouldRotateUp);
         isArrowHide = (shouldRotateUp);
         int start = shouldRotateUp ? 0 : MAX_LEVEL;
         int end = shouldRotateUp ? MAX_LEVEL : 0;
@@ -120,6 +123,9 @@ public class ArrowsSpinner extends TextView {
         return isArrowHide;
     }
 
+    public void setArrowAnimate(boolean isArrowAnimate) {
+       this.isArrowAnimate = isArrowAnimate;
+    }
     public void setTintColor(@ColorRes int resId) {
         if (drawable != null && !isArrowHide) {
             DrawableCompat.setTint(drawable, ContextCompat.getColor(getContext(), resId));

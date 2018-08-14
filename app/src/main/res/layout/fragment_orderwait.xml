@@ -23,6 +23,6 @@
 
         </android.support.v7.widget.RecyclerView>
         <include
-            layout="@layout/include_order_error"/>
+            layout="@layout/include_nodata_error"/>
     </LinearLayout>
 </com.yasn.purchase.view.MultiSwipeRefreshLayout>

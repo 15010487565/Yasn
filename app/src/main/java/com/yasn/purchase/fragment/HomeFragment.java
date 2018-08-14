@@ -37,10 +37,13 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.AuthorActivity;
 import com.yasn.purchase.activity.GoodsDetailsActivity;
 import com.yasn.purchase.activity.HomeMoreActivity;
 import com.yasn.purchase.activity.HotLableActivity;
-import com.yasn.purchase.activity.MainActivityNew;
+import com.yasn.purchase.activity.LoginActivity;
+import com.yasn.purchase.activity.MainActivity;
+import com.yasn.purchase.activity.RegisterQuickActivity;
 import com.yasn.purchase.activity.SearchActivity;
 import com.yasn.purchase.adapter.HomeRecyclerAdapter;
 import com.yasn.purchase.application.YasnApplication;
@@ -96,16 +99,17 @@ public class HomeFragment extends SimpleTopbarFragment implements
 //    private RecyclerView recyNested;
     private RecyclerView rcHome;
     private RecyclerLayoutManager mLinearLayoutManager, layoutManagerNested;
-    private TextView topsearch, tvHomeAddress;
+    private TextView  tvHomeAddress;
     private boolean move = false;
     private boolean animationBool = true;//定位是否开启动画，默认true
     private int mIndex = 0;
     private FrameLayout topinfomssage;
-    private LinearLayout llHomeOftensShop, llYasnbang, llHomeCollect, llHomeService;
+    private LinearLayout llHomeOftensShop, llYasnbang, llHomeCollect, llHomeService,llHomeTopSearch;
     private CollapsingToolbarLayout collapsingToolbar;
     private RelativeLayout rlMainError;//错误布局
     private GestureDetector gd;
     private CoordinatorLayout clHome;
+    private ImageView ivHomeCode;
 
     @Override
     protected int getLayoutId() {
@@ -165,7 +169,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
          * 接收MainActivity的Touch回调的对象
          * 重写其中的onTouchEvent函数，并进行该Fragment的逻辑处理
          */
-        MainActivityNew.MainActivityTouchListener myTouchListener = new MainActivityNew.MainActivityTouchListener() {
+        MainActivity.MainActivityTouchListener myTouchListener = new MainActivity.MainActivityTouchListener() {
             @Override
             public void onTouchEvent(MotionEvent event) {
                 // 处理手势事件
@@ -175,7 +179,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
         };
 
         // 将myTouchListener注册到分发列表
-        ((MainActivityNew) this.getActivity()).registerTouchListener(myTouchListener);
+        ((MainActivity) this.getActivity()).registerTouchListener(myTouchListener);
 
         topbat_parent = (RelativeLayout) view.findViewById(R.id.topbat_parent);
         topbat_parent.setVisibility(View.GONE);
@@ -183,9 +187,12 @@ public class HomeFragment extends SimpleTopbarFragment implements
         //地方站
         tvHomeAddress = (TextView) view.findViewById(R.id.tv_HomeAddress);
         //搜索输入框
-        topsearch = (TextView) view.findViewById(R.id.tv_Topsearch);
-        topsearch.setOnClickListener(this);
+        llHomeTopSearch = (LinearLayout) view.findViewById(R.id.ll_HomeTopSearch);
+        llHomeTopSearch.setOnClickListener(this);
         initLoginView(view);
+        //扫一扫
+        ivHomeCode = (ImageView) view.findViewById(R.id.iv_HomeCode);
+        ivHomeCode.setOnClickListener(this);
         //收藏
         llHomeCollect = (LinearLayout) view.findViewById(R.id.ll_HomeCollect);
         llHomeCollect.setOnClickListener(this);
@@ -235,7 +242,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
             //
             member_id = member.getMember_id();
             SharePrefHelper.getInstance(getActivity()).putSpString("memberid", String.valueOf(member_id));
-//            ((MainActivityNew) getActivity()).setCartNum(Integer.valueOf(member.getCartCount()));
+//            ((MainActivity) getActivity()).setCartNum(Integer.valueOf(member.getCartCount()));
             //收获地区所在省
             int provinceId = member.getProvinceId();
             SharePrefHelper.getInstance(getActivity()).putSpString("provinceId", String.valueOf(provinceId));
@@ -367,15 +374,20 @@ public class HomeFragment extends SimpleTopbarFragment implements
         Intent intent = null;
         switch (v.getId()) {
             case R.id.tv_HomeLogin:
-                startWebViewActivity(Config.LOGINWEBVIEW);
+                ((MainActivity)getActivity()).startBaseActivity(getActivity(),LoginActivity.class);
                 break;
             case R.id.tv_HomeRegister:
-                startWebViewActivity(Config.REGISTERWEBVIEW);
+//                startWebViewActivity(Config.REGISTERWEBVIEW);
+                Intent intent0 = new Intent(getActivity(), RegisterQuickActivity.class);
+                //isSmsLogin 0：短信登录 1：快速注册 2:忘记密码
+                intent0.putExtra("isSmsLogin", 1);
+                startActivity(intent0);
                 break;
             case R.id.undredge_YsenHelp:
 
                 if ("去认证".equals(undredgeYsenHelpContext)) {
-                    startWebViewActivity(Config.ATTESTATION);
+//                    startWebViewActivity(Config.ATTESTATION);
+                    startActivity(new Intent(getActivity(),AuthorActivity.class));
                 } else if ("开通雅森帮".equals(undredgeYsenHelpContext)) {
                     startWebViewActivity(Config.DREDGEYASNHELP);
                 } else if ("查看原因".equals(undredgeYsenHelpContext)) {
@@ -385,29 +397,32 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 break;
             case R.id.fl_HomeTopinfomssage:
                 break;
-            case R.id.tv_Topsearch://搜索按钮
+            case R.id.ll_HomeTopSearch://搜索按钮
                 intent = new Intent(getActivity(), HotLableActivity.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(0, 0);
                 break;
+            case R.id.iv_HomeCode://扫一扫
+                ((MainActivity)getActivity()).scanAQRCode();
+                break;
             case R.id.ll_HomeOftensShop://常购清单
-                ((MainActivityNew)getActivity()).startOftenShopActivity(String.valueOf(member_id));
+                ((MainActivity)getActivity()).startOftenShopActivity(String.valueOf(member_id));
                 break;
             case R.id.ll_Yasnbang://雅森帮
 //                if (digital_member == 0) {//未开通雅森帮
 //                    startWebViewActivity(Config.DREDGEYASNHELP);
 //                } else {
-                startWebViewActivity(Config.YASNBANG);
+                ((MainActivity)getActivity()).startYasnActivity(1);
 //                }
                 break;
             case R.id.ll_HomeCollect://收藏
-                ((MainActivityNew)getActivity()).startCollectActivity();
+                ((MainActivity)getActivity()).startCollectActivity();
                 break;
             case R.id.ll_HomeService://客服
                 SobotUtil.startSobot(getActivity(), null);
                 break;
             case R.id.orderStateLinear:
-                ((MainActivityNew)getActivity()).startOrderActivity(0);
+                ((MainActivity)getActivity()).startOrderActivity(0);
                 break;
         }
     }
@@ -945,7 +960,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
     //点击列表取消软键盘
     @Override
     public void OnMultiSwipeRefreshClick() {
-//        onFocusChange(topsearch,false);
+//        onFocusChange(llHomeTopSearch,false);
     }
 
     @Override
@@ -1144,7 +1159,8 @@ public class HomeFragment extends SimpleTopbarFragment implements
         okbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startWebViewActivity(Config.ATTESTATION);
+//                startWebViewActivity(Config.ATTESTATION);
+                startActivity(new Intent(getActivity(),AuthorActivity.class));
             }
         });
         Activity activity = getActivity();

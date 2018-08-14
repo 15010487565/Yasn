@@ -7,10 +7,10 @@ import android.view.View;
 
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.GoodsDetailsActivity;
-import com.yasn.purchase.activity.MainActivityNew;
+import com.yasn.purchase.activity.LoginActivity;
+import com.yasn.purchase.activity.MainActivity;
 import com.yasn.purchase.activity.ShopCarActivity;
-import com.yasn.purchase.activityold.WebViewActivity;
-import com.yasn.purchase.common.Config;
+import com.yasn.purchase.activityold.WebViewH5Activity;
 
 import www.xcd.com.mylibrary.action.QuickAction;
 import www.xcd.com.mylibrary.entity.BaseActionItem;
@@ -77,21 +77,21 @@ public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
                 Intent intent;
                 switch (actionId) {
                     case 0:
-                        intent = new Intent(getActivity(), MainActivityNew.class);
+                        intent = new Intent(getActivity(), MainActivity.class);
                         intent.putExtra("CURRENTITEM", 0);
                         getActivity().startActivity(intent);
                         getActivity().finish();
                         break;
 
                     case 1:
-                        intent = new Intent(getActivity(), MainActivityNew.class);
+                        intent = new Intent(getActivity(), MainActivity.class);
                         intent.putExtra("CURRENTITEM", 1);
                         getActivity().startActivity(intent);
                         getActivity().finish();
                         break;
 
                     case 2://进货单
-//                        intent = new Intent(getActivity(), MainActivityNew.class);
+//                        intent = new Intent(getActivity(), MainActivity.class);
 //                        intent.putExtra("CURRENTITEM", 3);
 //                        getActivity().startActivity(intent);
 //                        getActivity().finish();
@@ -99,18 +99,18 @@ public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
 //                            startWebViewActivity(Config.SHOPPCARWEBVIEW);
                             getActivity().startActivity(new Intent(getActivity(), ShopCarActivity.class));
                         } else {
-                            startWebViewActivity(Config.LOGINWEBVIEW);
+                            ((GoodsDetailsActivity)getActivity()).startBaseActivity(getActivity(),LoginActivity.class);
                         }
                         break;
 
                     case 3://门店
                         if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
-                            intent = new Intent(getActivity(), MainActivityNew.class);
+                            intent = new Intent(getActivity(), MainActivity.class);
                             intent.putExtra("CURRENTITEM", 4);
                             getActivity().startActivity(intent);
                             getActivity().finish();
                         } else {
-                            startWebViewActivity(Config.LOGINWEBVIEW);
+                            ((GoodsDetailsActivity)getActivity()).startBaseActivity(getActivity(),LoginActivity.class);
                         }
                         break;
 
@@ -127,7 +127,7 @@ public class GoodsDetailsTopBtnFunc extends BaseTopImageBtnFunc  {
         quickAction.setAnimStyle(QuickAction.ANIM_AUTO);
     }
     private void startWebViewActivity(String url){
-        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+        Intent intent = new Intent(getActivity(), WebViewH5Activity.class);
         intent.putExtra("webViewUrl", url);
         getActivity().startActivity(intent);
     }

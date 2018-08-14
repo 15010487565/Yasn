@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_simple_topbar" />
+
+    <LinearLayout
+        android:id="@+id/ll_MakerIvidualFillNull"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_10">
+
+        <LinearLayout style="@style/ll_invoicespecialaudit_two">
+
+            <TextView
+                android:id="@+id/tv_MakerIvidualFillNullName_left"
+                style="@style/text_invoicespecialaudit_left"
+                android:text="*开户名称：" />
+
+            <EditText
+                android:id="@+id/tv_MakerIvidualFillNullName_right"
+                style="@style/text_invoicespecialaudit_right"
+                android:hint="请填写单位名称" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/ll_invoicespecialaudit_two">
+
+            <TextView
+                android:id="@+id/tv_MakerIvidualFillNullBank_left"
+                style="@style/text_invoicespecialaudit_left"
+                android:text="*开户银行：" />
+
+            <EditText
+                android:id="@+id/tv_MakerIvidualFillNullBank_right"
+                style="@style/text_invoicespecialaudit_right"
+                android:hint="请填写开户银行" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/ll_invoicespecialaudit_two">
+
+            <TextView
+                android:id="@+id/tv_MakerIvidualFillNullBankNum_left"
+                style="@style/text_invoicespecialaudit_left"
+                android:text="*银行账户：" />
+
+            <EditText
+                android:id="@+id/tv_MakerIvidualFillNullBankNum_right"
+                style="@style/text_invoicespecialaudit_right"
+                android:inputType="textVisiblePassword"
+                android:hint="请填写银行账户" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_MakerIvidualFillNullHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/height_40"
+        android:layout_marginLeft="@dimen/margin_15"
+        android:layout_marginRight="@dimen/height_15"
+        android:text="收款账号用于接收业绩提成转账，提交后不可修改，请认真填写！" />
+
+    <TextView
+        android:id="@+id/tv_MakerIvidualFillNullOk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_3"
+        android:background="@drawable/shape_orange5"
+        android:gravity="center"
+        android:padding="@dimen/margin_10"
+        android:layout_marginLeft="@dimen/margin_15"
+        android:layout_marginRight="@dimen/height_15"
+        android:text="确认提交"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_14" />
+</LinearLayout>

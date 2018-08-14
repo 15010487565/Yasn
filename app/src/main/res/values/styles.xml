@@ -235,13 +235,45 @@
         <item name="android:gravity">center_vertical|right</item>
         <item name="android:textSize">@dimen/textsize_14</item>
     </style>
+    <style name="text_makeractivity_left">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/height_40</item>
+        <item name="android:textColor">@color/black_66</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical|right</item>
+        <item name="android:textSize">@dimen/textsize_14</item>
+    </style>
+    <style name="text_makeractivity_right">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/height_40</item>
+        <item name="android:textColor">@color/black_66</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/textsize_14</item>
+    </style>
+    <style name="text_makershop_left">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black_66</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical|right</item>
+        <item name="android:textSize">@dimen/textsize_14</item>
+    </style>
+    <style name="text_makershop_right">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textColor">@color/black_66</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/textsize_14</item>
+    </style>
     <style name="text_invoicespecialauditing_right">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">2</item>
         <item name="android:layout_height">@dimen/height_40</item>
         <item name="android:textColor">@color/black_66</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">@dimen/textsize_14</item>
+        <item name="android:textSize">@dimen/textsize_16</item>
     </style>
 
     <style name="text_invoicespecialaudit_left">
@@ -265,6 +297,27 @@
         <item name="android:textSize">@dimen/textsize_14</item>
     </style>
 
+    <style name="text_makerfirmfinishnull_left">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/height_40</item>
+        <item name="android:gravity">center_vertical|right</item>
+        <item name="android:textColor">@color/black_99</item>
+        <item name="android:layout_marginTop">@dimen/margin_10</item>
+        <item name="android:textSize">@dimen/textsize_14</item>
+    </style>
+
+    <style name="text_makerfirmfinishnull_right">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/height_40</item>
+        <item name="android:background">@drawable/edit_text_nostork_black</item>
+        <item name="android:minHeight">@dimen/height_40</item>
+        <item name="android:paddingLeft">@dimen/margin_10</item>
+        <item name="android:layout_marginTop">@dimen/margin_10</item>
+        <item name="android:textColor">@color/black_33</item>
+        <item name="android:textColorHint">@color/black_99</item>
+        <item name="android:textSize">@dimen/textsize_14</item>
+    </style>
+
     <style name="ll_invoicespecialaudit_one">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -273,7 +326,33 @@
         <item name="android:paddingLeft">@dimen/height_15</item>
         <item name="android:paddingRight">@dimen/height_15</item>
     </style>
+    <style name="ll_makerfirmfinishnull">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_below">@id/tv_hint</item>
+    </style>
+
+
     <style name="ll_invoicespecialaudit_two" parent="ll_invoicespecialaudit_one">
         <item name="android:paddingTop">@dimen/margin_10</item>
+    </style>
+
+    <style name="sp_oil">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/height_40</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/black_66</item>
+        <item name="android:textSize">@dimen/textsize_16</item>
+        <item name="android:background">@drawable/shape_black_white</item>
+        <item name="android:layout_marginTop">@dimen/margin_20</item>
+        <item name="android:paddingLeft">@dimen/margin_20</item>
+    </style>
+
+    <style name="oil_query_result">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginTop">@dimen/margin_5</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 </resources>

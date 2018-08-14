@@ -30,5 +30,5 @@
         android:layout_height="wrap_content"
         />
 
-    <include layout="@layout/include_order_error" />
+    <include layout="@layout/include_nodata_error" />
 </LinearLayout>

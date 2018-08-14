@@ -28,7 +28,16 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.AddressActivity;
-import com.yasn.purchase.activity.MainActivityNew;
+import com.yasn.purchase.activity.AuthorActivity;
+import com.yasn.purchase.activity.LoginActivity;
+import com.yasn.purchase.activity.MainActivity;
+import com.yasn.purchase.activity.MakerCodeActivity;
+import com.yasn.purchase.activity.MakerExploitShopActivity;
+import com.yasn.purchase.activity.MakerShopOrderActivity;
+import com.yasn.purchase.activity.MakerShroffAccountActivity;
+import com.yasn.purchase.activity.SettingActivity;
+import com.yasn.purchase.activity.StaffCreateActivity;
+import com.yasn.purchase.activity.StaffMessageActivity;
 import com.yasn.purchase.adapter.ShopFuncAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.help.LoginOut;
@@ -77,11 +86,11 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     private int nameTitle[] = {R.string.mejifen,  R.string.help
             , R.string.phoneconsult, R.string.serviceing, R.string.zhuanpiao,R.string.yongyouquery};
     private int imageUrlAuth[] = {R.mipmap.jifen, R.mipmap.shouhuo_address,
-//            R.mipmap.numbervip,
+            R.mipmap.numbervip,
             R.mipmap.help, R.mipmap.phoneconsult, R.mipmap.serviceing
             , R.mipmap.zhuanpiao,R.mipmap.oil};
     private int nameTitleAuth[] = {R.string.mejifen, R.string.shouhuo_addressv,
-//            R.string.numbervip,
+            R.string.numbervip,
             R.string.help, R.string.phoneconsult, R.string.serviceing
             , R.string.zhuanpiao,R.string.yongyouquery};
     private SnsTabWidget tabWidget,makertabwidget;
@@ -211,9 +220,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         lookall = (LinearLayout) view.findViewById(R.id.lookall);
         lookall.setOnClickListener(this);
         //员工管理
-        createstaff = (LinearLayout) view.findViewById(R.id.createstaff);
+        createstaff = (LinearLayout) view.findViewById(R.id.ll_createstaff);
         createstaff.setOnClickListener(this);
-        meanagestaff = (LinearLayout) view.findViewById(R.id.meanagestaff);
+        meanagestaff = (LinearLayout) view.findViewById(R.id.ll_meanagestaff);
         meanagestaff.setOnClickListener(this);
         //实例化功能列表
         initFuncData(imageUrl,nameTitle);
@@ -277,7 +286,8 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
             case R.id.undredge_YsenHelp:
                 String undredgeYsenHelpContext = undredgeYsenHelp.getText().toString();
                 if ("去认证".equals(undredgeYsenHelpContext)) {
-                    startWebViewActivity(Config.ATTESTATION);
+//                    startWebViewActivity(Config.ATTESTATION);
+                    startActivity(new Intent(getActivity(),AuthorActivity.class));
                 } else if ("开通雅森帮".equals(undredgeYsenHelpContext)) {
                     startWebViewActivity(Config.DREDGEYASNHELP);
                 } else if ("查看原因".equals(undredgeYsenHelpContext)) {
@@ -286,10 +296,14 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                 }
                 break;
             case R.id.setting:
-                startWebViewActivity(Config.LOGINOUTWEBVIEW);
+//                startWebViewActivity(Config.LOGINOUTWEBVIEW);
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                intent.putExtra("mobile",mobile);
+                startActivity(intent);
                 break;
             case R.id.integral://积分
-                startWebViewActivity(Config.SHOPINTEGRAL);
+
+                ((MainActivity)getActivity()).startIntegralActivity();
                 break;
             case R.id.feedback://反馈
                 SobotUtil.startSobot(getActivity(),null);
@@ -298,16 +312,18 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                 SobotUtil.startSobot(getActivity(),null);
                 break;
             case R.id.collect://收藏
-                ((MainActivityNew)getActivity()).startCollectActivity();
+                ((MainActivity)getActivity()).startCollectActivity();
                 break;
             case R.id.lookall://统计查看更多
-                ((MainActivityNew)getActivity()).startStatisticsActivity(String.valueOf(member_id));
+                ((MainActivity)getActivity()).startStatisticsActivity(String.valueOf(member_id));
                 break;
-            case R.id.createstaff:
-                startWebViewActivity(Config.SHOPCREATESTAFF);
+            case R.id.ll_createstaff://创建员工
+//                startWebViewActivity(Config.SHOPCREATESTAFF);
+                startActivity(new Intent(getActivity(), StaffCreateActivity.class));
                 break;
-            case R.id.meanagestaff:
-                startWebViewActivity(Config.SHOPMEANAGESTAFF);
+            case R.id.ll_meanagestaff://管理员工
+//                startWebViewActivity(Config.SHOPMEANAGESTAFF);
+                startActivity(new Intent(getActivity(), StaffMessageActivity.class));
                 break;
         }
     }
@@ -336,7 +352,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     SharePrefHelper.getInstance(getActivity()).putSpString("resetTokenTime", "");
                     SharePrefHelper.getInstance(getActivity()).putSpString("regionId", "");
                     SharePrefHelper.getInstance(getActivity()).putSpString("priceDisplayMsg", "");
-                    startWebViewActivity(Config.LOGINWEBVIEW);
+                    ((MainActivity)getActivity()).startBaseActivity(getActivity(),LoginActivity.class);
                 }
                 break;
             case 103:
@@ -382,7 +398,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                         SharePrefHelper.getInstance(getActivity()).putSpString("resetTokenTime", "");
                         SharePrefHelper.getInstance(getActivity()).putSpString("regionId", "");
                         SharePrefHelper.getInstance(getActivity()).putSpString("priceDisplayMsg", "");
-                        startWebViewActivity(Config.LOGINWEBVIEW);
+                        ((MainActivity)getActivity()).startBaseActivity(getActivity(),LoginActivity.class);
                         ToastUtil.showToast("登录已过期,请重新登录！");
                     }
                     break;
@@ -406,6 +422,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     int lv_id = 0;
     int digital_member;
     int member_id;
+    private String mobile;
     private void initShopData(String returnData) {
         try {
             if (returnData != null) {
@@ -447,6 +464,8 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                         }else {
                             companyName.setText(shopName);
                         }
+                        mobile = member.getMobile();
+
                         String levelName = member.getLevelName();
                         shopGrade.setText(levelName == null ? "未知" : levelName);
                         digital_member = member.getDigital_member();
@@ -732,16 +751,16 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         public void onTabSelectionChanged(int tabIndex) {
             switch (tabIndex){
                 case 0://待付款
-                    ((MainActivityNew)getActivity()).startOrderActivity(1);
+                    ((MainActivity)getActivity()).startOrderActivity(1);
                     break;
                 case 1://代发货
-                    ((MainActivityNew)getActivity()).startOrderActivity(2);
+                    ((MainActivity)getActivity()).startOrderActivity(2);
                     break;
                 case 2://待收货
-                    ((MainActivityNew)getActivity()).startOrderActivity(3);
+                    ((MainActivity)getActivity()).startOrderActivity(3);
                     break;
                 case 3://全部订单
-                    ((MainActivityNew)getActivity()).startOrderActivity(0);
+                    ((MainActivity)getActivity()).startOrderActivity(0);
                     break;
             }
         }
@@ -761,16 +780,20 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
             }else if (makerType == 1){
                 switch (tabIndex){
                     case 0://推广二维码
-                        startWebViewActivity(Config.MAKERQRCODE);
+//                        startWebViewActivity(Config.MAKERQRCODE);
+                        startActivity(new Intent(getActivity(), MakerCodeActivity.class));
                         break;
                     case 1://收款账号
-                        startWebViewActivity(Config.MAKERRECEIPTACCOUNT);
+//                        startWebViewActivity(Config.MAKERRECEIPTACCOUNT);
+                        startActivity(new Intent(getActivity(), MakerShroffAccountActivity.class));
                         break;
                     case 2://开拓门店
-                        startWebViewActivity(Config.MAKEREXPLOITSHOP);
+//                        startWebViewActivity(Config.MAKEREXPLOITSHOP);
+                        startActivity(new Intent(getActivity(), MakerExploitShopActivity.class));
                         break;
                     case 3://门店订单
-                        startWebViewActivity(Config.MAKERSHOPORDER);
+//                        startWebViewActivity(Config.MAKERSHOPORDER);
+                        startActivity(new Intent(getActivity(), MakerShopOrderActivity.class));
                         break;
                 }
             }
@@ -811,39 +834,36 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         if (lv_id>5){
             switch (position){
                 case 0://我的积分
-                    startWebViewActivity(Config.SHOPINTEGRAL);
+                    ((MainActivity)getActivity()).startIntegralActivity();
                     break;
                 case 1://收货地址
 //                    startWebViewActivity(Config.SHOPPLACEOFRECEIPT);
                     startActivity(new Intent(getActivity(), AddressActivity.class));
                     break;
-//                case 2://数字会员
-//                    if (digital_member == 0) {//未开通雅森帮
-//                        startWebViewActivity(Config.DREDGEYASNHELP);
-//                    }else {
-//                        startWebViewActivity(Config.YASNBANG);
-//                    }
-//                    break;
-                case 2://帮助中心
+                case 2://雅森帮
+                    ((MainActivity)getActivity()).startYasnActivity(digital_member);
+                    break;
+                case 3://帮助中心
                     startWebViewActivity(Config.SHOPHELP);
                     break;
-                case 3://电话咨询
+                case 4://电话咨询
                     startWebViewActivity(Config.SHOPPHONE);
                     break;
-                case 4://在线客服
+                case 5://在线客服
                     SobotUtil.startSobot(getActivity(),null);
                     break;
-                case 5://专票资质
-                    startWebViewActivity(Config.SHOPAPTITUDE);
+                case 6://专票资质
+//                    startWebViewActivity(Config.SHOPAPTITUDE);
+                    ((MainActivity)getActivity()).startInvoiceSpecialActivity();
                     break;
-                case 6://用油查询
-                    startWebViewActivity(Config.SHOPINOILQUERY);
+                case 7://用油查询
+                    ((MainActivity)getActivity()).startOilActivity();
                     break;
             }
         }else {
             switch (position){
                 case 0://我的积分
-                    startWebViewActivity(Config.SHOPINTEGRAL);
+                    ((MainActivity)getActivity()).startIntegralActivity();
                     break;
 //                case 1://数字会员
 //                    startWebViewActivity(Config.DREDGEYASNHELP);
@@ -858,10 +878,11 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     SobotUtil.startSobot(getActivity(),null);
                     break;
                 case 4://专票资质
-                    startWebViewActivity(Config.SHOPAPTITUDE);
+//                    startWebViewActivity(Config.SHOPAPTITUDE);
+                    ((MainActivity)getActivity()).startInvoiceSpecialActivity();
                     break;
                 case 5://用油查询
-                    startWebViewActivity(Config.SHOPINOILQUERY);
+                    ((MainActivity)getActivity()).startOilActivity();
                     break;
             }
         }
@@ -898,7 +919,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         okbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startWebViewActivity(Config.ATTESTATION);
+//                startWebViewActivity(Config.ATTESTATION);
+                startActivity(new Intent(getActivity(),AuthorActivity.class));
+                mAuthNotifyDialog.dismiss();
             }
         });
         Activity activity = getActivity();

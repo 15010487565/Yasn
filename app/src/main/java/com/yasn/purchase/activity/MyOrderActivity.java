@@ -39,7 +39,7 @@ public class MyOrderActivity extends SimpleTopbarActivity implements
 
     @Override
     protected Object getTopbarTitle() {
-        return R.string.myorder;
+        return R.string.me_order;
     }
 
     @Override

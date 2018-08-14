@@ -102,8 +102,8 @@ public class OrderExpressActivity extends SimpleTopbarActivity implements
                         for (int i = 0; i < deliverys.size(); i++) {
                             TabLayout.Tab tabAt = tableLayout.getTabAt(i);
                             tabAt.setCustomView(tabIcon(i));
-                            tableLayout.addOnTabSelectedListener(this);
                         }
+                        tableLayout.addOnTabSelectedListener(this);
                     }else {
                         tableLayout.setVisibility(View.GONE);
                     }
@@ -198,10 +198,10 @@ public class OrderExpressActivity extends SimpleTopbarActivity implements
         }
     }
     private View tabIcon(int position){
-        View newtab =  LayoutInflater.from(this).inflate(R.layout.icon_tabview,null);
-        TextView tv = (TextView) newtab.findViewById(R.id.tabtext);
+        View newtab =  LayoutInflater.from(this).inflate(R.layout.icon_tabview_order,null);
+        TextView tv = (TextView) newtab.findViewById(R.id.tv_OrderTab);
         tv.setText("包裹"+(position+1));
-        ImageView im = (ImageView)newtab.findViewById(R.id.tabicon);
+        ImageView im = (ImageView)newtab.findViewById(R.id.iv_OrderTab);
         if (position==0){
             im.setVisibility(View.VISIBLE);
             im.setImageResource(R.mipmap.order_express_tab);
@@ -213,7 +213,7 @@ public class OrderExpressActivity extends SimpleTopbarActivity implements
     private void tabSelectedIcon(TabLayout.Tab tab,boolean isShow){
         View view = tab.getCustomView();
         Log.e("TAG_TAG","view="+(view==null));
-        ImageView im = (ImageView)view.findViewById(R.id.tabicon);
+        ImageView im = (ImageView)view.findViewById(R.id.iv_OrderTab);
         if (isShow){
             im.setVisibility(View.VISIBLE);
             im.setImageResource(R.mipmap.order_express_tab);

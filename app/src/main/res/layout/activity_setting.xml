@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_simple_topbar" />
+
+    <LinearLayout
+        android:id="@+id/ll_UpdataPwd"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingLeft="@dimen/margin_15"
+        android:paddingRight="@dimen/margin_15"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/xiugaimima"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textColor="@color/black_66"
+            android:textSize="@dimen/textsize_14"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/margin_15"
+            android:text="修改密码"/>
+        <ImageView
+            android:layout_width="@dimen/height_20"
+            android:layout_height="@dimen/height_20"
+            android:background="@mipmap/home_top_arrows"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_1"
+        android:background="@color/line_c3"/>
+    <TextView
+        android:id="@+id/tv_SettingExit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_40"
+        android:textSize="@dimen/textsize_14"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/height_120"
+        android:layout_marginLeft="@dimen/margin_15"
+        android:layout_marginRight="@dimen/margin_15"
+        android:background="@drawable/shape_orange5"
+        android:text="退出登录" />
+
+</LinearLayout>

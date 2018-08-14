@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
@@ -52,7 +52,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     private LinearLayoutManager leftLinearLayoutManager;
     //    private ConvenientBanner convenientBanner;
     private ImageView convenientBanner;
-    private TextView topsearch;
+    private LinearLayout tvClassifyTopSearch;
 
     //    private TagsLayout hotlabel;
     @Override
@@ -121,8 +121,8 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     protected void initView(LayoutInflater inflater, View view) {
 //        Log.e("TAG_initView", "CLASSIFY_initView");
         //搜索输入框
-        topsearch = (TextView) view.findViewById(R.id.tv_Topsearch);
-        topsearch.setOnClickListener(this);
+        tvClassifyTopSearch = (LinearLayout) view.findViewById(R.id.tv_ClassifyTopSearch);
+        tvClassifyTopSearch.setOnClickListener(this);
         topbat_parent = (RelativeLayout) view.findViewById(R.id.topbat_parent);
         topbat_parent.setVisibility(View.GONE);
         //左侧列表
@@ -171,7 +171,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
-            case R.id.tv_Topsearch://搜索按钮
+            case R.id.tv_ClassifyTopSearch://搜索按钮
                 Intent intent = new Intent(getActivity(), HotLableActivity.class);
 //                startActivityForResult(intent,TOPSEARCHCode);
                 startActivity(intent);
