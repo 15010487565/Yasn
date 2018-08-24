@@ -295,12 +295,10 @@ public class OrderWaitFragment extends OrderFragment implements
         if (o instanceof OrderSonPayInfoModel){
             OrderSonPayInfoModel  infoModel = (OrderSonPayInfoModel) o;
             int orderId = infoModel.getOrderId();
-            Log.e("TAG_查看订单","orderId="+orderId);
             startOrderDetailsActivity(orderId,2);
         }else if (o instanceof OrderGoodsContentModel){
             OrderGoodsContentModel  goodsModel = (OrderGoodsContentModel) o;
             int orderId = goodsModel.getOrderId();
-            Log.e("TAG_查看订单","orderId="+orderId);
             startOrderDetailsActivity(orderId,2);
         }
     }

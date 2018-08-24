@@ -151,7 +151,7 @@ public class RegisterQuickActivity extends SimpleTopbarActivity {
         }
     }
 
-    //认证弹窗
+
     protected AlertDialog registerDialog;
     private void showIsRegisterDialog() {
         LayoutInflater factor = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);

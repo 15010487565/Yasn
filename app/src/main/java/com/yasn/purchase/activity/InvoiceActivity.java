@@ -43,7 +43,7 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
     private List<BaseFragment> fragmentList = new ArrayList<BaseFragment>();
     private TextView tvInvoiceNo;
     private FrameLayout frame_content;
-    private List<Map<String,String>> list = new ArrayList<>();
+    private List<Map<String, String>> list = new ArrayList<>();
 
     @Override
     protected Object getTopbarTitle() {
@@ -63,15 +63,15 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
         //实例化adapter
         adapter = new InvoiceGridAdapter(this);
         for (int i = 0; i < invoiceType.length; i++) {
-            Map<String,String> map = new HashMap<>();
-            map.put("name",invoiceType[i]);
-            if (i == 0){
-                map.put("isCheck","1");
-            }else {
-                map.put("isCheck","0");
+            Map<String, String> map = new HashMap<>();
+            map.put("name", invoiceType[i]);
+            if (i == 0) {
+                map.put("isCheck", "1");
+            } else {
+                map.put("isCheck", "0");
             }
             list.add(map);
-    }
+        }
         adapter.setData(list);
         gvInvoice.setAdapter(adapter);
         gvInvoice.setOnItemClickListener(this);
@@ -123,7 +123,7 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
             case tv_InvoiceNo:
                 Intent intent = new Intent();
                 intent.putExtra("invoice", "不开发票"); //将计算的值回传回去
-                setResult(0,intent);
+                setResult(0, intent);
                 finish();
                 break;
         }
@@ -156,27 +156,27 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        if (list !=null&&list.size()>0){
+        if (list != null && list.size() > 0) {
             list.clear();
         }
         for (int i = 0; i < invoiceType.length; i++) {
-            Map<String,String> map = new HashMap<>();
-            map.put("name",invoiceType[i]);
-            if (i == position){
-                map.put("isCheck","1");
-            }else {
-                map.put("isCheck","0");
+            Map<String, String> map = new HashMap<>();
+            map.put("name", invoiceType[i]);
+            if (i == position) {
+                map.put("isCheck", "1");
+            } else {
+                map.put("isCheck", "0");
             }
             list.add(map);
         }
         adapter.setData(list);
-        if (position == 0){
+        if (position == 0) {
             frame_content.setVisibility(View.GONE);
             tvInvoiceNo.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             frame_content.setVisibility(View.VISIBLE);
             tvInvoiceNo.setVisibility(View.GONE);
-            clickFragmentBtn(position-1);
+            clickFragmentBtn(position - 1);
         }
     }
 

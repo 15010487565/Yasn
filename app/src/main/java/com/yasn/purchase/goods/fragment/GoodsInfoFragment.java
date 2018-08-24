@@ -74,6 +74,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
@@ -609,7 +610,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                     ((GoodsDetailsActivity)getActivity()).startBaseActivity(getActivity(),LoginActivity.class);
                 } else if ("认证看价格".equals(trim)) {
 //                    startWebViewActivity(Config.ATTESTATION);
-                    startActivity(new Intent(getActivity(),AuthorActivity.class));
+                    ((SimpleTopbarActivity)getActivity()).showStartAuthorDialog(AuthorActivity.class);
                 }
                 break;
         }

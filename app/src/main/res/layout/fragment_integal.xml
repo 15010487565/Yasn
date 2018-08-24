@@ -16,14 +16,19 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rc_Integral"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black_f7"
-            android:paddingRight="@dimen/margin_10"
-            android:paddingLeft="@dimen/margin_10" />
-        </com.yasn.purchase.view.MultiSwipeRefreshLayout>
+            android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rc_Integral"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black_f7"
+                android:paddingRight="@dimen/margin_10"
+                android:paddingLeft="@dimen/margin_10" />
+            <include layout="@layout/include_nodata_error" />
+        </LinearLayout>
 
-    <include layout="@layout/include_nodata_error" />
+        </com.yasn.purchase.view.MultiSwipeRefreshLayout>
 </LinearLayout>

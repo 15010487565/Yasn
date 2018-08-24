@@ -74,7 +74,6 @@
     <string name="yongyouquery">用油查询</string>
     <string name="numbervip">雅森帮</string>
     <string name="collect">收藏</string>
-    <string name="callphone">电话咨询</string>
     <string name="callservice">在线客服</string>
     <string name="statistics">统计</string>
 
@@ -97,5 +96,12 @@
 
     <string name="authordialogsubmit">尊敬的用户：\n您的认证地区为%1$s，并且您的收货地址也只能在%2$s内添加和修改，请再次确认！</string>
     <string name="probationhint">试用截止日期%1$s，在此期间您可正常购买商品</string>
-
+    <string name="mareragreememt">\u3000\u3000雅森车品宝创客，是指负责开发车品宝注册会员，并指导会员下单，维护客情关系，培训商品知识，协助处理售后，努力提高平台商品在门店的渗透率，愿意承担以上业务，根据销售业绩从雅森车品宝获得销售佣金的个人或单位。</string>
+    <string name="mareragreememt1">\u3000\u3000创客的升级与降级原则上为逐级变动，不越级变动。新注册的创客前两个月的考核只升不降。</string>
+    <string name="mareragreememt2">发生以下两种情况，雅森车品宝与创客解约\n1.初级创客未完成业绩考核\n2.不诚信行为。指考试作弊、业绩弄虚作假、欺骗公司或客户等不诚行为。</string>
+    <string name="mareragreememt3">\u3000\u3000待开发客户是指还未开发成功的客户（即使已注册）。待开发客户两个自然月订单金额达到1000元，成为有效客户，只有有效客户的订单才与创客的业绩和提成挂钩。有效客户每两个月考核一次，如果两个月订单金额未达到1000元，那么此客户与创客脱钩，再次成为待开发客户，不再计入创客业绩。</string>
+    <string name="mareragreememt4">\u3000\u3000每月10日（遇非工作日顺延）雅森车品宝将创客上月的销售佣金打入创客本人账户。</string>
+    <string name="mareragreememt5">\u3000\u3000创客与雅森间为劳务关系。雅森为了创客开展业务便利可以为创客提供证明、名片、职务说明等材料文件，创客不得据此要求双方构成劳动关系。</string>
+    <string name="mareragreememt6">\u3000\u3000因履行本协议发生争议的，由北京雅森国际展览有限公司住所地人民法院管辖。</string>
+    <string name="mareragreememt7">\u3000\u3000本协议的解释权归雅森所有，雅森可以根据业务需要制定本协议实施的详细操作细则。</string>
 </resources>

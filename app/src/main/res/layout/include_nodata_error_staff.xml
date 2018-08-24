@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_10"
-        android:text="你还没创建过心员工"
+        android:text="你还没创建过新员工"
         android:textColor="@color/black_99"
         android:textSize="@dimen/textsize_14" />
 </LinearLayout>

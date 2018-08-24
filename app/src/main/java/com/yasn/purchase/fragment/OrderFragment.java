@@ -27,9 +27,13 @@ public abstract class OrderFragment extends SimpleTopbarFragment {
         tvErrorHint = (TextView) view.findViewById(R.id.tv_ErrorHint);
     }
     protected void startOrderDetailsActivity(int orderId,int isMainOrder){
+        startOrderDetailsActivity(orderId,isMainOrder,false);
+    }
+    protected void startOrderDetailsActivity(int orderId,int isMainOrder,boolean isNeedPay){
         Intent intent = new Intent(getActivity(), OrderDetailsActivity.class);
         intent.putExtra("orderId",orderId);
         intent.putExtra("isMainOrder",isMainOrder);
+        intent.putExtra("isNeedPay",isNeedPay);
         startActivity(intent);
     }
 }

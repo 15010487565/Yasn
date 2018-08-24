@@ -2,53 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@mipmap/authorfailuren"
+    android:background="@color/transparent"
     android:gravity="center"
     android:layout_gravity="center"
-    android:id="@+id/ll_ShowSample"
     android:orientation="vertical">
 
-    <!--<ImageView-->
-        <!--android:id="@+id/iv_ShowSample"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:visibility="invisible"-->
-        <!--android:background="@mipmap/author_topsucceed" />-->
-
-    <TextView
-        android:id="@+id/tv_AuthorUploadTopHint"
-        android:layout_width="match_parent"
-        android:gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_20"
-        android:layout_marginTop="@dimen/sobot_DIMEN_107PX"
-        android:layout_gravity="center_horizontal"
-        android:text="提交资料成功!"
-        android:textColor="@color/golden"
-        android:textSize="@dimen/textsize_24"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tv_AuthorUploadHint"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/sobot_DIMEN_108PX"
-        android:layout_marginRight="@dimen/sobot_DIMEN_108PX"
+        android:background="@mipmap/authorfailuren"
         android:gravity="center"
-        android:text="恭喜您资料提价成功，我们将尽快为您审核，请您耐心等待~"
-        android:textColor="@color/black_66"
-        android:textSize="@dimen/textsize_15" />
+        android:layout_gravity="center"
+        android:id="@+id/ll_ShowSample"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_AuthorUploadTopHint"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:layout_marginTop="@dimen/sobot_DIMEN_107PX"
+            android:layout_gravity="center_horizontal"
+            android:text="提交资料成功!"
+            android:textColor="@color/golden"
+            android:textSize="@dimen/textsize_24"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tv_AuthorDialogOk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/height_20"
-        android:background="@drawable/shape_golden_white"
-        android:text="随便逛逛"
-        android:textColor="@color/golden"
-        android:textSize="@dimen/textsize_16" />
+        <TextView
+            android:id="@+id/tv_AuthorUploadHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/sobot_DIMEN_108PX"
+            android:layout_marginRight="@dimen/sobot_DIMEN_108PX"
+            android:gravity="center"
+            android:text="恭喜您资料提价成功，我们将尽快为您审核，请您耐心等待~"
+            android:textColor="@color/black_66"
+            android:textSize="@dimen/textsize_15" />
+
+        <TextView
+            android:id="@+id/tv_AuthorDialogOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/height_20"
+            android:background="@drawable/shape_golden_white"
+            android:text="随便逛逛"
+            android:textColor="@color/golden"
+            android:textSize="@dimen/textsize_16" />
+    </LinearLayout>
+
+
 
 </LinearLayout>

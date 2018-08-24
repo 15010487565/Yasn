@@ -143,5 +143,6 @@
                 android:background="@color/black_f7" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-
+    <include
+        layout="@layout/include_nodata_error"/>
 </LinearLayout>

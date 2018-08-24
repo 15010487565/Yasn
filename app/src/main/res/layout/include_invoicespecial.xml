@@ -8,17 +8,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:padding="@dimen/margin_15"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/height_20">
+            android:layout_height="wrap_content">
 
             <TextView
                 style="@style/text_invoicespecialauditing_left"
-                android:text="单位名称：" />
+                android:text="&#8194;&#8194;单位名称：" />
 
             <TextView
                 android:id="@+id/tv_InvoicespTitle"
@@ -28,9 +27,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/height_20">
+            android:layout_height="wrap_content">
 
             <TextView
                 style="@style/text_invoicespecialauditing_left"
@@ -44,14 +41,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/height_20">
+            android:layout_height="wrap_content">
 
             <TextView
-
                 style="@style/text_invoicespecialauditing_left"
-                android:text="注册地址：" />
+                android:text="&#8194;&#8194;注册地址：" />
 
             <TextView
                 android:id="@+id/tv_InvoicespAddress"
@@ -61,14 +55,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/height_20">
+            android:layout_height="wrap_content">
 
             <TextView
-
                 style="@style/text_invoicespecialauditing_left"
-                android:text="注册电话：" />
+                android:text="&#8194;&#8194;注册电话：" />
 
             <TextView
                 android:id="@+id/tv_InvoicespMobile"
@@ -78,14 +69,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/height_20">
+            android:layout_height="wrap_content">
 
             <TextView
-
                 style="@style/text_invoicespecialauditing_left"
-                android:text="开户银行：" />
+                android:text="&#8194;&#8194;开户银行：" />
 
             <TextView
                 android:id="@+id/tv_InvoicespBank"
@@ -96,13 +84,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/height_20">
+            android:orientation="horizontal">
 
             <TextView
-
                 style="@style/text_invoicespecialauditing_left"
-                android:text="银行账户：" />
+                android:text="&#8194;&#8194;银行账户：" />
 
             <TextView
                 android:id="@+id/tv_InvoicespBankNum"
@@ -115,88 +101,128 @@
         android:id="@+id/ll_Audit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin_10"
+        android:background="@color/white"
         android:orientation="vertical"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:padding="@dimen/margin_10"
         android:visibility="visible"
-        android:background="@color/white">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:id="@+id/tv_InvoiceFailure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/margin_10"
+            android:paddingLeft="@dimen/margin_10"
+            android:text="信息填写有误，请修改后重新提交"
+            android:textColor="@color/red"
+            android:textSize="@dimen/textsize_14"
+            android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <LinearLayout style="@style/ll_invoicespecialaudit_one">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_InvoicespAuditTitle_left"
-                android:text="*单位名称："
-                style="@style/text_invoicespecialaudit_left" />
+                <TextView
+                    android:id="@+id/tv_InvoicespAuditTitle_left"
+                    style="@style/text_invoicespecialaudit_left"
+                    android:text="&#8194;&#8194;*单位名称：" />
 
-            <EditText
-                android:id="@+id/tv_InvoicespAuditTitle_right"
-                android:hint="请填写单位名称"
-                style="@style/text_invoicespecialaudit_right" />
+                <EditText
+                    android:id="@+id/tv_InvoicespAuditTitle_right"
+                    style="@style/text_invoicespecialaudit_right"
+                    android:hint="请填写单位名称" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_InvoicespAuditNum_left"
+                    style="@style/text_invoicespecialaudit_left"
+                    android:text="*纳税识别号：" />
+                <EditText
+                    android:id="@+id/tv_InvoicespAuditNum_right"
+                    style="@style/text_invoicespecialaudit_right"
+                    android:hint="请填写纳税识别号" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_InvoicespAuditAddress_left"
+                    style="@style/text_invoicespecialaudit_left"
+                    android:text="&#8194;&#8194;*注册地址：" />
+                <EditText
+                    android:id="@+id/tv_InvoicespAuditAddress_right"
+                    style="@style/text_invoicespecialaudit_right"
+                    android:hint="请填写注册地址" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_InvoicespAuditMobile_left"
+                    style="@style/text_invoicespecialaudit_left"
+                    android:text="&#8194;&#8194;*注册电话：" />
+                <EditText
+                    android:id="@+id/tv_InvoicespAuditMobile_right"
+                    style="@style/text_invoicespecialaudit_right"
+                    android:digits="1234567890"
+                    android:hint="请填写注册电话"
+                    android:inputType="phone"
+                    android:maxLength="11" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_InvoicespAuditBank_left"
+                    style="@style/text_invoicespecialaudit_left"
+                    android:text="&#8194;&#8194;*开户银行：" />
+                <EditText
+                    android:id="@+id/tv_InvoicespAuditBank_right"
+                    style="@style/text_invoicespecialaudit_right"
+                    android:hint="请填写开户银行" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_InvoicespauditBankNum_left"
+                    style="@style/text_invoicespecialaudit_left"
+                    android:text="&#8194;&#8194;*银行账户：" />
+                <EditText
+                    android:id="@+id/tv_InvoicespauditBankNum_right"
+                    style="@style/text_invoicespecialaudit_right"
+                    android:digits="1234567890"
+                    android:inputType="number"
+                    android:hint="请填写银行账户" />
+            </LinearLayout>
+
         </LinearLayout>
 
-        <LinearLayout style="@style/ll_invoicespecialaudit_two">
-
-            <TextView
-                android:id="@+id/tv_InvoicespAuditNum_left"
-                android:text="*纳税识别号："
-                style="@style/text_invoicespecialaudit_left" />
-
-            <EditText
-                android:id="@+id/tv_InvoicespAuditNum_right"
-                style="@style/text_invoicespecialaudit_right"
-                android:hint="请填写纳税识别号" />
-        </LinearLayout>
-
-        <LinearLayout style="@style/ll_invoicespecialaudit_two">
-
-            <TextView
-                android:id="@+id/tv_InvoicespAuditAddress_left"
-                android:text="*注册地址："
-                style="@style/text_invoicespecialaudit_left" />
-
-            <EditText
-                android:id="@+id/tv_InvoicespAuditAddress_right"
-                style="@style/text_invoicespecialaudit_right"
-                android:hint="请填写注册地址" />
-        </LinearLayout>
-
-        <LinearLayout style="@style/ll_invoicespecialaudit_two">
-
-            <TextView
-                android:id="@+id/tv_InvoicespAuditMobile_left"
-                android:text="*注册电话："
-                style="@style/text_invoicespecialaudit_left" />
-
-            <EditText
-                android:id="@+id/tv_InvoicespAuditMobile_right"
-                style="@style/text_invoicespecialaudit_right"
-                android:inputType="phone"
-                android:hint="请填写注册电话" />
-        </LinearLayout>
-
-        <LinearLayout style="@style/ll_invoicespecialaudit_two">
-
-            <TextView
-                android:id="@+id/tv_InvoicespAuditBank_left"
-                android:text="*开户银行："
-                style="@style/text_invoicespecialaudit_left" />
-
-            <EditText
-                android:id="@+id/tv_InvoicespAuditBank_right"
-                style="@style/text_invoicespecialaudit_right"
-                android:hint="请填写开户银行" />
-        </LinearLayout>
-
-        <LinearLayout style="@style/ll_invoicespecialaudit_two">
-
-            <TextView
-                android:id="@+id/tv_InvoicespauditBankNum_left"
-                android:text="*银行账户："
-                style="@style/text_invoicespecialaudit_left" />
-
-            <EditText
-                android:id="@+id/tv_InvoicespauditBankNum_right"
-                style="@style/text_invoicespecialaudit_right"
-                android:hint="请填写银行账户" />
-        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

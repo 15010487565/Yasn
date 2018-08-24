@@ -37,6 +37,8 @@ import java.util.Map;
 
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_FOOTER;
+
 
 /**
  * Created by Android on 2017/9/5.
@@ -225,7 +227,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
         }
 
         ClassifyLeftModel footView = new ClassifyLeftModel();
-        footView.setItemType(Config.TYPE_FOOTVIEW);
+        footView.setItemType(ITEM_FOOTER);
         leftList.add(footView);
         leftAdapter.setData(leftList);
         initRightData(classifyModelCats, selectPosition);

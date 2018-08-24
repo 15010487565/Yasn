@@ -6,6 +6,8 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -33,6 +35,7 @@ public class StatisticsActivity extends SimpleTopbarActivity {
     private RecyclerView rcStatistic;
     private StatisticsAdapter adapter;
     private NestedScrollView nsStatistics;
+    private LinearLayout llError;
     @Override
     protected Object getTopbarTitle() {
         return R.string.statistics;
@@ -57,7 +60,14 @@ public class StatisticsActivity extends SimpleTopbarActivity {
     @Override
     protected void afterSetContentView() {
         super.afterSetContentView();
+        llError = (LinearLayout)findViewById(R.id.ll_Error);
+        llError.setVisibility(View.GONE);
+        ImageView ivError = (ImageView) findViewById(R.id.iv_Error);
+        TextView tvErrorHint = (TextView) findViewById(R.id.tv_ErrorHint);
+        ivError.setImageResource(R.mipmap.tongji);
+        tvErrorHint.setText("暂无统计数据!");
         nsStatistics = (NestedScrollView) findViewById(R.id.ns_statistics);
+        nsStatistics.setVisibility(View.VISIBLE);
         stotalMoney = (TextView) findViewById(R.id.tv_StatisticStotalMoney);
         statisGoodsNum = (TextView) findViewById(R.id.tv_StatisticGoodsNum);
         statisOrderNum = (TextView) findViewById(R.id.tv_StatisticOrderNum);
@@ -99,8 +109,10 @@ public class StatisticsActivity extends SimpleTopbarActivity {
                     List<StatisticsModel.DataBean.SumInfoEachMonthBean> sumInfoEachMonth = data.getSumInfoEachMonth();
                     adapter.setData(sumInfoEachMonth);
                     nsStatistics.setVisibility(View.VISIBLE);
+                    llError.setVisibility(View.GONE);
                 }else {
                     nsStatistics.setVisibility(View.GONE);
+                    llError.setVisibility(View.VISIBLE);
                     ToastUtil.showToast("暂无统计数据！");
                 }
                 break;

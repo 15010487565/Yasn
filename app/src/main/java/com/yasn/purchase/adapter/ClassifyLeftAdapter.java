@@ -16,7 +16,7 @@ import com.yasn.purchase.view.ChoiceItemLayout;
 
 import java.util.List;
 
-import static com.yasn.purchase.common.Config.TYPE_FOOTVIEW;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_FOOTER;
 
 /**
  * Created by gs on 2018/1/3.
@@ -62,7 +62,7 @@ public class ClassifyLeftAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 view=mInflater.inflate(R.layout.recycleritem_left_classify,parent,false);
                 holder = new ViewHolder(view);
                 break;
-            case TYPE_FOOTVIEW:
+            case ITEM_FOOTER:
                 view = LayoutInflater.from(context).inflate(R.layout.footview_listview, parent, false);
                 holder = new ViewHolderFootView(view);
                 break;

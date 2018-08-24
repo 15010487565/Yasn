@@ -70,6 +70,8 @@
                         android:id="@+id/tv_MakerFirmFillNullMobile_right"
                         style="@style/text_makerfirmfinishnull_right"
                         android:inputType="phone"
+                        android:digits="1234567890"
+                        android:maxLength="11"
                         android:hint="请填写注册电话" />
 
                     <EditText

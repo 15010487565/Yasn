@@ -29,6 +29,11 @@ import java.util.List;
 import www.xcd.com.mylibrary.base.view.XListViewFooter;
 import www.xcd.com.mylibrary.help.HelpUtils;
 
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_FOOTER;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_IMAGE;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_TXT;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_VIDEO;
+
 /**
  * Created by shuyu on 2016/11/11.
  */
@@ -47,11 +52,6 @@ public class FindAllAdapter  extends BaseAdapter {
     private boolean isFullVideo;
 
     private ListVideoUtil listVideoUtil;
-
-    public static final int TYPE_FOOTER = 3;
-    public static final int TYPE_TXT = 2;
-    public static final int TYPE_IMAGE = 0;
-    public static final int TYPE_VIDEO = 1;
 
     public FindAllAdapter(Context context, ListVideoUtil listVideoUtil) {
         super();
@@ -80,7 +80,7 @@ public class FindAllAdapter  extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         if (position + 1 == getCount()) {
-            return TYPE_FOOTER;
+            return ITEM_FOOTER;
         }else {
             FindAllModel.DataBean dataBean = list.get(position);
             int type = dataBean.getFileType();
@@ -91,7 +91,7 @@ public class FindAllAdapter  extends BaseAdapter {
             }else if(type==1){
                 return TYPE_VIDEO;
             }else {
-                return TYPE_FOOTER;
+                return ITEM_FOOTER;
             }
         }
     }
@@ -151,7 +151,7 @@ public class FindAllAdapter  extends BaseAdapter {
                     videoHolder.imageView = new ImageView(context);
                     convertView.setTag(videoHolder);
                     break;
-                case TYPE_FOOTER:
+                case ITEM_FOOTER:
                     footerholder = new FooterHolder();
                     convertView = inflater.inflate(R.layout.xlistview_footer, parent,
                             false);
@@ -171,7 +171,7 @@ public class FindAllAdapter  extends BaseAdapter {
                 case TYPE_VIDEO:
                     videoHolder = (VideoViewHolder) convertView.getTag();
                     break;
-                case TYPE_FOOTER:
+                case ITEM_FOOTER:
                     footerholder = (FooterHolder) convertView.getTag();
                     break;
             }

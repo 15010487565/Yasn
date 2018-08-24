@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
-import com.yasn.purchase.activityold.WebViewH5Activity;
-import com.yasn.purchase.common.Config;
+import com.yasn.purchase.activity.InvoiceHelpActivity;
 
 import www.xcd.com.mylibrary.R;
 import www.xcd.com.mylibrary.func.BaseTopTextViewFunc;
@@ -36,8 +35,11 @@ public class InvoiceHintTopBtnFunc extends BaseTopTextViewFunc {
 
     @Override
     public void onclick(View v) {
-        Intent intent = new Intent( getActivity() , WebViewH5Activity.class);
-        intent.putExtra("webViewUrl", Config.INVOICEHELP);
+//        Intent intent = new Intent( getActivity() , WebViewH5Activity.class);
+//        intent.putExtra("webViewUrl", Config.INVOICEHELP);
+//        getActivity().startActivity(intent);
+        Intent intent = new Intent(getActivity(), InvoiceHelpActivity.class);
+        intent.putExtra("selcet", 2);
         getActivity().startActivity(intent);
     }
 }

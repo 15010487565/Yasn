@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 /**
@@ -45,7 +46,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private List<CollectModel.ListFavoriteBean> list;
     private List<CollectModel.ListFavoriteBean> addList;
     private OnRcItemClickListener onItemClickListener;
-    private OnCollectDeleteListener onDeleteListener;
+    private OnCollectListener onCollcetListener;
     private LinearLayoutManager linearLayoutManager;
     private String loginState;
     private String regionName;
@@ -61,9 +62,9 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         regionName = SharePrefHelper.getInstance(context).getSpString("regionName");
     }
 
-    public void setOnItemClickListener(OnRcItemClickListener onItemClickListener,OnCollectDeleteListener onDeleteListener) {
+    public void setOnItemClickListener(OnRcItemClickListener onItemClickListener,OnCollectListener onCollcetListener) {
         this.onItemClickListener = onItemClickListener;
-        this.onDeleteListener = onDeleteListener;
+        this.onCollcetListener = onCollcetListener;
     }
 
     public void setData(List<CollectModel.ListFavoriteBean> list) {
@@ -329,11 +330,11 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         ((CollectActivity)context).startBaseActivity(context,LoginActivity.class);
                     } else if ("认证看价格".equals(trim)) {
 //                        startWebViewActivity(Config.ATTESTATION);
-                        context.startActivity(new Intent(context,AuthorActivity.class));
+                        ((SimpleTopbarActivity)context).showStartAuthorDialog(AuthorActivity.class);
                     }
                     break;
                 case R.id.iv_CollectClean:
-                    onDeleteListener.OnItemDeleteClick(v,getLayoutPosition());
+                    onCollcetListener.OnItemDeleteClick(v,getLayoutPosition());
                     break;
             }
         }
@@ -358,14 +359,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.OnItemClick(v, position);
-            }
-        });
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                onItemClickListener.OnItemLongClick(v, position);
-                return true;
+                onCollcetListener.OnItemClickListener(v, position);
             }
         });
     }
@@ -380,8 +374,10 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         intent.putExtra("webViewUrl", url);
         context.startActivity(intent);
     }
-    public interface OnCollectDeleteListener {
+    public interface OnCollectListener {
         //删除
         void OnItemDeleteClick(View view, int position);
+        //收藏item点击
+        void OnItemClickListener(View view, int position);
     }
 }

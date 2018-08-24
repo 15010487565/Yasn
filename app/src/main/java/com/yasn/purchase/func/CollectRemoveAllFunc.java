@@ -36,6 +36,6 @@ public class CollectRemoveAllFunc extends BaseTopTextViewFunc {
 
     @Override
     public void onclick(View v) {
-        ((CollectActivity) getActivity()).removeAllDialog();
+        ((CollectActivity) getActivity()).removeAllDialog("");
     }
 }

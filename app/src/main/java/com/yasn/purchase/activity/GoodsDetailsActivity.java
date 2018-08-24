@@ -2,7 +2,6 @@ package com.yasn.purchase.activity;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -11,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -59,6 +57,8 @@ import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 import www.xcd.com.mylibrary.view.BadgeView;
 import www.xcd.com.mylibrary.view.NoScrollViewPager;
+
+import static www.xcd.com.mylibrary.help.HelpUtils.REQUEST_CODE_ASK_CALL_PHONE;
 
 
 public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsInfoFragment.CallBack {
@@ -137,7 +137,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
         super.afterSetContentView();
         String goodsid = SharePrefHelper.getInstance(this).getSpString("GOODSID");
         Map<String, Object> params = new HashMap<String, Object>();
-        okHttpGet(103, Config.GOODSDETAILSOTHER+ goodsid, params);
+        okHttpGet(103, Config.GOODSDETAILSOTHER + goodsid, params);
     }
 
     /**
@@ -209,17 +209,18 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
 
     /**
      * isSuccessCase == 0存在成功案例
+     *
      * @param isSuccessCase
      */
     private void initSucceed(int isSuccessCase) {
         fragmentList.add(goodsInfoFragment);
         fragmentList.add(goodsDetailFragment);
-        if (isSuccessCase == 1){
+        if (isSuccessCase == 1) {
             fragmentList.add(goodsCommentFragment);
             viewPager.setAdapter(new ItemTitlePagerAdapter(getSupportFragmentManager(),
-                        fragmentList, titlesYSucceed));
+                    fragmentList, titlesYSucceed));
             titleSucceed.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             viewPager.setAdapter(new ItemTitlePagerAdapter(getSupportFragmentManager(),
                     fragmentList, titlesNSucceed));
             titleSucceed.setVisibility(View.GONE);
@@ -234,7 +235,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
 //        } else if (goodsfragmentid == 2) {
 //            viewPager.setCurrentItem(2);
 //        } else {
-            viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(0);
 //        }
     }
 
@@ -288,25 +289,20 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                 break;
             case R.id.ll_callPhone:
                 try {
-                    TelephonyManager telephony = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-                    if (telephony.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                                ToastUtil.showToast("没有拨打电话权限");
-                            } else {
-                                Intent telIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:4009973315"));
-                                telIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(telIntent);
-                            }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE_ASK_CALL_PHONE);
                         } else {
                             Intent telIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:4009973315"));
                             telIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(telIntent);
                         }
-                    }else {
-                        ToastUtil.showToast("没有拨打电话权限");
+                    } else {
+                        Intent telIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:4009973315"));
+                        telIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(telIntent);
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     ToastUtil.showToast("没有拨打电话权限");
@@ -320,17 +316,17 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                 if ((token != null && !"".equals(token)) || (resetToken != null && !"".equals(resetToken))) {
                     startActivity(new Intent(GoodsDetailsActivity.this, ShopCarActivity.class));
                 } else {
-                    startBaseActivity(this,LoginActivity.class);
+                    startBaseActivity(this, LoginActivity.class);
                 }
                 break;
             case R.id.tv_addShopCar:
                 String trim = tvAddShopCar.getText().toString().trim();
                 Log.e("TAG_详情提交", "trimCode=" + trim);
                 if ("去登录".equals(trim)) {
-                    startBaseActivity(this,LoginActivity.class);
+                    startBaseActivity(this, LoginActivity.class);
                 } else if ("去认证".equals(trim)) {
 //                    startWebViewActivity(Config.ATTESTATION);
-                    startActivity(new Intent(this,AuthorActivity.class));
+                    showStartAuthorDialog(AuthorActivity.class);
                 } else if ("加入进货单".equals(trim)) {
                     /**
                      * productId 货品Id
@@ -348,9 +344,9 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
 
     private void addShopCarRequest() {
         boolean goodsMoney = goodsInfoFragment.getGoodsMoney();
-        if (!goodsMoney){
+        if (!goodsMoney) {
             ToastUtil.showToast("0元商品暂不可购买，请联系客服400-9973-315!");
-           return;
+            return;
         }
         int productId = goodsInfoFragment.getProductId();
         Log.e("TAG_详情加入规格", "productId=" + productId);
@@ -375,7 +371,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
             int remainder = (integerGoodsNum - smallSale) % step;
 //            Log.e("TAG_activity", "加入进货单remainder=" + remainder);
             if (remainder > 0) {
-                ToastUtil.showToast("最小起订量为" + smallSale + "件，每次加减不得少于"+step+"件，请输入正确数量！");
+                ToastUtil.showToast("最小起订量为" + smallSale + "件，每次加减不得少于" + step + "件，请输入正确数量！");
                 return;
             }
         }
@@ -601,15 +597,15 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
         Log.e("TAG_详情页", "msg=" + msg);
-       if ("carNum".equals(msg)) {
-           Integer cartNum = Integer.valueOf(event.getCarNum());
-           SharePrefHelper.getInstance(GoodsDetailsActivity.this).putSpInt("carNum", cartNum);
-           if (cartNum == 0) {
-               main_tabitem_redpoint.setVisibility(View.GONE);
-           } else {
-               main_tabitem_redpoint.setVisibility(View.VISIBLE);
-               main_tabitem_redpoint.setText(String.valueOf(cartNum));
-           }
+        if ("carNum".equals(msg)) {
+            Integer cartNum = Integer.valueOf(event.getCarNum());
+            SharePrefHelper.getInstance(GoodsDetailsActivity.this).putSpInt("carNum", cartNum);
+            if (cartNum == 0) {
+                main_tabitem_redpoint.setVisibility(View.GONE);
+            } else {
+                main_tabitem_redpoint.setVisibility(View.VISIBLE);
+                main_tabitem_redpoint.setText(String.valueOf(cartNum));
+            }
         }
     }
 
@@ -620,7 +616,8 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
 
     /**
      * loginState 0 登录状态
-     * @param isOnclick 庫存是否大於0
+     *
+     * @param isOnclick    庫存是否大於0
      * @param isBeforeSale 是否預售 , 0否1是
      */
     public void setTvAddShopCar(boolean isOnclick, boolean isBeforeSale) {

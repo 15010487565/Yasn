@@ -13,18 +13,20 @@
     android:background="@color/black_f7">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/height_40"
         android:background="@color/white"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/margin_10"
-        android:paddingTop="@dimen/margin_10"
-        android:paddingBottom="@dimen/margin_10"
-        android:paddingRight="@dimen/margin_10">
-        <ImageView
+        android:orientation="horizontal">
+        <LinearLayout
             android:id="@+id/back"
-            android:layout_width="10dp"
-            android:layout_height="18dp"
-            android:background="@mipmap/back"/>
+            android:paddingLeft="@dimen/margin_15"
+            android:layout_width="@dimen/height_50"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="18dp"
+                android:background="@mipmap/back"/>
+        </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

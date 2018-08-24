@@ -25,12 +25,15 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.adapter.ShopCarPayAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.model.ShopCarAdapterModel;
 import com.yasn.purchase.model.order.ShopcarPayModel;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.RcDecoration;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
+import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 import static com.yasn.purchase.R.id.ll_ShopCarPayHint;
 import static com.yasn.purchase.R.id.sw_ShopCarPay;
@@ -109,20 +113,6 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
         initShopCarPayModel(returnData);
     }
 
-    @Override
-    protected void afterSetContentView() {
-        super.afterSetContentView();
-//        Map<String, Object> params = new HashMap<String, Object>();
-//        if (token != null && !"".equals(token)) {
-//            params.put("access_token", token);
-//            okHttpGet(100, Config.SHOPPCARCLOSEANACCOUNT, params);
-//        } else if (resetToken != null && !"".equals(resetToken)) {
-//            params.put("access_token", resetToken);
-//            okHttpGet(100, Config.SHOPPCARCLOSEANACCOUNT, params);
-//        } else {
-//            ToastUtil.showToast("登录过期，请重新登录");
-//        }
-    }
     private int addrId;
     @Override
     public void onClick(View v) {
@@ -139,7 +129,8 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
                         InvoiceActivity.class), 10000);
                 break;
             case R.id.tv_ShopCarPayRemark:
-                showRemarkDialog();
+                String tvShopCarPayRemarkDialog = tvShopCarPayRemark.getText().toString().trim();
+                showRemarkDialog(tvShopCarPayRemarkDialog);
                 break;
             case R.id.tv_RemarkOk:
                 String etRemarkStr = etRemark.getText().toString().trim();
@@ -150,7 +141,21 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
                 }
                 showRemarkDialog.dismiss();
                 break;
-            case R.id.tv_StartPay:
+            case R.id.tv_StartPay: //结算
+                //0:经理,1:采购 ,2:财务 1,2采购+财务
+                String employeeAuth = SharePrefHelper.getInstance(this).getSpString("employeeAuth");
+               Log.e("TAG_结算","权限="+employeeAuth);
+                if (TextUtils.isEmpty(employeeAuth)){
+                    ToastUtil.showToast("您没有支付权限!");
+                    return;
+                }else {
+                    if (employeeAuth.indexOf("0")==-1){
+                        if (employeeAuth.indexOf("1")==-1){
+                            ToastUtil.showToast("您没有支付权限!");
+                            return;
+                        }
+                    }
+                }
                 Map<String, String> params = new HashMap();
                 if (token != null && !"".equals(token)) {
                     params.put("access_token", token);
@@ -199,12 +204,21 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
-            case 100://选中
-                if (returnCode == 200) {
-                    initShopCarPayModel(returnData);
-                }
-                break;
+
             case 101://结算
+                try {
+                    if (returnCode == 200){
+                        JSONObject object = new JSONObject(returnData);
+                        int orderid = object.optInt("data");
+                        Intent intent = new Intent(this, WebViewH5Activity.class);
+                        intent.putExtra("webViewUrl", Config.ORDERPAY+orderid);
+                        startActivity(intent);
+                    }else {
+                        ToastUtil.showToast(returnMsg);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }
@@ -276,7 +290,6 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
                 shopCarPayTotalModel.setShippingTotal(shippingTotal);
                 shopCarAdapterList.add(shopCarPayTotalModel);
             }
-            Log.e("TAG_支付","list="+shopCarAdapterList.toString());
             adapter.setData(shopCarAdapterList);
         }
     }
@@ -349,12 +362,16 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
     EditText etRemark;
     TextView tvRemarkCun;
     TextView tvRemarkOk;
-    private void showRemarkDialog() {
+    private void showRemarkDialog(String tvShopCarPayRemarkDialog) {
 
         LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = factor.inflate(R.layout.dialog_remark, null);
 
         etRemark = (EditText) dialogView.findViewById(R.id.et_Remark);
+        if (!TextUtils.isEmpty(tvShopCarPayRemarkDialog)){
+            etRemark.setText(tvShopCarPayRemarkDialog);
+            etRemark.setSelection(tvShopCarPayRemarkDialog.length());
+        }
         etRemark.addTextChangedListener(this);
         tvRemarkCun = (TextView) dialogView.findViewById(R.id.tv_RemarkCun);
         tvRemarkOk = (TextView) dialogView.findViewById(R.id.tv_RemarkOk);

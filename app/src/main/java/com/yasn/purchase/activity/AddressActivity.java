@@ -35,7 +35,7 @@ import java.util.TimerTask;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 
 public class AddressActivity extends SimpleTopbarActivity implements AddressAdapter.OnAddressClickListener
-        ,SwipeRefreshLayout.OnRefreshListener{
+        , SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView rcAddress;
     private AddressAdapter adapter;
@@ -45,14 +45,14 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
 
     @Override
     protected Object getTopbarTitle() {
-        return "收获地址";
+        return "收货地址";
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address);
-        addrId = getIntent().getIntExtra("addrId",0);
+        addrId = getIntent().getIntExtra("addrId", 0);
         //新增收获地址
         TextView tvAddressAdd = (TextView) findViewById(R.id.tv_AddressAdd);
         tvAddressAdd.setOnClickListener(this);
@@ -74,6 +74,9 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
     protected void afterSetContentView() {
         super.afterSetContentView();
         initSwipeRefreshLayout();
+    }
+
+    private void initAdddressData() {
         Map<String, Object> params = new HashMap<String, Object>();
         if (token != null && !"".equals(token)) {
             params.put("access_token", token);
@@ -85,6 +88,7 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
             ToastUtil.showToast("登录过期，请重新登录");
         }
     }
+
     private void initSwipeRefreshLayout() {
         mSwipeRefreshLayout = (MultiSwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -93,30 +97,32 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.orange, R.color.blue, R.color.black);
 
     }
+
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        afterSetContentView();
+    protected void onResume() {
+        super.onResume();
+        initAdddressData();
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_AddressAdd://新增
                 Intent intent = new Intent(this, AddressUpdataActivity.class);
-                intent.putExtra("type",0);
-                startActivityForResult(intent,10002);
+                intent.putExtra("type", 0);
+                startActivityForResult(intent, 10002);
                 break;
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case 10002:
-                if (resultCode == 1){//保存
-                    afterSetContentView();
+                if (resultCode == 1) {//保存
+                    initAdddressData();
                 }
                 break;
 
@@ -124,36 +130,37 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
     }
 
     private String addressSelcet;
+
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
             case 100://初始化數據
                 if (returnCode == 200) {
                     addressModels = JSON.parseArray(returnData, AddressModel.class);
-                    adapter.setData(addressModels,addrId);
+                    adapter.setData(addressModels, addrId);
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
                 break;
             case 101: //本次收货地址
-                if (returnCode == 200){
+                if (returnCode == 200) {
                     Intent intent = new Intent();
-                    intent.putExtra("addressId",addrIdSelcet);
+                    intent.putExtra("addressId", addrIdSelcet);
                     intent.putExtra("address", this.addressSelcet); //将计算的值回传回去
                     intent.putExtra("addressName", this.addressName); //将计算的值回传回去
                     intent.putExtra("addressMobile", this.addressMobile); //将计算的值回传回去
-                    setResult(1,intent);
+                    setResult(1, intent);
                     finish();
                 }
                 break;
             case 102: //默认收货地址
-                if (returnCode == 200){
-                    afterSetContentView();
+                if (returnCode == 200) {
+                    initAdddressData();
                 }
                 ToastUtil.showToast(returnMsg);
                 break;
             case 103: //删除
-                if (returnCode == 200){
-                    afterSetContentView();
+                if (returnCode == 200) {
+                    initAdddressData();
                 }
                 ToastUtil.showToast(returnMsg);
                 break;
@@ -180,81 +187,101 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
     public void onFinishResult() {
 
     }
+
     //本次收货地址
     private int addrIdSelcet;
     private String addressName;
     private String addressMobile;
+
     @Override
     public void OnItemClick(View view, int position) {
-        AddressModel addressModel = addressModels.get(position);
-        addrIdSelcet = addressModel.getAddrId();
-        //姓名
-        addressName = addressModel.getName();
-        //电话
-        addressMobile = addressModel.getMobile();
-        //地址
-        String province = addressModel.getProvince();
-        String city = addressModel.getCity();
-        String region = addressModel.getRegion();
-        String addr = addressModel.getAddr();
-        if (TextUtils.isEmpty(addr)){
-            addressSelcet = province+"-"+city+"-"+region;
-        }else {
-            addressSelcet = province+"-"+city+"-"+region+"-"+addr;
-        }
+        if (addrId != 0) {
+            AddressModel addressModel = addressModels.get(position);
+            addrIdSelcet = addressModel.getAddrId();
+            //姓名
+            addressName = addressModel.getName();
+            //电话
+            addressMobile = addressModel.getMobile();
+            //地址
+            String province = addressModel.getProvince();
+            String city = addressModel.getCity();
+            String region = addressModel.getRegion();
+            String addr = addressModel.getAddr();
+            if (TextUtils.isEmpty(addr)) {
+                addressSelcet = province + "-" + city + "-" + region;
+            } else {
+                addressSelcet = province + "-" + city + "-" + region + "-" + addr;
+            }
 
-        Map<String, String> params = new HashMap<String, String>();
-        if (token != null && !"".equals(token)) {
-            params.put("access_token", token);
-            okHttpPostHeader(101, Config.ADDRESSNOW+addrId, params);
-        } else if (resetToken != null && !"".equals(resetToken)) {
-            params.put("access_token", resetToken);
-            okHttpPostHeader(101, Config.ADDRESSNOW+addrId, params);
-        } else {
-            ToastUtil.showToast("登录过期，请重新登录");
+            Map<String, String> params = new HashMap<String, String>();
+            if (token != null && !"".equals(token)) {
+                params.put("access_token", token);
+                okHttpPostHeader(101, Config.ADDRESSNOW + addrIdSelcet, params);
+            } else if (resetToken != null && !"".equals(resetToken)) {
+                params.put("access_token", resetToken);
+                okHttpPostHeader(101, Config.ADDRESSNOW + addrIdSelcet, params);
+            } else {
+                ToastUtil.showToast("登录过期，请重新登录");
+            }
         }
     }
+
     //默认收货地址
     @Override
     public void OnItemSettingAddressClick(View view, int position) {
+
         AddressModel addressModel = addressModels.get(position);
-        int addrId = addressModel.getAddrId();
-        Map<String, Object> params = new HashMap<String, Object>();
-        if (token != null && !"".equals(token)) {
-            params.put("access_token", token);
-            okHttpGet(102, Config.ADDRESSDEFAULT+addrId, params);
-        } else if (resetToken != null && !"".equals(resetToken)) {
-            params.put("access_token", resetToken);
-            okHttpGet(102, Config.ADDRESSDEFAULT+addrId, params);
-        } else {
-            ToastUtil.showToast("登录过期，请重新登录");
+        int defAddr = addressModel.getDefAddr();
+        if (defAddr != 1){
+            int addrId = addressModel.getAddrId();
+            Map<String, Object> params = new HashMap<String, Object>();
+            if (token != null && !"".equals(token)) {
+                params.put("access_token", token);
+                okHttpGet(102, Config.ADDRESSDEFAULT + addrId, params);
+            } else if (resetToken != null && !"".equals(resetToken)) {
+                params.put("access_token", resetToken);
+                okHttpGet(102, Config.ADDRESSDEFAULT + addrId, params);
+            } else {
+                ToastUtil.showToast("登录过期，请重新登录");
+            }
+        }else {
+            ToastUtil.showToast("已设为默认地址，无需重复设置！");
         }
     }
+
     //编辑
     @Override
     public void OnItemUpdataAddressClick(View view, int position) {
         AddressModel addressModel = addressModels.get(position);
         Intent intent = new Intent(this, AddressUpdataActivity.class);
-        intent.putExtra("type",1);
+        intent.putExtra("type", 1);
         int addrId = addressModel.getAddrId();
-        intent.putExtra("addrId",addrId);
+        intent.putExtra("addrId", addrId);
         String name = addressModel.getName();
-        intent.putExtra("name",name);
+        intent.putExtra("name", name);
         String mobile = addressModel.getMobile();
-        intent.putExtra("mobile",mobile);
+        intent.putExtra("mobile", mobile);
         //地址
         String province = addressModel.getProvince();
+        int provinceId = addressModel.getProvinceId();
         String city = addressModel.getCity();
+        int cityId = addressModel.getCityId();
         String region = addressModel.getRegion();
-        intent.putExtra("region",province+"-"+city+"-"+region);
+        int regionId = addressModel.getRegionId();
+        intent.putExtra("province", province);
+        intent.putExtra("city", city);
+        intent.putExtra("region", region);
+        intent.putExtra("provinceId", String.valueOf(provinceId));
+        intent.putExtra("cityId", String.valueOf(cityId));
+        intent.putExtra("regionId", String.valueOf(regionId));
 
         String addr = addressModel.getAddr();
-        intent.putExtra("address",addr);
+        intent.putExtra("address", addr);
         //默认选中0或1  1：默认选中
         int defAddr = addressModel.getDefAddr();
-        intent.putExtra("defAddr",defAddr);
+        intent.putExtra("defAddr", defAddr);
 
-        startActivityForResult(intent,10002);
+        startActivityForResult(intent, 10002);
     }
 
     //删除
@@ -264,6 +291,7 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
         int addrId = addressModel.getAddrId();
         showDeleteDialog(addrId);
     }
+
     protected AlertDialog deleteNotifyDialog;
 
     private void showDeleteDialog(final int addrId) {
@@ -280,10 +308,10 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
                 Map<String, Object> params = new HashMap<String, Object>();
                 if (token != null && !"".equals(token)) {
 //            params.put("access_token", token);
-                    okHttpGet(103,  Config.ADDRESSNOWDELETE+addrId, params);
+                    okHttpGet(103, Config.ADDRESSNOWDELETE + addrId, params);
                 } else if (resetToken != null && !"".equals(resetToken)) {
 //            params.put("access_token", resetToken);
-                    okHttpGet(103, Config.ADDRESSNOWDELETE+addrId, params);
+                    okHttpGet(103, Config.ADDRESSNOWDELETE + addrId, params);
                 } else {
                     ToastUtil.showToast("登录过期，请重新登录");
                 }
@@ -310,7 +338,7 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
 
     @Override
     public void onRefresh() {
-        afterSetContentView();
+        initAdddressData();
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -321,6 +349,7 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
         };
         new Timer().schedule(timerTask, 2000);
     }
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

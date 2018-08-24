@@ -55,7 +55,7 @@ public class IntegralDetailFragment extends OrderFragment
         RelativeLayout title = (RelativeLayout) view.findViewById(R.id.topbat_parent);
         title.setVisibility(View.GONE);
 
-        ivError.setBackgroundResource(R.mipmap.integral);
+        ivError.setBackgroundResource(R.mipmap.jifen_black);
         tvErrorHint.setText("未搜索到积分明细！");
         initSwipeRefreshLayout(view);
         initRecyclerView(view);

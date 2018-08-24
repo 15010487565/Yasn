@@ -24,6 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_CONTENT;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_FOOTER;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_HEADER;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_PAY;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_SHOPNAME;
+
 /**
  * Created by Administrator on 2016/11/9.
  */
@@ -33,7 +39,6 @@ public class OrderSonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private List<Object> list;
     private List<Object> addList;
-    private static final int ITEM_HEADER = 0,ITEM_SHOPNAME = 1, ITEM_CONTENT = 2, ITEM_PAY = 3, ITEM_FOOTER = 4;
     private LayoutInflater inflater;
     private LinearLayoutManager linearLayoutManager;
     private Map viewHolderMap = new HashMap<>();

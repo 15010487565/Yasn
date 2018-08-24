@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
@@ -51,14 +53,14 @@ public class OftenShopActivity extends SimpleTopbarActivity
     private RecyclerView rcOftenShop, rcOftenShopNull;
     private List<HomeMoreModel> myDataset;
     private static Class<?> rightFuncArray[] = {OftenShopFunc.class};
-    private LinearLayout shoplistnull;
+    private LinearLayout llShoplistnull;
     private int pagNo = 1;
     private MultiSwipeRefreshLayout swipe_layout;
     //推荐商品集合
     List<HomeRecyModel> subjectList;
     //常够清单集合
     List<OftenModel.DataBean.RegularPurcaseBean> regularPurcase;
-
+    private TextView tvOftenShopRecommend;
     @Override
     protected Class<?>[] getTopbarRightFuncArray() {
         return rightFuncArray;
@@ -80,17 +82,20 @@ public class OftenShopActivity extends SimpleTopbarActivity
 
     //获得常购清单
     private void initOftenRequest() {
-        Map<String, Object> params = new HashMap<String, Object>();
-        if (token != null && !"".equals(token)) {
-            params.put("access_token", token);
-        } else if (resetToken != null && !"".equals(resetToken)) {
-            params.put("access_token", resetToken);
-        }
-        params.put("pageNo", String.valueOf(pagNo));
-        params.put("pageSize", "10");
-        okHttpGet(100, Config.SHOPLISTGET , params);
+        if (TextUtils.isEmpty(token)&&TextUtils.isEmpty(resetToken)){
+            initGetMoreRequest();
+        }else {
+            Map<String, Object> params = new HashMap<String, Object>();
+            if (token != null && !"".equals(token)) {
+                params.put("access_token", token);
+            } else if (resetToken != null && !"".equals(resetToken)) {
+                params.put("access_token", resetToken);
+            }
+            params.put("pageNo", String.valueOf(pagNo));
+            params.put("pageSize", "10");
+            okHttpGet(100, Config.SHOPLISTGET , params);
 //        okHttpGet(100, Config.SHOPLIST + "/" + pagNo, params);
-
+        }
     }
 
     //获得推荐商品，更多接口默认获取第一楼层
@@ -115,9 +120,11 @@ public class OftenShopActivity extends SimpleTopbarActivity
     private void initRecyclerView() {
         rcOftenShopNull = (RecyclerView) findViewById(R.id.rc_OftenShopNull);
         //空布局
-        shoplistnull = (LinearLayout) findViewById(R.id.ll_OftenShopNull);
-        shoplistnull.setOnClickListener(this);
+        llShoplistnull = (LinearLayout) findViewById(R.id.ll_OftenShopNull);
+        llShoplistnull.setVisibility(View.GONE);
+        tvOftenShopRecommend = (TextView) findViewById(R.id.tv_OftenShopRecommend);
         rcOftenShop = (RecyclerView) findViewById(R.id.rc_OftenShop);
+        rcOftenShop.setVisibility(View.VISIBLE);
         /**
          * 创建空Adapter
          * 高毛利商品
@@ -160,7 +167,6 @@ public class OftenShopActivity extends SimpleTopbarActivity
                 int visibleItemCount = mLinearLayoutManager.getChildCount();
                 //当前RecyclerView的所有子项个数
                 int totalItemCount = mLinearLayoutManager.getItemCount();
-                Log.e("TAG_底部Scrolled","isBottom="+isBottom+"visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
                 if (isBottom) {
                     swipe_layout.setBottom(false);
                 } else {
@@ -237,8 +243,6 @@ public class OftenShopActivity extends SimpleTopbarActivity
         intent.putExtra("subjectId", String.valueOf(subject_id));
         intent.putExtra("title", title);
         startActivity(intent);
-        Log.e("TAG_常够清单", "subjectId=" + subject_id);
-        Log.e("TAG_常够清单", "title=" + title);
     }
 
     @Override
@@ -250,47 +254,68 @@ public class OftenShopActivity extends SimpleTopbarActivity
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
             case 100:
-                OftenModel oftenModel = JSON.parseObject(returnData, OftenModel.class);
-                OftenModel.DataBean data = oftenModel.getData();
-                if (data != null) {
-                    regularPurcase = data.getRegularPurcase();
-                    if ((regularPurcase == null || regularPurcase.size() == 0) && pagNo == 1) {
+                if (returnData == null || "".equals(returnData)){
+                    if (pagNo == 1) {
                         initGetMoreRequest();
                         rcOftenShop.setVisibility(View.GONE);
-                        rcOftenShopNull.setVisibility(View.VISIBLE);
+                        llShoplistnull.setVisibility(View.VISIBLE);
                         refreshRightFunctionZone(false);
-                    } else {
-                        rcOftenShop.setVisibility(View.VISIBLE);
-                        rcOftenShopNull.setVisibility(View.GONE);
-                        refreshRightFunctionZone(true);
-                        if (pagNo > 1) {
-                            if (regularPurcase == null || regularPurcase.size() == 0) {
-                                adapter.upFootText();
-                                ToastUtil.showToast("商品已全部显示！");
-                                swipe_layout.setBottom(false);
-                            }else {
-                                adapter.addData(regularPurcase);
-                            }
-                        } else {
-                            if (regularPurcase == null || regularPurcase.size() == 0) {
-//                                adapter.upFootText();
-                                ToastUtil.showToast("未搜索到商品！");
-                            } else {
-                                adapter.setData(regularPurcase);
-                            }
-                        }
-                        swipe_layout.setLoading(false);
-                        swipe_layout.setRefreshing(false);
                     }
+                }else {
+                    OftenModel oftenModel = JSON.parseObject(returnData, OftenModel.class);
+                    OftenModel.DataBean data = oftenModel.getData();
+                    if (data != null) {
+                        regularPurcase = data.getRegularPurcase();
+                        if ((regularPurcase == null || regularPurcase.size() == 0) && pagNo == 1) {
+                            initGetMoreRequest();
+                            rcOftenShop.setVisibility(View.GONE);
+                            llShoplistnull.setVisibility(View.VISIBLE);
+                            refreshRightFunctionZone(false);
+                        } else {
+                            rcOftenShop.setVisibility(View.VISIBLE);
+                            llShoplistnull.setVisibility(View.GONE);
+                            refreshRightFunctionZone(true);
+                            if (pagNo > 1) {
+                                if (regularPurcase == null || regularPurcase.size() == 0) {
+                                    adapter.upFootText();
+                                    ToastUtil.showToast("常够商品已全部显示！");
+                                    swipe_layout.setBottom(false);
+                                }else {
+                                    adapter.addData(regularPurcase);
+                                }
+                            } else {
+                                if (regularPurcase == null || regularPurcase.size() == 0) {
+//                                adapter.upFootText();
+                                    ToastUtil.showToast("未搜索到常够商品！");
+                                } else {
+                                    adapter.setData(regularPurcase);
+                                }
+                            }
+                            swipe_layout.setLoading(false);
+                            swipe_layout.setRefreshing(false);
+                        }
 
+                    }else {
+                        if (pagNo == 1) {
+                            initGetMoreRequest();
+                            rcOftenShop.setVisibility(View.GONE);
+                            llShoplistnull.setVisibility(View.VISIBLE);
+                            refreshRightFunctionZone(false);
+                        }else {
+                            adapter.upFootText();
+                            ToastUtil.showToast("常够商品已全部显示！");
+                            swipe_layout.setBottom(false);
+                        }
+                    }
                 }
                 break;
 
             case 101:
                 CollectNullModel collectNullModel = JSON.parseObject(returnData, CollectNullModel.class);
                 List<CollectNullModel.SubjectBean> subject = collectNullModel.getSubject();
-
                 initNullCollect(subject);
+                rcOftenShop.setVisibility(View.GONE);
+                llShoplistnull.setVisibility(View.VISIBLE);
                 refreshRightFunctionZone(false);
                 swipe_layout.setLoading(false);
                 swipe_layout.setRefreshing(false);
@@ -322,7 +347,10 @@ public class OftenShopActivity extends SimpleTopbarActivity
             HomeRecyModel subjectModel = new HomeRecyModel();
             subjectModel.setItemType(1);
             subjectModel.setText(title);
-
+            if (i==0){
+                String collectRecommend = String.format("我们为您推荐了%s。赶快去采购吧", title);
+                tvOftenShopRecommend.setText(collectRecommend);
+            }
             int subject_id = subjectBean.getSubject_id();
             subjectModel.setSubject_id(subject_id);
             subjectList.add(subjectModel);
@@ -392,7 +420,8 @@ public class OftenShopActivity extends SimpleTopbarActivity
                 subjectList.add(homeRecy);
             }
         }
-        adapternull.setData(subjectList, "0");
+        String loginState = SharePrefHelper.getInstance(this).getSpString("loginState");
+        adapternull.setData(subjectList, loginState);
     }
 
     @Override

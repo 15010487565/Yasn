@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 /**
@@ -167,7 +168,7 @@ public class HomeMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else {
             holderOneItem.presell.setVisibility(View.GONE);
         }
-                Log.e("TAG_更多","sb="+sb.toString());
+        Log.e("TAG_更多","sb="+sb.toString());
         SpannableStringBuilder span = new SpannableStringBuilder(sb + contentBean.getGoods_name());
         span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.white)), 0, goneNum,
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -327,7 +328,7 @@ class ViewHolderItem extends RecyclerView.ViewHolder implements View.OnClickList
                     ((HomeMoreActivity)context).startBaseActivity(context,LoginActivity.class);
                 } else if ("认证看价格".equals(trim)) {
 //                    startWebViewActivity(Config.ATTESTATION);
-                    context.startActivity(new Intent(context,AuthorActivity.class));
+                    ((SimpleTopbarActivity)context).showStartAuthorDialog(AuthorActivity.class);
                 }
                 break;
         }

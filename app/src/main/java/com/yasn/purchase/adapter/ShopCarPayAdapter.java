@@ -16,6 +16,10 @@ import com.yasn.purchase.model.ShopCarAdapterModel;
 
 import java.util.List;
 
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_ITEMTOTAL;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_ONE;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_TWO;
+
 /**
  * Created by gs on 2017/12/29.
  */
@@ -25,9 +29,6 @@ public class ShopCarPayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context context;
     private List<ShopCarAdapterModel> list;
     private OnShopCarClickListener onItemClickListener;
-    private static final int TYPE_ITEMTITLE = 1;
-    private static final int TYPE_ITEMLIST = 2;
-    private static final int TYPE_ITEMTOTAL = 3;
     private String place = " ";
     private int placeNum = 3;
 
@@ -51,9 +52,9 @@ public class ShopCarPayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         ShopCarAdapterModel adapterModel = list.get(position);
         int itmeType = adapterModel.getItmeType();
         if (itmeType == 1) {
-            return TYPE_ITEMTITLE;
+            return TYPE_ONE;
         } else if (itmeType == 2){
-            return TYPE_ITEMLIST;
+            return TYPE_TWO;
         }else {
             return TYPE_ITEMTOTAL;
         }
@@ -65,11 +66,11 @@ public class ShopCarPayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         RecyclerView.ViewHolder holder = null;
 
         switch (viewType) {
-            case TYPE_ITEMTITLE:
+            case TYPE_ONE:
                 view = LayoutInflater.from(context).inflate(R.layout.recycleritem_shopcarpaytitle, parent, false);
                 holder = new TitleViewHolder(view);
                 break;
-            case TYPE_ITEMLIST:
+            case TYPE_TWO:
                 view = LayoutInflater.from(context).inflate(R.layout.recycleritem_shopcarpaylist, parent, false);
                 holder = new ListViewHolder(view);
                 break;
@@ -87,12 +88,12 @@ public class ShopCarPayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         int itemViewType = getItemViewType(position);
         ShopCarAdapterModel shopCarAdapterModel = list.get(position);
         switch (itemViewType) {
-            case TYPE_ITEMTITLE:
+            case TYPE_ONE:
                 TitleViewHolder titleViewHolder = (TitleViewHolder) holder;
                 String storeName = shopCarAdapterModel.getStoreName();
                 titleViewHolder.tvStoreName.setText(storeName == null ? "" : storeName);
                 break;
-            case TYPE_ITEMLIST:
+            case TYPE_TWO:
                 ListViewHolder listViewHolder = (ListViewHolder) holder;
 
                 String name = shopCarAdapterModel.getName();

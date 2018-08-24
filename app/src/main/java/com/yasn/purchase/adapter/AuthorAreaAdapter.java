@@ -10,6 +10,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.AuthorActivity;
 
 /**
  * @author: xp
@@ -70,6 +71,7 @@ public class AuthorAreaAdapter extends BaseAdapter implements SpinnerAdapter{
         }
         Log.e("TAG_getDropDownView"+position,getItem(position).toString());
         viewHolder.tvdropdowview.setText(getItem(position).toString());
+        ((AuthorActivity)context).isShouldHideInput();
         return convertView;
     }
     private class ViewHolder {

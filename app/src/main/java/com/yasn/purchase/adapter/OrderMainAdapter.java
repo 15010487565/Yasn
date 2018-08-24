@@ -3,7 +3,6 @@ package com.yasn.purchase.adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_CONTENT;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_FOOTER;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_HEADER;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_PAY;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_SHOPNAME;
+
 /**
  * Created by Administrator on 2016/11/9.
  */
@@ -35,7 +40,6 @@ public class OrderMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context context;
     private List<Object> list;
     private List<Object> addList;
-    private static final int ITEM_HEADER = 0, ITEM_SHOPNAME = 1, ITEM_CONTENT = 2, ITEM_PAY = 3, ITEM_FOOTER = 4;
     private LayoutInflater inflater;
     private LinearLayoutManager linearLayoutManager;
     private Map viewHolderMap = new HashMap<>();
@@ -160,7 +164,6 @@ public class OrderMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 //                }
                 //立即支付
                 boolean needPay = payInfoModel.isNeedPay();
-                Log.e("TAG_支付adapter","needPay="+needPay);
                 if (needPay){
                     payHolder.llPay.setVisibility(View.VISIBLE);
                     payHolder.tvPayMoney.setVisibility(View.VISIBLE);

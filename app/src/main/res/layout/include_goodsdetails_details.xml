@@ -44,7 +44,7 @@
                 android:background="@mipmap/callphone_orange"/>
             <TextView
                 style="@style/include_goodsdetails_details_text"
-                android:text="@string/callphone"/>
+                android:text="@string/phoneconsult"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_service"

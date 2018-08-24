@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_simple_topbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/height_15"
+                android:text="雅森车品宝创客协议"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/textsize_16" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:text="@string/mareragreememt"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_12" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/height_15"
+                android:text="创客的分级与提点比例"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_14"
+                android:textStyle="bold" />
+
+            <include layout="@layout/include_maker_agreement_table1" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/height_15"
+                android:text="创创客的升级（须同时符合业绩条件及其他条件）"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_14"
+                android:textStyle="bold" />
+
+            <include layout="@layout/include_maker_agreement_table2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/height_15"
+                android:text="创客的降级(业绩条件或其他条件任一情况发生的)"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_14"
+                android:textStyle="bold" />
+
+            <include layout="@layout/include_maker_agreement_table3" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/height_15"
+                android:text="@string/mareragreememt1"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_12" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:paddingTop="@dimen/margin_15"
+                android:paddingBottom="@dimen/margin_10"
+                android:text="创客的解约"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:text="@string/mareragreememt2"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_12" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:paddingTop="@dimen/margin_15"
+                android:paddingBottom="@dimen/margin_10"
+                android:text="有效客户的考核标准"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:text="@string/mareragreememt3"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_12" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:paddingTop="@dimen/margin_15"
+                android:paddingBottom="@dimen/margin_10"
+                android:text="销售佣金的支付"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:text="@string/mareragreememt4"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_12" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:paddingTop="@dimen/margin_15"
+                android:paddingBottom="@dimen/margin_10"
+                android:text="声明"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:text="@string/mareragreememt5"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_12" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:paddingTop="@dimen/margin_15"
+                android:paddingBottom="@dimen/margin_10"
+                android:text="争议解决"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:text="@string/mareragreememt6"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_12" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:paddingTop="@dimen/margin_15"
+                android:paddingBottom="@dimen/margin_10"
+                android:text="解释"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_14"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/height_15"
+                android:paddingRight="@dimen/margin_15"
+                android:text="@string/mareragreememt7"
+                android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_12" />
+            <TextView
+                android:id="@+id/tv_MakerAgreement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/height_15"
+                android:layout_marginRight="@dimen/margin_15"
+                android:padding="@dimen/margin_10"
+                android:gravity="center"
+                android:background="@drawable/shape_orange5"
+                android:text="同意协议"
+                android:layout_marginBottom="@dimen/height_60"
+                android:layout_marginTop="@dimen/height_60"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_16" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

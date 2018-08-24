@@ -31,12 +31,14 @@ import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 public class InvoiceSpecialActivity extends SimpleTopbarActivity {
 
     private TextView tvInvoicespTitle, tvInvoicespNum, tvInvoicespAddress, tvInvoicespMobile, tvInvoicespBank, tvInvoicespBankNum;
-    private TextView tvInvoiceSpecial;
+    private TextView tvInvoiceSpecial;//保存按钮
     private LinearLayout llAudit, llAuditing;
 
     private TextView tvAuditTitleleft, tvAuditNumleft, tvAuditAddressleft, tvAuditMobileleft, tvAuditBankleft, tvAuditBankNumleft;
-    private EditText tvrightAuditTitle, tvrightAuditNum, tvrightAuditAddress, tvrightAuditMobile, tvrightAuditBank, tvrightAuditBankNum;
-    private TextView tvInvoicespAuditing;//审核状态
+    private EditText etrightAuditTitle, etrightAuditNum, etrightAuditAddress, etrightAuditMobile
+            , etrightAuditBank, etrightAuditBankNum;
+    private TextView tvInvoicespAuditing //审核状态
+            , tvInvoiceFailure;//提交失败错误提示
     @Override
     protected Object getTopbarTitle() {
         return R.string.zhuanpiao;
@@ -55,7 +57,7 @@ public class InvoiceSpecialActivity extends SimpleTopbarActivity {
             ToastUtil.showToast("登录过期，请重新登录");
             return;
         }
-        okHttpGet(100, Config.GETINVOICE + "3", params);
+        okHttpGet(100, Config.SHOPGETINVOICE , params);
     }
 
     @Override
@@ -89,12 +91,14 @@ public class InvoiceSpecialActivity extends SimpleTopbarActivity {
         tvAuditBankNumleft = (TextView) findViewById(R.id.tv_InvoicespauditBankNum_left);
         initLeftView(tvAuditBankNumleft);
 
-        tvrightAuditTitle = (EditText) findViewById(R.id.tv_InvoicespAuditTitle_right);
-        tvrightAuditNum = (EditText) findViewById(R.id.tv_InvoicespAuditNum_right);
-        tvrightAuditAddress = (EditText) findViewById(R.id.tv_InvoicespAuditAddress_right);
-        tvrightAuditMobile = (EditText) findViewById(R.id.tv_InvoicespAuditMobile_right);
-        tvrightAuditBank = (EditText) findViewById(R.id.tv_InvoicespAuditBank_right);
-        tvrightAuditBankNum = (EditText) findViewById(R.id.tv_InvoicespauditBankNum_right);
+        etrightAuditTitle = (EditText) findViewById(R.id.tv_InvoicespAuditTitle_right);
+        etrightAuditNum = (EditText) findViewById(R.id.tv_InvoicespAuditNum_right);
+        etrightAuditAddress = (EditText) findViewById(R.id.tv_InvoicespAuditAddress_right);
+        etrightAuditMobile = (EditText) findViewById(R.id.tv_InvoicespAuditMobile_right);
+        etrightAuditBank = (EditText) findViewById(R.id.tv_InvoicespAuditBank_right);
+        etrightAuditBankNum = (EditText) findViewById(R.id.tv_InvoicespauditBankNum_right);
+        //提交失败错误提示
+        tvInvoiceFailure = (TextView) findViewById(R.id.tv_InvoiceFailure);
     }
 
     private void initLeftView(TextView textView) {
@@ -122,8 +126,18 @@ public class InvoiceSpecialActivity extends SimpleTopbarActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.tv_InvoiceSpecial:
+                String trim = tvInvoiceSpecial.getText().toString().trim();
+                if ("修改".equals(trim)){
+                    llAudit.setVisibility(View.VISIBLE);
+                    tvInvoicespAuditing.setVisibility(View.GONE);
+                    llAuditing.setVisibility(View.GONE);
+                    tvInvoiceSpecial.setVisibility(View.VISIBLE);
+                    tvInvoiceSpecial.setText("保存");
+                    return;
+                }else if ("保存".equals(trim)){
 
-                Map<String, String> params = new HashMap();
+                }
+                Map<String, Object> params = new HashMap();
                 if (token != null && !"".equals(token)) {
                     params.put("access_token", token);
                 } else if (resetToken != null && !"".equals(resetToken)) {
@@ -132,42 +146,42 @@ public class InvoiceSpecialActivity extends SimpleTopbarActivity {
                     ToastUtil.showToast("登录过期，请重新登录");
                     return;
                 }
-                String AuditTitleStr = tvrightAuditTitle.getText().toString().trim();
+                String AuditTitleStr = etrightAuditTitle.getText().toString().trim();
                 if (TextUtils.isEmpty(AuditTitleStr)) {
                     ToastUtil.showToast("单位名称不能为空！");
                     return;
                 } else {
                     params.put("title", AuditTitleStr);
                 }
-                String AuditNumStr = tvrightAuditNum.getText().toString().trim();
+                String AuditNumStr = etrightAuditNum.getText().toString().trim();
                 if (TextUtils.isEmpty(AuditNumStr)) {
                     ToastUtil.showToast("纳税识别号不能为空！");
                     return;
                 } else {
                     params.put("invoiceNum", AuditNumStr);
                 }
-                String AuditAddressStr = tvrightAuditAddress.getText().toString().trim();
+                String AuditAddressStr = etrightAuditAddress.getText().toString().trim();
                 if (TextUtils.isEmpty(AuditAddressStr)) {
                     ToastUtil.showToast("注册地址不能为空！");
                     return;
                 } else {
                     params.put("invoiceAddress", AuditAddressStr);
                 }
-                String AuditMobileStr = tvrightAuditMobile.getText().toString().trim();
+                String AuditMobileStr = etrightAuditMobile.getText().toString().trim();
                 if (TextUtils.isEmpty(AuditMobileStr)) {
                     ToastUtil.showToast("注册电话不能为空！");
                     return;
                 } else {
                     params.put("invoiceMobile", AuditMobileStr);
                 }
-                String AuditBankStr = tvrightAuditBank.getText().toString().trim();
+                String AuditBankStr = etrightAuditBank.getText().toString().trim();
                 if (TextUtils.isEmpty(AuditBankStr)) {
                     ToastUtil.showToast("开户银不能为空！");
                     return;
                 } else {
                     params.put("invoiceBank", AuditBankStr);
                 }
-                String AuditBankNumStr = tvrightAuditBankNum.getText().toString().trim();
+                String AuditBankNumStr = etrightAuditBankNum.getText().toString().trim();
                 if (TextUtils.isEmpty(AuditBankNumStr)) {
                     ToastUtil.showToast("银⾏账号不能为空！");
                     return;
@@ -175,8 +189,7 @@ public class InvoiceSpecialActivity extends SimpleTopbarActivity {
                     params.put("invoiceBankNum", AuditBankNumStr);
                 }
 
-                params.put("invoiceType", "3");
-                okHttpPost(101, Config.SAVERECEIPT, params);
+                okHttpGet(101, Config.SHOPINVOICE, params);
 
                 break;
         }
@@ -186,8 +199,7 @@ public class InvoiceSpecialActivity extends SimpleTopbarActivity {
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
             case 100:
-                if (returnCode == 200) {
-
+                try {
                     InvoiceModel invoiceModel = JSON.parseObject(returnData, InvoiceModel.class);
                     InvoiceModel.DataBean data = invoiceModel.getData();
                     if (data == null) {
@@ -228,6 +240,51 @@ public class InvoiceSpecialActivity extends SimpleTopbarActivity {
                             if (!TextUtils.isEmpty(invoiceBankNum)) {
                                 tvInvoicespBankNum.setText(invoiceBankNum);
                             }
+                        } else if (invoiceStatus == 1){//1通过,
+                            llAudit.setVisibility(View.GONE);
+                            tvInvoicespAuditing.setVisibility(View.VISIBLE);
+                            tvInvoicespAuditing.setText("审核通过");
+                            llAuditing.setVisibility(View.VISIBLE);
+                            tvInvoiceSpecial.setVisibility(View.VISIBLE);
+
+                            String title = data.getTitle();
+                            if (!TextUtils.isEmpty(title)) {
+                                tvInvoicespTitle.setText(title);
+                            }
+                            String invoiceNum = data.getInvoiceNum();
+                            if (!TextUtils.isEmpty(invoiceNum)) {
+                                tvInvoicespNum.setText(invoiceNum);
+                            }
+                            String invoiceAddress = data.getInvoiceAddress();
+                            if (!TextUtils.isEmpty(invoiceAddress)) {
+                                tvInvoicespAddress.setText(invoiceAddress);
+                            }
+                            String invoiceMobile = data.getInvoiceMobile();
+                            if (!TextUtils.isEmpty(invoiceMobile)) {
+                                tvInvoicespMobile.setText(invoiceMobile);
+                            }
+                            String invoiceBank = data.getInvoiceBank();
+                            if (!TextUtils.isEmpty(invoiceBank)) {
+                                tvInvoicespBank.setText(invoiceBank);
+                            }
+                            String invoiceBankNum = data.getInvoiceBankNum();
+                            if (!TextUtils.isEmpty(invoiceBankNum)) {
+                                tvInvoicespBankNum.setText(invoiceBankNum);
+                            }
+                            tvInvoiceSpecial.setText("修改");
+                            updataInvoice(data);
+                        } else if (invoiceStatus == 2){// 2拒绝
+                            tvInvoiceFailure.setVisibility(View.VISIBLE);
+                            String noApproval = data.getNoApproval();
+                            tvInvoiceFailure.setText(TextUtils.isEmpty(noApproval)?"":noApproval);
+                            llAudit.setVisibility(View.VISIBLE);
+                            tvInvoicespAuditing.setVisibility(View.VISIBLE);
+                            tvInvoicespAuditing.setText("审核未通过");
+                            tvInvoicespAuditing.setTextColor(ContextCompat.getColor(this,R.color.red));
+                            llAuditing.setVisibility(View.GONE);
+                            tvInvoiceSpecial.setVisibility(View.VISIBLE);
+
+                            updataInvoice(data);
                         } else {
                             llAudit.setVisibility(View.VISIBLE);
                             tvInvoicespAuditing.setVisibility(View.GONE);
@@ -235,14 +292,46 @@ public class InvoiceSpecialActivity extends SimpleTopbarActivity {
                             tvInvoiceSpecial.setVisibility(View.VISIBLE);
                         }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ToastUtil.showToast(returnMsg);
                 }
+
                 break;
             case 101:
                 if (returnCode == 200) {
                     finish();
+                }else {
+                    ToastUtil.showToast(returnMsg);
                 }
-                ToastUtil.showToast(returnMsg);
                 break;
+        }
+    }
+
+    private void updataInvoice(InvoiceModel.DataBean data) {
+        String title = data.getTitle();
+        if (!TextUtils.isEmpty(title)) {
+            etrightAuditTitle.setText(title);
+        }
+        String invoiceNum = data.getInvoiceNum();
+        if (!TextUtils.isEmpty(invoiceNum)) {
+            etrightAuditNum.setText(invoiceNum);
+        }
+        String invoiceAddress = data.getInvoiceAddress();
+        if (!TextUtils.isEmpty(invoiceAddress)) {
+            etrightAuditAddress.setText(invoiceAddress);
+        }
+        String invoiceMobile = data.getInvoiceMobile();
+        if (!TextUtils.isEmpty(invoiceMobile)) {
+            etrightAuditMobile.setText(invoiceMobile);
+        }
+        String invoiceBank = data.getInvoiceBank();
+        if (!TextUtils.isEmpty(invoiceBank)) {
+            etrightAuditBank.setText(invoiceBank);
+        }
+        String invoiceBankNum = data.getInvoiceBankNum();
+        if (!TextUtils.isEmpty(invoiceBankNum)) {
+            etrightAuditBankNum.setText(invoiceBankNum);
         }
     }
 

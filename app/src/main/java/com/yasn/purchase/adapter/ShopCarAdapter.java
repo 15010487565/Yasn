@@ -31,6 +31,9 @@ import java.util.List;
 
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_ONE;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_TWO;
+
 /**
  * Created by gs on 2017/12/29.
  */
@@ -40,8 +43,6 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private Context context;
     private List<ShopCarAdapterModel> list;
     private OnShopCarClickListener onItemClickListener;
-    private static final int TYPE_ITEMTITLE = 1;
-    private static final int TYPE_ITEMLIST = 2;
     private String loginState;
     private String place = " ";
     private int placeNum = 3;
@@ -67,9 +68,9 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ShopCarAdapterModel adapterModel = list.get(position);
         int itmeType = adapterModel.getItmeType();
         if (itmeType == 1) {
-            return TYPE_ITEMTITLE;
+            return TYPE_ONE;
         } else {
-            return TYPE_ITEMLIST;
+            return TYPE_TWO;
         }
 
     }
@@ -80,11 +81,11 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         RecyclerView.ViewHolder holder = null;
 
         switch (viewType) {
-            case TYPE_ITEMTITLE:
+            case TYPE_ONE:
                 view = LayoutInflater.from(context).inflate(R.layout.recycleritem_shopcartitle, parent, false);
                 holder = new TitleViewHolder(view);
                 break;
-            case TYPE_ITEMLIST:
+            case TYPE_TWO:
                 view = LayoutInflater.from(context).inflate(R.layout.recycleritem_shopcarlist, parent, false);
                 holder = new ListViewHolder(view);
                 break;
@@ -100,7 +101,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         //是否选中
         int isCheck = shopCarAdapterModel.getIsCheck();
         switch (itemViewType) {
-            case TYPE_ITEMTITLE:
+            case TYPE_ONE:
                 TitleViewHolder titleViewHolder = (TitleViewHolder) holder;
                 String storeName = shopCarAdapterModel.getStoreName();
                 titleViewHolder.tvStoreName.setText(storeName == null ? "" : storeName);
@@ -139,7 +140,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 titleViewHolder.ivStoreNameSelect.setBackgroundResource(R.mipmap.checkbox_unchecked);
             }
                 break;
-            case TYPE_ITEMLIST:
+            case TYPE_TWO:
                 ListViewHolder listViewHolder = (ListViewHolder) holder;
                 //是否选中
                 if (isCheck == 1) {
@@ -358,12 +359,12 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvOrderListName, tvOrderListPrice, tvOrderListHintNum;
-        ImageView ivOrderListSelect, ivOrderListImage, ivOrderListClean, ivShroud;
+        ImageView ivOrderListSelect, ivOrderListImage,ivOrderListClean, ivShroud;
         private TagsLayout shopcarLabel;
         private LinearLayout llSubtractNum, llAddNum, llOorderListSelect;
         private ImageView ivSubtractNum, ivAddNum;
         private TextView etGoodsNum,tvPresellHint,tvPurchaseHint,tvPurchase,tvPresell;
-        private LinearLayout llNum;
+        private LinearLayout llNum,llOrderListClean;
         private TextView itemOnClick;
         private RelativeLayout rlImageOnClick;
         public ListViewHolder(View itemView) {
@@ -380,8 +381,9 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             llOorderListSelect = (LinearLayout) itemView.findViewById(R.id.ll_orderListSelect);
             llOorderListSelect.setOnClickListener(this);
             //删除
+            llOrderListClean = (LinearLayout) itemView.findViewById(R.id.ll_orderListClean);
+            llOrderListClean.setOnClickListener(this);
             ivOrderListClean = (ImageView) itemView.findViewById(R.id.iv_orderListClean);
-            ivOrderListClean.setOnClickListener(this);
             //规格布局
             shopcarLabel = (TagsLayout) itemView.findViewById(R.id.shopcarLabel);
             //价格
@@ -414,7 +416,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public void onClick(View v) {
             switch (v.getId()) {
 
-                case R.id.iv_orderListClean://删除
+                case R.id.ll_orderListClean://删除
                     onItemClickListener.OnClickClean(getLayoutPosition());
                     break;
 

@@ -18,8 +18,6 @@ import java.util.Map;
 
 public class SimpleRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public final static int TYPE_ONE = 1;
-    public final static int TYPE_TWO = 2;
     private Context mContext;
     private List<Map<String, String>> list;
 

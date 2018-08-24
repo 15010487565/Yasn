@@ -145,7 +145,7 @@ public class OrderDetailsSonModel implements Serializable{
         private Object paymentAccount;
         private double paymoney;
         private int paydate;
-        private int createTime;
+        private long createTime;
         private String shipName;
         private String shipAddr;
         private String shipZip;
@@ -334,11 +334,11 @@ public class OrderDetailsSonModel implements Serializable{
             this.paydate = paydate;
         }
 
-        public int getCreateTime() {
+        public long getCreateTime() {
             return createTime;
         }
 
-        public void setCreateTime(int createTime) {
+        public void setCreateTime(long createTime) {
             this.createTime = createTime;
         }
 

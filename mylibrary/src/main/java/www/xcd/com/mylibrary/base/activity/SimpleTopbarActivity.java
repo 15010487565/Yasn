@@ -1,6 +1,9 @@
 package www.xcd.com.mylibrary.base.activity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -565,7 +570,6 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
         OkHttpHelper.getInstance().getAsyncHttp(requestCode, url, paramsMaps, new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                Log.e("TAG_支付", "msg.what=" + msg.what);
                 switch (msg.what) {
                     //请求错误
                     case HttpConfig.REQUESTERROR:
@@ -661,5 +665,44 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
             SharePrefHelper.getInstance(this).putSpString("regionId", "");
             ToastUtil.showToast("登录已过期,请重新登录！");
         }
+    }
+
+    /**
+     * 认证状态
+     */
+    public void showStartAuthorDialog(Class<?> clzz){
+        int lv_id = SharePrefHelper.getInstance(this).getSpInt("lv_id");
+        if (lv_id == 2) {//认证审核中
+            showAuthDialog("");
+        } else if (lv_id == 3) {
+            String memssage = SharePrefHelper.getInstance(this).getSpString("memssage");
+            showAuthDialog(memssage);
+        } else {//去认证
+            startActivity(new Intent(this,clzz));
+        }
+    }
+    //认证弹窗
+    protected AlertDialog mAuthNotifyDialog;
+
+    private void showAuthDialog(String reasonString) {
+        LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View serviceView = factor.inflate(R.layout.dialog_authorhint, null);
+        TextView tvAuthorMessageHint = (TextView) serviceView.findViewById(R.id.tv_AuthorMessageHint);
+        if (TextUtils.isEmpty(reasonString)){
+            tvAuthorMessageHint.setText("认证审核中，请耐心等待！");
+        }else {
+            tvAuthorMessageHint.setText("由于" + reasonString + ",认证失败,请重新认证!");
+        }
+        Activity activity = this;
+        while (activity.getParent() != null) {
+            activity = activity.getParent();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        mAuthNotifyDialog = builder.create();
+        mAuthNotifyDialog.show();
+        mAuthNotifyDialog.setContentView(serviceView);
+        FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.WRAP_CONTENT);
+        //layout.setMargins(WallspaceUtil.dip2px(this, 10), 0, FeatureFunction.dip2px(this, 10), 0);
+        serviceView.setLayoutParams(layout);
     }
 }

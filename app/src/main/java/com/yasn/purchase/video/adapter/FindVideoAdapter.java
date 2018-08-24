@@ -27,6 +27,10 @@ import java.util.List;
 
 import www.xcd.com.mylibrary.help.HelpUtils;
 
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_IMAGE;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_TXT;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_VIDEO;
+
 /**
  * Created by shuyu on 2016/11/11.
  */
@@ -45,10 +49,6 @@ public class FindVideoAdapter extends BaseAdapter {
     private boolean isFullVideo;
 
     private ListVideoUtil listVideoUtil;
-
-    public static final int TYPE_TXT = 2;
-    public static final int TYPE_IMAGE = 0;
-    public static final int TYPE_VIDEO = 1;
 
     public FindVideoAdapter(Context context, ListVideoUtil listVideoUtil) {
         super();

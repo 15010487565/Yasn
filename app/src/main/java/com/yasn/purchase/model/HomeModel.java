@@ -205,8 +205,9 @@ public class HomeModel implements Serializable{
          */
 
         private int seePrice;
-        private int endDate;
+        private long endDate;
         private int level_id;
+        private String employee_auth;
         private String shopName;
         private int is_wholesaler;
         private int lv_id;
@@ -226,7 +227,7 @@ public class HomeModel implements Serializable{
         private int memberInProbation;
         private String message;
         private int digital_member;
-        private int currentTime;
+        private long currentTime;
         private int regionId;
         private int memberInProbationEndTime;
         private int member_admin;
@@ -234,6 +235,14 @@ public class HomeModel implements Serializable{
         private int probationIsOpen;
         private int priceDisplayType;
         private int provinceId;
+
+        public String getEmployee_auth() {
+            return employee_auth;
+        }
+
+        public void setEmployee_auth(String employee_auth) {
+            this.employee_auth = employee_auth;
+        }
 
         public int getProvinceId() {
             return provinceId;
@@ -251,11 +260,11 @@ public class HomeModel implements Serializable{
             this.seePrice = seePrice;
         }
 
-        public int getEndDate() {
+        public long getEndDate() {
             return endDate;
         }
 
-        public void setEndDate(int endDate) {
+        public void setEndDate(long endDate) {
             this.endDate = endDate;
         }
 
@@ -419,11 +428,11 @@ public class HomeModel implements Serializable{
             this.digital_member = digital_member;
         }
 
-        public int getCurrentTime() {
+        public long getCurrentTime() {
             return currentTime;
         }
 
-        public void setCurrentTime(int currentTime) {
+        public void setCurrentTime(long currentTime) {
             this.currentTime = currentTime;
         }
 

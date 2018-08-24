@@ -35,10 +35,15 @@ public class AddressUpdataActivity extends BaseThreeActivity {
 
     private TextView tvName, tvMobile, tvRegion, tvAddressCancel, tvAddressSave;
     private EditText etName, etMobile, etAddr;
-    private LinearLayout llRegion,llcontentView;
+    private LinearLayout llRegion, llcontentView;
     private RelativeLayout rlSelect;
     private ImageView ivSelect;
-
+    String province;
+    String city;
+    String region;
+    String provinceId;
+    String cityId;
+    String regionId;
 
     int defAddr;//默认
     int type; // 0 新增  1 编辑
@@ -84,9 +89,9 @@ public class AddressUpdataActivity extends BaseThreeActivity {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.e("TAG_===","点击1");
-                if(null != AddressUpdataActivity.this.getCurrentFocus()){
-                    Log.e("TAG_===","点击2");
+                Log.e("TAG_===", "点击1");
+                if (null != AddressUpdataActivity.this.getCurrentFocus()) {
+                    Log.e("TAG_===", "点击2");
                     /**
                      * 点击空白位置 隐藏软键盘
                      */
@@ -100,11 +105,13 @@ public class AddressUpdataActivity extends BaseThreeActivity {
             }
         });
     }
-    private void isShouldHideInput(){
+
+    private void isShouldHideInput() {
         // 隐藏输入法
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(llcontentView.getWindowToken(), 0);
     }
+
     @Override
     protected void afterSetContentView() {
         super.afterSetContentView();
@@ -119,8 +126,13 @@ public class AddressUpdataActivity extends BaseThreeActivity {
             String mobile = intent.getStringExtra("mobile");
             etMobile.setText(mobile);
             //地址
-            String region = intent.getStringExtra("region");
-            tvRegion.setText(region);
+            province = intent.getStringExtra("province");
+            city = intent.getStringExtra("city");
+            region = intent.getStringExtra("region");
+            provinceId = intent.getStringExtra("provinceId");
+            cityId = intent.getStringExtra("cityId");
+            regionId = intent.getStringExtra("regionId");
+            tvRegion.setText(province + "-" + city + "-" + region);
             //详细地址
             String addr = intent.getStringExtra("address");
             etAddr.setText(addr);
@@ -133,11 +145,7 @@ public class AddressUpdataActivity extends BaseThreeActivity {
             ivSelect.setBackgroundResource(R.mipmap.checkbox_unchecked);
         }
         setUpViews();
-        //城市列表
-        String regionId = SharePrefHelper.getInstance(this).getSpString("provinceId");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("regionId", regionId);
-        okHttpGet(100, Config.REGIONLIST, params);
+        getThreeList();
     }
 
     @Override
@@ -155,8 +163,12 @@ public class AddressUpdataActivity extends BaseThreeActivity {
                 isShouldHideInput();
                 break;
             case R.id.ll_AddreddUpdataRegion://所在地区
-                address_select.setVisibility(View.VISIBLE);
-                isShouldHideInput();
+                if (TextUtils.isEmpty(mCurrentProviceName)){
+                    getThreeList();
+                }else {
+                    address_select.setVisibility(View.VISIBLE);
+                    isShouldHideInput();
+                }
                 break;
             case R.id.tv_AddressCancel://取消
                 finish();
@@ -166,14 +178,28 @@ public class AddressUpdataActivity extends BaseThreeActivity {
                 break;
             case R.id.btn_confirm:
                 address_select.setVisibility(View.GONE);
-                Log.e("TAG_省市区","省="+mCurrentProviceId+";市="+mCurrentCityId+";区="+mCurrentDistrictId);
-                tvRegion.setText(mCurrentProviceName+"-"+mCurrentCityName+"-"+mCurrentDistrictName);
+                province = mCurrentProviceName;
+                city = mCurrentCityName;
+                region = mCurrentDistrictName;
+                provinceId = mCurrentProviceId;
+                cityId = mCurrentCityId;
+                regionId = mCurrentDistrictId;
+                tvRegion.setText(mCurrentProviceName + "-" + mCurrentCityName + "-" + mCurrentDistrictName);
                 break;
             case R.id.btn_off:
                 address_select.setVisibility(View.GONE);
                 break;
         }
     }
+
+    private void getThreeList() {
+        //城市列表
+        String regionId = SharePrefHelper.getInstance(this).getSpString("provinceId");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("regionId", regionId);
+        okHttpGet(100, Config.REGIONLIST, params);
+    }
+
     //保存
     private void upDataAddress() {
         Map<String, String> params = new HashMap();
@@ -192,38 +218,38 @@ public class AddressUpdataActivity extends BaseThreeActivity {
             return;
         }
         String name = etName.getText().toString().trim();
-        if (TextUtils.isEmpty(name)){
+        if (TextUtils.isEmpty(name)) {
             ToastUtil.showToast("收货人姓名不能为空！");
             return;
-        }else {
+        } else {
             params.put("name", name);
         }
         String mobile = etMobile.getText().toString().trim();
-        if (TextUtils.isEmpty(mobile)){
+        if (TextUtils.isEmpty(mobile)) {
             ToastUtil.showToast("手机号不能为空！");
             return;
-        }else {
+        } else {
             params.put("mobile", mobile);
         }
-        if (TextUtils.isEmpty(mCurrentProviceName)
-                &&TextUtils.isEmpty(mCurrentCityName)
-                &&TextUtils.isEmpty(mCurrentDistrictName)){
+        if (TextUtils.isEmpty(province)
+                && TextUtils.isEmpty(city)
+                && TextUtils.isEmpty(region)) {
             ToastUtil.showToast("所在地区不能为空！");
             return;
-        }else {
-            params.put("province", mCurrentProviceName);
-            params.put("city", mCurrentCityName);
-            params.put("region", mCurrentDistrictName);
-            params.put("provinceId", String.valueOf(mCurrentProviceId));
-            params.put("cityId", String.valueOf(mCurrentCityId));
-            params.put("regionId", String.valueOf(mCurrentDistrictId));
+        } else {
+            params.put("province", province);
+            params.put("city", city);
+            params.put("region", region);
+            params.put("provinceId", provinceId);
+            params.put("cityId", cityId);
+            params.put("regionId", regionId);
         }
         params.put("zip", "123456");
         String address = etAddr.getText().toString().trim();
-        if (TextUtils.isEmpty(address)){
+        if (TextUtils.isEmpty(address)) {
             ToastUtil.showToast("详细地址不能为空！");
             return;
-        }else {
+        } else {
             params.put("addr", address);
         }
         params.put("defAddr", String.valueOf(defAddr));
@@ -235,17 +261,17 @@ public class AddressUpdataActivity extends BaseThreeActivity {
         switch (requestCode) {
 
             case 100:
-                if (returnCode == 200){
+                if (returnCode == 200) {
                     CityListAllModel cityallinfo = JSON.parseObject(returnData, CityListAllModel.class);
                     List<CityListAllModel.ListRegionsBean> listRegions = cityallinfo.getListRegions();
 //                    Log.e("TAG_城市列表1","mProvinceDatas=");
                     setUpData(listRegions);
-                }else {
+                } else {
                     ToastUtil.showToast(returnMsg);
                 }
                 break;
             case 101://保存
-                if (returnCode == 200){
+                if (returnCode == 200) {
                     finish();
                 }
                 ToastUtil.showToast(returnMsg);

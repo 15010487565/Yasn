@@ -50,7 +50,7 @@
                         android:layout_height="@dimen/height_40"
                         android:layout_marginLeft="@dimen/margin_20"
                         android:layout_marginRight="@dimen/margin_20"
-                        android:background="@mipmap/collect" />
+                        android:background="@mipmap/collect_black" />
 
                     <View
                         android:layout_width="@dimen/height_70"
@@ -69,13 +69,14 @@
                     android:textSize="@dimen/textsize_14" />
 
                 <TextView
+                    android:id="@+id/tv_CollectRecommend"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:gravity="center"
                     android:paddingBottom="@dimen/margin_20"
                     android:paddingTop="@dimen/margin_5"
-                    android:text="我们为您推荐了高毛利商品。赶快去采购吧"
+                    android:text=""
                     android:textColor="@color/black_66"
                     android:textSize="@dimen/textsize_14" />
 

@@ -35,21 +35,13 @@ import com.yasn.purchase.utils.MyWebChromeClient;
 import com.yasn.purchase.utils.ReadImgToBinary;
 import com.yasn.purchase.utils.SerializableUtil;
 import com.yasn.purchase.utils.ToastUtil;
-import com.yasn.purchase.utils.VersionUtil;
 import com.yasn.purchase.video.activity.PlayActivity;
 import com.yasn.purchase.wxapi.WXPay;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import www.xcd.com.mylibrary.PhotoActivity;
@@ -65,7 +57,6 @@ public class MainActivityOld extends PhotoActivity
     private FrameLayout fragment_layout;
     private ImageView clear_cache;
     private ImageView refresh_view;
-    private ImageView check_version;
     private DrawerLayout drawer_layout;
 
     public String payHtmlUrl = null;
@@ -103,11 +94,9 @@ public class MainActivityOld extends PhotoActivity
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         clear_cache = (ImageView) findViewById(R.id.clear_cache);
         refresh_view = (ImageView) findViewById(R.id.refresh_view);
-        check_version = (ImageView) findViewById(R.id.check_version);
         errorText.setOnClickListener(this);
         clear_cache.setOnClickListener(this);
         refresh_view.setOnClickListener(this);
-        check_version.setOnClickListener(this);
     }
 
     private void initData() {
@@ -146,7 +135,7 @@ public class MainActivityOld extends PhotoActivity
 
         //取得保存的cookie
         String oldCookie = (String) SerializableUtil.readObject(getFilesDir(), SerializableUtil.COOKIE);
-        setCookie(this, Config.HOMEVIEW, oldCookie);
+        setCookie(this, Config.URLCAIGOU, oldCookie);
         if (oldCookie != null) {
 //            YasnApplication.getInstance().setUserTag(oldCookie.substring(oldCookie.lastIndexOf("=") + 1));
         }
@@ -154,7 +143,7 @@ public class MainActivityOld extends PhotoActivity
         mWebView.getSettings().setUserAgentString(mWebView.getSettings().getUserAgentString() + "/android_client");
         mWebView.setDefaultHandler(new DefaultHandler());
         mWebView.setWebViewClient(new MyWebViewClient(this, mWebView, this));
-        mWebView.loadUrl(Config.HOMEVIEW);
+        mWebView.loadUrl(Config.URLCAIGOU);
         mWebView.registerHandler("YasnWebRespond", new BridgeHandler() {
             @Override
             public void handler(String data, CallBackFunction function) {
@@ -194,53 +183,6 @@ public class MainActivityOld extends PhotoActivity
             e.printStackTrace();
         }
     }
-
-    private void checkNewVersion() {
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(Config.UPDATE);
-                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                    httpURLConnection.connect();
-                    int code = httpURLConnection.getResponseCode();
-                    if (code == HttpURLConnection.HTTP_OK) {
-                        InputStream is = httpURLConnection.getInputStream();
-                        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                        String response = "";
-                        String readLine = null;
-                        while ((readLine = br.readLine()) != null) {
-                            response = response + readLine;
-                        }
-
-                        if (response != null && response.length() > 0) {
-                            if (!response.equals(VersionUtil.getVersionCode(MainActivityOld.this))) {
-                                msgHandler.sendEmptyMessage(SHOW_IS_NEW_VERSION);//强制更新,所以一定是最新版本
-                            } else {
-                                msgHandler.sendEmptyMessage(SHOW_IS_NEW_VERSION);
-                            }
-                        }
-                    }
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-    }
-
-    private final Handler msgHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case SHOW_IS_NEW_VERSION:
-                    ToastUtil.show(MainActivityOld.this, getResources().getString(R.string.is_new_version));
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
     @Override
     public void onLoadWebviewFail(WebView view, int errorCode, String description, String failingUrl) {
@@ -312,7 +254,7 @@ public class MainActivityOld extends PhotoActivity
             case R.id.load_again_web:
                 if (CommonHelper.with().checkNetWork(this)) {
                     errorView.setVisibility(View.GONE);
-                    mWebView.loadUrl(Config.HOMEVIEW);
+                    mWebView.loadUrl(Config.URLCAIGOU);
                 } else {
                     ToastUtil.show(this, getResources().getString(R.string.data_failure_tip));
                 }
@@ -324,10 +266,6 @@ public class MainActivityOld extends PhotoActivity
             case R.id.refresh_view:
                 mWebView.reload();
                 ToastUtil.show(this, getResources().getString(R.string.refresh_sucess));
-                drawer_layout.closeDrawers();
-                break;
-            case R.id.check_version:
-                checkNewVersion();
                 drawer_layout.closeDrawers();
                 break;
             case R.id.share_qq:
@@ -354,7 +292,7 @@ public class MainActivityOld extends PhotoActivity
 
             //首页四个按钮(页面)
             String tempUrl = mWebView.copyBackForwardList().getItemAtIndex(mWebView.copyBackForwardList().getCurrentIndex()).getUrl();
-            if (Config.HOMEVIEW.equals(tempUrl) || Config.HOMEVIEW2.equals(tempUrl) || Config.HOMEVIEW3.equals(tempUrl) || Config.HOMEVIEW4.equals(tempUrl)) {
+            if (Config.URLCAIGOU.equals(tempUrl)) {
                 if (System.currentTimeMillis() - curr_time < 3000) {
                     //                  XCDApplication.getInstance().exit();
                     this.finish();
@@ -367,7 +305,7 @@ public class MainActivityOld extends PhotoActivity
                     String url = mWebView.copyBackForwardList().getItemAtIndex(mWebView.copyBackForwardList().getCurrentIndex() - 2).getUrl();
                     if (url.equals(payHtmlUrl)) {
                         mWebView.clearHistory();
-                        mWebView.loadUrl(Config.HOMEVIEW);
+                        mWebView.loadUrl(Config.URLCAIGOU);
                     } else {
                         mWebView.goBack();
                     }

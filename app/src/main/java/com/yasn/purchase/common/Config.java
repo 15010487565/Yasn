@@ -13,21 +13,21 @@ public class Config {
 //    public final static String IPPORTPAY = "http://39.106.213.117:10800/";//正式服支付接口
 
     public static final String IP = "http://shoptest.yasn.com";//测试
-    public static final String URLCAIGOU = "http://shoptt.yasn.com/";//测试首服
+    public static final String URLCAIGOU = "http://shoptt.yasn.com";//测试首服
     public final static String SEARCH = "http://47.93.192.134:9998/search/solr/goods/list?";//测试服搜索页面
     public final static String IPPORTPAY = "http://47.93.192.134:10800/";//测试服支付接口
     //端口
     public static final String IPPORT = IP+":9100/api/composite-service/";//9100端口
-    //欢迎界面图片
-    public final static String LAUNCHIMAGE = URLCAIGOU+"api/base/app/geturl.do";
     //城市列表所在地起
     public static final String REGIONLIST = IPPORT +"region/listRegions?";
     //首页
     public static final String HOME = IPPORT +"home/index";
     //首页更多
     public static final String ONCLICKTABMORE =  IPPORT+"goods/subject?";
-    //收藏删除单个
-    public static final String COLLECTDELETEONE =  IPPORT+"favorite/deleteBygoodsId/";
+    //加入收藏
+    public final static String ADDCOLLECT = IPPORT +"favorite/saveGoodsFavorite/";
+    //删除收藏
+    public final static String DELETECOLLECT = IPPORT +"favorite/deleteBygoodsId/";
     //收藏删除全部
     public static final String COLLECTDELETEALL =  IPPORT+"favorite/deleteByMemberId";
     //收藏列表
@@ -43,7 +43,7 @@ public class Config {
     //发现页面
     public final static String FIND = IPPORT +"discovery/get-discovery-list/";
     //进货单WEB页面
-    public final static String SHOPPCARWEBVIEW = URLCAIGOU+"cart.html";
+//    public final static String SHOPPCARWEBVIEW = URLCAIGOU+"/cart.html";
     //进货单阶梯价
     public final static String SHOPPCARWHOLELIST = IPPORT +"cart/get-whole-list";
     //进货单
@@ -70,8 +70,10 @@ public class Config {
     public final static String GETINVOICE = IPPORT +"order/get-invoice/";
     //发票获取接
     public final static String SAVERECEIPT = IPPORT +"order/save-invoice";
-    //发票须知
-    public final static String INVOICEHELP = URLCAIGOU +"help.html?type=2";
+    //门片专票资质
+    public final static String SHOPINVOICE = IPPORT +"Invoice/changeInvoice?";
+    //门片获取专票资质
+    public final static String SHOPGETINVOICE = IPPORT +"Invoice/getInvoice";
     //进货单删除
     public final static String SHOPPCARDELETECART = IPPORT +"cart/delete-cart?";
     //进货单总价
@@ -102,10 +104,6 @@ public class Config {
     public final static String GETPERSONAGEINFO = IPPORT +"member/memberInfo";
     //获取进货单数量
     public final static String CARTGOODSNUM = IPPORT +"cart/goodsNum/";
-    //加入收藏
-    public final static String ADDCOLLECT = IPPORT +"favorite/saveGoodsFavorite/";
-    //删除收藏
-    public final static String DELETECOLLECT = IPPORT +"favorite/deleteBygoodsId/";
     //加入进货单
     public final static String ADDSHOPCAR = IPPORT +"cart/add-product?";
     //创建员工
@@ -122,25 +120,14 @@ public class Config {
     public final static String REFUSEINVITE = IPPORT +"employee/refuse";
     //查看物流
     public final static String ORDERLOOKDISTR = IPPORT +"order/deliverys/";
-    public final static String ORDERQUERY = "https://poll.kuaidi100.com/poll/query.do";
     //支付列表接口
     public final static String PAYTYPE = IPPORTPAY +"payment-cfg/list-by-client-type";
     //支付
     public static final String PAY = IPPORTPAY+"pay/get-pay-html-info?";
-    public final static int TYPE_FOOTVIEW = 10000;
 
-    //    public static final String HOMEVIEW = "http://caigou.yasn.com";//首页
-    public static final String HOMEVIEW = "http://shoptt.yasn.com/";//测试首页2
-    public static final String HOMEVIEWDOMAIN = "caigou.yasn.com";//首页
-    public static final String UPDATE = "http://caigou.yasn.com/android/update.txt";//正式更新
-    public static final String HOMEVIEW2 = "http://caigou.yasn.com/classify.html";//产品分类
-    public static final String HOMEVIEW3 = "http://caigou.yasn.com/cart.html";//购物车
-    public static final String HOMEVIEW4 = "http://caigou.yasn.com/member.html";//会员中心
 
     //登录
-    public static final String LOGINWEBVIEW = URLCAIGOU+"login.html";
-    //注册webivew
-    public static final String REGISTERWEBVIEW = URLCAIGOU+"login_c.html?key=register";
+    public static final String LOGINWEBVIEW = URLCAIGOU+"/login.html";
     //验证码
     public static final String VERIFICATIONCODE = IPPORT+"member/getRandomCode";
     //登录
@@ -157,14 +144,6 @@ public class Config {
     public static final String RESETPASSWORD = IPPORT+"member/resetPassword";
     //修改密码
     public static final String UPDATAPASSWORD = IPPORT+"member/changePassword";
-    //退出登录
-    public static final String LOGINOUTWEBVIEW = URLCAIGOU+"memberSet.html";
-    //开通雅森帮
-    public static final String DREDGEYASNHELP =  URLCAIGOU+"digital_member.html";
-    //雅森帮
-    public static final String YASNBANG =  URLCAIGOU+"/yasn.html?publish_type=1";
-    //去认证
-    public static final String ATTESTATION =  URLCAIGOU+"verify_register.html";
     //获取认证信息
     public static final String AUTHORMEMBERINFO =  IPPORT+"member/getMemberDataInfo";
     //提交认证基本信息
@@ -173,10 +152,7 @@ public class Config {
     public static final String AUTHORMEMBERISAUDIT =  IPPORT+"member/ifCanApprove";
     //提交认证基本信息
     public static final String AUTHORMEMBERSUBMITIMAGE =  IPPORT+"member/changeRolePartTwo";
-    //收藏WebView
-    public static final String HOMECOLLECT =  URLCAIGOU+"/collectList.html";
     //我的订单
-    public static final String MEORDERWEB =  URLCAIGOU+"orderlist.html";
     public static final String MEORDER =  IPPORT +"order/list?";
     //订单详情
     public static final String ORDERDETAILS =  IPPORT +"order/details?";
@@ -186,56 +162,35 @@ public class Config {
     public static final String ORDERHURRY =  IPPORT +"order/hurry/";
     //确认收货
     public static final String ORDERCONFIRM =  IPPORT +"order/rogConfirm/";
-    //待付款
-    public static final String MEORDERUNPAYMENTWEB =  URLCAIGOU+"orderlist.html?status=1";
-    //代发货
-    public static final String MEORDERUNSHIPMENTSWEB =  URLCAIGOU+"orderlist.html?status=2";
-    //待收货
-    public static final String MEORDERUNSIGNFORWEB =  URLCAIGOU+"orderlist.html?status=3";
-    //首页更多
-//    public static final String ONCLICKTABMORE =  URLCAIGOU+"/subject.html";
     //详情页
     public final static String GOODSDETAILS = IPPORT +"goods/details/";
-    //分享详情页
-    public final static String GOODSDETAILSWEB = URLCAIGOU+"/goods.html?id=";
-    //积分
-    public final static String SHOPINTEGRAL = URLCAIGOU+"member_point.html";
-    //统计查看更多
-    public final static String STATISTICSLOOKALL = URLCAIGOU+"/Statistics.html";
-    //门店收货地址
-    public final static String SHOPPLACEOFRECEIPT  = URLCAIGOU+"/address_list.html?back=1";
-    //门店帮助中心
-    public final static String SHOPHELP  = URLCAIGOU+"help.html";
-    //门店电话咨询
-    public final static String SHOPPHONE  = URLCAIGOU+"service.html";
-    //门店资质专票
-    public final static String SHOPAPTITUDE  = URLCAIGOU+"specialInvoice.html";
-    //用油查询
-    public final static String SHOPINOILQUERY  = URLCAIGOU+"useOil.html";
-    //门店创建员工
-    public final static String SHOPCREATESTAFF = URLCAIGOU+"/createStaff.html";
-    //门店管理员工
-    public final static String SHOPMEANAGESTAFF  = URLCAIGOU+"/staffManage.html";
-    //开通创客
-    public final static String MAKERDREDGE  = URLCAIGOU+"/ck_ck.html";
     //推广二维码
-//    public final static String MAKERQRCODE  = URLCAIGOU+"/ck_wxcode.html";
     public final static String MAKERQRCODE  = IPPORT+"qrcode/maker";
-    //收款账号
-    public final static String MAKERRECEIPTACCOUNT  = URLCAIGOU+"/ck_account.html";
     //获取收款帐号信息
     public final static String GETMAKERRECEIPTACCOUNT  = IPPORT+"createGuest/getProceedsInfor";
     //提价收款信息
     public final static String SUBMITMAKERRECEIPTACCOUNT  = IPPORT+"createGuest/insertProceeds?";
     //开拓门店
-    public final static String MAKEREXPLOITSHOP  = URLCAIGOU+"/ck_addshop.html";
     public final static String MAKEREXPLOITSHOPAPP  = IPPORT+"createGuest/exploreStoresList/";
     //门店订单
-    public final static String MAKERSHOPORDER  = URLCAIGOU+"/ck_shoporder.html";
     public final static String MAKERSHOPORDERAPP  = IPPORT+"order/createGuest/";
-    //确认订单
-    public final static String CHECKOUTSHOPCAR  = URLCAIGOU+"checkout.html";
-    //去凑单
-    public final static String SHOPCARADDONITEM  = URLCAIGOU+"collecting_home.html?show_c=4&store_id=1&keyword=&end_price=&key=2&order=asc&start_price=";
+    //帮助中心
+    public final static String HELP  = IPPORT+"member/help-data";
 
+    //开通雅森帮
+    public static final String DREDGEYASNHELP =  URLCAIGOU+"/digital_member.html";
+    //雅森帮
+    public static final String YASNBANG =  URLCAIGOU+"/yasn.html?publish_type=1";
+    //分享详情页
+    public final static String GOODSDETAILSWEB = URLCAIGOU+"/goods.html?id=";
+    //欢迎界面图片
+    public final static String LAUNCHIMAGE = URLCAIGOU+":8080/api/base/app/geturl.do";
+    //去凑单
+    public final static String SHOPCARADDONITEM  = URLCAIGOU+"/collecting_home.html?show_c=4&store_id=1&keyword=&end_price=&key=2&order=asc&start_price=";
+    //创客支付
+    public final static String MAKERPAYMENT = URLCAIGOU+"/ck_payment.html";
+    //订单支付
+    public final static String ORDERPAY = URLCAIGOU+"/payment.html?orderid=";
+    //是否使用网页支付
+    public final static boolean isWebViewPay = true;
 }

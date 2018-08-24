@@ -22,7 +22,10 @@ import java.util.List;
 
 import www.xcd.com.mylibrary.help.HelpUtils;
 
-import static com.yasn.purchase.common.Config.TYPE_FOOTVIEW;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_FOOTER;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_IMAGE;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_TXT;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_VIDEO;
 
 /**
  * Created by shuyu on 2016/11/11.
@@ -42,10 +45,6 @@ public class FindAllRecyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private boolean isFullVideo;
 
     private ListVideoUtil listVideoUtil;
-
-    public static final int TYPE_IMAGE = 0;
-    public static final int TYPE_VIDEO = 1;
-    public static final int TYPE_TXT = 2;
 
     public OnRcItemClickListener onItemClickListener;
 
@@ -97,7 +96,7 @@ public class FindAllRecyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 holder = new VideoViewHolder(view);
                 break;
 
-            case TYPE_FOOTVIEW:
+            case ITEM_FOOTER:
                 view = LayoutInflater.from(context).inflate(R.layout.footview_listview, parent, false);
                 holder = new ViewHolderFootView(view);
                 break;

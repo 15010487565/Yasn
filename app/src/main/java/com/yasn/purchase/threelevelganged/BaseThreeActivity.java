@@ -262,7 +262,7 @@ public abstract class BaseThreeActivity extends SimpleTopbarActivity implements 
                 CityListAllModel.ListRegionsBean listRegionsBean = provinceList.get(i);
                 mProvinceDatas[i] = listRegionsBean.getLocal_name();
                 mProvinceId[i] = listRegionsBean.getRegion_id()+"";
-                Log.e("TAG_省市区map","mProvinceId="+mProvinceId.toString());
+//                Log.e("TAG_省市区map","mProvinceId="+mProvinceId.toString());
                 List<CityListAllModel.ListRegionsBean.CityBean> cityList = provinceList.get(i).getCity();
                 String[] cityNames = new String[cityList.size()];
                 String[] cityIds = new String[cityList.size()];
@@ -290,13 +290,13 @@ public abstract class BaseThreeActivity extends SimpleTopbarActivity implements 
                         }
                         // 市-区/县的数据，保存到mDistrictDatasMap
                         mDistrictIdMap.put(cityNames[j], distrinctIds);
-                        Log.e("TAG_省市区map","mDistrictIdMap="+mDistrictIdMap.toString());
+//                        Log.e("TAG_省市区map","mDistrictIdMap="+mDistrictIdMap.toString());
                         mDistrictDatasMap.put(cityNames[j], distrinctNameArray);
                     }
                 }
                 // 省-市的数据，保存到mCitisDatasMap
                 mCitisIdMap.put(mProvinceDatas[i],cityIds);
-                Log.e("TAG_省市区map","mCitisIdMap="+mCitisIdMap.toString());
+//                Log.e("TAG_省市区map","mCitisIdMap="+mCitisIdMap.toString());
                 mCitisDatasMap.put(mProvinceDatas[i], cityNames);
             }
         } catch (Exception e) {

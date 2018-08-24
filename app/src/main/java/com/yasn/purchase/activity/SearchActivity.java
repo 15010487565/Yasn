@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -95,7 +94,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
     private String sortOld;
     private boolean isDownPull = false;//下拉刷新
     private boolean isUpPull = false;//上拉加载
-    private ImageView backDrawer;
+    private LinearLayout backDrawer;
     @Override
     public boolean isTopbarVisibility() {
         return false;
@@ -289,7 +288,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
         para.width = width1 / 5 * 4;//修改宽度
 //        para.height = height1;//修改高度
         menu_layout_right.setLayoutParams(para); //设置修改后的布局。
-        backDrawer= (ImageView) findViewById(R.id.back);
+        backDrawer= (LinearLayout) findViewById(R.id.back);
         backDrawer.setOnClickListener(this);
         //是否自营
         selected_fram = (FrameLayout) findViewById(R.id.selected_fram);

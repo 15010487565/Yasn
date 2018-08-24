@@ -76,11 +76,11 @@
             android:layout_marginTop="5dp"
             android:text="刷新页面" />
 
-        <ImageView
-            android:id="@+id/check_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/check_version" />
+        <!--<ImageView-->
+            <!--android:id="@+id/check_version"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@mipmap/check_version" />-->
 
         <TextView
             android:layout_width="wrap_content"

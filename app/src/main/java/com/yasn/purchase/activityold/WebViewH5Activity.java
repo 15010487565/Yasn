@@ -30,7 +30,6 @@ import com.xyzlf.share.library.util.ShareUtil;
 import com.yasn.purchase.R;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.help.LoginOut;
-import com.yasn.purchase.model.EventBusMsg;
 import com.yasn.purchase.utils.CommonHelper;
 import com.yasn.purchase.utils.MyWebChromeClient;
 import com.yasn.purchase.utils.ReadImgToBinary;
@@ -41,7 +40,6 @@ import com.yasn.purchase.wxapi.WXPay;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.List;
@@ -50,14 +48,12 @@ import www.xcd.com.mylibrary.PhotoActivity;
 
 public class WebViewH5Activity extends PhotoActivity implements View.OnClickListener, LoadWebViewErrListener{
     private BridgeWebView mWebView;
-    private long curr_time;
     private View errorView;
     private TextView errorText;
     private FrameLayout fragment_layout;
 
     private ImageView clear_cache;
     private ImageView refresh_view;
-//    private ImageView check_version;
     private DrawerLayout drawer_layout;
 
     public String payHtmlUrl = null;
@@ -77,7 +73,7 @@ public class WebViewH5Activity extends PhotoActivity implements View.OnClickList
         if (intent == null){
             webViewUrl = Config.LOGINWEBVIEW;
         }else {
-            webViewUrl = getIntent().getStringExtra("webViewUrl");
+            webViewUrl = intent.getStringExtra("webViewUrl");
         }
         Log.e("TAG_webViewActivity","webViewUrl="+webViewUrl);
         initView();
@@ -98,11 +94,9 @@ public class WebViewH5Activity extends PhotoActivity implements View.OnClickList
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         clear_cache = (ImageView) findViewById(R.id.clear_cache);
         refresh_view = (ImageView) findViewById(R.id.refresh_view);
-//        check_version = (ImageView) findViewById(R.id.check_version);
         errorText.setOnClickListener(this);
         clear_cache.setOnClickListener(this);
         refresh_view.setOnClickListener(this);
-//        check_version.setOnClickListener(this);
     }
 
     private void initData() {
@@ -194,12 +188,12 @@ public class WebViewH5Activity extends PhotoActivity implements View.OnClickList
             cookieManager.setCookie(url, "token="+token);
             cookieManager.setCookie(url, "refresh_token="+resetToken);
             CookieSyncManager.getInstance().sync();
-//            String cookie = cookieManager.getCookie(url);
+            String cookie = cookieManager.getCookie(url);
+            Log.e("TAG_urltokenWEBCookie5", "setCookie()=="+cookie);
 //            if (cookies.indexOf("JavaShopUser")==-1){
 //                String javaShopUser = SharePrefHelper.getInstance(this).getSpString("JavaShopUser");
 //                cookieManager.setCookie(url, javaShopUser);
 //            }
-//            Log.e("TAG_urltokenWEBCookie5", "setCookie()=="+cookie);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -265,10 +259,6 @@ public class WebViewH5Activity extends PhotoActivity implements View.OnClickList
                 ToastUtil.show(this, getResources().getString(R.string.refresh_sucess));
                 drawer_layout.closeDrawers();
                 break;
-//            case R.id.check_version:
-//                checkNewVersion();
-//                drawer_layout.closeDrawers();
-//                break;
             case R.id.share_qq:
                 ShareUtil.startShare(this, ShareConstant.SHARE_CHANNEL_QQ, testBean, ShareConstant.REQUEST_CODE);
                 break;
@@ -522,17 +512,17 @@ public class WebViewH5Activity extends PhotoActivity implements View.OnClickList
             this.finish();
         }
     }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(EventBusMsg event) {
-        String msg = event.getMsg();
-        Log.e("TAG_activity","webview="+msg);
-        if ("loginout".equals(msg)){
-            removeCookie(mWebView.getContext());
-           finish();
-        }else if ("webViewBack".equals(msg)){
-            finish();
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEventMainThread(EventBusMsg event) {
+//        String msg = event.getMsg();
+//        Log.e("TAG_activity","webview="+msg);
+//        if ("loginout".equals(msg)){
+//            removeCookie(mWebView.getContext());
+//           finish();
+//        }else if ("webViewBack".equals(msg)){
+//            finish();
+//        }
+//    }
 
     private void removeCookie(Context context) {
         Log.e("TAG_urltokenRemove",  "removeCookie============");

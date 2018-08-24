@@ -43,6 +43,7 @@ import com.yasn.purchase.model.order.OrderGoodsContentModel;
 import com.yasn.purchase.model.order.OrderHeaderModel;
 import com.yasn.purchase.model.order.OrderShopNameModel;
 import com.yasn.purchase.utils.AlignedTextUtils;
+import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.RecyclerViewDecoration;
 
 import org.json.JSONArray;
@@ -50,7 +51,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +61,6 @@ import java.util.Map;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
-import www.xcd.com.mylibrary.utils.ToastUtil;
 
 /***
  * 订单详情
@@ -88,10 +90,15 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
     //主订单还是主订单
     private int isMainOrder;
     //底部提示
-    TextView tvBottomLeft, tvBottomRight;
+    private TextView tvBottomLeft, tvBottomRight;
     //主订单ID
     private int orderIdMain;
-
+    //订单编号
+    private String snMain;
+    //下单时间
+    private long createTimeMain;
+    //订单总额
+    private String formatPaymoney;
     @Override
     protected Object getTopbarTitle() {
         return R.string.orderdetails;
@@ -212,6 +219,30 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                     confirmReapDialog(orderIdMain);
                 } else if ("转账支付".equals(tvBottomRightString)) {
                     startActivity(new Intent(this,TransAccPayActivity.class));
+                }else if ("确认付款".equals(tvBottomRightString)) {
+                    Intent intent = getIntent();
+                    boolean isNeedPay = intent.getBooleanExtra("isNeedPay", false);
+                    if (isNeedPay){
+                        if (Config.isWebViewPay) {
+                            Intent intent1 = new Intent(this, WebViewH5Activity.class);
+                            //orderIdMain主订ID
+                            intent1.putExtra("webViewUrl", Config.ORDERPAY + orderIdMain);
+                            startActivity(intent1);
+                        } else {
+
+                            //订单创建时间
+                            SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+                            Log.e("TAG_时间", "createTimeMain=" + df.format(new Date(createTimeMain)));
+                            String format = df.format(new Date(createTimeMain + 2 * 60 * 60 * 1000));
+                            Intent intent1 = new Intent(this, PayActivity.class);
+                            intent1.putExtra("sn", snMain);
+                            intent1.putExtra("needPayMoney", formatPaymoney);
+                            intent1.putExtra("payTime", format);
+                            startActivity(intent1);
+                        }
+                    }else {
+                       ToastUtil.showToast("您没有支付权限！");
+                    }
                 }
                 break;
             case R.id.iv_cancelOrder:
@@ -234,7 +265,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                     params.put("access_token", resetToken);
                 }
                 //主订单id
-                params.put("orderIdMain", String.valueOf(orderIdMain));
+                params.put("orderId", String.valueOf(orderIdMain));
                 params.put("reason", reason);
                 okHttpGet(101, Config.ORDERCANCEL, params);
                 break;
@@ -265,10 +296,6 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                     } else if (isMainOrder == 2) {//子订单
                         sonOrderDetails(returnData, 2);
                     }
-//                    else if (isMainOrder == 3) {//主订单
-//                        sonOrderDetails(returnData, 3);
-//                    }
-//                    Log.e("TAG_statusTop", "statusTop=" + statusTop + ";paymentName=" + paymentName);
                     switch (statusTop) {
                         case 0:
 //                        headerHolder.tvOrderPayType.setText("");
@@ -363,24 +390,13 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                 //主订单ID
                 orderIdMain = orderDetailsSon.getOrderId();
                 //下单时间
-                int createTime = orderDetailsSon.getCreateTime();
+                long createTime = orderDetailsSon.getCreateTime();
                 String dateToString1 = HelpUtils.getDateToString1(createTime);
                 tvOrderTime.setText(dateToString1);
                 //发票类型
 //                OrderDetailsSonModel.OrderDetailsBean.ReceiptBean receipt = orderDetailsSon.getReceipt();
 //                if (receipt == null || "".equals(receipt)) {
                 tvBillType.setText("无");
-//                } else {
-//                    int receiptStatus = receipt.getReceiptStatus();
-//                    //发票类型，2：普通发票，3为专用发票
-//                    if (receiptStatus == 2) {
-//                        tvBillType.setText("普通发票");
-//                    } else if (receiptStatus == 2) {
-//                        tvBillType.setText("专用发票");
-//                    } else {
-//                        tvBillType.setText("无");
-//                    }
-//                }
                 //收货人
                 String shipName = orderDetailsSon.getShipName();
                 String shipMobile = orderDetailsSon.getShipMobile();
@@ -496,9 +512,9 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                 if (orderItem != null && orderItem.size() > 0) {
                     OrderDetailsSonModel.OrderDetailsBean.OrderItemBean orderItemBean = orderItem.get(0);
                     String image = orderItemBean.getImage();
-                    setSobotModel(orderDetailsSon.getSn(), dateToString1, image, String.format("%.2f", needPayMoney));
+                    setSobotModel(sn, dateToString1, image, String.format("%.2f", needPayMoney));
                 } else {
-                    setSobotModel(orderDetailsSon.getSn(), dateToString1, null, String.format("%.2f", needPayMoney));
+                    setSobotModel(sn, dateToString1, null, String.format("%.2f", needPayMoney));
                 }
             }
         }
@@ -572,9 +588,11 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                 statusTop = orderDetails.getStatus();
                 //主订单ID
                 orderIdMain = orderDetails.getOrderId();
+                //订单编号
+                snMain = orderDetails.getSn();
                 //下单时间
-                int createTime = orderDetails.getCreateTime();
-                String dateToString1 = HelpUtils.getDateToString1(createTime);
+                createTimeMain = orderDetails.getCreateTime();
+                String dateToString1 = HelpUtils.getDateToString1(createTimeMain);
                 tvOrderTime.setText(dateToString1);
 
                 //收货人
@@ -599,9 +617,9 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                     if (orderItem != null && orderItem.size() > 0) {
                         OrderDetailsMainModel.OrderDetailsBean.ChildOrderListBean.OrderItemBean orderItemBean = orderItem.get(0);
                         String image = orderItemBean.getImage();
-                        setSobotModel(orderDetails.getSn(), dateToString1, image, String.format("%.2f", needPaymoneySobot));
+                        setSobotModel(snMain, dateToString1, image, String.format("%.2f", needPaymoneySobot));
                     } else {
-                        setSobotModel(orderDetails.getSn(), dateToString1, null, String.format("%.2f", needPaymoneySobot));
+                        setSobotModel(snMain, dateToString1, null, String.format("%.2f", needPaymoneySobot));
                     }
                     //主订单详情
                     orderDetailsMain(childOrderList);
@@ -635,7 +653,8 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                         Map<String, String> map5 = new HashMap<>();
                         double needPaymoney = orderDetails.getNeedPayMoney();
                         map5.put("keyName", "订单总额");
-                        map5.put("订单总额", "￥" + String.format("%.2f", needPaymoney));
+                        formatPaymoney = String.format("%.2f", needPaymoney);
+                        map5.put("订单总额", "￥" + formatPaymoney);
                         list.add(map5);
                         adapter.setData(list);
                     }
@@ -797,7 +816,8 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
     //申请售后
     @Override
     public void OnDetailsApplyClick(View view, int position) {
-        startWebViewActivity(Config.SHOPPHONE);
+//        startWebViewActivity(Config.SHOPPHONE);
+        startActivity(new Intent(this,ShopPhoneActivity.class));
     }
 
     //提醒物流=1；提醒发货=2
@@ -889,7 +909,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
 
     //取消订单弹窗
     List<Map<String, String>> listCancelOrder;
-    String[] arrayCancelOrder = {"我不想买了", "信息填错了，重新下单", "多买了/买错了",
+    String[] arrayCancelOrder = {"我不想买了", "信息填错了，重新下单", "多买了(买错了)",
             "支付失败", "其他原因"};
     protected AlertDialog cancelOrderDialog;
     private SetSimpleAdapter setSimpleAdapter;

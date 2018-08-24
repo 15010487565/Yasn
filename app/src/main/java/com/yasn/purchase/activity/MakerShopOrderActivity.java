@@ -142,14 +142,14 @@ public class MakerShopOrderActivity extends SimpleTopbarActivity implements Mult
                     if (pagNo >1) {
                         if (data == null || data.size() == 0){
                             adapter.upFootText();
-                            ToastUtil.showToast("收藏商品已全部显示！");
+                            ToastUtil.showToast("门店订单已全部显示！");
                         }else {
                             adapter.addData(data);
                         }
                     } else {
                         if (data == null || data.size() == 0){
 //                            adapter.upFootText();
-                            ToastUtil.showToast("未搜索到收藏商品！");
+                            ToastUtil.showToast("未搜索到门店订单！");
                         }else {
                             adapter.setData(data);
                         }

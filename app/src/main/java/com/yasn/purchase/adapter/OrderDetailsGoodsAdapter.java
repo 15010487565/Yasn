@@ -27,6 +27,12 @@ import com.yasn.purchase.model.order.OrderShopNameModel;
 
 import java.util.List;
 
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_CONTENT;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_GIFT;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_HEADER;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_PAY;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_SHOPNAME;
+
 /**
  * Created by gs on 2017/12/26.
  */
@@ -37,7 +43,6 @@ public class OrderDetailsGoodsAdapter extends RecyclerView.Adapter<RecyclerView.
     private LayoutInflater inflater;
     private List<Object> list;
     private int isMainOrder;
-    private static final int ITEM_HEADER = 0, ITEM_SHOPNAME = 1, ITEM_CONTENT = 2, ITEM_GIFT = 3, ITEM_PAY = 4;
 
     public OrderDetailsGoodsAdapter(Context context,int isMainOrder) {
         this.context = context;

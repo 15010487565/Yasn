@@ -67,6 +67,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
         //文本输入框
         topsearch = (EditText) findViewById(R.id.tv_Topsearch);
         topsearch.setOnFocusChangeListener(this);
+        HelpUtils.setEditTextInhibitInputSpeChat(topsearch);
         topsearch.addTextChangedListener(this);
         ivClean = (ImageView) findViewById(R.id.iv_clean);
         ivClean.setVisibility(View.GONE);
@@ -298,7 +299,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
             case 100:
-                if (returnCode == 200){
+                if (returnCode == 0){
                     HotLableModel hotlablemodel = JSON.parseObject(returnData, HotLableModel.class);
                     List<HotLableModel.DataBean> data = hotlablemodel.getData();
                     if (data ==null||data.size()==0){
@@ -341,7 +342,6 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        HelpUtils.setEditTextInhibitInputSpeChat(topsearch);
         String trim = topsearch.getText().toString().trim();
         Log.e("TAG_模糊","trimCode="+trim);
         if (TextUtils.isEmpty(trim)){
@@ -353,6 +353,5 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
 
     @Override
     public void afterTextChanged(Editable s) {
-
     }
 }

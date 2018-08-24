@@ -106,10 +106,17 @@ public class RegisterQuickPasswordActivity extends SimpleTopbarActivity {
                     ToastUtil.showToast("密码不能为空！");
                     return;
                 }
+
                 if (!trimPws.equals(trimAgainPws)){
                     ToastUtil.showToast("您两次输入的密码不一致！");
                     return;
                 }
+
+                if (trimPws.length()<6){
+                    ToastUtil.showToast("密码为6-16位字母、数字组合！");
+                    return;
+                }
+
                 Intent intent = getIntent();
                 mobile = intent.getStringExtra("mobile");
                 if (isSmsLogin == 1) {//快速注册

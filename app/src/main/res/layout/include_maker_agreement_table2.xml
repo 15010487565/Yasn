@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/margin_15"
+    android:layout_marginRight="@dimen/margin_15"
+    android:background="#000000"
+    android:stretchColumns="*"
+    android:shrinkColumns="*"
+    tools:showIn="@layout/activity_maker_agreement">
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="@dimen/margin_10"
+            android:text="原级别"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:padding="@dimen/margin_10"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold"
+            android:text="升级级别" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:padding="@dimen/margin_10"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold"
+            android:text="业绩条件\n（达到）" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/margin_1dp"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="@dimen/margin_10"
+            android:text="其他条件"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="@dimen/margin_10"
+            android:text="初级创客"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:padding="@dimen/margin_10"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold"
+            android:text="中级创客" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:padding="@dimen/margin_10"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold"
+            android:text="5万元/月" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/margin_1dp"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="@dimen/margin_10"
+            android:text="参加相应培训并且通过考试"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold" />
+    </TableRow>
+    <TableRow>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="@dimen/margin_10"
+            android:text="中级创客"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:padding="@dimen/margin_10"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold"
+            android:text="高级创客" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:padding="@dimen/margin_10"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold"
+            android:text="10万元/月" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/margin_1dp"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="@dimen/margin_10"
+            android:text="参加相应培训并且通过考试"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold" />
+    </TableRow>
+    <TableRow>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginBottom="@dimen/margin_1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="@dimen/margin_10"
+            android:text="高级创客"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:layout_marginBottom="@dimen/margin_1dp"
+            android:padding="@dimen/margin_10"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold"
+            android:text="特级创客" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:layout_marginBottom="@dimen/margin_1dp"
+            android:padding="@dimen/margin_10"
+            android:background="@color/white"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold"
+            android:text="20万元/月" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/margin_1dp"
+            android:layout_marginTop="@dimen/margin_1dp"
+            android:layout_marginLeft="@dimen/margin_1dp"
+            android:layout_marginBottom="@dimen/margin_1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="@dimen/margin_10"
+            android:text="参加相应培训并且通过考试"
+            android:textSize="@dimen/textsize_14"
+            android:textStyle="bold" />
+    </TableRow>
+</TableLayout>

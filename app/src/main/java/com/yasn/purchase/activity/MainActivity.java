@@ -115,7 +115,7 @@ public class MainActivity extends SimpleTopbarActivity implements LoadWebViewErr
         setContentView(R.layout.activity_mainnew);
         EventBus.getDefault().register(this);
         currentItem = getIntent().getIntExtra("CURRENTITEM", 0);
-        Log.e("TAG_MAIN", "onCreate=" + currentItem);
+//        Log.e("TAG_MAIN", "onCreate=" + currentItem);
         // 初始化fragments
         initFragments();
         // 初始化ViewPager
@@ -401,7 +401,7 @@ public class MainActivity extends SimpleTopbarActivity implements LoadWebViewErr
 
         @Override
         public void onTabSelectionChanged(int tabIndex) {
-            Log.e("TAG_MAIN", "选择tabIndex=" + tabIndex);
+//            Log.e("TAG_MAIN", "选择tabIndex=" + tabIndex);
             if (tabIndex == 3 || tabIndex == 4) {
                 token = SharePrefHelper.getInstance(MainActivity.this).getSpString("token");
                 resetToken = SharePrefHelper.getInstance(MainActivity.this).getSpString("resetToken");
@@ -475,7 +475,7 @@ public class MainActivity extends SimpleTopbarActivity implements LoadWebViewErr
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
-        Log.e("TAG_Main", "msg=" + msg);
+//        Log.e("TAG_Main", "msg=" + msg);
         if ("loginout".equals(msg)) {
             setCartNum(0);
         } else if ("carNum".equals(msg)) {
@@ -567,12 +567,21 @@ public class MainActivity extends SimpleTopbarActivity implements LoadWebViewErr
         startActivity(new Intent( MainActivity.this , IntegralActivity.class));
 //         startWebViewActivity(Config.SHOPINTEGRAL);
     }
+    //电话咨询
+    public void startShopPhoneActivity(){
+        Intent intent = new Intent(this, ShopPhoneActivity.class);
+        startActivity(intent);
+    }
     //专票资质
     public void startInvoiceSpecialActivity() {
 //                    startWebViewActivity(Config.SHOPAPTITUDE);
         startActivity(new Intent(MainActivity.this, InvoiceSpecialActivity.class));
     }
-
+    //帮助中心
+    public void startHelpActivity(){
+//        startWebViewActivity(Config.SHOPHELP);
+        startActivity(new Intent(MainActivity.this, InvoiceHelpActivity.class));
+    }
     /**
      * 雅森帮
      * digital_member = 0  未开通雅森帮
@@ -590,7 +599,7 @@ public class MainActivity extends SimpleTopbarActivity implements LoadWebViewErr
     }
     //扫一扫功能
     public void scanAQRCode(){
-        Intent inteng = new Intent(this, WeChatCaptureActivity.class);
-        startActivity(inteng);
+        Intent intent = new Intent(this, WeChatCaptureActivity.class);
+        startActivity(intent);
     }
 }

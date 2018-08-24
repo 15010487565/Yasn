@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 /**
@@ -358,7 +359,7 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         ((OftenShopActivity)context).startBaseActivity(context,LoginActivity.class);
                     } else if ("认证看价格".equals(trim)) {
 //                        startWebViewActivity(Config.ATTESTATION);
-                        context.startActivity(new Intent(context,AuthorActivity.class));
+                        ((SimpleTopbarActivity)context).showStartAuthorDialog(AuthorActivity.class);
                     }
                     break;
                 case R.id.iv_Addshopcar://添加购物车

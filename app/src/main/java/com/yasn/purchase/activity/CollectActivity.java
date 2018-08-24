@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,10 +44,10 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
  */
 public class CollectActivity extends SimpleTopbarActivity
         implements OnRcItemClickListener
-        ,CollectAdapter.OnCollectDeleteListener
+        , CollectAdapter.OnCollectListener
         , SwipeRefreshLayout.OnRefreshListener
         , MultiSwipeRefreshLayout.OnLoadListener
-        , MultiSwipeRefreshLayout.OnMultiSwipeRefreshClickListener{
+        , MultiSwipeRefreshLayout.OnMultiSwipeRefreshClickListener {
 
     private HomeRecyclerAdapter adapternull;
     private CollectAdapter adapter;
@@ -60,11 +61,12 @@ public class CollectActivity extends SimpleTopbarActivity
     List<CollectModel.ListFavoriteBean> listFavorite;
     //推荐商品集合
     List<HomeRecyModel> subjectList;
+    private TextView tvCollectRecommend;
 
-        @Override
+    @Override
     protected Class<?>[] getTopbarRightFuncArray() {
 
-            return rightFuncArray;
+        return rightFuncArray;
     }
 
     @Override
@@ -76,8 +78,9 @@ public class CollectActivity extends SimpleTopbarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collect);
-        initGetCollectRequest();
+        refreshRightFunctionZone(false);
     }
+
     //获得收藏
     private void initGetCollectRequest() {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -89,6 +92,7 @@ public class CollectActivity extends SimpleTopbarActivity
         params.put("pageNo", String.valueOf(pageNo));
         okHttpGet(100, Config.COLLECT, params);
     }
+
     //获得楼层
     private void initGetMoreRequest() {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -99,6 +103,7 @@ public class CollectActivity extends SimpleTopbarActivity
         }
         okHttpGet(101, Config.ONCLICKTABMORE, params);
     }
+
     @Override
     protected void afterSetContentView() {
         super.afterSetContentView();
@@ -110,6 +115,13 @@ public class CollectActivity extends SimpleTopbarActivity
     @Override
     protected void onRestart() {
         super.onRestart();
+        Log.e("TAG_收藏", "onRestart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("TAG_收藏", "onResume");
         initGetCollectRequest();
     }
 
@@ -131,6 +143,7 @@ public class CollectActivity extends SimpleTopbarActivity
         //空布局
         llCollectnull = (LinearLayout) findViewById(R.id.ll_Collectnull);
         llCollectnull.setOnClickListener(this);
+        tvCollectRecommend = (TextView) findViewById(R.id.tv_CollectRecommend);
         rcNullCollect = (RecyclerView) findViewById(R.id.rc_NullCollect);
 
         /**
@@ -150,8 +163,8 @@ public class CollectActivity extends SimpleTopbarActivity
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setAutoMeasureEnabled(true);
         rcCollect.setLayoutManager(mLinearLayoutManager);
-        adapter = new CollectAdapter(this,mLinearLayoutManager);
-        adapter.setOnItemClickListener(this,this);
+        adapter = new CollectAdapter(this, mLinearLayoutManager);
+        adapter.setOnItemClickListener(this, this);
         rcCollect.setAdapter(adapter);
         rcCollect.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -163,9 +176,9 @@ public class CollectActivity extends SimpleTopbarActivity
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 boolean isTop = recyclerView.canScrollVertically(-1);//返回false表示不能往下滑动，即代表到顶部了；
-                if (isTop){
+                if (isTop) {
                     swipe_layout.setEnabled(false);
-                }else {
+                } else {
                     swipe_layout.setEnabled(true);
                 }
                 boolean isBottom = recyclerView.canScrollVertically(1);//返回false表示不能往上滑动，即代表到底部了；
@@ -176,67 +189,63 @@ public class CollectActivity extends SimpleTopbarActivity
                 //当前RecyclerView的所有子项个数
                 int totalItemCount = mLinearLayoutManager.getItemCount();
 //                Log.e("TAG_底部","isBottom="+isBottom+"visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
-                if (isBottom ){
+                if (isBottom) {
                     swipe_layout.setBottom(false);
-                }else {
-                    if (visibleItemCount == totalItemCount){
+                } else {
+                    if (visibleItemCount == totalItemCount) {
                         swipe_layout.setBottom(false);
                         adapter.upFootText();
-                    }else {
+                    } else {
                         swipe_layout.setBottom(true);
                     }
                 }
             }
         });
     }
-
+    //无收藏单个item点击事件
     @Override
     public void OnItemClick(View view, int position) {
-        if (subjectList != null) {
-            HomeRecyModel homeRecyModel = subjectList.get(position);
-            int itemType = homeRecyModel.getItemType();
-            if (itemType == 1) {
-                return;
-            }
-            int market_enable = homeRecyModel.getMarket_enable();
-            if (market_enable == 0) {
-                ToastUtil.showToast("亲，该商品已经下架了哦~");
-                return;
-            }
-            //itemPosition 教你卖好、成功案例、语音讲解对应的Position
-            String goodsid = homeRecyModel.getGoodsid();
-            Intent intent = new Intent(CollectActivity.this, GoodsDetailsActivity.class);
-            SharePrefHelper.getInstance(CollectActivity.this).putSpString("GOODSID", goodsid);
-            startActivity(intent);
-            Log.e("TAG_收藏空","goodsid="+goodsid);
-        }else if (listFavorite != null){
-            List<CollectModel.ListFavoriteBean> data = adapter.getData();
-            CollectModel.ListFavoriteBean listFavoriteBean = data.get(position);
-            int goods_id = listFavoriteBean.getGoods_id();
-            Intent intent = new Intent(CollectActivity.this, GoodsDetailsActivity.class);
-            SharePrefHelper.getInstance(CollectActivity.this).putSpString("GOODSID", String.valueOf(goods_id));
-            startActivity(intent);
-            Log.e("TAG_收藏","goodsid="+goods_id);
+        HomeRecyModel homeRecyModel = subjectList.get(position);
+        int itemType = homeRecyModel.getItemType();
+        if (itemType == 1) {
+            return;
         }
+        int market_enable = homeRecyModel.getMarket_enable();
+        if (market_enable == 0) {
+            ToastUtil.showToast("亲，该商品已经下架了哦~");
+            return;
+        }
+        //itemPosition 教你卖好、成功案例、语音讲解对应的Position
+        String goodsid = homeRecyModel.getGoodsid();
+        Intent intent = new Intent(CollectActivity.this, GoodsDetailsActivity.class);
+        SharePrefHelper.getInstance(CollectActivity.this).putSpString("GOODSID", goodsid);
+        startActivity(intent);
+
     }
 
     @Override
     public void OnItemLongClick(View view, int position) {
 
     }
+
     //删除
     @Override
     public void OnItemDeleteClick(View view, int position) {
         List<CollectModel.ListFavoriteBean> data = adapter.getData();
         CollectModel.ListFavoriteBean listFavoriteBean = data.get(position);
         int goods_id = listFavoriteBean.getGoods_id();
-        Map<String, Object> params = new HashMap<String, Object>();
-        if (token != null && !"".equals(token)) {
-            params.put("access_token", token);
-        } else if (resetToken != null && !"".equals(resetToken)) {
-            params.put("access_token", resetToken);
-        }
-        okHttpGet(102, Config.COLLECTDELETEONE+goods_id, params);
+        removeAllDialog(String.valueOf(goods_id));
+    }
+
+    //收藏单个item点击事件
+    @Override
+    public void OnItemClickListener(View view, int position) {
+        List<CollectModel.ListFavoriteBean> data = adapter.getData();
+        CollectModel.ListFavoriteBean listFavoriteBean = data.get(position);
+        int goods_id = listFavoriteBean.getGoods_id();
+        Intent intent = new Intent(CollectActivity.this, GoodsDetailsActivity.class);
+        SharePrefHelper.getInstance(CollectActivity.this).putSpString("GOODSID", String.valueOf(goods_id));
+        startActivity(intent);
     }
 
     @Override
@@ -249,11 +258,9 @@ public class CollectActivity extends SimpleTopbarActivity
         String title = homeRecyModel.getText();
 //        startWebViewActivity(Config.ONCLICKTABMORE + "?id=" + subject_id + "&title=" + text);
         Intent intent = new Intent(CollectActivity.this, HomeMoreActivity.class);
-        intent.putExtra("subjectId",String.valueOf(subject_id));
-        intent.putExtra("title",title);
+        intent.putExtra("subjectId", String.valueOf(subject_id));
+        intent.putExtra("title", title);
         startActivity(intent);
-        Log.e("TAG_收藏","subjectId="+subject_id);
-        Log.e("TAG_收藏","title="+title);
     }
 
     @Override
@@ -267,27 +274,27 @@ public class CollectActivity extends SimpleTopbarActivity
             case 100:
                 CollectModel collectModel = JSON.parseObject(returnData, CollectModel.class);
                 listFavorite = collectModel.getListFavorite();
-                if ((listFavorite == null || listFavorite.size() == 0 )&& pageNo == 1){
+                if ((listFavorite == null || listFavorite.size() == 0) && pageNo == 1) {
                     initGetMoreRequest();
                     rcCollect.setVisibility(View.GONE);
                     llCollectnull.setVisibility(View.VISIBLE);
                     refreshRightFunctionZone(false);
-                }else {
+                } else {
                     rcCollect.setVisibility(View.VISIBLE);
                     llCollectnull.setVisibility(View.GONE);
                     refreshRightFunctionZone(true);
-                    if (pageNo >1) {
-                        if (listFavorite == null || listFavorite.size() == 0){
+                    if (pageNo > 1) {
+                        if (listFavorite == null || listFavorite.size() == 0) {
                             adapter.upFootText();
                             ToastUtil.showToast("收藏商品已全部显示！");
-                        }else {
+                        } else {
                             adapter.addData(listFavorite);
                         }
                     } else {
-                        if (listFavorite == null || listFavorite.size() == 0){
+                        if (listFavorite == null || listFavorite.size() == 0) {
 //                            adapter.upFootText();
                             ToastUtil.showToast("未搜索到收藏商品！");
-                        }else {
+                        } else {
                             adapter.setData(listFavorite);
                         }
                     }
@@ -306,17 +313,17 @@ public class CollectActivity extends SimpleTopbarActivity
                 swipe_layout.setRefreshing(false);
                 break;
             case 102://删除单个
-                if (returnCode == 200 ){
+                if (returnCode == 200) {
                     initGetCollectRequest();
                 }
                 ToastUtil.showToast(returnMsg);
                 break;
             case 103://删除全部
-                if (returnCode == 200 ){
+                if (returnCode == 200) {
                     initGetMoreRequest();
                     rcCollect.setVisibility(View.GONE);
                     llCollectnull.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     rcCollect.setVisibility(View.VISIBLE);
                     llCollectnull.setVisibility(View.GONE);
                 }
@@ -327,7 +334,7 @@ public class CollectActivity extends SimpleTopbarActivity
 
     private void initNullCollect(List<CollectNullModel.SubjectBean> subject) {
         //储存转换后的数据格式,无收藏显示推荐
-       subjectList = new ArrayList<>();
+        subjectList = new ArrayList<>();
         for (int i = 0, j = subject.size(); i < j; i++) {
 
             CollectNullModel.SubjectBean subjectBean = subject.get(i);
@@ -335,7 +342,10 @@ public class CollectActivity extends SimpleTopbarActivity
             HomeRecyModel subjectModel = new HomeRecyModel();
             subjectModel.setItemType(1);
             subjectModel.setText(title);
-
+            if (i == 0) {
+                String collectRecommend = String.format("我们为您推荐了%s。赶快去采购吧", title);
+                tvCollectRecommend.setText(collectRecommend);
+            }
             int subject_id = subjectBean.getSubject_id();
             subjectModel.setSubject_id(subject_id);
             subjectList.add(subjectModel);
@@ -359,13 +369,13 @@ public class CollectActivity extends SimpleTopbarActivity
                 homeRecy.setImage(small);
                 homeRecy.setSubject_id(subject_id);
 //                if (priceDisplayType == 0) {//取正常价格
-                    String result;
-                    if (has_discount == 0) {//正常价格
-                        result = String.format("%.2f", price);
-                    } else {//折扣价
-                        result = String.format("%.2f", Double.valueOf(discount_price));
-                    }
-                    homeRecy.setMoney(result);
+                String result;
+                if (has_discount == 0) {//正常价格
+                    result = String.format("%.2f", price);
+                } else {//折扣价
+                    result = String.format("%.2f", Double.valueOf(discount_price));
+                }
+                homeRecy.setMoney(result);
 //                } else {//取文字信息
 //                    homeRecy.setMoney(priceDisplayMsg == null ? "" : priceDisplayMsg);
 //                }
@@ -381,7 +391,7 @@ public class CollectActivity extends SimpleTopbarActivity
 //                    if (store_id != 99 && region_id > 0) {//地方站、非自营、非脱商品====直供
 //                        homeRecy.setRegionName(true);
 //                    } else {
-                        homeRecy.setRegionName(false);
+                    homeRecy.setRegionName(false);
 //                    }
                 }
                 int is_limit_buy = contentBean.getIs_limit_buy();
@@ -405,7 +415,8 @@ public class CollectActivity extends SimpleTopbarActivity
                 subjectList.add(homeRecy);
             }
         }
-        adapternull.setData(subjectList,"0");
+        String loginState = SharePrefHelper.getInstance(this).getSpString("loginState");
+        adapternull.setData(subjectList, loginState);
     }
 
     @Override
@@ -431,30 +442,47 @@ public class CollectActivity extends SimpleTopbarActivity
         swipe_layout.setRefreshing(false);
         swipe_layout.setLoading(false);
     }
+
     /**
      * 删除全部dialog
+     * goods_id 删除的id 空时为全部删除
      */
     protected AlertDialog remomeAllDialog;
 
-    public void removeAllDialog() {
+    public void removeAllDialog(final String goods_id) {
         LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_collectremomeall, null);
+        TextView tvCollectDelHintDialog = (TextView) serviceView.findViewById(R.id.tv_CollectDelHintDialog);
+        if (TextUtils.isEmpty(goods_id)) {
+            tvCollectDelHintDialog.setText("您确定删除所有收藏商品吗?");
+        } else {
+            tvCollectDelHintDialog.setText("您确定删除该收藏商品吗?");
+        }
         TextView remove = (TextView) serviceView.findViewById(R.id.remove);
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Map<String, Object> params = new HashMap<String, Object>();
-                if (token != null && !"".equals(token)) {
-                    params.put("access_token", token);
-                } else if (resetToken != null && !"".equals(resetToken)) {
-                    params.put("access_token", resetToken);
+                if (TextUtils.isEmpty(goods_id)) {//删除全部
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    if (token != null && !"".equals(token)) {
+                        params.put("access_token", token);
+                    } else if (resetToken != null && !"".equals(resetToken)) {
+                        params.put("access_token", resetToken);
+                    }
+                    okHttpGet(103, Config.COLLECTDELETEALL, params);
+                } else {//删除单个
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    if (token != null && !"".equals(token)) {
+                        params.put("access_token", token);
+                    } else if (resetToken != null && !"".equals(resetToken)) {
+                        params.put("access_token", resetToken);
+                    }
+                    okHttpGet(102, Config.DELETECOLLECT + goods_id, params);
                 }
-                okHttpGet(103, Config.COLLECTDELETEALL, params);
                 remomeAllDialog.dismiss();
             }
         });
-            TextView cancelBtn = (TextView) serviceView.findViewById(R.id.cancel);
+        TextView cancelBtn = (TextView) serviceView.findViewById(R.id.cancel);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -488,7 +516,7 @@ public class CollectActivity extends SimpleTopbarActivity
 
     @Override
     public void onLoad() {
-        Log.e("TAG_Collect","收藏");
+        Log.e("TAG_Collect", "收藏");
         if (rcCollect != null && rcCollect.getAdapter() != null) {
             swipe_layout.setLoading(true);
             pageNo++;

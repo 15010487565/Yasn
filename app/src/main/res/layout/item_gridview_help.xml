@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><!--cardCornerRadius：设置卡片边角的角度值--><!--cardElevation：设置卡片的阴影-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_HelpAdapterName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_3"
+        android:lines="2"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/black_66"
+        android:textSize="@dimen/textsize_14" />
+</LinearLayout>
+

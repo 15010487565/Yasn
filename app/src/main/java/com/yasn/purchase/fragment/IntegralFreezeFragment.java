@@ -27,13 +27,15 @@ import java.util.Map;
  * Created by gs on 2018/1/8.
  */
 
-public class IntegralFreezeFragment extends OrderFragment implements MultiSwipeRefreshLayout.OnLoadListener{
+public class IntegralFreezeFragment extends OrderFragment implements MultiSwipeRefreshLayout.OnLoadListener {
 
     IntegralFreezeAdapter adapter;
     private RecyclerView rcIntegral;
     private LinearLayoutManager mLinearLayoutManager;
     private int pagNo = 1;
     private MultiSwipeRefreshLayout swipe_layout;
+    // 标志位，标志已经初始化完成。
+    private boolean isPrepared;
 
     @Override
     protected int getLayoutId() {
@@ -41,9 +43,41 @@ public class IntegralFreezeFragment extends OrderFragment implements MultiSwipeR
     }
 
     @Override
-    public boolean getUserVisibleHint() {
-        return super.getUserVisibleHint();
+    protected void lazyLoad() {
+        Log.e("TAG_onHiddenChanged", "积分=" + isPrepared + ";isVisible=" + isVisible);
+        if (!isPrepared || !isVisible) {
+            return;
+        }
+        //填充各控件的数据
+        OkHttpDemand();
+    }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.e("TAG_onHiddenChanged", "积分=" + hidden);
+        if (!hidden) { //隐藏时所作的事情
+            lazyLoad();
+            isVisible = false;
+        } else {
+            isVisible = true;
+        }
+    }
+
+    @Override
+    protected void OkHttpDemand() {
+        initData();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getUserVisibleHint()) {
+            isVisible = true;
+            onVisible();
+        } else {
+            isVisible = false;
+        }
     }
 
     @Override
@@ -52,11 +86,13 @@ public class IntegralFreezeFragment extends OrderFragment implements MultiSwipeR
         RelativeLayout title = (RelativeLayout) view.findViewById(R.id.topbat_parent);
         title.setVisibility(View.GONE);
 
-        ivError.setImageResource(R.mipmap.integral);
+        ivError.setImageResource(R.mipmap.jifen_black);
         tvErrorHint.setText("未搜索到冻结积分明细！");
         initSwipeRefreshLayout(view);
         initRecyclerView(view);
-        initData();
+        //XXX初始化view的各控件
+        isPrepared = true;
+        lazyLoad();
     }
 
     private void initData() {
@@ -116,7 +152,7 @@ public class IntegralFreezeFragment extends OrderFragment implements MultiSwipeR
                 int visibleItemCount = mLinearLayoutManager.getChildCount();
                 //当前RecyclerView的所有子项个数
                 int totalItemCount = mLinearLayoutManager.getItemCount();
-                Log.e("TAG_底部Scrolled","isBottom="+isBottom+"visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
+                Log.e("TAG_底部Scrolled", "isBottom=" + isBottom + "visibleItemCount=" + visibleItemCount + ";totalItemCount=" + totalItemCount);
                 if (isBottom) {
                     swipe_layout.setBottom(false);
                 } else {
@@ -143,20 +179,20 @@ public class IntegralFreezeFragment extends OrderFragment implements MultiSwipeR
             case 100:
                 IntegralFreezeModel integralFreezeModel = JSON.parseObject(returnData, IntegralFreezeModel.class);
                 IntegralFreezeModel.DataBean data = integralFreezeModel.getData();
-                if (data !=null ){
+                if (data != null) {
                     rcIntegral.setVisibility(View.VISIBLE);
                     llError.setVisibility(View.GONE);
                     List<IntegralFreezeModel.DataBean.FreezePointListBean> freezePointList = data.getFreezePointList();
-                    if (pagNo >1){
+                    if (pagNo > 1) {
 
                         if (freezePointList == null || freezePointList.size() == 0) {
                             adapter.upFootText();
                             swipe_layout.setBottom(false);
                             ToastUtil.showToast("冻结积分明细已全部显示！");
-                        }else {
+                        } else {
                             adapter.addData(freezePointList);
                         }
-                    }else {
+                    } else {
                         if (freezePointList == null || freezePointList.size() == 0) {
                             llError.setVisibility(View.VISIBLE);
                             rcIntegral.setVisibility(View.GONE);
@@ -167,7 +203,7 @@ public class IntegralFreezeFragment extends OrderFragment implements MultiSwipeR
                         }
                     }
                     int point = data.getPoint();
-                    ((IntegralActivity)getActivity()).getPoint(point);
+                    ((IntegralActivity) getActivity()).getPoint(point);
                 }
                 swipe_layout.setLoading(false);
                 break;
@@ -191,11 +227,6 @@ public class IntegralFreezeFragment extends OrderFragment implements MultiSwipeR
 
     @Override
     public void onFinishResult() {
-    }
-
-    @Override
-    protected void OkHttpDemand() {
-
     }
 
     @Override

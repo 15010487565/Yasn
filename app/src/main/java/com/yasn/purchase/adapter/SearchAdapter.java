@@ -31,8 +31,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_CONTENT;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_FOOTER;
 
 
 /**
@@ -41,8 +44,6 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int TYPE_ITEM = 0;
-    private static final int TYPE_FOOTER = 1;
     private Context context;
     private List<SearchModel.DataBean> list;
     private List<SearchModel.DataBean> addList;
@@ -100,9 +101,9 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public int getItemViewType(int position) {
         if (position + 1 == getItemCount()) {
-            return TYPE_FOOTER;
+            return ITEM_FOOTER;
         } else {
-            return TYPE_ITEM;
+            return ITEM_CONTENT;
         }
     }
 
@@ -112,12 +113,12 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         RecyclerView.ViewHolder holder = null;
 
         switch (viewType){
-            case TYPE_ITEM:
+            case ITEM_CONTENT:
                 view = LayoutInflater.from(context).inflate(R.layout.recycleritem_search, parent, false);
                 holder = new ViewHolderSearch(view);
                 break;
 
-            case TYPE_FOOTER:
+            case ITEM_FOOTER:
                 view = LayoutInflater.from(context).inflate(R.layout.item_foot, parent,
                         false);
                 holder = new FootViewHolder(view);
@@ -132,7 +133,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         int itemViewType = getItemViewType(position);
         switch (itemViewType){
-            case TYPE_ITEM:
+            case ITEM_CONTENT:
                 ViewHolderSearch holderSearch = (ViewHolderSearch) holder;
                 SearchModel.DataBean dataBean = list.get(position);
                 StringBuffer sb = new StringBuffer();
@@ -252,7 +253,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         .into(holderSearch.titleimage);
                 onItemEventClick(holderSearch);
                 break;
-            case TYPE_FOOTER:
+            case ITEM_FOOTER:
                 FootViewHolder footviewholder = (FootViewHolder) holder;
                 if (list == null||list.size()==0){
                     footviewholder.footView.setVisibility(View.GONE);
@@ -340,7 +341,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         ((SearchActivity)context).startBaseActivity(context,LoginActivity.class);
                     }else if ("认证看价格".equals(trim)){
 //                        startWebViewActivity(Config.ATTESTATION);
-                        context.startActivity(new Intent(context,AuthorActivity.class));
+                        ((SimpleTopbarActivity)context).showStartAuthorDialog(AuthorActivity.class);
                     }
                     break;
             }

@@ -403,7 +403,8 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                     ToastUtil.showToast(returnMsg);
                 } else if (returnCode == 401) {
                     cleanToken();
-                    deleteCart(id);
+//                    deleteCart(id);
+                    ToastUtil.showToast(returnMsg);
                 } else {
                     ToastUtil.showToast(returnMsg);
                 }
@@ -872,13 +873,13 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                     ShopCarAdapterModel shopCarGoodsModel = shopCarAdapterList.get(listPosition + 1);
                     int productIdBeforeSale = shopCarGoodsModel.getProductId();
                     if (isCheck == 0) {
-                        isSelected(String.valueOf(productIdBeforeSale), "");
                         shopCarSelected.setIsCheck(1);
                         shopCarGoodsModel.setIsCheck(1);
+                        isSelected(String.valueOf(productIdBeforeSale), "");
                     } else {
-                        isSelected("", String.valueOf(productIdBeforeSale));
                         shopCarSelected.setIsCheck(0);
                         shopCarGoodsModel.setIsCheck(0);
+                        isSelected("", String.valueOf(productIdBeforeSale));
                     }
                     adapter.notifyDataSetChanged();
                     return;
@@ -1216,9 +1217,11 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
             ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(i);
             int itmeType = shopCarAdapterModel.getItmeType();
             int isCheck = shopCarAdapterModel.getIsCheck();
+            Log.e("TAG_进货单","itmeType="+itmeType+";isCheck"+isCheck);
             if (itmeType == 2 && isCheck == 1) {
                 double price = shopCarAdapterModel.getPrice();
                 int num = shopCarAdapterModel.getNum();
+                Log.e("TAG_进货单","itmeType="+itmeType+";isCheck"+isCheck+";num="+num);
                 BigDecimal b1 = new BigDecimal(Double.toString(allNeedPayMoney));
                 BigDecimal b2 = new BigDecimal(Double.toString(price * num));
                 allNeedPayMoney = b1.add(b2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -1424,6 +1427,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
             @Override
             public void onClick(View v) {
                 deleteNotifyDialog.dismiss();
+                Log.e("TAG_进货单","删除="+id);
                 deleteCart(id);
             }
         });

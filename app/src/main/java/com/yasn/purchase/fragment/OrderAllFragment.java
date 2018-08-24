@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
-import com.yasn.purchase.activity.PayActivity;
+import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.adapter.OrderMainAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.listener.OnRcOrderItemClickListener;
@@ -24,9 +24,7 @@ import com.yasn.purchase.view.MultiSwipeRefreshLayout;
 import com.yasn.purchase.view.RecyclerViewDecoration;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -330,12 +328,10 @@ public class OrderAllFragment extends OrderFragment implements
         if (o instanceof OrderMainPayInfoModel){
             OrderMainPayInfoModel  infoModel = (OrderMainPayInfoModel) o;
             int orderId = infoModel.getOrderId();
-            Log.e("TAG_查看订单","orderId="+orderId);
             startOrderDetailsActivity(orderId,1);
         }else if (o instanceof OrderGoodsContentModel){
             OrderGoodsContentModel  goodsModel = (OrderGoodsContentModel) o;
             int orderId = goodsModel.getOrderId();
-            Log.e("TAG_查看订单","orderId="+orderId);
             startOrderDetailsActivity(orderId,1);
         }
     }
@@ -345,19 +341,23 @@ public class OrderAllFragment extends OrderFragment implements
         Object o = allOrderList.get(position);
         if (o instanceof OrderMainPayInfoModel){
             OrderMainPayInfoModel  infoModel = (OrderMainPayInfoModel) o;
-            String sn = infoModel.getSn();
-            Log.e("TAG_立即支付","sn="+sn);
-            //支付金额
-            String needPayMoney = infoModel.getNeedPayMoney();
-            //订单创建时间
-            long createTime = infoModel.getCreateTime();
-            SimpleDateFormat df=new SimpleDateFormat("HH:mm:ss");
-            Log.e("TAG_时间","createTime="+df.format(new Date(createTime)));
-            String format = df.format(new Date(createTime + 2 * 60 * 60 * 1000));
-            Intent intent = new Intent(getActivity(), PayActivity.class);
-            intent.putExtra("sn",sn);
-            intent.putExtra("needPayMoney",needPayMoney);
-            intent.putExtra("payTime",format);
+//            String sn = infoModel.getSn();
+//            Log.e("TAG_立即支付","sn="+sn);
+//            //支付金额
+//            String needPayMoney = infoModel.getNeedPayMoney();
+//            //订单创建时间
+//            long createTime = infoModel.getCreateTime();
+//            SimpleDateFormat df=new SimpleDateFormat("HH:mm:ss");
+//            Log.e("TAG_时间","createTime="+df.format(new Date(createTime)));
+//            String format = df.format(new Date(createTime + 2 * 60 * 60 * 1000));
+//            Intent intent = new Intent(getActivity(), PayActivity.class);
+//            intent.putExtra("sn",sn);
+//            intent.putExtra("needPayMoney",needPayMoney);
+//            intent.putExtra("payTime",format);
+//            startActivity(intent);
+            int orderid = infoModel.getOrderId();
+            Intent intent = new Intent(getActivity(), WebViewH5Activity.class);
+            intent.putExtra("webViewUrl", Config.ORDERPAY+orderid);
             startActivity(intent);
         }
     }

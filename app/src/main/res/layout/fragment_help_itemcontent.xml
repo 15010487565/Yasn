@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/height_35"
+    android:id="@+id/ll_HelpItemContent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50"
+        android:background="@color/white"
+        android:paddingRight="@dimen/margin_20"
+        android:paddingLeft="@dimen/margin_45"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_HelpItemContent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textSize="@dimen/textsize_14" />
+        <ImageView
+            android:id="@+id/iv_HelpItemTitleRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@mipmap/xia" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margin_20"
+        android:paddingRight="@dimen/margin_20"
+        android:background="@color/black_f5">
+        <WebView
+            android:id="@+id/wb_HelpItemContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </WebView>
+    </RelativeLayout>
+</LinearLayout>

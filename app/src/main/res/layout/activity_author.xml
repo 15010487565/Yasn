@@ -128,21 +128,27 @@
                     android:text="所在地区:"
                     android:textColor="@color/black_66"
                     android:textSize="@dimen/textsize_14" />
+                <LinearLayout
+                    android:id="@+id/ll_AuthorThree"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_AuthorThree"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/margin_15"
+                        android:text="请选择所在区域"
+                        android:textColor="@color/black_66"
+                        android:textSize="@dimen/textsize_14" />
 
-                <TextView
-                    android:id="@+id/tv_AuthorThree"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_15"
-                    android:layout_weight="1"
-                    android:text="请选择所在区域"
-                    android:textColor="@color/black_66"
-                    android:textSize="@dimen/textsize_14" />
+                    <ImageView
+                        android:layout_width="@dimen/margin_20"
+                        android:layout_height="@dimen/margin_20"
+                        android:background="@mipmap/home_top_arrows" />
+                </LinearLayout>
 
-                <ImageView
-                    android:layout_width="@dimen/margin_20"
-                    android:layout_height="@dimen/margin_20"
-                    android:background="@mipmap/home_top_arrows" />
             </LinearLayout>
 
             <View
@@ -220,6 +226,13 @@
                     android:background="@drawable/text_orange_white0"
                     android:orientation="horizontal">
 
+                    <Spinner
+                        android:id="@+id/spinner_Author"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/spinner_selector_author"
+                        android:dropDownVerticalOffset="40dp"
+                        android:spinnerMode="dropdown" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -245,14 +258,6 @@
                             android:background="@color/orange" />
 
                     </LinearLayout>
-
-                    <Spinner
-                        android:id="@+id/spinner_Author"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/spinner_selector_author"
-                        android:dropDownVerticalOffset="40dp"
-                        android:spinnerMode="dropdown" />
                 </FrameLayout>
             </LinearLayout>
 
@@ -328,7 +333,7 @@
                     android:background="@drawable/text_black_blackf7"
                     android:paddingLeft="@dimen/margin_20"
                     android:paddingRight="@dimen/margin_20"
-                    android:text="1"
+                    android:hint="1"
                     android:inputType="number"
                     android:textColor="@color/black_66"
                     android:textColorHint="@color/black_99"

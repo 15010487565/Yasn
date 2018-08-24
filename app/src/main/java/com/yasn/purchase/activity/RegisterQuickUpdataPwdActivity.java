@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.yasn.purchase.R;
 import com.yasn.purchase.common.Config;
+import com.yasn.purchase.help.LoginOut;
 import com.yasn.purchase.utils.ToastUtil;
 
 import java.io.IOException;
@@ -105,6 +106,12 @@ public class RegisterQuickUpdataPwdActivity extends SimpleTopbarActivity {
                     ToastUtil.showToast("您两次输入的密码不一致！");
                     return;
                 }
+
+                if (trimPws.length()<6){
+                    ToastUtil.showToast("密码为6-16位字母、数字组合！");
+                    return;
+                }
+
                 Intent intent = getIntent();
                 mobile = intent.getStringExtra("mobile");
 
@@ -132,6 +139,8 @@ public class RegisterQuickUpdataPwdActivity extends SimpleTopbarActivity {
             case 100:
                 if (returnCode == 200) {
                     showAuthDialog();
+                }else {
+                    ToastUtil.showToast(returnMsg);
                 }
                 break;
         }
@@ -152,7 +161,8 @@ public class RegisterQuickUpdataPwdActivity extends SimpleTopbarActivity {
         okbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RegisterQuickUpdataPwdActivity.this, LoginActivity.class));
+                LoginOut.loginOutClean(RegisterQuickUpdataPwdActivity.this);
+                startActivity(new Intent(RegisterQuickUpdataPwdActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -178,6 +188,16 @@ public class RegisterQuickUpdataPwdActivity extends SimpleTopbarActivity {
         FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.WRAP_CONTENT);
         //layout.setMargins(WallspaceUtil.dip2px(this, 10), 0, FeatureFunction.dip2px(this, 10), 0);
         serviceView.setLayoutParams(layout);
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        if (passwordDialog !=null && passwordDialog.isShowing()){
+
+        }else {
+            finish();
+        }
     }
 
     @Override

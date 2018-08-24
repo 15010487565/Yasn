@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -76,6 +75,8 @@ import java.util.TimerTask;
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_FOOTER;
+
 
 /**
  * Created by Android on 2017/9/5.
@@ -87,7 +88,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
         OnRcItemClickListener, OnBannerListener {
 
     private HomeRecyclerAdapter adapter;
-    //    private ConvenientBanner homeConvenientBanner;
     private Banner homeBanner;
     private TabLayout tabHome;
     private LinearLayout notLogin , orderStateLinear;
@@ -95,17 +95,15 @@ public class HomeFragment extends SimpleTopbarFragment implements
     private MultiSwipeRefreshLayout mSwipeRefreshLayout;
     private AppBarLayout appBarLayout;
     private RelativeLayout topbat_parent;
-    //    private NestedScrollView nestedScrollView;
-//    private RecyclerView recyNested;
+    //    private NestedScrollView
     private RecyclerView rcHome;
-    private RecyclerLayoutManager mLinearLayoutManager, layoutManagerNested;
+    private RecyclerLayoutManager mLinearLayoutManager;
     private TextView  tvHomeAddress;
     private boolean move = false;
     private boolean animationBool = true;//定位是否开启动画，默认true
     private int mIndex = 0;
     private FrameLayout topinfomssage;
     private LinearLayout llHomeOftensShop, llYasnbang, llHomeCollect, llHomeService,llHomeTopSearch;
-    private CollapsingToolbarLayout collapsingToolbar;
     private RelativeLayout rlMainError;//错误布局
     private GestureDetector gd;
     private CoordinatorLayout clHome;
@@ -121,11 +119,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     protected void lazyLoad() {
-//        Log.e("TAG_HOME", ((!isPrepared) + "===" + (!isVisible)));
-//        if (!isPrepared || !isVisible) {
-//            return;
-//        }
-//        mSwipeRefreshLayout.autoRefresh();
+
         mSwipeRefreshLayout.setRefreshing(true);
         //填充各控件的数据
         isFrist = true;
@@ -149,18 +143,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
         }
         okHttpGet(100, Config.HOME, params);
     }
-
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if (getUserVisibleHint()) {
-//            isVisible = true;
-//            onVisible();
-//
-//        } else {
-//            isVisible = false;
-//        }
-//    }
 
     @Override
     protected void initView(LayoutInflater inflater, View view) {
@@ -209,7 +191,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
         initViewOrder(view);
         //下拉刷新
         initSwipeRefreshLayout(view);
-//        homeConvenientBanner = (ConvenientBanner) view.findViewById(R.id.home_convenientBanner);
         homeBanner = (Banner) view.findViewById(R.id.home_banner);
         //开始轮播
         homeBanner.startAutoPlay();
@@ -242,7 +223,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
             //
             member_id = member.getMember_id();
             SharePrefHelper.getInstance(getActivity()).putSpString("memberid", String.valueOf(member_id));
-//            ((MainActivity) getActivity()).setCartNum(Integer.valueOf(member.getCartCount()));
             //收获地区所在省
             int provinceId = member.getProvinceId();
             SharePrefHelper.getInstance(getActivity()).putSpString("provinceId", String.valueOf(provinceId));
@@ -253,6 +233,10 @@ public class HomeFragment extends SimpleTopbarFragment implements
             String uname = member.getUname();
             homeAccount.setText(uname == null ? "未知" : uname);
             SharePrefHelper.getInstance(getActivity()).putSpString("uname", uname == null ? "游客" : uname);
+            String employeeAuth = member.getEmployee_auth();
+            if (employeeAuth != null) {//0:经理,1:采购 ,2:财务 1,2采购+财务
+                SharePrefHelper.getInstance(getActivity()).putSpString("employeeAuth",employeeAuth);
+            }
             //星级
             String levelName = member.getLevelName();
             homeGrade.setText((levelName == null || "".equals(levelName)) ? "未知" : levelName);
@@ -265,6 +249,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 okdredgeYsenHelp.setVisibility(View.GONE);
                 homeGrade.setVisibility(View.VISIBLE);
                 int lv_id = member.getLv_id();
+                SharePrefHelper.getInstance(getActivity()).putSpInt("lv_id", lv_id);
                 if (lv_id == 2) {
                     whiteTopText.setText("认证审核中");
                     homeGrade.setVisibility(View.GONE);
@@ -298,7 +283,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 undredgeYsenHelp.setVisibility(View.INVISIBLE);
                 okdredgeYsenHelp.setVisibility(View.VISIBLE);
                 homeGrade.setVisibility(View.VISIBLE);
-                int endDate = member.getEndDate();
+                long endDate = member.getEndDate();
                 String expireTime = HelpUtils.getDateToString(endDate);
                 String minNumberString = String.format("会员有效期 %s", expireTime);
                 SpannableStringBuilder span = new SpannableStringBuilder(minNumberString);
@@ -345,25 +330,16 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     private void initRecyclerView(View view) {
         //初始化tabRecyclerView
-//        nestedScrollView = (NestedScrollView) view.findViewById(R.id.nestedScrollView);
-//        nestedScrollView.setVisibility(View.VISIBLE);
         rcHome = (RecyclerView) view.findViewById(R.id.rc_Home);
-//        nestedScrollView.setVisibility(View.GONE);
-//        recyNested = (RecyclerView) view.findViewById(R.id.recyNested);
         mLinearLayoutManager = new RecyclerLayoutManager(getActivity());
         mLinearLayoutManager.setScrollEnabled(true);
         mLinearLayoutManager.setAutoMeasureEnabled(true);
         rcHome.setLayoutManager(mLinearLayoutManager);
-//        layoutManagerNested = new RecyclerLayoutManager(getActivity());
-//        layoutManagerNested.setScrollEnabled(true);
-//        layoutManagerNested.setAutoMeasureEnabled(true);
-//        recyNested.setLayoutManager(layoutManagerNested);
         //创建Adapter
         adapter = new HomeRecyclerAdapter(getActivity());
         adapter.setOnItemClickListener(this);
 
         rcHome.setAdapter(adapter);
-//        recyNested.setAdapter(adapter);
         rcHome.addOnScrollListener(new RecyclerViewListener());
     }
 
@@ -562,7 +538,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
             }
         }
         HomeRecyModel footView = new HomeRecyModel();
-        footView.setItemType(Config.TYPE_FOOTVIEW);
+        footView.setItemType(ITEM_FOOTER);
         homerecyList.add(footView);
     }
 
@@ -741,19 +717,19 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     }
                     if (member == null) {
 //                        Log.e("TAG_Home","loginState=登录看价格");
-                        adapter.setData(homerecyList, "登录看价格");
                         SharePrefHelper.getInstance(getActivity()).putSpString("loginState", "登录看价格");
+                        adapter.setData(homerecyList, "登录看价格");
                     } else {
                         int priceDisplayType1 = member.getPriceDisplayType();
                         if (priceDisplayType1 == 0) {
 //                            Log.e("TAG_Home","loginState=0");
-                            adapter.setData(homerecyList, "0");
                             SharePrefHelper.getInstance(getActivity()).putSpString("loginState", "0");
+                            adapter.setData(homerecyList ,"0");
                         } else {
 //                            Log.e("TAG_Home","loginState=priceDisplayMsg1");
                             String priceDisplayMsg1 = member.getPriceDisplayMsg();
-                            adapter.setData(homerecyList, priceDisplayMsg1);
                             SharePrefHelper.getInstance(getActivity()).putSpString("loginState", priceDisplayMsg1);
+                            adapter.setData(homerecyList, priceDisplayMsg1);
                         }
                     }
                     //轮播图
@@ -1160,6 +1136,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
             @Override
             public void onClick(View v) {
 //                startWebViewActivity(Config.ATTESTATION);
+                mUpgradeNotifyDialog.dismiss();
                 startActivity(new Intent(getActivity(),AuthorActivity.class));
             }
         });

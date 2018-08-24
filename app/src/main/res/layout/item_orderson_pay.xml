@@ -15,6 +15,10 @@
         android:background="@drawable/shape_black_white"
         android:text="查看主订单"
         android:textSize="@dimen/textsize_14"
+        android:paddingLeft="@dimen/margin_10"
+        android:paddingBottom="@dimen/margin_5"
+        android:paddingRight="@dimen/margin_10"
+        android:paddingTop="@dimen/margin_5"
         android:layout_marginRight="@dimen/margin_10"
         android:textColor="@color/black_66" />
     <TextView
@@ -22,6 +26,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_black_white"
+        android:paddingLeft="@dimen/margin_10"
+        android:paddingBottom="@dimen/margin_5"
+        android:paddingRight="@dimen/margin_10"
+        android:paddingTop="@dimen/margin_5"
         android:text="查看订单"
         android:textSize="@dimen/textsize_14"
         android:layout_marginRight="@dimen/margin_10"

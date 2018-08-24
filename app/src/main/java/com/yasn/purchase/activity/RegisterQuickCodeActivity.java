@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +26,9 @@ import java.util.Map;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
+
+import static com.yasn.purchase.R.id.tv_RegisterQuickVoiceCode;
+import static com.yasn.purchase.R.id.tv_RegisterQuickVoiceHint;
 
 public class RegisterQuickCodeActivity extends SimpleTopbarActivity {
 
@@ -54,7 +56,7 @@ public class RegisterQuickCodeActivity extends SimpleTopbarActivity {
             resetTopbarTitle("快速注册");
         } else if (isSmsLogin == 2) {
             resetTopbarTitle("忘记密码");
-        }else if (isSmsLogin == 3) {
+        } else if (isSmsLogin == 3) {
             resetTopbarTitle("修改密码");
         }
         getVerificationCode(100, "1");
@@ -70,15 +72,7 @@ public class RegisterQuickCodeActivity extends SimpleTopbarActivity {
      *                 修改密码："update_password"
      */
     private void getVerificationCode(int requestCode, String codeType) {
-        tvRegisterQuickResetCode.setVisibility(View.VISIBLE);
-        tvRegisterQuickGetCode.setVisibility(View.INVISIBLE);
-        if (requestCode == 100) {
-            handler.postDelayed(runnable, 1000);
-            tvRegisterQuickVoiceCode.setEnabled(false);
-        } else {
-            handler.postDelayed(runnable, 1000);
-            tvRegisterQuickGetCode.setEnabled(false);
-        }
+
         String key = null;
         if (isSmsLogin == 0) {//短信登录
             key = "login";
@@ -86,7 +80,7 @@ public class RegisterQuickCodeActivity extends SimpleTopbarActivity {
             key = "register";
         } else if (isSmsLogin == 2) {//忘记密码
             key = "back_password";
-        }else if (isSmsLogin == 3) {//修改密码
+        } else if (isSmsLogin == 3) {//修改密码
             key = "update_password";
         }
         Map<String, Object> params = new HashMap<String, Object>();
@@ -105,13 +99,13 @@ public class RegisterQuickCodeActivity extends SimpleTopbarActivity {
         tvRegisterQuickResetCode = (TextView) findViewById(R.id.tv_RegisterQuickResetCode);
         tvRegisterQuickResetCode.setVisibility(View.INVISIBLE);
         //语音听取验证码
-        tvRegisterQuickVoiceCode = (TextView) findViewById(R.id.tv_RegisterQuickVoiceCode);
+        tvRegisterQuickVoiceCode = (TextView) findViewById(tv_RegisterQuickVoiceCode);
         tvRegisterQuickVoiceCode.setOnClickListener(this);
         tvRegisterQuickVoiceCode.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         tvRegisterQuickVoiceCode.getPaint().setAntiAlias(true);//抗锯齿
         tvRegisterQuickVoiceCode.setVisibility(View.GONE);
         //提示
-        tvRegisterQuickVoiceHint = (TextView) findViewById(R.id.tv_RegisterQuickVoiceHint);
+        tvRegisterQuickVoiceHint = (TextView) findViewById(tv_RegisterQuickVoiceHint);
         tvRegisterQuickVoiceHint.setText("验证码已发送，请注意查收。");
         //下一步
         tvRegisterQuickCodeOk = (TextView) findViewById(R.id.tv_RegisterQuickCodeOk);
@@ -133,6 +127,10 @@ public class RegisterQuickCodeActivity extends SimpleTopbarActivity {
                     ToastUtil.showToast("验证码不能为空！");
                     return;
                 }
+                if (trimCode.length()!=6) {
+                    ToastUtil.showToast("验证码不正确！");
+                    return;
+                }
                 if (isSmsLogin == 0) {//短信登录
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("mobile", mobile);
@@ -145,13 +143,13 @@ public class RegisterQuickCodeActivity extends SimpleTopbarActivity {
                 } else if (isSmsLogin == 2) {//忘记密码校验手机验证码
                     Map<String, Object> params = new HashMap<String, Object>();
                     okHttpGet(102, Config.REGISTERQUICKDETECTIONPHONECODE + trimCode + "/" + mobile + "/back_password", params);
-                }else if (isSmsLogin == 3) {//修改密码校验手机验证码
+                } else if (isSmsLogin == 3) {//修改密码校验手机验证码
                     Map<String, Object> params = new HashMap<String, Object>();
                     okHttpGet(102, Config.REGISTERQUICKDETECTIONPHONECODE + trimCode + "/" + mobile + "/update_password", params);
 
                 }
                 break;
-            case R.id.tv_RegisterQuickVoiceCode:  //语音听取验证码
+            case tv_RegisterQuickVoiceCode:  //语音听取验证码
                 getVerificationCode(101, "2");
                 break;
         }
@@ -172,6 +170,8 @@ public class RegisterQuickCodeActivity extends SimpleTopbarActivity {
                 tvRegisterQuickGetCode.setVisibility(View.INVISIBLE);
                 handler.postDelayed(this, 1000);
             } else {
+                tvRegisterQuickVoiceHint.setText("没收到短信？");
+                tvRegisterQuickVoiceCode.setVisibility(View.VISIBLE);
                 tvRegisterQuickResetCode.setVisibility(View.INVISIBLE);
                 tvRegisterQuickGetCode.setVisibility(View.VISIBLE);
                 recLen = 60;
@@ -187,23 +187,32 @@ public class RegisterQuickCodeActivity extends SimpleTopbarActivity {
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
             case 100:
-                if (returnCode != 200) {
-                    tvRegisterQuickResetCode.setVisibility(View.INVISIBLE);
-                    tvRegisterQuickGetCode.setVisibility(View.VISIBLE);
-                    recLen = 60;
-                    ToastUtil.showToast(returnMsg);
-                }
+                tvRegisterQuickResetCode.setVisibility(View.INVISIBLE);
+                tvRegisterQuickGetCode.setVisibility(View.VISIBLE);
+                recLen = 60;
+                tvRegisterQuickVoiceHint.setText("短信验证码已发送，请注意查收");
+                tvRegisterQuickVoiceCode.setVisibility(View.GONE);
+                ToastUtil.showToast(returnMsg);
+                handler.postDelayed(runnable, 1000);
+                tvRegisterQuickVoiceCode.setEnabled(false);
                 break;
             case 101:
+                tvRegisterQuickVoiceHint.setText("请耐心等待，您将会接到语音验证码电话。");
+                tvRegisterQuickVoiceCode.setVisibility(View.GONE);
+                tvRegisterQuickResetCode.setVisibility(View.INVISIBLE);
+                tvRegisterQuickGetCode.setVisibility(View.VISIBLE);
+                recLen = 60;
+                handler.postDelayed(runnable, 1000);
+                tvRegisterQuickGetCode.setEnabled(false);
                 ToastUtil.showToast(returnMsg);
                 break;
             case 102:
                 if (returnCode == 200) {
                     Intent intent;
                     //0:短信登录 1:快速注册 2:忘记密码 3：修改密码
-                    if (isSmsLogin == 3){
+                    if (isSmsLogin == 3) {
                         intent = new Intent(this, RegisterQuickUpdataPwdActivity.class);
-                    }else {
+                    } else {
                         intent = new Intent(this, RegisterQuickPasswordActivity.class);
                     }
                     intent.putExtra("mobile", mobile);
@@ -222,18 +231,15 @@ public class RegisterQuickCodeActivity extends SimpleTopbarActivity {
                     String yasn_shop_token = data.getYasn_shop_token();
                     if (!TextUtils.isEmpty(yasn_shop_token)) {
                         yasn_shop_token = yasn_shop_token.replace("\\", "");
-                        Log.e("TAG_登录1", "yasn_shop_token=" + yasn_shop_token);
                         try {
                             JSONObject jsonObject = new JSONObject(yasn_shop_token);
                             String access_token = jsonObject.optString("access_token");
-                            Log.e("TAG_登录token", "access_token=" + access_token);
                             String refresh_token = jsonObject.optString("refresh_token");
-                            Log.e("TAG_登录token", "refresh_token=" + refresh_token);
                             SharePrefHelper.getInstance(this).putSpString("token", access_token);
                             SharePrefHelper.getInstance(this).putSpString("resetToken", refresh_token);
 //                            SharePrefHelper.getInstance(this).putSpString("resetTokenTime", resetTokenTime);
                             EventBus.getDefault().post(new EventBusMsg("loginSucceed"));
-                            startActivity(new Intent(this,MainActivity.class));
+                            startActivity(new Intent(this, MainActivity.class));
 //                            finish();
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.PayActivity;
+import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.adapter.OrderMainAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.listener.OnRcOrderItemClickListener;
@@ -77,7 +78,7 @@ public class OrderObligFragment extends OrderFragment implements
 
     @Override
     protected void initView(LayoutInflater inflater, View view) {
-        super.initView(inflater,view);
+        super.initView(inflater, view);
         title = (RelativeLayout) view.findViewById(R.id.topbat_parent);
         title.setVisibility(View.GONE);
         initMultiSwipeRefresh(view);
@@ -90,7 +91,7 @@ public class OrderObligFragment extends OrderFragment implements
         rcOrderOblig = (RecyclerView) view.findViewById(R.id.rc_OrderOblig);
         linearLayoutManager = new LinearLayoutManager(getFragmentActivity());
         rcOrderOblig.setLayoutManager(linearLayoutManager);
-        adapter = new OrderMainAdapter(getActivity(),linearLayoutManager);
+        adapter = new OrderMainAdapter(getActivity(), linearLayoutManager);
         adapter.setOnItemClickListener(this);
         rcOrderOblig.setAdapter(adapter);
         //rc线
@@ -108,9 +109,9 @@ public class OrderObligFragment extends OrderFragment implements
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 boolean isTop = recyclerView.canScrollVertically(-1);//返回false表示不能往下滑动，即代表到顶部了；
-                if (isTop){
+                if (isTop) {
                     slOrderOblig.setEnabled(false);
-                }else {
+                } else {
                     slOrderOblig.setEnabled(true);
                 }
                 boolean isBottom = recyclerView.canScrollVertically(1);//返回false表示不能往上滑动，即代表到底部了；
@@ -120,12 +121,12 @@ public class OrderObligFragment extends OrderFragment implements
                 int visibleItemCount = linearLayoutManager.getChildCount();
                 //当前RecyclerView的所有子项个数
                 int totalItemCount = linearLayoutManager.getItemCount();
-                if (isBottom ){
+                if (isBottom) {
                     slOrderOblig.setBottom(false);
-                }else {
-                    if (visibleItemCount == totalItemCount){
+                } else {
+                    if (visibleItemCount == totalItemCount) {
                         slOrderOblig.setBottom(false);
-                    }else {
+                    } else {
                         slOrderOblig.setBottom(true);
                     }
                 }
@@ -133,7 +134,7 @@ public class OrderObligFragment extends OrderFragment implements
         });
     }
 
-    private void initMultiSwipeRefresh( View view) {
+    private void initMultiSwipeRefresh(View view) {
         //搜索列表
         slOrderOblig = (MultiSwipeRefreshLayout) view.findViewById(R.id.swipe_OrderOblig);
         //下拉刷新监听
@@ -156,31 +157,33 @@ public class OrderObligFragment extends OrderFragment implements
 
         switch (requestCode) {
             case 100:
-                if (returnCode == 200){
+                if (returnCode == 200) {
                     initResule(returnData);
                     if (isDownPull) {
                         slOrderOblig.setRefreshing(false);
                         isDownPull = false;
                     }
-                }else {
+                } else {
                     ToastUtil.showToast(returnMsg);
                 }
                 break;
         }
 
     }
+
     List<OrderMainModel.OrdersBean> ordersList;
+
     private void initResule(String returnData) {
         try {
-            if (pageNo == 1 && orderObligList !=null&& orderObligList.size()>0) {
+            if (pageNo == 1 && orderObligList != null && orderObligList.size() > 0) {
                 orderObligList.clear();
             }
             OrderMainModel orderMainModel = JSON.parseObject(returnData, OrderMainModel.class);
             OrderMainModel.MemberBean member = orderMainModel.getMember();
             String employee_auth = member.getEmployee_auth();
             ordersList = orderMainModel.getOrders();
-            if (ordersList !=null && ordersList.size()>0){
-                for (int i = 0,j = ordersList.size(); i < j; i++) {
+            if (ordersList != null && ordersList.size() > 0) {
+                for (int i = 0, j = ordersList.size(); i < j; i++) {
 //                    boolean isRemoveList = false;
                     OrderMainModel.OrdersBean ordersBean = ordersList.get(i);
                     //头部信息
@@ -192,8 +195,8 @@ public class OrderObligFragment extends OrderFragment implements
                     int orderId = ordersBean.getOrderId();
                     orderObligList.add(orderHeaderModel);
                     List<OrderMainModel.OrdersBean.ChildOrderListBean> childOrderList = ordersBean.getChildOrderList();
-                    if (childOrderList !=null && childOrderList.size()>0){
-                        for (int k = 0,l = childOrderList.size(); k < l; k++) {
+                    if (childOrderList != null && childOrderList.size() > 0) {
+                        for (int k = 0, l = childOrderList.size(); k < l; k++) {
                             OrderMainModel.OrdersBean.ChildOrderListBean childOrderListBean = childOrderList.get(k);
                             //店铺名称
                             OrderShopNameModel orderShopNameModel = new OrderShopNameModel();
@@ -202,8 +205,8 @@ public class OrderObligFragment extends OrderFragment implements
                             orderShopNameModel.setShopName(storeName);
                             orderObligList.add(orderShopNameModel);
                             List<OrderMainModel.OrdersBean.ChildOrderListBean.OrderItemBean> orderItem = childOrderListBean.getOrderItem();
-                            if (orderItem !=null && orderItem.size()>0){
-                                for (int m = 0,n = orderItem.size(); m < n; m++) {
+                            if (orderItem != null && orderItem.size() > 0) {
+                                for (int m = 0, n = orderItem.size(); m < n; m++) {
                                     OrderMainModel.OrdersBean.ChildOrderListBean.OrderItemBean orderItemBean = orderItem.get(m);
                                     OrderGoodsContentModel orderGoodsContentModel = new OrderGoodsContentModel();
                                     //商品图片
@@ -223,10 +226,6 @@ public class OrderObligFragment extends OrderFragment implements
                                     orderObligList.add(orderGoodsContentModel);
                                 }
                             }
-//                            else {
-//                                isRemoveList = true;
-//                                Log.e("TAG_空数据orderItem","isRemoveList="+i);
-//                            }
                         }
                         //支付信息
                         OrderMainPayInfoModel orderMainPayInfoModel = new OrderMainPayInfoModel();
@@ -245,11 +244,11 @@ public class OrderObligFragment extends OrderFragment implements
                         int status1 = ordersBean.getStatus();
                         String paymentType = ordersBean.getPaymentType();
                         String parentId = ordersBean.getParentId();
-                        Log.e("TAG_支付","isCancel="+isCancel+";status1="+status1+";paymentType="+paymentType
-                                +";parentId="+parentId+";employee_auth="+employee_auth);
-                        if (isCancel==0&&status1==1&&!"offline".equals(paymentType)&& parentId == null&&!"1".equals(employee_auth)){
+                        Log.e("TAG_支付", "isCancel=" + isCancel + ";status1=" + status1 + ";paymentType=" + paymentType
+                                + ";parentId=" + parentId + ";employee_auth=" + employee_auth);
+                        if (isCancel == 0 && status1 == 1 && !"offline".equals(paymentType) && parentId == null && !"1".equals(employee_auth)) {
                             orderMainPayInfoModel.setNeedPay(true);
-                        }else {
+                        } else {
                             orderMainPayInfoModel.setNeedPay(false);
                         }
                         //订单id
@@ -261,26 +260,26 @@ public class OrderObligFragment extends OrderFragment implements
                         orderMainPayInfoModel.setCreateTime(createTime);
                     }
                 }
-                if (pageNo >1) {
+                if (pageNo > 1) {
                     isUpPull = false;
                     slOrderOblig.setLoading(false);
                     adapter.addData(orderObligList);
                 } else {
                     adapter.setData(orderObligList);
                 }
-                if (orderObligList == null|| orderObligList.size() ==0){
+                if (orderObligList == null || orderObligList.size() == 0) {
                     llError.setVisibility(View.VISIBLE);
                     rcOrderOblig.setVisibility(View.GONE);
-                }else {
+                } else {
                     llError.setVisibility(View.GONE);
                     rcOrderOblig.setVisibility(View.VISIBLE);
                 }
-            }else {
-                if (pageNo>1){
+            } else {
+                if (pageNo > 1) {
                     adapter.upFootText();
                     llError.setVisibility(View.GONE);
                     rcOrderOblig.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     llError.setVisibility(View.VISIBLE);
                     rcOrderOblig.setVisibility(View.GONE);
                 }
@@ -309,7 +308,8 @@ public class OrderObligFragment extends OrderFragment implements
     public void onFinishResult() {
         cancelUpdate();
     }
-    private void cancelUpdate(){
+
+    private void cancelUpdate() {
         if (isDownPull) {
             slOrderOblig.setRefreshing(false);
             isDownPull = false;
@@ -320,50 +320,59 @@ public class OrderObligFragment extends OrderFragment implements
             slOrderOblig.setLoading(false);
         }
     }
+
     //查看订单
     @Override
     public void OnLookOrderClick(int position) {
         Object o = orderObligList.get(position);
-        if (o instanceof OrderMainPayInfoModel){
-            OrderMainPayInfoModel  infoModel = (OrderMainPayInfoModel) o;
+        if (o instanceof OrderMainPayInfoModel) {
+            OrderMainPayInfoModel infoModel = (OrderMainPayInfoModel) o;
             int orderId = infoModel.getOrderId();
-            Log.e("TAG_查看订单","orderId="+orderId);
-            startOrderDetailsActivity(orderId,1);
-        }else if (o instanceof OrderGoodsContentModel){
-            OrderGoodsContentModel  goodsModel = (OrderGoodsContentModel) o;
+            startOrderDetailsActivity(orderId, 1);
+        } else if (o instanceof OrderGoodsContentModel) {
+            OrderGoodsContentModel goodsModel = (OrderGoodsContentModel) o;
             int orderId = goodsModel.getOrderId();
-            Log.e("TAG_查看订单","orderId="+orderId);
-            startOrderDetailsActivity(orderId,1);
+            startOrderDetailsActivity(orderId, 1);
         }
     }
+
     //立即支付
     @Override
     public void OnPayMoneyClick(int position) {
         Object o = orderObligList.get(position);
-        if (o instanceof OrderMainPayInfoModel){
-            OrderMainPayInfoModel  infoModel = (OrderMainPayInfoModel) o;
-            //订单号
-            String sn = infoModel.getSn();
-            Log.e("TAG_立即支付","sn="+sn);
-            //支付金额
-            String needPayMoney = infoModel.getNeedPayMoney();
-            //订单创建时间
-            long createTime = infoModel.getCreateTime();
-            SimpleDateFormat df=new SimpleDateFormat("HH:mm:ss");
-            Log.e("TAG_时间","createTime="+df.format(new Date(createTime)));
-            String format = df.format(new Date(createTime + 2 * 60 * 60 * 1000));
-            Intent intent = new Intent(getActivity(), PayActivity.class);
-            intent.putExtra("sn",sn);
-            intent.putExtra("needPayMoney",needPayMoney);
-            intent.putExtra("payTime",format);
-            startActivity(intent);
+        if (o instanceof OrderMainPayInfoModel) {
+            OrderMainPayInfoModel infoModel = (OrderMainPayInfoModel) o;
+            if (Config.isWebViewPay) {
+                int orderid = infoModel.getOrderId();
+                Intent intent = new Intent(getActivity(), WebViewH5Activity.class);
+                intent.putExtra("webViewUrl", Config.ORDERPAY + orderid);
+                startActivity(intent);
+            } else {
+                //订单号
+                String sn = infoModel.getSn();
+                Log.e("TAG_立即支付", "sn=" + sn);
+                //支付金额
+                String needPayMoney = infoModel.getNeedPayMoney();
+                //订单创建时间
+                long createTime = infoModel.getCreateTime();
+                SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+                Log.e("TAG_时间", "createTime=" + df.format(new Date(createTime)));
+                String format = df.format(new Date(createTime + 2 * 60 * 60 * 1000));
+                Intent intent = new Intent(getActivity(), PayActivity.class);
+                intent.putExtra("sn", sn);
+                intent.putExtra("needPayMoney", needPayMoney);
+                intent.putExtra("payTime", format);
+                startActivity(intent);
+            }
         }
     }
+
     //查看主订单
     @Override
     public void OnLookMainOrderClick(int position) {
 
     }
+
     //下拉刷新
     @Override
     public void onRefresh() {
@@ -372,15 +381,16 @@ public class OrderObligFragment extends OrderFragment implements
         isDownPull = true;
         OkHttpDemand();
     }
+
     //上拉加载
     @Override
     public void onLoad() {
 //        Log.e("TAG_待付款","onLoad="+(rcOrderOblig !=null)+( rcOrderOblig.getAdapter() != null));
-        if (rcOrderOblig !=null&& rcOrderOblig.getAdapter() != null){
+        if (rcOrderOblig != null && rcOrderOblig.getAdapter() != null) {
             isUpPull = true;
             slOrderOblig.setLoading(true);
             pageNo++;
-            Log.e("TAG_待付款上拉加载","pageNo="+pageNo);
+            Log.e("TAG_待付款上拉加载", "pageNo=" + pageNo);
             OkHttpDemand();
         }
     }

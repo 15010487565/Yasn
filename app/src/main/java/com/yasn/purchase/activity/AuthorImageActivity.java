@@ -5,17 +5,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -94,6 +93,14 @@ public class AuthorImageActivity extends PhotoActivity {
                 getChoiceDialog().show();
                 break;
             case R.id.tv_AuthorUploadOk://上传
+                if (TextUtils.isEmpty(proveFileA)){
+                    ToastUtil.showToast("请上传营业执照/手持身份证照片！");
+                    return;
+                }
+                if (TextUtils.isEmpty(proveFileB)){
+                    ToastUtil.showToast("请上传店铺门面照片！");
+                    return;
+                }
                 dialogshow();
                 Map<String, String> params = new HashMap<String, String>();
                 if (token != null && !"".equals(token)) {
@@ -186,6 +193,9 @@ public class AuthorImageActivity extends PhotoActivity {
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         sampleDialog = builder.create();
+//        authorDialog.setCancelable(false);
+//        authorDialog.setCanceledOnTouchOutside(false);
+//        authorDialog.getWindow().setBackgroundDrawable(new ColorDrawable());
         sampleDialog.show();
         sampleDialog.setContentView(serviceView);
         FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.WRAP_CONTENT);
@@ -193,32 +203,11 @@ public class AuthorImageActivity extends PhotoActivity {
         serviceView.setLayoutParams(layout);
     }
 
-    /**
-     * 显示popupWindow
-     */
-    PopupWindow window;
-    private void showPopwindow(int isUploadOk) {
+    //认证弹窗
+    protected AlertDialog authorDialog;
+    private void showAuthDialog(int isUploadOk) {
         LayoutInflater factor = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_authorupload_image, null);
-       window = new PopupWindow(serviceView,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setFocusable(false);
-        // 实例化一个ColorDrawable颜色为半透明
-//        ColorDrawable dw = new ColorDrawable(ContextCompat.getColor(this, R.color.transparent));
-//        window.setBackgroundDrawable(dw);
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        backgroundAlpha(0.5f); //0.0-1.0
-        getWindow().setAttributes(lp);
-//        int width =  getWindowManager().getDefaultDisplay().getWidth();
-//        window.setWidth(width * 6/10);
-        // 设置PopupWindow是否能响应外部点击事件
-        window.setOutsideTouchable(false);
-//        window.setTouchable(false);
-        // 设置popWindow的显示和消失动画
-//        window.setAnimationStyle(R.style.popwindow_anim_leftandright);
-        // 在底部显示
-        window.showAtLocation(serviceView, Gravity.CENTER, 0, 0);
         //添加控件绑定并配置适配器
         TextView tvTopHint = (TextView) serviceView.findViewById(R.id.tv_AuthorUploadTopHint);
         TextView tvUploadHint = (TextView) serviceView.findViewById(R.id.tv_AuthorUploadHint);
@@ -232,7 +221,7 @@ public class AuthorImageActivity extends PhotoActivity {
             tvUploadOk.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    window.dismiss();
+                    authorDialog.dismiss();
                     startActivity(new Intent(AuthorImageActivity.this,MainActivity.class));
                 }
             });
@@ -244,38 +233,35 @@ public class AuthorImageActivity extends PhotoActivity {
             tvUploadOk.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    window.dismiss();
-                    backgroundAlpha(1f);
+                    authorDialog.dismiss();
                 }
             });
         }
-
-        //popWindow消失监听方法
-        window.setOnDismissListener(new PopupWindow.OnDismissListener() {
-
-            @Override
-            public void onDismiss() {
-                backgroundAlpha(1f);
-                window.dismiss();
-            }
-        });
-    }
-
-    private void backgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = bgAlpha; //0.0-1.0
-        getWindow().setAttributes(lp);
+        Activity activity = this;
+        while (activity.getParent() != null) {
+            activity = activity.getParent();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        authorDialog = builder.create();
+        authorDialog.setCancelable(false);
+        authorDialog.setCanceledOnTouchOutside(false);
+        authorDialog.getWindow().setBackgroundDrawable(new ColorDrawable());
+        authorDialog.show();
+        authorDialog.setContentView(serviceView);
+        FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.WRAP_CONTENT);
+        //layout.setMargins(WallspaceUtil.dip2px(this, 10), 0, FeatureFunction.dip2px(this, 10), 0);
+        serviceView.setLayoutParams(layout);
     }
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {
-//                    showUpLoadImageDialog(1);
-                    showPopwindow(1);
+                    showAuthDialog(1);
+//                    showPopwindow(1);
                 } else if (returnCode == 400) {
-//                    showUpLoadImageDialog(0);
-                    showPopwindow(0);
+                    showAuthDialog(0);
+//                    showPopwindow(0);
                 } else {
                     ToastUtil.showToast(returnMsg);
                 }
@@ -287,7 +273,11 @@ public class AuthorImageActivity extends PhotoActivity {
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
+        if (authorDialog !=null && authorDialog.isShowing()){
 
+        }else {
+            finish();
+        }
     }
 
     @Override

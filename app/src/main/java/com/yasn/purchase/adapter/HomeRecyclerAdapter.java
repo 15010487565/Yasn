@@ -27,9 +27,12 @@ import com.yasn.purchase.model.HomeRecyModel;
 
 import java.util.List;
 
+import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
-import static com.yasn.purchase.common.Config.TYPE_FOOTVIEW;
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_FOOTER;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_ONE;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_TWO;
 
 /**
  * Created by gs on 2017/12/26.
@@ -37,8 +40,6 @@ import static com.yasn.purchase.common.Config.TYPE_FOOTVIEW;
 
 public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public final static int TYPE_ONE = 1;
-    public final static int TYPE_TWO = 2;
     private Context context;
     private List<HomeRecyModel> contentList;
     String priceType = "0";
@@ -46,14 +47,15 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private String place= " ";
     private int placeNum= 3;
     private LayoutInflater inflater;
+
     public HomeRecyclerAdapter( Context context) {
         this.context = context;
-        regionName = SharePrefHelper.getInstance(context).getSpString("regionName");
         inflater = LayoutInflater.from(context);
-        Log.e("TAG_regionName","regionName="+regionName);
     }
 
     public void setData(List contentList,String priceType) {
+        regionName = SharePrefHelper.getInstance(context).getSpString("regionName");
+        Log.e("TAG_regionName","regionName="+regionName);
         this.contentList = contentList;
         this.priceType = priceType;
         notifyDataSetChanged();
@@ -79,7 +81,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 view = inflater.inflate(R.layout.fragment_homelistitemtwo, parent, false);
                 holder = new ViewHolderTwo(view);
                 break;
-            case TYPE_FOOTVIEW:
+            case ITEM_FOOTER:
                 view = inflater.inflate(R.layout.footview_listview, parent, false);
                 holder = new ViewHolderFootView(view);
                 break;
@@ -166,7 +168,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if ("0".equals(priceType)){
                     holderRecy.moneyRecy.setText("￥"+money);
                 }else {
-                    holderRecy.moneyRecy.setText(priceType==null?"未知错误":priceType);
+                    holderRecy.moneyRecy.setText(priceType==null?"登录看价格":priceType);
                 }
 
                 String minNumberString = String.format("已售%s笔", homeRecy.getTotalBuyCount());
@@ -271,7 +273,7 @@ public class HomeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         ((MainActivity)context).startBaseActivity(context,LoginActivity.class);
                     }else if ("认证看价格".equals(trim)){
 //                        startWebViewActivity(Config.ATTESTATION);
-                        context.startActivity(new Intent(context,AuthorActivity.class));
+                        ((SimpleTopbarActivity)context).showStartAuthorDialog(AuthorActivity.class);
                     }
                     break;
             }

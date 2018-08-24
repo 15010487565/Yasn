@@ -32,6 +32,7 @@ import com.yasn.purchase.activity.AuthorActivity;
 import com.yasn.purchase.activity.LoginActivity;
 import com.yasn.purchase.activity.MainActivity;
 import com.yasn.purchase.activity.MakerCodeActivity;
+import com.yasn.purchase.activity.MakerCreateActivity;
 import com.yasn.purchase.activity.MakerExploitShopActivity;
 import com.yasn.purchase.activity.MakerShopOrderActivity;
 import com.yasn.purchase.activity.MakerShroffAccountActivity;
@@ -554,6 +555,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     ShopInfoModel.StoreBean store = shopinfomodel.getStore();
                     if (store != null) {
                         String employeeAuth = store.getEmployeeAuth();
+                        SharePrefHelper.getInstance(getActivity()).putSpString("employeeAuth",employeeAuth);
                         String  dutyAuth = "";
                         if (employeeAuth != null) {//0:经理,1:采购 ,2:财务 1,2采购+财务
                             if ("0".equals(employeeAuth)){
@@ -774,7 +776,8 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
             if (makerType == 2){
                 switch (tabIndex){
                     case 0://开通创客
-                        startWebViewActivity(Config.MAKERDREDGE);
+//                        startWebViewActivity(Config.MAKERDREDGE);
+                        startActivity(new Intent(getActivity(), MakerCreateActivity.class));
                         break;
                 }
             }else if (makerType == 1){
@@ -844,10 +847,12 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                     ((MainActivity)getActivity()).startYasnActivity(digital_member);
                     break;
                 case 3://帮助中心
-                    startWebViewActivity(Config.SHOPHELP);
+//                    startWebViewActivity(Config.SHOPHELP);
+                    ((MainActivity)getActivity()).startHelpActivity();
                     break;
                 case 4://电话咨询
-                    startWebViewActivity(Config.SHOPPHONE);
+//                    startWebViewActivity(Config.SHOPPHONE);
+                    ((MainActivity)getActivity()).startShopPhoneActivity();
                     break;
                 case 5://在线客服
                     SobotUtil.startSobot(getActivity(),null);
@@ -865,14 +870,13 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                 case 0://我的积分
                     ((MainActivity)getActivity()).startIntegralActivity();
                     break;
-//                case 1://数字会员
-//                    startWebViewActivity(Config.DREDGEYASNHELP);
-//                    break;
                 case 1://帮助中心
-                    startWebViewActivity(Config.SHOPHELP);
+//                    startWebViewActivity(Config.SHOPHELP);
+                    ((MainActivity)getActivity()).startHelpActivity();
                     break;
                 case 2://电话咨询
-                    startWebViewActivity(Config.SHOPPHONE);
+//                    startWebViewActivity(Config.SHOPPHONE);
+                    ((MainActivity)getActivity()).startShopPhoneActivity();
                     break;
                 case 3://在线客服
                     SobotUtil.startSobot(getActivity(),null);

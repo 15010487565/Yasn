@@ -39,8 +39,8 @@
                         android:layout_height="2dp"
                         android:background="@color/black_D0"/>
                     <ImageView
-                        android:layout_width="@dimen/height_70"
-                        android:layout_height="@dimen/height_70"
+                        android:layout_width="@dimen/height_40"
+                        android:layout_height="@dimen/height_40"
                         android:background="@mipmap/shoplistnullcar"
                         android:layout_marginLeft="@dimen/margin_20"
                         android:layout_marginRight="@dimen/margin_20"/>
@@ -55,19 +55,20 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black_66"
                     android:gravity="center"
-                    android:textSize="@dimen/textsize_16"
+                    android:textSize="@dimen/textsize_14"
                     android:background="@color/white"
                     android:text="您还未采购过商品哦"/>
                 <TextView
+                    android:id="@+id/tv_OftenShopRecommend"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black_66"
                     android:paddingBottom="@dimen/margin_20"
                     android:gravity="center"
                     android:paddingTop="@dimen/margin_5"
-                    android:textSize="@dimen/textsize_16"
+                    android:textSize="@dimen/textsize_14"
                     android:background="@color/white"
-                    android:text="我们为您推荐了高毛利商品。赶快去采购吧"/>
+                    android:text=""/>
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rc_OftenShopNull"
                     android:layout_marginTop="@dimen/margin_5"
