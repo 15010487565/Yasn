@@ -65,7 +65,9 @@ public class OrderSonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         notifyDataSetChanged();
     }
-
+    public List<Object> getData(){
+        return list;
+    }
     private Map getViewHolderMap() {
         return viewHolderMap;
     }

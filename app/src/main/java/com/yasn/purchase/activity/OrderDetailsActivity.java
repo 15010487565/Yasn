@@ -28,12 +28,14 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activityold.WebViewH5Activity;
+import com.yasn.purchase.adapter.DetailsReceiptAdapter;
 import com.yasn.purchase.adapter.OrderDetailsAdapter;
 import com.yasn.purchase.adapter.OrderDetailsGoodsAdapter;
 import com.yasn.purchase.adapter.SetSimpleAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.func.CallServiceFunc;
 import com.yasn.purchase.help.SobotUtil;
+import com.yasn.purchase.model.EventBusMsg;
 import com.yasn.purchase.model.SobotModel;
 import com.yasn.purchase.model.order.OrderDetailsGiftModel;
 import com.yasn.purchase.model.order.OrderDetailsMainModel;
@@ -46,6 +48,7 @@ import com.yasn.purchase.utils.AlignedTextUtils;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.RecyclerViewDecoration;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,6 +65,8 @@ import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
+import static com.yasn.purchase.R.id.ll_BillType;
+
 /***
  * 订单详情
  * 2018年6月6日 09:24:36
@@ -77,6 +82,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
     private TextView tvOrderTime;
     //发票类型
     private TextView tvBillType;
+    private ImageView ivBillType;
     private LinearLayout llBillType;
     //收货人
     private TextView tvConsig, tvConsigName;
@@ -87,7 +93,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
     private TextView tvRemark;
     //底部支付信息
     private LinearLayout llOrderDetailsBottom;
-    //主订单还是主订单
+    //主订单还是子订单
     private int isMainOrder;
     //底部提示
     private TextView tvBottomLeft, tvBottomRight;
@@ -145,9 +151,12 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
         rcOrderDetails.setAdapter(adapter);
         rcOrderDetails.addItemDecoration(recyclerViewDecoration);
         tvOrderTime = (TextView) findViewById(R.id.tv_orderTime);
+        //发票类型
         tvBillType = (TextView) findViewById(R.id.tv_billType);
-        llBillType = (LinearLayout) findViewById(R.id.ll_BillType);
+        llBillType = (LinearLayout) findViewById(ll_BillType);
         llBillType.setOnClickListener(this);
+        ivBillType = (ImageView) findViewById(R.id.iv_BillType);
+        ivBillType.setVisibility(View.INVISIBLE);
         //收货人
         tvConsig = (TextView) findViewById(R.id.tv_consig);
         SpannableStringBuilder tradepriceString = AlignedTextUtils.justifyString("收货人", 4);
@@ -256,8 +265,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
             case R.id.tv_ReminOrderOk://提醒物流和提醒发货
                 showRemindContentDialog.dismiss();
                 break;
-            case R.id.tv_cancelOrderOk:
-//                Log.e("TAG_取消订单dialog", "确定");
+            case R.id.tv_cancelOrderOk://取消订单
                 Map<String, Object> params = new HashMap<String, Object>();
                 if (token != null && !"".equals(token)) {
                     params.put("access_token", token);
@@ -269,7 +277,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                 params.put("reason", reason);
                 okHttpGet(101, Config.ORDERCANCEL, params);
                 break;
-            case R.id.ll_BillType://发票类型
+            case ll_BillType://发票类型
                 String tvBillTypeString = tvBillType.getText().toString();
                 if (!TextUtils.isEmpty(tvBillTypeString) && !"无".equals(tvBillTypeString)) {
                     showPopwindow();
@@ -314,20 +322,28 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                         case 3://已发货
                             break;
                         case 4://已收货
+                            llOrderDetailsBottom.setVisibility(View.GONE);
                             break;
                         case 5://已完成
+                            llOrderDetailsBottom.setVisibility(View.GONE);
                             break;
                         case 6://已取消
+                            llOrderDetailsBottom.setVisibility(View.GONE);
                             break;
                         case 7://交易完成申请售后
+                            llOrderDetailsBottom.setVisibility(View.GONE);
                             break;
                         case 8://待人工退单
+                            llOrderDetailsBottom.setVisibility(View.GONE);
                             break;
                         case 9://风控审核中
+                            llOrderDetailsBottom.setVisibility(View.GONE);
                             break;
                         case 100://已确认
+                            llOrderDetailsBottom.setVisibility(View.GONE);
                             break;
                         case 200://已确认
+                            llOrderDetailsBottom.setVisibility(View.GONE);
                             break;
                     }
                 } else {
@@ -341,6 +357,8 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                     if (cancelOrderDialog != null && cancelOrderDialog.isShowing()) {
                         cancelOrderDialog.dismiss();
                     }
+                    EventBus.getDefault().post(new EventBusMsg("refreshorder"));
+                    getOrderDetails();
                 }
                 ToastUtil.showToast(returnMsg);
                 break;
@@ -372,6 +390,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                 break;
             case 103://确认收货
                 if (returnCode == 200) {
+                    EventBus.getDefault().post(new EventBusMsg("refreshorder"));
                     getOrderDetails();
                 }
                     ToastUtil.showToast(returnMsg);
@@ -384,6 +403,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
     private void sonOrderDetails(String returnData, int type) {
         OrderDetailsSonModel orderDetailsSonModel = JSON.parseObject(returnData, OrderDetailsSonModel.class);
         if (orderDetailsSonModel != null && !"".equals(orderDetailsSonModel)) {
+            orderDetailsList = new ArrayList<>();
             OrderDetailsSonModel.OrderDetailsBean orderDetailsSon = orderDetailsSonModel.getOrderDetails();
             if (orderDetailsSon != null && !"".equals(orderDetailsSon)) {
                 statusTop = orderDetailsSon.getStatus();
@@ -394,9 +414,101 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                 String dateToString1 = HelpUtils.getDateToString1(createTime);
                 tvOrderTime.setText(dateToString1);
                 //发票类型
-//                OrderDetailsSonModel.OrderDetailsBean.ReceiptBean receipt = orderDetailsSon.getReceipt();
-//                if (receipt == null || "".equals(receipt)) {
-                tvBillType.setText("无");
+                OrderDetailsSonModel.OrderDetailsBean.ReceiptBean receipt = orderDetailsSon.getReceipt();
+                if (receipt != null && !"".equals(receipt)) {
+                    listReceipt = new ArrayList<>();
+                    receiptStatus = receipt.getReceiptStatus();
+                    //发票类型，2：普通发票，3为专用发票
+                    Map<String,String> mapReceiptStatus = new HashMap<>();
+                    if (receiptStatus == 2) {
+                        tvBillType.setText("普通发票");
+                        mapReceiptStatus.put("keyName", "\t\t发票类型：");
+                        mapReceiptStatus.put("\t\t发票类型：","普通发票");
+                        listReceipt.add(mapReceiptStatus);
+                        ivBillType.setVisibility(View.VISIBLE);
+                        llBillType.setEnabled(true);
+                    } else if (receiptStatus == 3) {
+                        tvBillType.setText("专用发票");
+                        mapReceiptStatus.put("keyName", "\t\t发票类型：");
+                        mapReceiptStatus.put("\t\t发票类型：","专用发票");
+                        listReceipt.add(mapReceiptStatus);
+                        ivBillType.setVisibility(View.VISIBLE);
+                        llBillType.setEnabled(true);
+                        //专票资质信息
+                        Map<String,String> mapStatus1 = new HashMap<>();
+                        mapStatus1.put("keyName", "专票资质信息");
+                        mapStatus1.put("专票资质信息","(审核通过后才可以开票)");
+                        listReceipt.add(mapStatus1);
+                    }
+                    //发票内容
+                    String content = receipt.getContent();
+                    if (!TextUtils.isEmpty(content)){
+                        Map<String,String> mapContent = new HashMap<>();
+                        mapContent.put("keyName", "\t\t发票内容：");
+                        mapContent.put("\t\t发票内容：",content);
+                        listReceipt.add(mapContent);
+                    }
+                    //单位名称
+                    String title = receipt.getTitle();
+                    if (!TextUtils.isEmpty(title)){
+                        Map<String,String> mapTitle = new HashMap<>();
+                        mapTitle.put("keyName", "\t\t单位名称：");
+                        mapTitle.put("\t\t单位名称：",title);
+                        listReceipt.add(mapTitle);
+                    }
+                    if (receiptStatus == 2) {//普通
+                        //税号
+                        String invoiceNum = receipt.getInvoiceNum();
+                        if (!TextUtils.isEmpty(invoiceNum)){
+                            Map<String,String> mapInvoiceNum = new HashMap<>();
+                            mapInvoiceNum.put("keyName", "税\t\t\t\t号：");
+                            mapInvoiceNum.put("税\t\t\t\t号：",invoiceNum);
+                            listReceipt.add(mapInvoiceNum);
+                        }
+                    } else if (receiptStatus == 3) {
+                        //纳税识别号
+                        String invoiceNum = receipt.getInvoiceNum();
+                        if (!TextUtils.isEmpty(invoiceNum)){
+                            Map<String,String> mapInvoiceNum = new HashMap<>();
+                            mapInvoiceNum.put("keyName", "纳税识别号：");
+                            mapInvoiceNum.put("纳税识别号：",invoiceNum);
+                            listReceipt.add(mapInvoiceNum);
+                        }
+                    }
+
+                    //注册地址
+                    String invoiceAddress = receipt.getInvoiceAddress();
+                    if (!TextUtils.isEmpty(invoiceAddress)){
+                        Map<String,String> mapInvoiceAddress = new HashMap<>();
+                        mapInvoiceAddress.put("keyName", "\t\t注册地址：");
+                        mapInvoiceAddress.put("\t\t注册地址：",invoiceAddress);
+                        listReceipt.add(mapInvoiceAddress);
+                    }
+                    //注册电话
+                    String invoiceMobile = receipt.getInvoiceMobile();
+                    if (!TextUtils.isEmpty(invoiceMobile)){
+                        Map<String,String> mapInvoiceMobile = new HashMap<>();
+                        mapInvoiceMobile.put("keyName", "\t\t注册电话：");
+                        mapInvoiceMobile.put("\t\t注册电话：",invoiceMobile);
+                        listReceipt.add(mapInvoiceMobile);
+                    }
+                    //开户银行
+                    String invoiceBank = receipt.getInvoiceBank();
+                    if (!TextUtils.isEmpty(invoiceBank)){
+                        Map<String,String> mapInvoiceBank = new HashMap<>();
+                        mapInvoiceBank.put("keyName", "\t\t开户银行：");
+                        mapInvoiceBank.put("\t\t开户银行：",invoiceBank);
+                        listReceipt.add(mapInvoiceBank);
+                    }
+                    //银行账号
+                    String invoiceBankNum = receipt.getInvoiceBankNum();
+                    if (!TextUtils.isEmpty(invoiceBankNum)){
+                        Map<String,String> mapInvoiceBankNum = new HashMap<>();
+                        mapInvoiceBankNum.put("keyName", "\t\t银行账号：");
+                        mapInvoiceBankNum.put("\t\t银行账号：",invoiceBankNum);
+                        listReceipt.add(mapInvoiceBankNum);
+                    }
+                }
                 //收货人
                 String shipName = orderDetailsSon.getShipName();
                 String shipMobile = orderDetailsSon.getShipMobile();
@@ -415,6 +527,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                 orderHeaderModel.setOrderCode(sn);
                 // 订单状态
                 int status = orderDetailsSon.getStatus();
+                Log.e("TAG_订单状态son","status="+status);
                 orderHeaderModel.setStatus(status);
                 // 订单支付状态
                 int payStatus = orderDetailsSon.getPayStatus();
@@ -563,6 +676,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
             orderGoodsContentModel.setNum(num);
             //商品价格
             double price = orderItemBean1.getPrice();
+            Log.e("TAG_商品詳情子订单","价格="+price);
             orderGoodsContentModel.setPrice(String.format("%.2f", price));
             //商品詳情id
             int goodsId = orderItemBean1.getGoodsId();
@@ -688,11 +802,13 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
     }
 
     //主订单详情
-    private List<Object> orderDetailsList = new ArrayList<>();
+    private List<Object> orderDetailsList;
     //发票类型
-    OrderDetailsMainModel.OrderDetailsBean.ChildOrderListBean.ReceiptBean receipt;
-
+    List<Map<String,String>> listReceipt;
+    //发票类型，2：普通发票，3为专用发票
+    int receiptStatus;
     private void orderDetailsMain(List<OrderDetailsMainModel.OrderDetailsBean.ChildOrderListBean> childOrderList) {
+        orderDetailsList = new ArrayList<>();
         for (int i = 0, j = childOrderList.size(); i < j; i++) {
             OrderDetailsMainModel.OrderDetailsBean.ChildOrderListBean childOrderListBean = childOrderList.get(i);
             //订单编号
@@ -701,6 +817,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
             orderHeaderModel.setOrderCode(sn);
             // 订单状态
             int status = childOrderListBean.getStatus();
+            Log.e("TAG_订单状态Main","status="+status);
             orderHeaderModel.setStatus(status);
             // 订单支付状态
             int payStatus = childOrderListBean.getPayStatus();
@@ -715,20 +832,109 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
             orderShopNameModel.setShopName(storeName);
             orderDetailsList.add(orderShopNameModel);
             //发票类型
-            receipt = childOrderListBean.getReceipt();
-            if (receipt == null || "".equals(receipt)) {
-                tvBillType.setText("无");
-            } else {
-                int receiptStatus = receipt.getReceiptStatus();
+            OrderDetailsMainModel.OrderDetailsBean.ChildOrderListBean.ReceiptBean receipt = childOrderListBean.getReceipt();
+            if (receipt != null && !"".equals(receipt)) {
+                listReceipt = new ArrayList<>();
+                receiptStatus = receipt.getReceiptStatus();
                 //发票类型，2：普通发票，3为专用发票
+                Map<String,String> mapReceiptStatus = new HashMap<>();
                 if (receiptStatus == 2) {
                     tvBillType.setText("普通发票");
+                    mapReceiptStatus.put("keyName", "\t\t发票类型：");
+                    mapReceiptStatus.put("\t\t发票类型：","普通发票");
+                    listReceipt.add(mapReceiptStatus);
+                    ivBillType.setVisibility(View.VISIBLE);
+                    llBillType.setEnabled(true);
                 } else if (receiptStatus == 3) {
                     tvBillType.setText("专用发票");
+                    mapReceiptStatus.put("keyName", "\t\t发票类型：");
+                    mapReceiptStatus.put("\t\t发票类型：","专用发票");
+                    listReceipt.add(mapReceiptStatus);
+                    ivBillType.setVisibility(View.VISIBLE);
+                    llBillType.setEnabled(true);
+                    //专票资质信息
+                    Map<String,String> mapStatus1 = new HashMap<>();
+                    mapStatus1.put("keyName", "专票资质信息");
+                    mapStatus1.put("专票资质信息","(审核通过后才可以开票)");
+                    listReceipt.add(mapStatus1);
                 } else {
                     tvBillType.setText("无");
+                    ivBillType.setVisibility(View.INVISIBLE);
+                    llBillType.setEnabled(false);
+                }
+                //发票内容
+                String content = receipt.getContent();
+                if (!TextUtils.isEmpty(content)){
+                    Map<String,String> mapContent = new HashMap<>();
+                    mapContent.put("keyName", "\t\t;发票内容：");
+                    mapContent.put("\t\t发票内容：",content);
+                    listReceipt.add(mapContent);
+                }
+                //单位名称
+                String title = receipt.getTitle();
+                if (!TextUtils.isEmpty(title)){
+                    Map<String,String> mapTitle = new HashMap<>();
+                    mapTitle.put("keyName", "\t\t单位名称：");
+                    mapTitle.put("\t\t单位名称：",title);
+                    listReceipt.add(mapTitle);
+                }
+                //纳税识别号
+                if (receiptStatus == 2) {//普通
+                    //税号
+                    String invoiceNum = receipt.getInvoiceNum();
+                    if (!TextUtils.isEmpty(invoiceNum)){
+                        Map<String,String> mapInvoiceNum = new HashMap<>();
+                        mapInvoiceNum.put("keyName", "\t\t税\t\t\t\t号：");
+                        mapInvoiceNum.put("\t\t税\t\t\t\t号：",invoiceNum);
+                        listReceipt.add(mapInvoiceNum);
+                    }
+                } else if (receiptStatus == 3) {
+                    //纳税识别号
+                    String invoiceNum = receipt.getInvoiceNum();
+                    if (!TextUtils.isEmpty(invoiceNum)){
+                        Map<String,String> mapInvoiceNum = new HashMap<>();
+                        mapInvoiceNum.put("keyName", "纳税识别号：");
+                        mapInvoiceNum.put("纳税识别号：",invoiceNum);
+                        listReceipt.add(mapInvoiceNum);
+                    }
+                }
+                //注册地址
+                String invoiceAddress = receipt.getInvoiceAddress();
+                if (!TextUtils.isEmpty(invoiceAddress)){
+                    Map<String,String> mapInvoiceAddress = new HashMap<>();
+                    mapInvoiceAddress.put("keyName", "\t\t注册地址：");
+                    mapInvoiceAddress.put("\t\t注册地址：",invoiceAddress);
+                    listReceipt.add(mapInvoiceAddress);
+                }
+                //注册电话
+                String invoiceMobile = receipt.getInvoiceMobile();
+                if (!TextUtils.isEmpty(invoiceMobile)){
+                    Map<String,String> mapInvoiceMobile = new HashMap<>();
+                    mapInvoiceMobile.put("keyName", "\t\t注册电话：");
+                    mapInvoiceMobile.put("\t\t注册电话：",invoiceMobile);
+                    listReceipt.add(mapInvoiceMobile);
+                }
+                //开户银行
+                String invoiceBank = receipt.getInvoiceBank();
+                if (!TextUtils.isEmpty(invoiceBank)){
+                    Map<String,String> mapInvoiceBank = new HashMap<>();
+                    mapInvoiceBank.put("keyName", "\t\t开户银行：");
+                    mapInvoiceBank.put("\t\t开户银行：",invoiceBank);
+                    listReceipt.add(mapInvoiceBank);
+                }
+                //银行账号
+                String invoiceBankNum = receipt.getInvoiceBankNum();
+                if (!TextUtils.isEmpty(invoiceBankNum)){
+                    Map<String,String> mapInvoiceBankNum = new HashMap<>();
+                    mapInvoiceBankNum.put("keyName", "\t\t银行账号：");
+                    mapInvoiceBankNum.put("\t\t银行账号：",invoiceBankNum);
+                    listReceipt.add(mapInvoiceBankNum);
                 }
             }
+//            else {
+//                ivBillType.setVisibility(View.INVISIBLE);
+//                llBillType.setEnabled(false);
+//            }
             //列表
             List<OrderDetailsMainModel.OrderDetailsBean.ChildOrderListBean.OrderItemBean> orderItem = childOrderListBean.getOrderItem();
             if (orderItem !=null){
@@ -746,6 +952,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                     orderGoodsContentModel.setNum(num);
                     //商品价格
                     double price = orderItemBean.getPrice();
+                    Log.e("TAG_商品詳情主订单","价格="+price);
                     orderGoodsContentModel.setPrice(String.format("%.2f", price));
                     //商品詳情id
                     int goodsId = orderItemBean.getGoodsId();
@@ -876,14 +1083,45 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
         }
     }
 
-    private void confirmReapDialog( int orderId) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        if (token != null && !"".equals(token)) {
-            params.put("access_token", token);
-        } else if (resetToken != null && !"".equals(resetToken)) {
-            params.put("access_token", resetToken);
+    protected AlertDialog okOrderDialog;
+    private void confirmReapDialog(final int orderId) {
+
+        LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View serviceView = factor.inflate(R.layout.dialog_shopcardelete, null);
+        TextView tvDelete = (TextView) serviceView.findViewById(R.id.tv_Delete);
+        tvDelete.setText("请您确认已经收到货物再执行此操作！");
+        TextView agree = (TextView) serviceView.findViewById(R.id.agree);
+        agree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                okOrderDialog.dismiss();
+                Map<String, Object> params = new HashMap<String, Object>();
+                if (token != null && !"".equals(token)) {
+                    params.put("access_token", token);
+                } else if (resetToken != null && !"".equals(resetToken)) {
+                    params.put("access_token", resetToken);
+                }
+                okHttpGet(103, Config.ORDERCONFIRM+orderId, params);
+                dialogshow();
+            }
+        });
+        TextView refuse = (TextView) serviceView.findViewById(R.id.refuse);
+        refuse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                okOrderDialog.dismiss();
+            }
+        });
+        Activity activity = OrderDetailsActivity.this;
+        while (activity.getParent() != null) {
+            activity = activity.getParent();
         }
-        okHttpGet(103, Config.ORDERCONFIRM+orderId, params);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        okOrderDialog = builder.create();
+        okOrderDialog.setCancelable(false);
+        okOrderDialog.setCanceledOnTouchOutside(false);
+        okOrderDialog.show();
+        okOrderDialog.setContentView(serviceView);
     }
 
     protected void startWebViewActivity(String webViewUrl) {
@@ -986,29 +1224,13 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                 window.dismiss();
             }
         });
-        //发票类型
-        int receiptStatus = receipt.getReceiptStatus();
-        //发票类型，2：普通发票，3为专用发票
-        TextView tvDialogReceiptType = (TextView) view.findViewById(R.id.tv_DialogReceiptType);
-        if (receiptStatus == 2) {
-            tvDialogReceiptType.setText("普通发票");
-        } else if (receiptStatus == 3) {
-            tvDialogReceiptType.setText("专用发票");
-        } else {
-            tvDialogReceiptType.setText("无");
-        }
-        //发票内容
-        String title = receipt.getTitle();
-        TextView tvDialogReceiptName = (TextView) view.findViewById(R.id.tv_DialogReceiptName);
-        tvDialogReceiptName.setText(title == null ? "" : title);
-        //税号
-        TextView tvDialogReceiptNumber1 = (TextView) view.findViewById(R.id.tv_DialogReceiptNumber1);
-        SpannableStringBuilder tradepriceString = AlignedTextUtils.justifyString("税号", 4);
-        tradepriceString.append("：");
-        tvDialogReceiptNumber1.setText(tradepriceString);
-        String invoiceNum = receipt.getInvoiceNum();
-        TextView tvDialogReceiptNumber = (TextView) view.findViewById(R.id.tv_DialogReceiptNumber);
-        tvDialogReceiptNumber.setText(invoiceNum == null ? "" : invoiceNum);
+        RecyclerView rcDetailsReceiptType = (RecyclerView) view.findViewById(R.id.rc_DetailsReceiptType);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setAutoMeasureEnabled(true);
+        rcDetailsReceiptType.setLayoutManager(linearLayoutManager);
+        DetailsReceiptAdapter adapter = new DetailsReceiptAdapter(this);
+        adapter.setData(listReceipt,receiptStatus);
+        rcDetailsReceiptType.setAdapter(adapter);
         //popWindow消失监听方法
         window.setOnDismissListener(new PopupWindow.OnDismissListener() {
 

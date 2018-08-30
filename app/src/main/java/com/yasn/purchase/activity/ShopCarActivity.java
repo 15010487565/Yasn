@@ -836,7 +836,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
     @Override
     public void OnClickMore(int listPosition) {
 //        ToastUtil.showToast("调转去凑单" + listPosition);
-        startWebViewActivity(Config.SHOPCARADDONITEM + adapter.getResidueDoubleFormat());
+//        startWebViewActivity(Config.SHOPCARADDONITEM + adapter.getResidueDoubleFormat());
     }
 
     private int id;

@@ -111,7 +111,7 @@ public class CollectModel implements Serializable{
          * member_admin : 24640
          */
 
-        private int seePrice;
+        private double seePrice;
         private int level_id;
         private Object regionName;
         private String employee_auth;
@@ -140,11 +140,11 @@ public class CollectModel implements Serializable{
         private int memberInProbationEndTime;
         private int member_admin;
 
-        public int getSeePrice() {
+        public double getSeePrice() {
             return seePrice;
         }
 
-        public void setSeePrice(int seePrice) {
+        public void setSeePrice(double seePrice) {
             this.seePrice = seePrice;
         }
 
@@ -393,7 +393,7 @@ public class CollectModel implements Serializable{
         private int is_before_sale;
         private int maxcountperuser;
         private int totalBuyCount;
-        private int price;
+        private double price;
         private String name;
         private int has_discount;
         private int is_limit_buy;
@@ -472,11 +472,11 @@ public class CollectModel implements Serializable{
             this.totalBuyCount = totalBuyCount;
         }
 
-        public int getPrice() {
+        public double getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(double price) {
             this.price = price;
         }
 

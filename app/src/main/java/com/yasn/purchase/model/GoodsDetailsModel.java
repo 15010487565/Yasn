@@ -73,7 +73,7 @@ public class GoodsDetailsModel implements Serializable {
          * priceDisplayType : 0
          */
 
-        private int seePrice;
+        private double seePrice;
         private int level_id;
         private String shopName;
         private int is_wholesaler;
@@ -103,11 +103,11 @@ public class GoodsDetailsModel implements Serializable {
         private int probationIsOpen;
         private int priceDisplayType;
 
-        public int getSeePrice() {
+        public double getSeePrice() {
             return seePrice;
         }
 
-        public void setSeePrice(int seePrice) {
+        public void setSeePrice(double seePrice) {
             this.seePrice = seePrice;
         }
 

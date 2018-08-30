@@ -64,6 +64,8 @@ public class Config {
     public final static String  ADDRESSUPDATA= IPPORT +"MemberAddress/editOrAdd/";
     //进货单结算页
     public final static String SHOPPCARCLOSEANACCOUNT = IPPORT +"order/list-to-create-orders";
+    //积分抵现接
+    public final static String SHOPPCARUSEPOINT = IPPORT +"order/list-to-create-orders/use-point/";
     //结算按钮创建订单
     public final static String SHOPPCARCREATEORDER = IPPORT +"order/create";
     //发票获取接
@@ -124,10 +126,6 @@ public class Config {
     public final static String PAYTYPE = IPPORTPAY +"payment-cfg/list-by-client-type";
     //支付
     public static final String PAY = IPPORTPAY+"pay/get-pay-html-info?";
-
-
-    //登录
-    public static final String LOGINWEBVIEW = URLCAIGOU+"/login.html";
     //验证码
     public static final String VERIFICATIONCODE = IPPORT+"member/getRandomCode";
     //登录
@@ -177,6 +175,8 @@ public class Config {
     //帮助中心
     public final static String HELP  = IPPORT+"member/help-data";
 
+    //登录
+    public static final String LOGINWEBVIEW = URLCAIGOU+"/login.html";
     //开通雅森帮
     public static final String DREDGEYASNHELP =  URLCAIGOU+"/digital_member.html";
     //雅森帮
@@ -186,7 +186,7 @@ public class Config {
     //欢迎界面图片
     public final static String LAUNCHIMAGE = URLCAIGOU+":8080/api/base/app/geturl.do";
     //去凑单
-    public final static String SHOPCARADDONITEM  = URLCAIGOU+"/collecting_home.html?show_c=4&store_id=1&keyword=&end_price=&key=2&order=asc&start_price=";
+//    public final static String SHOPCARADDONITEM  = URLCAIGOU+"/collecting_home.html?show_c=4&store_id=1&keyword=&end_price=&key=2&order=asc&start_price=";
     //创客支付
     public final static String MAKERPAYMENT = URLCAIGOU+"/ck_payment.html";
     //订单支付

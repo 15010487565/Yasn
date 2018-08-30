@@ -216,49 +216,60 @@
                     android:text="营业面积:"
                     android:textColor="@color/black_66"
                     android:textSize="@dimen/textsize_14" />
+               <LinearLayout
+                   android:id="@+id/ll_AuthorSinner"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:orientation="vertical"
+                   android:layout_marginBottom="@dimen/margin_5"
+                   android:layout_marginLeft="@dimen/margin_15"
+                   android:layout_marginTop="@dimen/margin_5"
+                   android:background="@drawable/text_orange_white0">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/margin_5"
-                    android:layout_marginLeft="@dimen/margin_15"
-                    android:layout_marginTop="@dimen/margin_5"
-                    android:background="@drawable/text_orange_white0"
-                    android:orientation="horizontal">
+               </LinearLayout>
+                <!--<FrameLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_marginBottom="@dimen/margin_5"-->
+                    <!--android:layout_marginLeft="@dimen/margin_15"-->
+                    <!--android:layout_marginTop="@dimen/margin_5"-->
+                    <!--android:background="@drawable/text_orange_white0"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:orientation="horizontal">-->
 
-                    <Spinner
-                        android:id="@+id/spinner_Author"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/spinner_selector_author"
-                        android:dropDownVerticalOffset="40dp"
-                        android:spinnerMode="dropdown" />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_marginRight="@dimen/height_30">
+                    <!--<Spinner-->
+                        <!--android:id="@+id/spinner_Author"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:background="@drawable/spinner_selector_author"-->
+                        <!--android:dropDownVerticalOffset="40dp"-->
+                        <!--android:spinnerMode="dropdown" />-->
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:orientation="horizontal"-->
+                        <!--android:layout_marginRight="@dimen/height_30">-->
 
-                        <TextView
-                            android:id="@+id/tv_AuthorSpinnerName"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:text="请选择营业面积"
-                            android:textColor="@color/black_66"
-                            android:background="@color/white"
-                            android:visibility="invisible"
-                            android:textSize="@dimen/textsize_14" />
+                        <!--<TextView-->
+                            <!--android:id="@+id/tv_AuthorSpinnerName"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:gravity="center_vertical"-->
+                            <!--android:text="请选择营业面积"-->
+                            <!--android:textColor="@color/red"-->
+                            <!--android:background="@color/white"-->
+                            <!--android:visibility="invisible"-->
+                            <!--android:textSize="@dimen/textsize_14" />-->
 
-                        <View
-                            android:layout_width="@dimen/margin_1"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="@dimen/margin_5"
-                            android:background="@color/orange" />
+                        <!--<View-->
+                            <!--android:layout_width="@dimen/margin_1"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:layout_marginRight="@dimen/margin_5"-->
+                            <!--android:background="@color/orange" />-->
 
-                    </LinearLayout>
-                </FrameLayout>
+                    <!--</LinearLayout>-->
+                <!--</FrameLayout>-->
             </LinearLayout>
 
             <View

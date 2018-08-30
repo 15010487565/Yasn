@@ -1024,6 +1024,8 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         Log.e("TAG_onEventMain","SHOP="+msg);
         if ("loginSucceed".equals(msg)&&getUserVisibleHint()) {
             OkHttpDemand();
+        }else if ("refreshorder".equals(msg)) {
+            OkHttpDemand();
         }
     }
 }

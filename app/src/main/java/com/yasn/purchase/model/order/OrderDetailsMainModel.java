@@ -971,7 +971,7 @@ public class OrderDetailsMainModel implements Serializable {
             private String paymentName;
             private String paymentType;
             private Object paymentAccount;
-            private int paymoney;
+            private double paymoney;
             private int paydate;
             private int createTime;
             private String shipName;
@@ -980,7 +980,7 @@ public class OrderDetailsMainModel implements Serializable {
             private Object shipEmail;
             private String shipMobile;
             private Object shipTel;
-            private int goodsAmount;
+            private double goodsAmount;
             private double shippingAmount;
             private double orderAmount;
             private int goodsNum;
@@ -998,7 +998,7 @@ public class OrderDetailsMainModel implements Serializable {
             private int shipRegionid;
             private int depotid;
             private Object adminRemark;
-            private int needPayMoney;
+            private double needPayMoney;
             private Object shipNo;
             private int addressId;
             private int logiId;
@@ -1015,7 +1015,7 @@ public class OrderDetailsMainModel implements Serializable {
             private int billStatus;
             private String billSn;
             private String storeName;
-            private int initMoney;
+            private double initMoney;
             private String moreBuyToSend;
             private Object manualReason;
             private int pushStatus;
@@ -1025,7 +1025,7 @@ public class OrderDetailsMainModel implements Serializable {
             private int shippingTotal;
             private int cancelTime;
             private int usePoint;
-            private int deductMoney;
+            private double deductMoney;
             private Object salesName;
             private int cancelStatus;
             private int cancelDatetime;
@@ -1146,11 +1146,11 @@ public class OrderDetailsMainModel implements Serializable {
                 this.paymentAccount = paymentAccount;
             }
 
-            public int getPaymoney() {
+            public double getPaymoney() {
                 return paymoney;
             }
 
-            public void setPaymoney(int paymoney) {
+            public void setPaymoney(double paymoney) {
                 this.paymoney = paymoney;
             }
 
@@ -1218,11 +1218,11 @@ public class OrderDetailsMainModel implements Serializable {
                 this.shipTel = shipTel;
             }
 
-            public int getGoodsAmount() {
+            public double getGoodsAmount() {
                 return goodsAmount;
             }
 
-            public void setGoodsAmount(int goodsAmount) {
+            public void setGoodsAmount(double goodsAmount) {
                 this.goodsAmount = goodsAmount;
             }
 
@@ -1362,11 +1362,11 @@ public class OrderDetailsMainModel implements Serializable {
                 this.adminRemark = adminRemark;
             }
 
-            public int getNeedPayMoney() {
+            public double getNeedPayMoney() {
                 return needPayMoney;
             }
 
-            public void setNeedPayMoney(int needPayMoney) {
+            public void setNeedPayMoney(double needPayMoney) {
                 this.needPayMoney = needPayMoney;
             }
 
@@ -1498,11 +1498,11 @@ public class OrderDetailsMainModel implements Serializable {
                 this.storeName = storeName;
             }
 
-            public int getInitMoney() {
+            public double getInitMoney() {
                 return initMoney;
             }
 
-            public void setInitMoney(int initMoney) {
+            public void setInitMoney(double initMoney) {
                 this.initMoney = initMoney;
             }
 
@@ -1578,11 +1578,11 @@ public class OrderDetailsMainModel implements Serializable {
                 this.usePoint = usePoint;
             }
 
-            public int getDeductMoney() {
+            public double getDeductMoney() {
                 return deductMoney;
             }
 
-            public void setDeductMoney(int deductMoney) {
+            public void setDeductMoney(double deductMoney) {
                 this.deductMoney = deductMoney;
             }
 
@@ -1708,15 +1708,80 @@ public class OrderDetailsMainModel implements Serializable {
 
             public static class ReceiptBean {
 
+
                 /**
-                 * title : 单位名哈哈
-                 * invoiceNum : 识别号哈哈
-                 * receiptStatus : 2
+                 * id : null
+                 * orderId : null
+                 * title : 北京雅森环宇信息科技有限公司
+                 * addTime : null
+                 * content : null
+                 * status : 0
+                 * receiptStatus : 3
+                 * memberId : 25079
+                 * invoiceRise : null
+                 * invoiceNum : 111111111111111111
+                 * invoiceAddress : 北京市西城区裕民路18号北环中心27层
+                 * invoiceMobile : 13681315162
+                 * invoiceBank : 民生银行
+                 * invoiceBankNum : 6223440115781598
+                 * ticketStatus : 0
+                 * storeId : null
+                 * invoiceCreateTime : null
+                 * selfSupport : null
+                 * deliveryStatus : null
+                 * waybillNum : null
+                 * expressCompany : null
+                 * icode : null
+                 * invoiceStatus : null
+                 * shipArea : null
+                 * shipMobile : null
+                 * shipName : null
+                 * shipAddr : null
                  */
 
+                private Object id;
+                private Object orderId;
                 private String title;
-                private String invoiceNum;
+                private Object addTime;
+                private String content;
+                private int status;
                 private int receiptStatus;
+                private int memberId;
+                private Object invoiceRise;
+                private String invoiceNum;
+                private String invoiceAddress;
+                private String invoiceMobile;
+                private String invoiceBank;
+                private String invoiceBankNum;
+                private int ticketStatus;
+                private Object storeId;
+                private Object invoiceCreateTime;
+                private Object selfSupport;
+                private Object deliveryStatus;
+                private Object waybillNum;
+                private Object expressCompany;
+                private Object icode;
+                private Object invoiceStatus;
+                private Object shipArea;
+                private Object shipMobile;
+                private Object shipName;
+                private Object shipAddr;
+
+                public Object getId() {
+                    return id;
+                }
+
+                public void setId(Object id) {
+                    this.id = id;
+                }
+
+                public Object getOrderId() {
+                    return orderId;
+                }
+
+                public void setOrderId(Object orderId) {
+                    this.orderId = orderId;
+                }
 
                 public String getTitle() {
                     return title;
@@ -1724,6 +1789,54 @@ public class OrderDetailsMainModel implements Serializable {
 
                 public void setTitle(String title) {
                     this.title = title;
+                }
+
+                public Object getAddTime() {
+                    return addTime;
+                }
+
+                public void setAddTime(Object addTime) {
+                    this.addTime = addTime;
+                }
+
+                public String getContent() {
+                    return content;
+                }
+
+                public void setContent(String content) {
+                    this.content = content;
+                }
+
+                public int getStatus() {
+                    return status;
+                }
+
+                public void setStatus(int status) {
+                    this.status = status;
+                }
+
+                public int getReceiptStatus() {
+                    return receiptStatus;
+                }
+
+                public void setReceiptStatus(int receiptStatus) {
+                    this.receiptStatus = receiptStatus;
+                }
+
+                public int getMemberId() {
+                    return memberId;
+                }
+
+                public void setMemberId(int memberId) {
+                    this.memberId = memberId;
+                }
+
+                public Object getInvoiceRise() {
+                    return invoiceRise;
+                }
+
+                public void setInvoiceRise(Object invoiceRise) {
+                    this.invoiceRise = invoiceRise;
                 }
 
                 public String getInvoiceNum() {
@@ -1734,12 +1847,140 @@ public class OrderDetailsMainModel implements Serializable {
                     this.invoiceNum = invoiceNum;
                 }
 
-                public int getReceiptStatus() {
-                    return receiptStatus;
+                public String getInvoiceAddress() {
+                    return invoiceAddress;
                 }
 
-                public void setReceiptStatus(int receiptStatus) {
-                    this.receiptStatus = receiptStatus;
+                public void setInvoiceAddress(String invoiceAddress) {
+                    this.invoiceAddress = invoiceAddress;
+                }
+
+                public String getInvoiceMobile() {
+                    return invoiceMobile;
+                }
+
+                public void setInvoiceMobile(String invoiceMobile) {
+                    this.invoiceMobile = invoiceMobile;
+                }
+
+                public String getInvoiceBank() {
+                    return invoiceBank;
+                }
+
+                public void setInvoiceBank(String invoiceBank) {
+                    this.invoiceBank = invoiceBank;
+                }
+
+                public String getInvoiceBankNum() {
+                    return invoiceBankNum;
+                }
+
+                public void setInvoiceBankNum(String invoiceBankNum) {
+                    this.invoiceBankNum = invoiceBankNum;
+                }
+
+                public int getTicketStatus() {
+                    return ticketStatus;
+                }
+
+                public void setTicketStatus(int ticketStatus) {
+                    this.ticketStatus = ticketStatus;
+                }
+
+                public Object getStoreId() {
+                    return storeId;
+                }
+
+                public void setStoreId(Object storeId) {
+                    this.storeId = storeId;
+                }
+
+                public Object getInvoiceCreateTime() {
+                    return invoiceCreateTime;
+                }
+
+                public void setInvoiceCreateTime(Object invoiceCreateTime) {
+                    this.invoiceCreateTime = invoiceCreateTime;
+                }
+
+                public Object getSelfSupport() {
+                    return selfSupport;
+                }
+
+                public void setSelfSupport(Object selfSupport) {
+                    this.selfSupport = selfSupport;
+                }
+
+                public Object getDeliveryStatus() {
+                    return deliveryStatus;
+                }
+
+                public void setDeliveryStatus(Object deliveryStatus) {
+                    this.deliveryStatus = deliveryStatus;
+                }
+
+                public Object getWaybillNum() {
+                    return waybillNum;
+                }
+
+                public void setWaybillNum(Object waybillNum) {
+                    this.waybillNum = waybillNum;
+                }
+
+                public Object getExpressCompany() {
+                    return expressCompany;
+                }
+
+                public void setExpressCompany(Object expressCompany) {
+                    this.expressCompany = expressCompany;
+                }
+
+                public Object getIcode() {
+                    return icode;
+                }
+
+                public void setIcode(Object icode) {
+                    this.icode = icode;
+                }
+
+                public Object getInvoiceStatus() {
+                    return invoiceStatus;
+                }
+
+                public void setInvoiceStatus(Object invoiceStatus) {
+                    this.invoiceStatus = invoiceStatus;
+                }
+
+                public Object getShipArea() {
+                    return shipArea;
+                }
+
+                public void setShipArea(Object shipArea) {
+                    this.shipArea = shipArea;
+                }
+
+                public Object getShipMobile() {
+                    return shipMobile;
+                }
+
+                public void setShipMobile(Object shipMobile) {
+                    this.shipMobile = shipMobile;
+                }
+
+                public Object getShipName() {
+                    return shipName;
+                }
+
+                public void setShipName(Object shipName) {
+                    this.shipName = shipName;
+                }
+
+                public Object getShipAddr() {
+                    return shipAddr;
+                }
+
+                public void setShipAddr(Object shipAddr) {
+                    this.shipAddr = shipAddr;
                 }
             }
 
@@ -1763,7 +2004,7 @@ public class OrderDetailsMainModel implements Serializable {
                 private Object pageSize;
                 private int giftId;
                 private String giftName;
-                private int giftPrice;
+                private double giftPrice;
                 private String giftImg;
                 private int giftType;
                 private int actualStore;
@@ -1804,11 +2045,11 @@ public class OrderDetailsMainModel implements Serializable {
                     this.giftName = giftName;
                 }
 
-                public int getGiftPrice() {
+                public double getGiftPrice() {
                     return giftPrice;
                 }
 
-                public void setGiftPrice(int giftPrice) {
+                public void setGiftPrice(double giftPrice) {
                     this.giftPrice = giftPrice;
                 }
 
@@ -1910,14 +2151,14 @@ public class OrderDetailsMainModel implements Serializable {
                 private Object store;
                 private String addon;
                 private int catId;
-                private int price;
+                private double price;
                 private int gainedpoint;
                 private int state;
                 private String unit;
                 private int goodsType;
                 private int presentNum;
                 private int usePoint;
-                private int deductMoney;
+                private double deductMoney;
                 private Object outSn;
                 private int outEdNum;
                 private Object saleSendTime;
@@ -2026,11 +2267,11 @@ public class OrderDetailsMainModel implements Serializable {
                     this.catId = catId;
                 }
 
-                public int getPrice() {
+                public double getPrice() {
                     return price;
                 }
 
-                public void setPrice(int price) {
+                public void setPrice(double price) {
                     this.price = price;
                 }
 
@@ -2082,11 +2323,11 @@ public class OrderDetailsMainModel implements Serializable {
                     this.usePoint = usePoint;
                 }
 
-                public int getDeductMoney() {
+                public double getDeductMoney() {
                     return deductMoney;
                 }
 
-                public void setDeductMoney(int deductMoney) {
+                public void setDeductMoney(double deductMoney) {
                     this.deductMoney = deductMoney;
                 }
 
@@ -2147,7 +2388,7 @@ public class OrderDetailsMainModel implements Serializable {
          * member_admin : 8562
          */
 
-        private int seePrice;
+        private double seePrice;
         private int level_id;
         private Object regionName;
         private String employee_auth;
@@ -2174,11 +2415,11 @@ public class OrderDetailsMainModel implements Serializable {
         private int memberInProbationEndTime;
         private int member_admin;
 
-        public int getSeePrice() {
+        public double getSeePrice() {
             return seePrice;
         }
 
-        public void setSeePrice(int seePrice) {
+        public void setSeePrice(double seePrice) {
             this.seePrice = seePrice;
         }
 

@@ -46,6 +46,7 @@ import java.util.List;
 
 import www.xcd.com.mylibrary.PhotoActivity;
 
+
 public class WebViewH5Activity extends PhotoActivity implements View.OnClickListener, LoadWebViewErrListener{
     private BridgeWebView mWebView;
     private View errorView;
@@ -59,9 +60,14 @@ public class WebViewH5Activity extends PhotoActivity implements View.OnClickList
     public String payHtmlUrl = null;
     MyWebChromeClient myWebChromeClient2 = new MyWebChromeClient(this);
     private String webViewUrl;
+//    @Override
+//    public boolean isTopbarVisibility() {
+//        return false;
+//    }
+
     @Override
-    public boolean isTopbarVisibility() {
-        return false;
+    protected Object getTopbarTitle() {
+        return "支付中心";
     }
 
     @Override
@@ -72,8 +78,16 @@ public class WebViewH5Activity extends PhotoActivity implements View.OnClickList
         Intent intent = getIntent();
         if (intent == null){
             webViewUrl = Config.LOGINWEBVIEW;
+            resetTopbarTitle("登录");
         }else {
             webViewUrl = intent.getStringExtra("webViewUrl");
+            if (Config.DREDGEYASNHELP.equals(webViewUrl)||Config.YASNBANG.equals(webViewUrl)){
+                resetTopbarTitle("雅森帮");
+            }else if (Config.MAKERPAYMENT.equals(webViewUrl)||webViewUrl.indexOf(Config.ORDERPAY)!=-1){
+                resetTopbarTitle("支付中心");
+            }else {
+                resetTopbarTitle("雅森车品宝");
+            }
         }
         Log.e("TAG_webViewActivity","webViewUrl="+webViewUrl);
         initView();
@@ -404,20 +418,6 @@ public class WebViewH5Activity extends PhotoActivity implements View.OnClickList
         }
     }
 
-//    public void getToken(String token, String resetToken, String resetTokenTime) {
-//        Log.e("TAG_js","token="+token);
-//        Log.e("TAG_js","resetToken="+resetToken);
-//        Log.e("TAG_js","resetTokenTime="+resetTokenTime);
-//        SharePrefHelper.getInstance(this).putSpString("token", token);
-//        SharePrefHelper.getInstance(this).putSpString("resetToken", resetToken);
-//        SharePrefHelper.getInstance(this).putSpString("resetTokenTime", resetTokenTime);
-//        Intent intent = new Intent();
-//        intent.putExtra("token", token);
-//        intent.putExtra("resetToken", resetToken);
-//        intent.putExtra("resetTokenTime", resetTokenTime);
-//        this.setResult(Activity.RESULT_OK, intent);
-//        finish();
-//    }
 
     public void uploadImageAndroid(boolean pagefinsh, final String imagename, final String imageUri) {
         mWebView.post(new Runnable() {

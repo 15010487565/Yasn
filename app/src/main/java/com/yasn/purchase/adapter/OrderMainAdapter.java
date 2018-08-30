@@ -56,6 +56,11 @@ public class OrderMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
+    public List<Object>  getData() {
+
+       return  list;
+    }
+
     public void addData(List<Object> list) {
 
         this.addList = list;

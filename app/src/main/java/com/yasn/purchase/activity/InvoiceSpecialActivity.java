@@ -25,7 +25,7 @@ import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 
 /**
  * Created by gs on 2018/6/14.
- * 专用发票
+ * 专用资质
  */
 
 public class InvoiceSpecialActivity extends SimpleTopbarActivity {

@@ -51,7 +51,7 @@ public class PresonaModel implements Serializable{
         private int member_id;
         private int store_id;
         private String uname;
-        private int seePrice;
+        private double seePrice;
         private int endDate;
         private int level_id;
         private String shopName;
@@ -112,11 +112,11 @@ public class PresonaModel implements Serializable{
             this.uname = uname;
         }
 
-        public int getSeePrice() {
+        public double getSeePrice() {
             return seePrice;
         }
 
-        public void setSeePrice(int seePrice) {
+        public void setSeePrice(double seePrice) {
             this.seePrice = seePrice;
         }
 

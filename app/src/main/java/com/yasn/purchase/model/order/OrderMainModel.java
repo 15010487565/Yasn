@@ -75,7 +75,7 @@ public class OrderMainModel implements Serializable {
          * member_admin : 24853
          */
 
-        private int seePrice;
+        private double seePrice;
         private int level_id;
         private Object regionName;
         private String employee_auth;
@@ -104,11 +104,11 @@ public class OrderMainModel implements Serializable {
         private int memberInProbationEndTime;
         private int member_admin;
 
-        public int getSeePrice() {
+        public double getSeePrice() {
             return seePrice;
         }
 
-        public void setSeePrice(int seePrice) {
+        public void setSeePrice(double seePrice) {
             this.seePrice = seePrice;
         }
 

@@ -47,16 +47,45 @@
                 android:layout_marginTop="@dimen/height_15"
                 android:background="@color/white"
                 android:orientation="vertical">
-                <TextView
-                    android:id="@+id/tv_hint"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/height_40"
+                    android:paddingRight="@dimen/margin_20"
                     android:background="@color/black_f7"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="@dimen/height_20"
-                    android:text="专票资质信息（审核通过后才可以开票）"
-                    android:textColor="@color/black_66"
-                    android:textSize="@dimen/textsize_14" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_hint"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="@dimen/height_40"
+                        android:background="@color/black_f7"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/height_20"
+                        android:text="专票资质信息"
+                        android:textColor="@color/black_66"
+                        android:textSize="@dimen/textsize_14" />
+                    <TextView
+                        android:id="@+id/tv_InvoicespAuditing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/height_40"
+                        android:background="@color/black_f7"
+                        android:gravity="center_vertical"
+                        android:text="审核中"
+                        android:textColor="@color/orange"
+                        android:textSize="@dimen/textsize_14" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_InvoiceAuditFailure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/margin_20"
+                    android:paddingTop="@dimen/margin_15"
+                    android:paddingRight="@dimen/margin_20"
+                    android:text="信息填写有误，请修改后重新提交"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/textsize_14"
+                    android:visibility="visible" />
                 <include layout="@layout/include_invoicespecial" />
 
             </LinearLayout>

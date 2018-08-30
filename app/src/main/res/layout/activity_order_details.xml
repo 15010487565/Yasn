@@ -92,14 +92,15 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:textColor="@color/black_66"
-                    android:textSize="@dimen/textsize_14" />
+                    android:textSize="@dimen/textsize_14"
+                    android:text="无"/>
                 <ImageView
+                    android:id="@+id/iv_BillType"
                     android:layout_width="@dimen/margin_15"
                     android:layout_height="@dimen/margin_15"
                     android:layout_marginLeft="@dimen/margin_15"
                     android:background="@mipmap/home_top_arrows"
                     android:contentDescription="@null"
-                    android:visibility="invisible"
                     android:duplicateParentState="true" />
             </LinearLayout>
 

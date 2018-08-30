@@ -77,7 +77,7 @@ public class OrderSonModel implements Serializable {
          * member_admin : 21880
          */
 
-        private int seePrice;
+        private double seePrice;
         private int endDate;
         private int level_id;
         private Object regionName;
@@ -108,11 +108,11 @@ public class OrderSonModel implements Serializable {
         private int memberInProbationEndTime;
         private int member_admin;
 
-        public int getSeePrice() {
+        public double getSeePrice() {
             return seePrice;
         }
 
-        public void setSeePrice(int seePrice) {
+        public void setSeePrice(double seePrice) {
             this.seePrice = seePrice;
         }
 

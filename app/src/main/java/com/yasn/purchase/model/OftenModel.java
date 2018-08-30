@@ -89,7 +89,7 @@ public class OftenModel implements Serializable{
             private int is_success_case;
             private int sold_num;
             private int discount_price;
-            private int price;
+            private double price;
             private int enable_store;
             private int store_id;
             private int market_enable;
@@ -199,11 +199,11 @@ public class OftenModel implements Serializable{
                 this.discount_price = discount_price;
             }
 
-            public int getPrice() {
+            public double getPrice() {
                 return price;
             }
 
-            public void setPrice(int price) {
+            public void setPrice(double price) {
                 this.price = price;
             }
 
@@ -310,7 +310,7 @@ public class OftenModel implements Serializable{
          * member_admin : 28
          */
 
-        private int seePrice;
+        private double seePrice;
         private int level_id;
         private Object regionName;
         private String employee_auth;
@@ -340,11 +340,11 @@ public class OftenModel implements Serializable{
         private int memberInProbationEndTime;
         private int member_admin;
 
-        public int getSeePrice() {
+        public double getSeePrice() {
             return seePrice;
         }
 
-        public void setSeePrice(int seePrice) {
+        public void setSeePrice(double seePrice) {
             this.seePrice = seePrice;
         }
 

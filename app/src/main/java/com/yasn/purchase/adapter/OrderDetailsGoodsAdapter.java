@@ -101,6 +101,7 @@ public class OrderDetailsGoodsAdapter extends RecyclerView.Adapter<RecyclerView.
                 headerHolder.tvOrderNumber.setText(headerModel.getOrderCode());
                 headerHolder.tvOrderPayType.setVisibility(View.VISIBLE);
                 int status = headerModel.getStatus();
+                Log.e("TAG_订单状态adapter","status="+status);
                 /**
                  * (0为新建订单，
                  * 货到付款需确认,
@@ -252,7 +253,7 @@ public class OrderDetailsGoodsAdapter extends RecyclerView.Adapter<RecyclerView.
                         break;
                     case 3://已发货
                         payHolder.tvDetailsApply.setVisibility(View.GONE);
-                        payHolder.tvDetailsRemind.setVisibility(View.VISIBLE);
+                        payHolder.tvDetailsRemind.setVisibility(View.GONE);
                         payHolder.tvDetailsLookOver.setVisibility(View.VISIBLE);
                         payHolder.tvDetailsOk.setVisibility(View.VISIBLE);
                         break;

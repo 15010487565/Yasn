@@ -587,11 +587,11 @@ public class MainActivity extends SimpleTopbarActivity implements LoadWebViewErr
      * digital_member = 0  未开通雅森帮
      */
     public void startYasnActivity(int digital_member) {
-        if (digital_member == 0) {//未开通雅森帮
-            startWebViewActivity(Config.DREDGEYASNHELP);
-        }else {
+//        if (digital_member == 0) {//未开通雅森帮
+//            startWebViewActivity(Config.DREDGEYASNHELP);
+//        }else {
             startWebViewActivity(Config.YASNBANG);
-        }
+//        }
     }
     public void startOilActivity() {
 //        startWebViewActivity(Config.SHOPINOILQUERY);

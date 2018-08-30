@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -333,7 +334,22 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                      * num 数量
                      * activityId 促销活动Id(没有就不传)
                      */
-                    addShopCarRequest();
+                    //0:经理,1:采购 ,2:财务 1,2采购+财务
+                    String employeeAuth = SharePrefHelper.getInstance(this).getSpString("employeeAuth");
+                    Log.e("TAG_加入进货单", "权限=" + employeeAuth);
+                    if (TextUtils.isEmpty(employeeAuth)) {
+                        ToastUtil.showToast("您没有采购权限!");
+                    } else {
+                        if (employeeAuth.indexOf("0") == -1) {
+                            if (employeeAuth.indexOf("1") == -1) {
+                                ToastUtil.showToast("您没有采购权限!");
+                            }else{
+                                addShopCarRequest();
+                            }
+                        }else {
+                            addShopCarRequest();
+                        }
+                    }
                 }
                 break;
         }
@@ -596,7 +612,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
-        Log.e("TAG_详情页", "msg=" + msg);
+        Log.e("TAG_EventBusMsg", "详情页=" + msg);
         if ("carNum".equals(msg)) {
             Integer cartNum = Integer.valueOf(event.getCarNum());
             SharePrefHelper.getInstance(GoodsDetailsActivity.this).putSpInt("carNum", cartNum);

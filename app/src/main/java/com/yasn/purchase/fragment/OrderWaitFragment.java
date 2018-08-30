@@ -1,11 +1,13 @@
 package com.yasn.purchase.fragment;
 
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
@@ -13,6 +15,7 @@ import com.yasn.purchase.R;
 import com.yasn.purchase.adapter.OrderSonAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.listener.OnRcOrderItemClickListener;
+import com.yasn.purchase.model.EventBusMsg;
 import com.yasn.purchase.model.order.OrderGoodsContentModel;
 import com.yasn.purchase.model.order.OrderHeaderModel;
 import com.yasn.purchase.model.order.OrderShopNameModel;
@@ -20,6 +23,10 @@ import com.yasn.purchase.model.order.OrderSonModel;
 import com.yasn.purchase.model.order.OrderSonPayInfoModel;
 import com.yasn.purchase.view.MultiSwipeRefreshLayout;
 import com.yasn.purchase.view.RecyclerViewDecoration;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,12 +54,25 @@ public class OrderWaitFragment extends OrderFragment implements
     private LinearLayoutManager linearLayoutManager;
     int pageNo = 1;//初始化页数
     private List<Object> orderWaitList = new ArrayList<>();
-    private boolean isDownPull = false;//下拉刷新
-    private boolean isUpPull = false;//上拉加载
+
 
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_orderwait;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        pageNo = 1;//初始化页数
+        slOrderWait.setVisibility(View.GONE);
+        OkHttpDemand();
     }
 
     @Override
@@ -78,8 +98,6 @@ public class OrderWaitFragment extends OrderFragment implements
         title.setVisibility(View.GONE);
         initMultiSwipeRefresh(view);
         initRcView(view);
-        pageNo = 1;//初始化页数
-        OkHttpDemand();
     }
 
     private void initRcView(View view) {
@@ -104,11 +122,11 @@ public class OrderWaitFragment extends OrderFragment implements
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 boolean isTop = recyclerView.canScrollVertically(-1);//返回false表示不能往下滑动，即代表到顶部了；
-                if (isTop) {
-                    slOrderWait.setEnabled(false);
-                } else {
-                    slOrderWait.setEnabled(true);
-                }
+//                if (isTop) {
+//                    slOrderWait.setEnabled(false);
+//                } else {
+//                    slOrderWait.setEnabled(true);
+//                }
                 boolean isBottom = recyclerView.canScrollVertically(1);//返回false表示不能往上滑动，即代表到底部了；
                 //屏幕中最后一个可见子项的position
                 int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
@@ -121,6 +139,7 @@ public class OrderWaitFragment extends OrderFragment implements
                 } else {
                     if (visibleItemCount == totalItemCount) {
                         slOrderWait.setBottom(false);
+                        adapter.upFootText();
                     } else {
                         slOrderWait.setBottom(true);
                     }
@@ -153,11 +172,8 @@ public class OrderWaitFragment extends OrderFragment implements
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {
+                    slOrderWait.setVisibility(View.VISIBLE  );
                     initResule(returnData);
-                    if (isDownPull) {
-                        slOrderWait.setRefreshing(false);
-                        isDownPull = false;
-                    }
                 } else {
                     ToastUtil.showToast(returnMsg);
                 }
@@ -228,8 +244,6 @@ public class OrderWaitFragment extends OrderFragment implements
                     orderWaitList.add(orderSonPayInfoModel);
                 }
                 if (pageNo > 1) {
-                    isUpPull = false;
-                    slOrderWait.setLoading(false);
                     adapter.addData(orderWaitList);
                 } else {
                     adapter.setData(orderWaitList);
@@ -251,6 +265,8 @@ public class OrderWaitFragment extends OrderFragment implements
                     llError.setVisibility(View.VISIBLE);
                 }
             }
+            slOrderWait.setLoading(false);
+            slOrderWait.setRefreshing(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -277,21 +293,15 @@ public class OrderWaitFragment extends OrderFragment implements
     }
 
     private void cancelUpdate() {
-        if (isDownPull) {
-            slOrderWait.setRefreshing(false);
-            isDownPull = false;
-
-        }
-        if (isUpPull) {
-            isUpPull = false;
-            slOrderWait.setLoading(false);
-        }
+        slOrderWait.setRefreshing(false);
+        slOrderWait.setLoading(false);
     }
 
     //查看订单
     @Override
     public void OnLookOrderClick(int position) {
-        Object o = orderWaitList.get(position);
+        List<Object> data = adapter.getData();
+        Object o = data.get(position);
         if (o instanceof OrderSonPayInfoModel){
             OrderSonPayInfoModel  infoModel = (OrderSonPayInfoModel) o;
             int orderId = infoModel.getOrderId();
@@ -312,7 +322,8 @@ public class OrderWaitFragment extends OrderFragment implements
     //查看主订单
     @Override
     public void OnLookMainOrderClick(int position) {
-        Object o = orderWaitList.get(position);
+        List<Object> data = adapter.getData();
+        Object o = data.get(position);
         if (o instanceof OrderSonPayInfoModel){
             OrderSonPayInfoModel  infoModel = (OrderSonPayInfoModel) o;
             int parentId = infoModel.getParentId();
@@ -326,7 +337,6 @@ public class OrderWaitFragment extends OrderFragment implements
     public void onRefresh() {
         pageNo = 1;
         slOrderWait.setRefreshing(true);
-        isDownPull = true;
         OkHttpDemand();
     }
 
@@ -334,11 +344,30 @@ public class OrderWaitFragment extends OrderFragment implements
     @Override
     public void onLoad() {
         if (rcOrderWait != null && rcOrderWait.getAdapter() != null) {
-            isUpPull = true;
             slOrderWait.setLoading(true);
             pageNo++;
             Log.e("TAG_待收获上拉加载","pageNo="+pageNo);
             OkHttpDemand();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusMsg event) {
+        String msg = event.getMsg();
+        Log.e("TAG_EventBusMsg","订单待收货="+msg);
+        if ("refreshorder".equals(msg)) {
+            OkHttpDemand();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public String 孙彩凤(String 大美铝){
+
+        return "喜欢";
     }
 }

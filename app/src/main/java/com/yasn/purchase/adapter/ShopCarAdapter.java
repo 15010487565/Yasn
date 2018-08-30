@@ -171,7 +171,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             }
                             tvSprc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                             tvSprc.setGravity(Gravity.CENTER);
-                            tvSprc.setTag(list.get(i));
+//                            tvSprc.setTag(list.get(i));
                             lp.setMargins(10, 10, 10,0);
                             listViewHolder.shopcarLabel.addView(tvSprc, lp);
                         }

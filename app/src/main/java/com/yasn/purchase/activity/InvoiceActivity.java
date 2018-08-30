@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -60,21 +61,6 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invoice);
         gvInvoice = (NoScrollGridView) findViewById(R.id.gv_Invoice);
-        //实例化adapter
-        adapter = new InvoiceGridAdapter(this);
-        for (int i = 0; i < invoiceType.length; i++) {
-            Map<String, String> map = new HashMap<>();
-            map.put("name", invoiceType[i]);
-            if (i == 0) {
-                map.put("isCheck", "1");
-            } else {
-                map.put("isCheck", "0");
-            }
-            list.add(map);
-        }
-        adapter.setData(list);
-        gvInvoice.setAdapter(adapter);
-        gvInvoice.setOnItemClickListener(this);
         //无发票
         tvInvoiceNo = (TextView) findViewById(R.id.tv_InvoiceNo);
         tvInvoiceNo.setOnClickListener(this);
@@ -83,8 +69,6 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
         // 初始化fragments
         initFragments();
         initView();
-        frame_content.setVisibility(View.GONE);
-        tvInvoiceNo.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -104,16 +88,50 @@ public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView
     }
 
     private void initView() {
-
+        Intent intent = getIntent();
+        int type = intent.getIntExtra("type", 0);
+        Log.e("TAG_发票","type="+type);
         // 为布局添加fragment,开启事物
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction tran = fm.beginTransaction();
-
-        //R.id.relative为布局
-        tran.add(R.id.frame_content, fragmentList.get(0), "commonInvoice").show(fragmentList.get(0))
-                .add(R.id.frame_content, fragmentList.get(1), "specialInvoice").hide(fragmentList.get(1));
-
+        tran.add(R.id.frame_content, fragmentList.get(0), "commonInvoice");
+        tran.add(R.id.frame_content, fragmentList.get(1), "specialInvoice");
+        if (type == 1){
+            tran.show(fragmentList.get(0));
+            tran.hide(fragmentList.get(1));
+        }else if (type == 2){
+            tran.show(fragmentList.get(1));
+            tran.hide(fragmentList.get(0));
+        }
         tran.commit();
+
+        if (type == 0){
+            frame_content.setVisibility(View.GONE);
+            tvInvoiceNo.setVisibility(View.VISIBLE);
+        }else {
+            frame_content.setVisibility(View.VISIBLE);
+            tvInvoiceNo.setVisibility(View.GONE);
+            clickFragmentBtn(type - 1);
+        }
+        //实例化adapter
+        adapter = new InvoiceGridAdapter(this);
+        for (int i = 0; i < invoiceType.length; i++) {
+            Map<String, String> map = new HashMap<>();
+            map.put("name", invoiceType[i]);
+            if (i == type) {
+                map.put("isCheck", "1");
+            } else {
+                map.put("isCheck", "0");
+            }
+
+            list.add(map);
+        }
+
+        adapter.setData(list);
+        gvInvoice.setAdapter(adapter);
+        gvInvoice.setOnItemClickListener(this);
+
+
     }
 
     @Override

@@ -96,7 +96,7 @@ public class InvoiceCommonFragment extends SimpleTopbarFragment{
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode) {
             case 100:
-                if (returnCode == 200) {
+
                     InvoiceModel invoiceModel = JSON.parseObject(returnData, InvoiceModel.class);
                     InvoiceModel.DataBean data = invoiceModel.getData();
                     if (data != null){
@@ -109,7 +109,7 @@ public class InvoiceCommonFragment extends SimpleTopbarFragment{
                             etInvoiceNum.setText(invoiceNum);
                         }
                     }
-                }
+
                 break;
             case 101:
                 if (returnCode == 200) {

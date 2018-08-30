@@ -20,17 +20,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
-import com.yasn.purchase.adapter.AuthorAreaAdapter;
 import com.yasn.purchase.adapter.AuthorTypeAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.func.AuthorBackTopBtnFunc;
@@ -39,22 +36,26 @@ import com.yasn.purchase.threelevelganged.BaseThreeActivity;
 import com.yasn.purchase.threelevelganged.CityListAllModel;
 import com.yasn.purchase.utils.AlignedTextUtils;
 import com.yasn.purchase.utils.ToastUtil;
+import com.yasn.purchase.view.CustomSpinner;
 import com.yasn.purchase.view.RecyclerViewDecoration;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.help.HelpUtils;
 
-public class AuthorActivity extends BaseThreeActivity
-        implements AdapterView.OnItemSelectedListener,AuthorTypeAdapter.OnItemClickListener{
+import static com.yasn.purchase.R.array.spinnerAuthor;
 
-    private TextView tvAuthorAccountLeft, tvAuthorAccountRight, tvAuthorSpinnerName, tvAuthorNext;
+public class AuthorActivity extends BaseThreeActivity
+        implements  AuthorTypeAdapter.OnItemClickListener {
+
+    private TextView tvAuthorAccountLeft, tvAuthorAccountRight, tvAuthorNext;
     private EditText etAuthorShopName, etAuthorAddress, etAuthorShopNum;
-    private Spinner spinnerAuthor;
-    private AuthorAreaAdapter adapter;
+    private LinearLayout llAuthorSinner;
+    private CustomSpinner levelSpinner;
     private TextView tvAuthorThree;
     private LinearLayout llcontentView, llAuthorThree;
     private AuthorTypeAdapter authTypeAdapter;
@@ -62,7 +63,7 @@ public class AuthorActivity extends BaseThreeActivity
     private String shopType;//经营类型
     private int shopTypeId;
     private String[] spinnerArr;//营业面积数据
-    private String shopArea;//选择营业面积数据
+//    private String shopArea;//选择营业面积数据
     //是否试用期时间默认否
     private boolean isProbation = false;
     //试用期结束时间时间
@@ -70,6 +71,7 @@ public class AuthorActivity extends BaseThreeActivity
     private NestedScrollView nsvAuthor;
     private int getMemberDataInfo = -1;
     private int listRegions = -1;
+
     @Override
     protected Class<?> getTopbarLeftFunc() {
         return AuthorBackTopBtnFunc.class;
@@ -122,25 +124,20 @@ public class AuthorActivity extends BaseThreeActivity
         //收货地址
         etAuthorAddress = (EditText) findViewById(R.id.et_AuthorAddress);
         //营业面积
-        spinnerAuthor = (Spinner) findViewById(R.id.spinner_Author);
-        tvAuthorSpinnerName = (TextView) findViewById(R.id.tv_AuthorSpinnerName);
-        tvAuthorSpinnerName.setVisibility(View.VISIBLE);
+        llAuthorSinner = (LinearLayout) findViewById(R.id.ll_AuthorSinner);
+//        spinnerAuthor = (Spinner) findViewById(R.id.spinner_Author);
+//        tvAuthorSpinnerName = (TextView) findViewById(R.id.tv_AuthorSpinnerName);
+//        tvAuthorSpinnerName.setVisibility(View.VISIBLE);
         //店铺数量
         etAuthorShopNum = (EditText) findViewById(R.id.et_AuthorShopNum);
         //下一步
         tvAuthorNext = (TextView) findViewById(R.id.tv_AuthorNext);
         tvAuthorNext.setOnClickListener(this);
-        //将可选内容与ArrayAdapter连接起来，simple_spinner_item是android系统自带样式
-        adapter = new AuthorAreaAdapter(this);
-//        //设置下拉列表的风格,simple_spinner_dropdown_item是android系统自带的样式，可自定义修改
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //将adapter 添加到spinner中
-        spinnerArr = getResources().getStringArray(R.array.spinnerAuthor);
-        adapter.setData(spinnerArr);
-        spinnerAuthor.setAdapter(adapter);
-        spinnerAuthor.setSelection(0, true);
-        //添加事件Spinner事件监听
-        spinnerAuthor.setOnItemSelectedListener(this);
+        spinnerArr = getResources().getStringArray(spinnerAuthor);
+        List<String> levelList = Arrays.asList(spinnerArr);
+        levelSpinner = new CustomSpinner(this, "请选择营业面积", levelList);
+        llAuthorSinner.addView(levelSpinner);
         //经营类型
         //RecyclerView设置manager
         RecyclerView rcAuthorType = (RecyclerView) findViewById(R.id.rc_AuthorType);
@@ -163,7 +160,7 @@ public class AuthorActivity extends BaseThreeActivity
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(null != AuthorActivity.this.getCurrentFocus()){
+                if (null != AuthorActivity.this.getCurrentFocus()) {
                     /**
                      * 点击空白位置 隐藏软键盘
                      */
@@ -181,11 +178,11 @@ public class AuthorActivity extends BaseThreeActivity
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ll_AuthorThree:
-                if (TextUtils.isEmpty(mCurrentProviceName)){
+                if (TextUtils.isEmpty(mCurrentProviceName)) {
                     getThreeList();
-                }else {
+                } else {
                     address_select.setVisibility(View.VISIBLE);
                     isShouldHideInput();
                 }
@@ -195,46 +192,47 @@ public class AuthorActivity extends BaseThreeActivity
                 province = mCurrentProviceName;
                 provinceId = mCurrentProviceId;
                 city = mCurrentCityName;
-                cityId= mCurrentCityId;
+                cityId = mCurrentCityId;
                 region = mCurrentDistrictName;
                 regionId = mCurrentDistrictId;
-                Log.e("TAG_省市区","省="+mCurrentProviceId+";市="+mCurrentCityId+";区="+mCurrentDistrictId);
-                tvAuthorThree.setText(mCurrentProviceName+"-"+mCurrentCityName+"-"+mCurrentDistrictName);
+                Log.e("TAG_省市区", "省=" + mCurrentProviceId + ";市=" + mCurrentCityId + ";区=" + mCurrentDistrictId);
+                tvAuthorThree.setText(mCurrentProviceName + "-" + mCurrentCityName + "-" + mCurrentDistrictName);
                 break;
             case R.id.btn_off:
                 address_select.setVisibility(View.GONE);
                 break;
             case R.id.tv_AuthorNext://下一步
                 shopName = etAuthorShopName.getText().toString().trim();
-                if (TextUtils.isEmpty(shopName)){
+                if (TextUtils.isEmpty(shopName)) {
                     ToastUtil.showToast("门店名称不能为空！");
                     return;
                 }
-                Log.e("TAG_省市区初始化","省="+mCurrentProviceId+";市="+mCurrentCityId+";区="+mCurrentDistrictId);
-                Log.e("TAG_省市区选择","省="+province+";市="+city+";区="+region);
-                if (TextUtils.isEmpty(province)&&TextUtils.isEmpty(city)&&TextUtils.isEmpty(region)){
+                Log.e("TAG_省市区初始化", "省=" + mCurrentProviceId + ";市=" + mCurrentCityId + ";区=" + mCurrentDistrictId);
+                Log.e("TAG_省市区选择", "省=" + province + ";市=" + city + ";区=" + region);
+                if (TextUtils.isEmpty(province) && TextUtils.isEmpty(city) && TextUtils.isEmpty(region)) {
                     ToastUtil.showToast("所在地区不能为空！");
                     return;
                 }
                 shopAddress = etAuthorAddress.getText().toString().trim();
-                if (TextUtils.isEmpty(shopAddress)){
+                if (TextUtils.isEmpty(shopAddress)) {
                     ToastUtil.showToast("收货地址不能为空！");
                     return;
                 }
-                if (TextUtils.isEmpty(shopType)){
+                if (TextUtils.isEmpty(shopType)) {
                     ToastUtil.showToast("经营类型不能为空！");
                     return;
                 }
                 shopNum = etAuthorShopNum.getText().toString().trim();
-                if (TextUtils.isEmpty(shopNum)){
+                if (TextUtils.isEmpty(shopNum)) {
                     ToastUtil.showToast("请输入店铺数量");
                     return;
                 }
-                if (Double.valueOf(shopNum)<=0){
+                if (Double.valueOf(shopNum) <= 0) {
                     ToastUtil.showToast("店铺数量必须大于0");
                     return;
                 }
-                if (TextUtils.isEmpty(shopArea)){
+                String showText = levelSpinner.getShowText();
+                if (TextUtils.isEmpty(showText)) {
                     ToastUtil.showToast("请选择经营面积");
                     return;
                 }
@@ -242,9 +240,11 @@ public class AuthorActivity extends BaseThreeActivity
                 break;
         }
     }
+
     String shopName;
     String shopAddress;
     String shopNum;
+
     private void dialogAuthorNext() {
         Map<String, String> params = new HashMap<String, String>();
         if (token != null && !"".equals(token)) {
@@ -253,57 +253,59 @@ public class AuthorActivity extends BaseThreeActivity
             params.put("access_token", resetToken);
         }
         params.put("lvId", "6");
-        params.put("shopName",shopName );
-        params.put("province",province);//省
+        params.put("shopName", shopName);
+        params.put("province", province);//省
         params.put("city", city);//市
         params.put("region", region);//区
         params.put("provinceId", provinceId);
-        params.put("cityId",cityId);
+        params.put("cityId", cityId);
         params.put("regionId", regionId);
         params.put("shopAddress", shopAddress);
-        params.put("shopArea", shopArea);
+        params.put("shopArea", levelSpinner.getShowText());
         params.put("shopType", shopType);
         params.put("shopTypeId", String.valueOf(shopTypeId));
         params.put("shopNum", shopNum);
         okHttpPost(102, Config.AUTHORMEMBERSUBMIT, params);
     }
 
-    public void isShouldHideInput(){
+    public void isShouldHideInput() {
         // 隐藏输入法
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(llcontentView.getWindowToken(), 0);
     }
+
     String province;
     String provinceId;
     String city;
     String cityId;
     String region;
     String regionId;
+
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-        switch (requestCode){
-            case 100 :
-                if (returnCode == 200){
+        switch (requestCode) {
+            case 100:
+                if (returnCode == 200) {
                     getMemberDataInfo = 1;
-                    AuthorMemberInfoModel authorMemberInfoModel = JSON.parseObject(returnData,AuthorMemberInfoModel.class);
+                    AuthorMemberInfoModel authorMemberInfoModel = JSON.parseObject(returnData, AuthorMemberInfoModel.class);
                     AuthorMemberInfoModel.DataBean data = authorMemberInfoModel.getData();
-                    if (data != null){
+                    if (data != null) {
                         AuthorMemberInfoModel.DataBean.MemberDataBean memberData = data.getMemberData();
                         //服务器时间
                         long currentTime = data.getCurrentTime();
                         AuthorMemberInfoModel.DataBean.ProbationTimeBean probationTime = data.getProbationTime();
-                        if (probationTime !=null){
+                        if (probationTime != null) {
                             //试用期开始时间
                             long startTime = probationTime.getStartTime();
                             //试用期结束时间时间
                             endTime = probationTime.getEndTime();
-                            if (currentTime >= startTime && currentTime <= endTime){
+                            if (currentTime >= startTime && currentTime <= endTime) {
                                 isProbation = true;
-                            }else {
+                            } else {
                                 isProbation = false;
                             }
                         }
-                        if (memberData != null){
+                        if (memberData != null) {
                             //帐号
                             String uName = memberData.getUname();
                             tvAuthorAccountRight.setText(uName == null ? "" : uName);
@@ -319,33 +321,32 @@ public class AuthorActivity extends BaseThreeActivity
 
                             region = memberData.getRegion();//区
                             regionId = String.valueOf(memberData.getRegionId());//区Id
-                            if (!TextUtils.isEmpty(province)){
-                                tvAuthorThree.setText(province+"-"+city+"-"+region);
+                            if (!TextUtils.isEmpty(province)) {
+                                tvAuthorThree.setText(province + "-" + city + "-" + region);
                             }
                             //收货地址
                             String shopAddress = memberData.getShopAddress();
-                            if (!TextUtils.isEmpty(shopAddress)){
+                            if (!TextUtils.isEmpty(shopAddress)) {
                                 etAuthorAddress.setText(shopAddress);
                             }
                             //营业面积
-                            shopArea = memberData.getShopArea();
+                            String shopArea = memberData.getShopArea();
                             for (int i = 0; i < spinnerArr.length; i++) {
-                               if ( spinnerArr[i].equals(shopArea)){
-                                   tvAuthorSpinnerName.setVisibility(View.INVISIBLE);
-                                   spinnerAuthor.setSelection(i,false);
-                                   break;
-                               }
+                                if (spinnerArr[i].equals(shopArea)) {
+                                   levelSpinner.setSelectionItem(i);
+                                    break;
+                                }
                             }
                             //经营类型
                             shopType = memberData.getShopType();
                             shopTypeId = memberData.getShopTypeId();
                             //店铺数量
                             int shopNum = memberData.getShopNum();
-                            etAuthorShopNum.setText(String.valueOf(shopNum == 0 ? 1 : shopNum ));
+                            etAuthorShopNum.setText(String.valueOf(shopNum == 0 ? 1 : shopNum));
                         }
                         //经营类型
                         authenticationType = data.getAuthenticationType();
-                        if (authenticationType !=null && authenticationType.size() > 0){
+                        if (authenticationType != null && authenticationType.size() > 0) {
                             for (int i = 0; i < authenticationType.size(); i++) {
                                 AuthorMemberInfoModel.DataBean.AuthenticationTypeBean authenticationTypeBean = authenticationType.get(i);
                                 int id = authenticationTypeBean.getId();
@@ -361,28 +362,28 @@ public class AuthorActivity extends BaseThreeActivity
                             authTypeAdapter.notifyDataSetChanged();
                         }
                     }
-                    if (listRegions > 0){
+                    if (listRegions > 0) {
                         nsvAuthor.setVisibility(View.VISIBLE);
                     }
                 }
                 break;
             case 101:
-                if (returnCode == 200){
+                if (returnCode == 200) {
                     listRegions = 1;
                     CityListAllModel cityallinfo = JSON.parseObject(returnData, CityListAllModel.class);
                     List<CityListAllModel.ListRegionsBean> listRegions = cityallinfo.getListRegions();
-                    if (listRegions !=null && listRegions.size() > 0){
+                    if (listRegions != null && listRegions.size() > 0) {
                         setUpData(listRegions);
                     }
-                    if (getMemberDataInfo > 0){
+                    if (getMemberDataInfo > 0) {
                         nsvAuthor.setVisibility(View.VISIBLE);
                     }
-                }else {
+                } else {
                     ToastUtil.showToast(returnMsg);
                 }
                 break;
             case 102://下一步
-                if (returnCode == 200 ){
+                if (returnCode == 200) {
                     Map<String, Object> params = new HashMap<String, Object>();
                     if (token != null && !"".equals(token)) {
                         params.put("access_token", token);
@@ -391,20 +392,20 @@ public class AuthorActivity extends BaseThreeActivity
                     }
                     okHttpGet(103, Config.AUTHORMEMBERISAUDIT, params);
 //                    startProbationActivity();
-                }else {
+                } else {
                     ToastUtil.showToast(returnMsg);
                 }
                 break;
             case 103:
-                if (returnCode == 200){//lv_id = 1;正常流程
+                if (returnCode == 200) {//lv_id = 1;正常流程
                     if (isProbation) {//试用期期间
                         startProbationActivity();
                     } else {//上传图片
-                       startActivity(new Intent(this,AuthorImageActivity.class));
+                        startActivity(new Intent(this, AuthorImageActivity.class));
                     }
-                }else if (returnCode == 9){// 状态9表示crm同步已成功, 自动认证,lv_id=6
+                } else if (returnCode == 9) {// 状态9表示crm同步已成功, 自动认证,lv_id=6
                     //清除首页认证成功弹窗提示
-                }else { // 400
+                } else { // 400
                     if (isProbation) {//试用期期间
                         startProbationActivity();
                     } else {//会员信息不存在
@@ -414,12 +415,14 @@ public class AuthorActivity extends BaseThreeActivity
                 break;
         }
     }
-    private void startProbationActivity(){
+
+    private void startProbationActivity() {
         String dateToHms = HelpUtils.getDateToHms(endTime);
-        Intent intent = new Intent(this,ProbationActivity.class);
-        intent.putExtra("endTime",dateToHms);
+        Intent intent = new Intent(this, ProbationActivity.class);
+        intent.putExtra("endTime", dateToHms);
         startActivity(intent);
     }
+
     @Override
     public void onCancelResult() {
 
@@ -439,25 +442,35 @@ public class AuthorActivity extends BaseThreeActivity
     public void onFinishResult() {
 
     }
-    //spinnerIten
-//    private boolean isFirst = true;
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-//        tvAuthorSpinnerName.setText();
-        Log.e("TAG_Spinner","onItemSelected"+position);
-        shopArea = spinnerArr[position];
-        tvAuthorSpinnerName.setVisibility(View.INVISIBLE);
-//        if (true){
-//            isFirst = false;
-//        }else {
-//            tvAuthorSpinnerName.setText(shopArea);
-//        }
-    }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-        Log.e("TAG_Spinner","onNothingSelected");
-    }
+//    //spinnerIten
+//    private boolean isFirst = true;
+//
+//    @Override
+//    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+////        tvAuthorSpinnerName.setText();
+//        Log.e("TAG_Spinner", "onItemSelected" + position);
+//        if (isFirst) {
+//            tvAuthorSpinnerName.setVisibility(View.VISIBLE);
+//            isFirst = false;
+//            try {
+//                //以下三行代码是解决问题所在
+//                Field field = AdapterView.class.getDeclaredField("mOldSelectedPosition");
+//                field.setAccessible(true);    //设置mOldSelectedPosition可访问
+//                field.setInt(spinnerAuthor, AdapterView.INVALID_POSITION); //设置mOldSelectedPosition的值
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            shopArea = spinnerArr[position];
+//            tvAuthorSpinnerName.setVisibility(View.INVISIBLE);
+//        }
+//    }
+//
+//    @Override
+//    public void onNothingSelected(AdapterView<?> adapterView) {
+//        Log.e("TAG_Spinner", "onNothingSelected");
+//    }
 
     @Override
     public void onItemClick(View view, int position) {
@@ -473,18 +486,20 @@ public class AuthorActivity extends BaseThreeActivity
         }
         authTypeAdapter.notifyDataSetChanged();
     }
+
     //提交信息
     protected AlertDialog submitOneDialog;
+
     private void showAuthDialog() {
         LayoutInflater factor = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_submitauthorone, null);
         TextView tvHint = (TextView) serviceView.findViewById(R.id.tv_AuthorDialogSubmit);
-        String formatHint = String.format(tvHint.getText().toString(), (TextUtils.isEmpty(province)?mCurrentProviceName:province)
-                , (TextUtils.isEmpty(province)?"":province));
+        String formatHint = String.format(tvHint.getText().toString(), (TextUtils.isEmpty(province) ? mCurrentProviceName : province)
+                , (TextUtils.isEmpty(province) ? "" : province));
         SpannableStringBuilder span = new SpannableStringBuilder(formatHint);
-        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this,R.color.orange)), 14,14+province.length() ,
+        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.orange)), 14, 14 + province.length(),
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this,R.color.orange)), 27+province.length(),27+province.length()+province.length() ,
+        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.orange)), 27 + province.length(), 27 + province.length() + province.length(),
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         tvHint.setText(span);
 

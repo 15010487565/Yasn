@@ -209,7 +209,7 @@ public class OrderDetailsSonModel implements Serializable{
         private int orderFrom;
         private String regionIds;
         private int createOrderMemberId;
-//        private ReceiptBean receipt;
+        private ReceiptBean receipt;
         private String shopName;
         private Object childOrderList;
         private List<OrderItemBean> orderItem;
@@ -845,13 +845,13 @@ public class OrderDetailsSonModel implements Serializable{
         public void setCreateOrderMemberId(int createOrderMemberId) {
             this.createOrderMemberId = createOrderMemberId;
         }
-//        public ReceiptBean getReceipt() {
-//            return receipt;
-//        }
-//
-//        public void setReceipt(ReceiptBean receipt) {
-//            this.receipt = receipt;
-//        }
+        public ReceiptBean getReceipt() {
+            return receipt;
+        }
+
+        public void setReceipt(ReceiptBean receipt) {
+            this.receipt = receipt;
+        }
 
         public String getShopName() {
             return shopName;
@@ -877,42 +877,282 @@ public class OrderDetailsSonModel implements Serializable{
             this.orderItem = orderItem;
         }
 
-//        public static class ReceiptBean {
-//
-//            /**
-//             * title : 单位名哈哈
-//             * invoiceNum : 识别号哈哈
-//             * receiptStatus : 2
-//             */
-//
-//            private String title;
-//            private String invoiceNum;
-//            private int receiptStatus;
-//
-//            public String getTitle() {
-//                return title;
-//            }
-//
-//            public void setTitle(String title) {
-//                this.title = title;
-//            }
-//
-//            public String getInvoiceNum() {
-//                return invoiceNum;
-//            }
-//
-//            public void setInvoiceNum(String invoiceNum) {
-//                this.invoiceNum = invoiceNum;
-//            }
-//
-//            public int getReceiptStatus() {
-//                return receiptStatus;
-//            }
-//
-//            public void setReceiptStatus(int receiptStatus) {
-//                this.receiptStatus = receiptStatus;
-//            }
-//        }
+        public static class ReceiptBean {
+
+            /**
+             * id : null
+             * orderId : null
+             * title : 单位名哈哈
+             * addTime : null
+             * content : null
+             * status : 0
+             * receiptStatus : 2
+             * memberId : 21880
+             * invoiceRise : null
+             * invoiceNum : 识别号哈哈
+             * invoiceAddress : null
+             * invoiceMobile : null
+             * invoiceBank : null
+             * invoiceBankNum : null
+             * ticketStatus : 0
+             * storeId : null
+             * invoiceCreateTime : null
+             * selfSupport : null
+             * deliveryStatus : null
+             * waybillNum : null
+             * expressCompany : null
+             * icode : null
+             * invoiceStatus : null
+             * shipArea : null
+             * shipMobile : null
+             * shipName : null
+             * shipAddr : null
+             */
+
+            private Object id;
+            private Object orderId;
+            private String title;
+            private Object addTime;
+            private String content;
+            private int status;
+            private int receiptStatus;
+            private int memberId;
+            private Object invoiceRise;
+            private String invoiceNum;
+            private String invoiceAddress;
+            private String invoiceMobile;
+            private String invoiceBank;
+            private String invoiceBankNum;
+            private int ticketStatus;
+            private Object storeId;
+            private Object invoiceCreateTime;
+            private Object selfSupport;
+            private Object deliveryStatus;
+            private Object waybillNum;
+            private Object expressCompany;
+            private Object icode;
+            private Object invoiceStatus;
+            private Object shipArea;
+            private Object shipMobile;
+            private Object shipName;
+            private Object shipAddr;
+
+            public Object getId() {
+                return id;
+            }
+
+            public void setId(Object id) {
+                this.id = id;
+            }
+
+            public Object getOrderId() {
+                return orderId;
+            }
+
+            public void setOrderId(Object orderId) {
+                this.orderId = orderId;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public Object getAddTime() {
+                return addTime;
+            }
+
+            public void setAddTime(Object addTime) {
+                this.addTime = addTime;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public int getReceiptStatus() {
+                return receiptStatus;
+            }
+
+            public void setReceiptStatus(int receiptStatus) {
+                this.receiptStatus = receiptStatus;
+            }
+
+            public int getMemberId() {
+                return memberId;
+            }
+
+            public void setMemberId(int memberId) {
+                this.memberId = memberId;
+            }
+
+            public Object getInvoiceRise() {
+                return invoiceRise;
+            }
+
+            public void setInvoiceRise(Object invoiceRise) {
+                this.invoiceRise = invoiceRise;
+            }
+
+            public String getInvoiceNum() {
+                return invoiceNum;
+            }
+
+            public void setInvoiceNum(String invoiceNum) {
+                this.invoiceNum = invoiceNum;
+            }
+
+            public String getInvoiceAddress() {
+                return invoiceAddress;
+            }
+
+            public void setInvoiceAddress(String invoiceAddress) {
+                this.invoiceAddress = invoiceAddress;
+            }
+
+            public String getInvoiceMobile() {
+                return invoiceMobile;
+            }
+
+            public void setInvoiceMobile(String invoiceMobile) {
+                this.invoiceMobile = invoiceMobile;
+            }
+
+            public String getInvoiceBank() {
+                return invoiceBank;
+            }
+
+            public void setInvoiceBank(String invoiceBank) {
+                this.invoiceBank = invoiceBank;
+            }
+
+            public String getInvoiceBankNum() {
+                return invoiceBankNum;
+            }
+
+            public void setInvoiceBankNum(String invoiceBankNum) {
+                this.invoiceBankNum = invoiceBankNum;
+            }
+
+            public int getTicketStatus() {
+                return ticketStatus;
+            }
+
+            public void setTicketStatus(int ticketStatus) {
+                this.ticketStatus = ticketStatus;
+            }
+
+            public Object getStoreId() {
+                return storeId;
+            }
+
+            public void setStoreId(Object storeId) {
+                this.storeId = storeId;
+            }
+
+            public Object getInvoiceCreateTime() {
+                return invoiceCreateTime;
+            }
+
+            public void setInvoiceCreateTime(Object invoiceCreateTime) {
+                this.invoiceCreateTime = invoiceCreateTime;
+            }
+
+            public Object getSelfSupport() {
+                return selfSupport;
+            }
+
+            public void setSelfSupport(Object selfSupport) {
+                this.selfSupport = selfSupport;
+            }
+
+            public Object getDeliveryStatus() {
+                return deliveryStatus;
+            }
+
+            public void setDeliveryStatus(Object deliveryStatus) {
+                this.deliveryStatus = deliveryStatus;
+            }
+
+            public Object getWaybillNum() {
+                return waybillNum;
+            }
+
+            public void setWaybillNum(Object waybillNum) {
+                this.waybillNum = waybillNum;
+            }
+
+            public Object getExpressCompany() {
+                return expressCompany;
+            }
+
+            public void setExpressCompany(Object expressCompany) {
+                this.expressCompany = expressCompany;
+            }
+
+            public Object getIcode() {
+                return icode;
+            }
+
+            public void setIcode(Object icode) {
+                this.icode = icode;
+            }
+
+            public Object getInvoiceStatus() {
+                return invoiceStatus;
+            }
+
+            public void setInvoiceStatus(Object invoiceStatus) {
+                this.invoiceStatus = invoiceStatus;
+            }
+
+            public Object getShipArea() {
+                return shipArea;
+            }
+
+            public void setShipArea(Object shipArea) {
+                this.shipArea = shipArea;
+            }
+
+            public Object getShipMobile() {
+                return shipMobile;
+            }
+
+            public void setShipMobile(Object shipMobile) {
+                this.shipMobile = shipMobile;
+            }
+
+            public Object getShipName() {
+                return shipName;
+            }
+
+            public void setShipName(Object shipName) {
+                this.shipName = shipName;
+            }
+
+            public Object getShipAddr() {
+                return shipAddr;
+            }
+
+            public void setShipAddr(Object shipAddr) {
+                this.shipAddr = shipAddr;
+            }
+        }
 
         public static class OrderItemBean {
             /**

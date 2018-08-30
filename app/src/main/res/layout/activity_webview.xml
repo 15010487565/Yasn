@@ -8,19 +8,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <include
-            layout="@layout/view_simple_topbar"/>
         <FrameLayout
             android:id="@+id/fragment_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <com.github.lzyzsd.jsbridge.BridgeWebView
-                android:id="@+id/webView_br"
-                android:overScrollMode="never"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
+                android:layout_height="match_parent">
+                <com.github.lzyzsd.jsbridge.BridgeWebView
+                    android:id="@+id/webView_br"
+                    android:overScrollMode="never"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <include
+                    layout="@layout/view_simple_topbar"/>
+            </RelativeLayout>
             <include
                 android:id="@+id/error_page"
                 layout="@layout/include_state_error_forweb"

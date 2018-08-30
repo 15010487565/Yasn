@@ -8,6 +8,7 @@
     android:ellipsize="marquee"
     android:gravity="center_vertical|left"
     android:paddingBottom="@dimen/one_and_a_half_grid_unit"
+    android:paddingLeft="@dimen/margin_15"
     android:paddingTop="@dimen/one_and_a_half_grid_unit"
     android:singleLine="true"
     android:textSize="15sp"

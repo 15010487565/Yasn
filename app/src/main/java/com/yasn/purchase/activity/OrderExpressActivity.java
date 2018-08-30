@@ -104,17 +104,16 @@ public class OrderExpressActivity extends SimpleTopbarActivity implements
                             tabAt.setCustomView(tabIcon(i));
                         }
                         tableLayout.addOnTabSelectedListener(this);
+                        String minNumberString = String.format("您的订单被拆分成%s个包裹配送，请注意查收！", deliverys.size());
+                        SpannableStringBuilder span = new SpannableStringBuilder(minNumberString);
+                        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.black_66)), 0, 8,
+                                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                        span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.black_66)), minNumberString.length() - 12, minNumberString.length(),
+                                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                        tvTopExpressNum.setText(span);
                     }else {
                         tableLayout.setVisibility(View.GONE);
                     }
-                    String minNumberString = String.format("您的订单被拆分成%s个包裹配送，请注意查收！", deliverys.size());
-                    SpannableStringBuilder span = new SpannableStringBuilder(minNumberString);
-                    span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.black_66)), 0, 8,
-                            Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.black_66)), minNumberString.length() - 12, minNumberString.length(),
-                            Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    tvTopExpressNum.setText(span);
-
                 }
                 break;
         }
