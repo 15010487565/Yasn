@@ -271,7 +271,15 @@ public class ShopcarPayModel implements Serializable{
         private int enablePoint;
         private double enableDeductMoney;
         private List<OrderItemVOSBean> orderItemVOS;
+        private ActivityGiftBean activityGift;
 
+        public ActivityGiftBean getActivityGift() {
+            return activityGift;
+        }
+
+        public void setActivityGift(ActivityGiftBean activityGift) {
+            this.activityGift = activityGift;
+        }
         public String getStoreName() {
             return storeName;
         }
@@ -358,6 +366,132 @@ public class ShopcarPayModel implements Serializable{
 
         public void setOrderItemVOS(List<OrderItemVOSBean> orderItemVOS) {
             this.orderItemVOS = orderItemVOS;
+        }
+
+        public static class ActivityGiftBean {
+            /**
+             * page : null
+             * pageSize : null
+             * giftId : 57
+             * giftName : 比方说
+             * giftPrice : 100
+             * giftImg : http://shoptt.yasn.com/static/attachment//store/1/goods/2018/2/8/19//59243102.jpg
+             * giftType : 1
+             * actualStore : 100
+             * enableStore : 99
+             * createTime : 1521514182
+             * goodsId : 3721
+             * disabled : 0
+             */
+
+            private Object page;
+            private Object pageSize;
+            private int giftId;
+            private String giftName;
+            private double giftPrice;
+            private String giftImg;
+            private int giftType;
+            private int actualStore;
+            private int enableStore;
+            private int createTime;
+            private int goodsId;
+            private int disabled;
+
+            public Object getPage() {
+                return page;
+            }
+
+            public void setPage(Object page) {
+                this.page = page;
+            }
+
+            public Object getPageSize() {
+                return pageSize;
+            }
+
+            public void setPageSize(Object pageSize) {
+                this.pageSize = pageSize;
+            }
+
+            public int getGiftId() {
+                return giftId;
+            }
+
+            public void setGiftId(int giftId) {
+                this.giftId = giftId;
+            }
+
+            public String getGiftName() {
+                return giftName;
+            }
+
+            public void setGiftName(String giftName) {
+                this.giftName = giftName;
+            }
+
+            public double getGiftPrice() {
+                return giftPrice;
+            }
+
+            public void setGiftPrice(double giftPrice) {
+                this.giftPrice = giftPrice;
+            }
+
+            public String getGiftImg() {
+                return giftImg;
+            }
+
+            public void setGiftImg(String giftImg) {
+                this.giftImg = giftImg;
+            }
+
+            public int getGiftType() {
+                return giftType;
+            }
+
+            public void setGiftType(int giftType) {
+                this.giftType = giftType;
+            }
+
+            public int getActualStore() {
+                return actualStore;
+            }
+
+            public void setActualStore(int actualStore) {
+                this.actualStore = actualStore;
+            }
+
+            public int getEnableStore() {
+                return enableStore;
+            }
+
+            public void setEnableStore(int enableStore) {
+                this.enableStore = enableStore;
+            }
+
+            public int getCreateTime() {
+                return createTime;
+            }
+
+            public void setCreateTime(int createTime) {
+                this.createTime = createTime;
+            }
+
+            public int getGoodsId() {
+                return goodsId;
+            }
+
+            public void setGoodsId(int goodsId) {
+                this.goodsId = goodsId;
+            }
+
+            public int getDisabled() {
+                return disabled;
+            }
+
+            public void setDisabled(int disabled) {
+                this.disabled = disabled;
+            }
         }
 
         public static class OrderItemVOSBean {

@@ -234,8 +234,10 @@ public class MyWebChromeClient extends WebChromeClient {
             activity.startActivity(intent);
         }else if ("else".equals(backString)){//关闭当前activity
             activity.finish();
-        }
-        else {
+        } else if ("paySucceed".equals(backString)){//支付成功
+            activity.finish();
+            EventBus.getDefault().post(new EventBusMsg("paySucceed"));
+        } else {
             activity.finish();
 //            EventBus.getDefault().post(new EventBusMsg("webViewBack"));
         }

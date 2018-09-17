@@ -1,4 +1,4 @@
-package com.yasn.purchase;
+package com.yasn.purchase.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.yasn.purchase.R;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.threelevelganged.BaseThreeActivity;
 import com.yasn.purchase.threelevelganged.CityListAllModel;

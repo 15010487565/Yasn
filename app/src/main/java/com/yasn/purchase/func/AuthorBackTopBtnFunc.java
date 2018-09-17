@@ -30,5 +30,4 @@ public class AuthorBackTopBtnFunc extends BaseTopImageBtnFunc {
 	public void onclick(View v) {
 		getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
 	}
-
 }

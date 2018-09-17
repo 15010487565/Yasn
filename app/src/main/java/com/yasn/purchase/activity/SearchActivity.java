@@ -201,7 +201,6 @@ public class SearchActivity extends SimpleTopbarActivity implements
         topsearchLinear.setOnClickListener(this);
         //顶部TAB
         tablayout = (TabLayout) findViewById(R.id.tab_Search);
-        tablayout.addOnTabSelectedListener(this);
         //综合
         searchsynthesis = (TextView) findViewById(R.id.search_synthesis);
         searchsynthesis.setOnClickListener(this);
@@ -241,11 +240,13 @@ public class SearchActivity extends SimpleTopbarActivity implements
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                Log.e("TAG_搜索","onScrollStateChanged");
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                Log.e("TAG_搜索","onScrolled");
                 boolean isTop = recyclerView.canScrollVertically(-1);//返回false表示不能往下滑动，即代表到顶部了；
                 if (isTop){
                     swipe_layout.setEnabled(false);
@@ -259,12 +260,13 @@ public class SearchActivity extends SimpleTopbarActivity implements
                 int visibleItemCount = mLinearLayoutManager.getChildCount();
                 //当前RecyclerView的所有子项个数
                 int totalItemCount = mLinearLayoutManager.getItemCount();
-//                Log.e("TAG_底部","isBottom="+isBottom+"visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
+                Log.e("TAG_底部","isBottom="+isBottom+"visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
                 if (isBottom ){
                     swipe_layout.setBottom(false);
                 }else {
                     if (visibleItemCount == totalItemCount){
                         swipe_layout.setBottom(false);
+                        adapter.upFootText();
                     }else {
                         swipe_layout.setBottom(true);
                     }
@@ -331,9 +333,8 @@ public class SearchActivity extends SimpleTopbarActivity implements
                 }
             }
         });
-
+        //车型
         Map<String, Object> params = new HashMap<String, Object>();
-//        params.put("uid", uid);
         okHttpGet(101, Config.SEARCHCARTYPE, params);
     }
 
@@ -408,6 +409,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
                 searchSynthesis();
                 break;
             case R.id.search_salesvolume://销量
+                adapter.clearData();
                 tabType = 2;
                 screenArrow = searchsalesvolume.isArrowHide();
                 /**
@@ -434,6 +436,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
 //                searchmoney.animateArrow(false);//重置价格箭头
                 break;
             case R.id.tv_HomeMoreMoney://价格
+                adapter.clearData();
                 tabType = 3;
                 priceArrow = searchmoney.isArrowHide();
                 searchsynthesis.setTextColor(ContextCompat.getColor(this, R.color.black_33));
@@ -550,6 +553,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
     }
 
     private void searchSynthesis() {
+        adapter.clearData();
         tabType = 1;
         searchsynthesis.setTextColor(ContextCompat.getColor(this, R.color.orange));
         searchsalesvolume.setTextColor(ContextCompat.getColor(this, R.color.black_33));
@@ -570,9 +574,11 @@ public class SearchActivity extends SimpleTopbarActivity implements
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         int selectPosition = tab.getPosition();
-        Log.e("TAG_", selectPosition + "");
+        Log.e("TAG_onTabSelected", selectPosition + "");
         int cat_id = cats.get(selectPosition).getCat_id();
         secarchcarid = String.valueOf(cat_id);
+        adapter.clearData();
+        page = 1;
         startSearchGet("", secarchcarid, "def_desc");
     }
 
@@ -656,11 +662,13 @@ public class SearchActivity extends SimpleTopbarActivity implements
                         SearchCatsModel.CatsBean catsBean = cats.get(i);
                         String name = catsBean.getName();
                         int cat_id = catsBean.getCat_id();
+                        tablayout.removeOnTabSelectedListener(this);
                         if (integer == cat_id){
                             tablayout.addTab(tablayout.newTab().setText(name == null ? "" : name),true);
                         }else {
                             tablayout.addTab(tablayout.newTab().setText(name == null ? "" : name),false);
                         }
+                        tablayout.addOnTabSelectedListener(this);
                     }
                 }else {
                     ToastUtil.showToast(returnMsg);
@@ -759,6 +767,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
 
     @Override
     public void onRefresh() {
+        adapter.clearData();
         page = 1;
         swipe_layout.setRefreshing(true);
         isDownPull = true;

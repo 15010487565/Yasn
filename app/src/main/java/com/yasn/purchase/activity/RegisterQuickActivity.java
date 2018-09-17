@@ -58,6 +58,12 @@ public class RegisterQuickActivity extends SimpleTopbarActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+
+    }
+
+    @Override
     protected void afterSetContentView() {
         super.afterSetContentView();
         etRegisterQuickAccount = (EditText) findViewById(R.id.et_RegisterQuickAccount);

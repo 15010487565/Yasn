@@ -19,6 +19,9 @@ import java.util.Map;
 
 import www.xcd.com.mylibrary.help.HelpUtils;
 
+import static com.yasn.purchase.common.ItemTypeConfig.ITEM_FOOTER;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_ONE;
+
 /**
  * /**
  * 常购清单
@@ -27,8 +30,7 @@ import www.xcd.com.mylibrary.help.HelpUtils;
 
 public class MakerShopOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public final static int TYPE_ITEM = 1;
-    public final static int TYPE_FOOTER = 2;
+
     private Context context;
     private List<MakerShopOrderModel.DataBean> list;
     private List<MakerShopOrderModel.DataBean> addList;
@@ -69,9 +71,9 @@ public class MakerShopOrderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemViewType(int position) {
         if (position + 1 == getItemCount()) {
-            return TYPE_FOOTER;
+            return ITEM_FOOTER;
         } else {
-            return TYPE_ITEM;
+            return TYPE_ONE;
         }
     }
 
@@ -80,11 +82,11 @@ public class MakerShopOrderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         View view = null;
         RecyclerView.ViewHolder holder = null;
         switch (viewType) {
-            case TYPE_ITEM:
+            case TYPE_ONE:
                 view = LayoutInflater.from(context).inflate(R.layout.recycleritem_makershoporder, parent, false);
                 holder = new ViewHolderItem(view);
                 break;
-            case TYPE_FOOTER:
+            case ITEM_FOOTER:
                 view = LayoutInflater.from(context).inflate(R.layout.item_foot, parent, false);
                 holder = new FootViewHolder(view);
                 viewHolderMap.put("holder", holder);
@@ -97,7 +99,7 @@ public class MakerShopOrderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
-            case TYPE_ITEM:
+            case TYPE_ONE:
                 ViewHolderItem viwHoder = (ViewHolderItem) holder;
                 MakerShopOrderModel.DataBean dataBean = list.get(position);
 
@@ -119,7 +121,7 @@ public class MakerShopOrderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 String mobileSub = substring1 + "****" +substring2;
                 viwHoder.tvOrderMobile.setText(mobileSub == null ? "" : mobileSub);
                 break;
-            case TYPE_FOOTER:
+            case ITEM_FOOTER:
                 FootViewHolder footviewholder = (FootViewHolder) holder;
                 if (list == null || list.size() == 0) {
                     footviewholder.footView.setVisibility(View.GONE);
@@ -146,7 +148,7 @@ public class MakerShopOrderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        return list == null ? 0 : (list.size());
+        return list == null ? 0 : (list.size()+1);
     }
 
     class ViewHolderItem extends RecyclerView.ViewHolder {

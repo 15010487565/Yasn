@@ -71,10 +71,19 @@
                     <!--android:paddingRight="@dimen/margin_10"-->
                     <!--lee:tagHorizontalSpace="10dp"-->
                     <!--lee:tagVerticalSpace="10dp" />-->
+                <ImageView
+                    android:id="@+id/iv_Addshopcar"
+                    android:layout_width="@dimen/height_40"
+                    android:layout_height="@dimen/height_40"
+                    android:layout_marginTop="@dimen/margin_1"
+                    android:layout_alignParentRight="true"
+                    android:background="@mipmap/oftershop_red"/>
                 <TextView
                     android:id="@+id/spec_OftenShop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:layout_toLeftOf="@id/iv_Addshopcar"
                     android:background="#ffffff" />
                 <LinearLayout
                     android:id="@+id/ll_OftenshopMoney"
@@ -112,13 +121,6 @@
                     <include
                         layout="@layout/include_threelable" />
                 </LinearLayout>
-                <ImageView
-                    android:id="@+id/iv_Addshopcar"
-                    android:layout_width="@dimen/height_40"
-                    android:layout_height="@dimen/height_40"
-                    android:layout_marginTop="@dimen/margin_1"
-                    android:layout_alignParentRight="true"
-                    android:background="@mipmap/oftershop_red"/>
 
             </RelativeLayout>
 

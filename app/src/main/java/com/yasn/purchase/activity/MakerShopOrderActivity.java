@@ -143,20 +143,27 @@ public class MakerShopOrderActivity extends SimpleTopbarActivity implements Mult
                         if (data == null || data.size() == 0){
                             adapter.upFootText();
                             ToastUtil.showToast("门店订单已全部显示！");
+                            rcMakerShop.setVisibility(View.VISIBLE);
+                            llError.setVisibility(View.GONE);
                         }else {
                             adapter.addData(data);
+                            rcMakerShop.setVisibility(View.VISIBLE);
+                            llError.setVisibility(View.GONE);
                         }
                     } else {
                         if (data == null || data.size() == 0){
 //                            adapter.upFootText();
+                            rcMakerShop.setVisibility(View.GONE);
+                            llError.setVisibility(View.VISIBLE);
                             ToastUtil.showToast("未搜索到门店订单！");
                         }else {
                             adapter.setData(data);
+                            rcMakerShop.setVisibility(View.VISIBLE);
+                            llError.setVisibility(View.GONE);
                         }
                     }
                     swipe_layout.setLoading(false);
-                    rcMakerShop.setVisibility(View.VISIBLE);
-                    llError.setVisibility(View.GONE);
+
                 }else {
                     rcMakerShop.setVisibility(View.GONE);
                     llError.setVisibility(View.VISIBLE);

@@ -343,10 +343,10 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                         if (employeeAuth.indexOf("0") == -1) {
                             if (employeeAuth.indexOf("1") == -1) {
                                 ToastUtil.showToast("您没有采购权限!");
-                            }else{
+                            } else {
                                 addShopCarRequest();
                             }
-                        }else {
+                        } else {
                             addShopCarRequest();
                         }
                     }
@@ -539,6 +539,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
                         JSONObject object = new JSONObject(returnData);
                         int code = object.optInt("code");
                         if (code == 200) {
+                            EventBus.getDefault().post(new EventBusMsg("refreshShopCar"));
                             setCartNum(object.optInt("number"));
                             ToastUtil.showToast(object.optString("message"));
                         } else {

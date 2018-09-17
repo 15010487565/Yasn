@@ -117,7 +117,7 @@ public class IntegralDetailFragment extends OrderFragment
                 int visibleItemCount = mLinearLayoutManager.getChildCount();
                 //当前RecyclerView的所有子项个数
                 int totalItemCount = mLinearLayoutManager.getItemCount();
-                Log.e("TAG_底部Scrolled","isBottom="+isBottom+";visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
+                Log.e("TAG_底部积分详情","isBottom="+isBottom+";visibleItemCount="+visibleItemCount+";totalItemCount="+totalItemCount);
                 if (isBottom) {
                     swipe_layout.setBottom(false);
                 } else {

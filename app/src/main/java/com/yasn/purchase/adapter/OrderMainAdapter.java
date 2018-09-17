@@ -257,19 +257,6 @@ public class OrderMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-//    class FootViewHolder extends RecyclerView.ViewHolder {
-//        LinearLayout footView;
-//        ProgressBar progressBar;
-//        TextView footText;
-//
-//        public FootViewHolder(View view) {
-//            super(view);
-//            footView = (LinearLayout) itemView.findViewById(R.id.footView);
-//            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
-//            footText = (TextView) itemView.findViewById(R.id.footText);
-//        }
-//    }
-
     private OnRcOrderItemClickListener onItemClickListener;
 
     public void setOnItemClickListener(OnRcOrderItemClickListener onItemClickListener) {

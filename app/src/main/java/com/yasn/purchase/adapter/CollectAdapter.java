@@ -34,14 +34,15 @@ import java.util.Map;
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_FOOTER;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_ITEM;
+
 /**
  * Created by gs on 2017/12/29.
  */
 
 public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public final static int TYPE_ITEM = 1;
-    public final static int TYPE_FOOTER = 2;
     private Context context;
     private List<CollectModel.ListFavoriteBean> list;
     private List<CollectModel.ListFavoriteBean> addList;
@@ -339,20 +340,6 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
         }
     }
-
-//    class FootViewHolder extends RecyclerView.ViewHolder {
-//        LinearLayout footView;
-//        ProgressBar progressBar;
-//        TextView footText;
-//
-//        public FootViewHolder(View view) {
-//            super(view);
-//            footView = (LinearLayout) itemView.findViewById(R.id.footView);
-//            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
-//            footText = (TextView) itemView.findViewById(R.id.footText);
-//        }
-//
-//    }
 
     private void onItemEventClick(RecyclerView.ViewHolder holder) {
         final int position = holder.getLayoutPosition();

@@ -1,12 +1,15 @@
 package com.yasn.purchase.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.PhotoActivity;
+import www.xcd.com.mylibrary.activity.PermissionsActivity;
+import www.xcd.com.mylibrary.activity.PermissionsChecker;
 
 public class AuthorImageActivity extends PhotoActivity {
 
@@ -38,7 +43,12 @@ public class AuthorImageActivity extends PhotoActivity {
     private String proveFileA;//营业执照
     private String proveFileB;//店铺门面照片
     private TextView tvAuthorUploadOk;
-
+    private static final String[] AUTHORIMAGE = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ,Manifest.permission.READ_EXTERNAL_STORAGE
+            ,Manifest.permission.CAMERA
+    };
+    private PermissionsChecker mChecker ;
     @Override
     protected Object getTopbarTitle() {
         return "会员认证";
@@ -48,6 +58,7 @@ public class AuthorImageActivity extends PhotoActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author_image);
+        mChecker = new PermissionsChecker(this);
     }
 
     @Override
@@ -85,12 +96,27 @@ public class AuthorImageActivity extends PhotoActivity {
                 showSampleDialog(R.mipmap.yangbentu2);
                 break;
             case R.id.iv_UploadCard://上传营业执照
-                setShowViewid(R.id.iv_UploadCard);
-                getChoiceDialog().show();
+
+                if (mChecker.lacksPermissions(AUTHORIMAGE)) {
+                    // 请求权限
+                    PermissionsActivity.startActivityForResult(this,11000,AUTHORIMAGE);
+//                    ActivityCompat.requestPermissions(this, BaseActivity.WRITEREADPERMISSIONS, 11000);
+                } else {
+                    // 全部权限都已获取
+                    setShowViewid(R.id.iv_UploadCard);
+                    getChoiceDialog().show();
+                }
                 break;
             case R.id.iv_UploadShop://上传门店照片
-                setShowViewid(R.id.iv_UploadShop);
-                getChoiceDialog().show();
+                if (mChecker.lacksPermissions(AUTHORIMAGE)) {
+                    // 请求权限
+                    PermissionsActivity.startActivityForResult(this,11000,AUTHORIMAGE);
+//                    ActivityCompat.requestPermissions(this, BaseActivity.WRITEREADPERMISSIONS, 11000);
+                } else {
+                    // 全部权限都已获取
+                    setShowViewid(R.id.iv_UploadShop);
+                    getChoiceDialog().show();
+                }
                 break;
             case R.id.tv_AuthorUploadOk://上传
                 if (TextUtils.isEmpty(proveFileA)){
@@ -298,5 +324,26 @@ public class AuthorImageActivity extends PhotoActivity {
     @Override
     public void onFinishResult() {
 
+    }
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 11000:
+                if (hasAllPermissionsGranted(grantResults)){
+                    getChoiceDialog().show();
+                }else {
+                    ToastUtil.showToast("请在应用管理中打开“相机”访问权限！");
+                }
+                break;
+        }
+    }
+    // 含有全部的权限
+    private boolean hasAllPermissionsGranted(@NonNull int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                return false;
+            }
+        }
+        return true;
     }
 }

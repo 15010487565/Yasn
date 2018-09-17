@@ -252,9 +252,11 @@ public class HomeFragment extends SimpleTopbarFragment implements
                 SharePrefHelper.getInstance(getActivity()).putSpInt("lv_id", lv_id);
                 if (lv_id == 2) {
                     whiteTopText.setText("认证审核中");
+                    whiteTopText.setVisibility(View.VISIBLE);
                     homeGrade.setVisibility(View.GONE);
                 } else if (lv_id == 3) {
                     whiteTopText.setText("审核未通过  ");
+                    whiteTopText.setVisibility(View.VISIBLE);
                     undredgeYsenHelp.setText("查看原因");
                     String memssage = member.getMessage();//审核未通过原因
                     Log.e("TAG_原因", "memssage=" + memssage);
@@ -263,25 +265,28 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     homeGrade.setVisibility(View.GONE);
                 } else if (lv_id == 5) {
                     whiteTopText.setText("");
+                    whiteTopText.setVisibility(View.GONE);
                     undredgeYsenHelp.setText("去认证");
                     undredgeYsenHelp.setVisibility(View.VISIBLE);
                     homeGrade.setVisibility(View.GONE);
                 } else if (lv_id == 1) {
                     whiteTopText.setText("");
+                    whiteTopText.setVisibility(View.GONE);
                     undredgeYsenHelp.setText("去认证");
                     undredgeYsenHelp.setVisibility(View.VISIBLE);
                     homeGrade.setVisibility(View.GONE);
                 } else {
                     whiteTopText.setText("");
-                    undredgeYsenHelp.setVisibility(View.VISIBLE);
-                    undredgeYsenHelp.setText("开通雅森帮");
+                    whiteTopText.setVisibility(View.GONE);
+                    undredgeYsenHelp.setVisibility(View.GONE);
+//                    undredgeYsenHelp.setText("开通雅森帮");
                     homeGrade.setVisibility(View.VISIBLE);
                     okdredgeYsenHelp.setVisibility(View.GONE);
                 }
             } else if (digital_member == 1) {//已开通雅森帮
                 loginImage.setBackgroundResource(R.mipmap.login_y_yasn);
-                undredgeYsenHelp.setVisibility(View.INVISIBLE);
-                okdredgeYsenHelp.setVisibility(View.VISIBLE);
+                undredgeYsenHelp.setVisibility(View.GONE);
+                okdredgeYsenHelp.setVisibility(View.GONE);
                 homeGrade.setVisibility(View.VISIBLE);
                 long endDate = member.getEndDate();
                 String expireTime = HelpUtils.getDateToString(endDate);
@@ -319,6 +324,7 @@ public class HomeFragment extends SimpleTopbarFragment implements
         //星级
         homeGrade = (TextView) view.findViewById(R.id.tv_HomeGrade);
         whiteTopText = (TextView) view.findViewById(R.id.tv_HomeWhiteTopText);
+        whiteTopText.setVisibility(View.GONE);
         //未开头雅森帮
         undredgeYsenHelp = (TextView) view.findViewById(R.id.undredge_YsenHelp);
         undredgeYsenHelp.setVisibility(View.VISIBLE);
@@ -1087,7 +1093,6 @@ public class HomeFragment extends SimpleTopbarFragment implements
                     rcHome.scrollBy(0, top);
                 }
             }
-            //            if (newState == RecyclerView.SCROLL_STATE_IDLE ){
             //获取最后一个可见view的位置
             int lastItemPosition = mLinearLayoutManager.findLastVisibleItemPosition();
             //获取第一个可见view的位置

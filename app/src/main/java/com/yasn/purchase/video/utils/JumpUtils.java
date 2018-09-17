@@ -13,6 +13,7 @@ import com.yasn.purchase.video.activity.PlayEmptyControlActivity;
 
 /**
  * Created by shuyu on 2016/11/11.
+ * 播放视频
  */
 
 public class JumpUtils {

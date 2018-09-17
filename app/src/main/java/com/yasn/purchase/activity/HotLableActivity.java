@@ -1,5 +1,6 @@
 package com.yasn.purchase.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,6 +16,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,9 +37,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.help.HelpUtils;
+
+import static www.xcd.com.mylibrary.utils.SharePrefHelper.context;
 
 public class HotLableActivity extends SimpleTopbarActivity implements View.OnClickListener, OnRcItemClickListener ,TextWatcher{
 
@@ -67,6 +73,10 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
         //文本输入框
         topsearch = (EditText) findViewById(R.id.tv_Topsearch);
         topsearch.setOnFocusChangeListener(this);
+        topsearch.setFocusable(true);
+        topsearch.setFocusableInTouchMode(true);
+        topsearch.requestFocus();
+
         HelpUtils.setEditTextInhibitInputSpeChat(topsearch);
         topsearch.addTextChangedListener(this);
         ivClean = (ImageView) findViewById(R.id.iv_clean);
@@ -90,6 +100,22 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
         hotlabel = (TagsLayout) findViewById(R.id.hotlabel);
         Map<String, Object> params = new HashMap<String, Object>();
         okHttpGet(100, Config.OFTENSEARCH, params);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) context
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+            }
+
+        }, 300);
     }
 
     @SuppressWarnings("ResourceType")
@@ -154,7 +180,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
                     insertData(topsearchString);
                     queryData("");
                 }
-                topsearch.setText("");
+//                topsearch.setText("");
                 startActivity(topsearchString);
                 break;
             case R.id.cleanhistory:
@@ -349,6 +375,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
         }else {
             ivClean.setVisibility(View.VISIBLE);
         }
+        topsearch.setSelection(topsearch.getText().length());
     }
 
     @Override

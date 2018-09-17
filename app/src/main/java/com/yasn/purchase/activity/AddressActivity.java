@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.yasn.purchase.AddressUpdataActivity;
 import com.yasn.purchase.R;
 import com.yasn.purchase.adapter.AddressAdapter;
 import com.yasn.purchase.common.Config;

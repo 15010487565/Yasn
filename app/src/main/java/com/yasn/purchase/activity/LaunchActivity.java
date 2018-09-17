@@ -3,8 +3,6 @@ package com.yasn.purchase.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,8 +14,6 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.tencent.bugly.beta.Beta;
-import com.tencent.bugly.beta.UpgradeInfo;
 import com.yasn.purchase.R;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.help.ShopCarUtils;
@@ -26,9 +22,6 @@ import com.yasn.purchase.utils.DensityUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.Map;
 
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
@@ -106,7 +99,7 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .crossFade()
                                     .into(adIv);
-                            checkForUpdates();
+                            isFirstOpen();
                         }else {
                             isFirstOpen();
                         }
@@ -171,45 +164,45 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
         };
         handler.postDelayed(runnable, skipTime);
     }
-    @Override
-    public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-        switch (requestCode) {
-            case 100:
-                try {
-                    JSONObject jsonObject = new JSONObject(returnData);
-                    String imagrurl = jsonObject.optString("image");
-//                    imagrurl = "http://img02.sogoucdn.com/app/a/100520024/dc36a9a8bf56661ab778bcdafc6b7d09";
-                    Glide.with(LaunchActivity.this.getApplication()).load(imagrurl)
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .crossFade()
-                            .into(adIv);
-                    checkForUpdates();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                break;
-        }
-    }
-
-    @Override
-    public void onCancelResult() {
-//        isFirstOpen();
-    }
-
-    @Override
-    public void onErrorResult(int errorCode, IOException errorExcep) {
-//        isFirstOpen();
-    }
-
-    @Override
-    public void onParseErrorResult(int errorCode) {
-//        isFirstOpen();
-    }
-
-    @Override
-    public void onFinishResult() {
-//        isFirstOpen();
-    }
+//    @Override
+//    public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+//        switch (requestCode) {
+//            case 100:
+//                try {
+//                    JSONObject jsonObject = new JSONObject(returnData);
+//                    String imagrurl = jsonObject.optString("image");
+////                    imagrurl = "http://img02.sogoucdn.com/app/a/100520024/dc36a9a8bf56661ab778bcdafc6b7d09";
+//                    Glide.with(LaunchActivity.this.getApplication()).load(imagrurl)
+//                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                            .crossFade()
+//                            .into(adIv);
+//                    isFirstOpen()
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                break;
+//        }
+//    }
+//
+//    @Override
+//    public void onCancelResult() {
+////        isFirstOpen();
+//    }
+//
+//    @Override
+//    public void onErrorResult(int errorCode, IOException errorExcep) {
+////        isFirstOpen();
+//    }
+//
+//    @Override
+//    public void onParseErrorResult(int errorCode) {
+////        isFirstOpen();
+//    }
+//
+//    @Override
+//    public void onFinishResult() {
+////        isFirstOpen();
+//    }
 
     @Override
     public void onClick(View v) {
@@ -236,45 +229,6 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
 //        intent.putExtra("webViewUrl", Config.HOMEVIEW);
 //        startActivity(intent);
         LaunchActivity.this.finish();
-    }
-    private void checkForUpdates() {
-        try {
-            UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
-            if (upgradeInfo != null) {
-                try {
-                    int versionCode = getVersionCode();
-                    if (upgradeInfo.versionCode > versionCode) {
-                        return;
-                    }else if (upgradeInfo.versionCode==0){
-                        isFirstOpen();
-                        return;
-                    }
-                    StringBuilder info = new StringBuilder();
-                    info.append("id: ").append(upgradeInfo.id).append("\n");
-                    info.append("发布类型（0:测试 1:正式）: ").append(upgradeInfo.publishType).append("\n");
-                    info.append("弹窗类型（1:建议 2:强制 3:手工）: ").append(upgradeInfo.upgradeType);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return;
-            }
-            //是否首次打开app
-            isFirstOpen();
-        } catch (Exception e) {
-            e.printStackTrace();
-            //是否首次打开app
-            isFirstOpen();
-        }
-    }
-
-    private int getVersionCode() throws Exception {
-        // 获取packagemanager的实例
-        PackageManager packageManager = getPackageManager();
-        // getPackageName()是你当前类的包名，0代表是获取版本信息
-        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
-        int code = packInfo.versionCode;
-        return code;
     }
 
     // 回调方法，从第二个页面回来的时候会执行这个方法

@@ -180,7 +180,7 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                 double price = shopCarAdapterModel.getPrice();
                 if ("0".equals(loginState)){
-                    listViewHolder.tvOrderListPrice.setText("￥" + String.format("%.2f", price));
+                    listViewHolder.tvOrderListPrice.setText("￥" + String.format("%.2f", price<= 0 ? 0.00 : price));
                 }else {
                     listViewHolder.tvOrderListPrice.setText(loginState == null?"登录看价格":loginState);
                 }
@@ -444,15 +444,6 @@ public class ShopCarAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-//    protected void onItemEventClick(RecyclerView.ViewHolder holder) {
-//        final int position = holder.getLayoutPosition();
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onItemClickListener.OnItemClick(v, position);
-//            }
-//        });
-//    }
     private String residueDoubleFormat;//去凑单剩余价格
 
     public String getResidueDoubleFormat() {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
@@ -90,8 +91,8 @@ import static www.xcd.com.mylibrary.utils.SharePrefHelper.context;
 public class GoodsInfoFragment extends BaseFragment implements
         ShoppingSelectView.OnSelectedListener, OnItemClickListener,
         SlideDetailsLayout.OnSlideDetailsListener
-        , MediaPlayer.OnPreparedListener,
-        ViewPager.OnPageChangeListener, TextWatcher {
+        , MediaPlayer.OnPreparedListener,MediaPlayer.OnErrorListener
+        , ViewPager.OnPageChangeListener, TextWatcher {
 
     private RelativeLayout topbat_parent;
     ConvenientBanner banner;
@@ -103,7 +104,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     private List<TextView> tabTextList = new ArrayList<>();
     public GoodsDetailsActivity activity;
     private TextView autotrophy, purchase, presell, title;
-    private TextView viewpage_number;
+    private TextView tvVpNumber;
     private long time = 2592000;
     /**
      * 活动折扣提示内容
@@ -143,12 +144,12 @@ public class GoodsInfoFragment extends BaseFragment implements
      *
      * @param context
      */
-    private LinearLayout top_purchasepromotion;
-    private TextView soldout_money, originalprice, soldOut, purchase_time;
+    private LinearLayout llTopPurchasepromotion;
+    private TextView tvTopActivionPrice, tvTopActivionOriginalPrice, tvTopActivionSoldOutNum, tvActionTime;
     private TextView promotion, unpostage, hot, purchase_promotion, presell_promotion;
     private LinearLayout promotionlinear, unpostage_linear, hot_linear, purchase_linear, presell_linear;
-    private LinearLayout sold_Linear;
-    private TextView originalprice2, soldOut2;
+    private LinearLayout llSold;
+    private TextView tvGoodsOriginalPrice, tvGoodsOriginalSoldOutNum;
     /**
      * 批发价
      *
@@ -298,26 +299,32 @@ public class GoodsInfoFragment extends BaseFragment implements
         lp.height = width;
         banner.setLayoutParams(lp);
 
-        viewpage_number = (TextView) rootView.findViewById(R.id.viewpage_number);
+        tvVpNumber = (TextView) rootView.findViewById(R.id.tv_VpNumber);
         //音频布局
         voice = (RelativeLayout) rootView.findViewById(R.id.voice);
         voice.setOnClickListener(this);
         voice_time = (TextView) rootView.findViewById(R.id.voice_time);
         voice_start = (ImageView) rootView.findViewById(R.id.voice_start);
         //顶部限购
-        top_purchasepromotion = (LinearLayout) rootView.findViewById(R.id.top_purchasepromotion);
-        top_purchasepromotion.setVisibility(View.GONE);
-        soldout_money = (TextView) rootView.findViewById(R.id.soldout_money);
-        originalprice = (TextView) rootView.findViewById(R.id.originalprice);
-        originalprice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中间横线
-        soldOut = (TextView) rootView.findViewById(R.id.soldOut);
-        purchase_time = (TextView) rootView.findViewById(R.id.purchase_time);
-        //正常已售数量
-        sold_Linear = (LinearLayout) rootView.findViewById(R.id.sold_Linear);
-        originalprice2 = (TextView) rootView.findViewById(R.id.originalprice2);
-        originalprice2.setOnClickListener(this);
-        soldOut2 = (TextView) rootView.findViewById(R.id.soldOut2);
-        initSoldNumber(soldOut2, "0", R.color.black_66);
+        llTopPurchasepromotion = (LinearLayout) rootView.findViewById(R.id.ll_TopPurchasepromotion);
+        llTopPurchasepromotion.setVisibility(View.GONE);
+        //顶部活动价
+        tvTopActivionPrice = (TextView) rootView.findViewById(R.id.tv_TopActivionPrice);
+        //顶部活动原价
+        tvTopActivionOriginalPrice = (TextView) rootView.findViewById(R.id.tv_TopActivionOriginalPrice);
+        tvTopActivionOriginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中间横线
+        //活动已售数量
+        tvTopActivionSoldOutNum = (TextView) rootView.findViewById(R.id.tv_TopActivionSoldOutNum);
+        //活动剩余时间
+        tvActionTime = (TextView) rootView.findViewById(R.id.tv_ActionTime);
+        //正常已售布局
+        llSold = (LinearLayout) rootView.findViewById(R.id.ll_Sold);
+        //原价
+        tvGoodsOriginalPrice = (TextView) rootView.findViewById(R.id.tv_GoodsOriginalPrice);
+        tvGoodsOriginalPrice.setOnClickListener(this);
+        //原价已售数量
+        tvGoodsOriginalSoldOutNum = (TextView) rootView.findViewById(R.id.tv_GoodsOriginalSoldOutNum);
+        initSoldNumber(tvGoodsOriginalSoldOutNum, "0", R.color.black_66);
         //内容
         title = (TextView) rootView.findViewById(R.id.title);
         autotrophy = (TextView) rootView.findViewById(R.id.autotrophy);
@@ -604,8 +611,8 @@ public class GoodsInfoFragment extends BaseFragment implements
 
                 resetLadderPrices();
                 break;
-            case R.id.originalprice2:
-                String trim = originalprice2.getText().toString().trim();
+            case R.id.tv_GoodsOriginalPrice:
+                String trim = tvGoodsOriginalPrice.getText().toString().trim();
                 if ("登录看价格".equals(trim)) {
                     ((GoodsDetailsActivity)getActivity()).startBaseActivity(getActivity(),LoginActivity.class);
                 } else if ("认证看价格".equals(trim)) {
@@ -728,13 +735,13 @@ public class GoodsInfoFragment extends BaseFragment implements
             style.setSpan(new ForegroundColorSpan(Color.WHITE), timeLength - 6, timeLength - 4, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             style.setSpan(new BackgroundColorSpan(blacktop_bar), timeLength - 3, timeLength - 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             style.setSpan(new ForegroundColorSpan(Color.WHITE), timeLength - 3, timeLength - 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-            purchase_time.setText(style);
+            tvActionTime.setText(style);
 
             if (time > 0) {
                 handler.postDelayed(this, 1000);
             } else {
-                top_purchasepromotion.setVisibility(View.GONE);
-                sold_Linear.setVisibility(View.VISIBLE);
+                llTopPurchasepromotion.setVisibility(View.GONE);
+                llSold.setVisibility(View.VISIBLE);
                 handler.removeCallbacks(runnable);
             }
         }
@@ -778,9 +785,9 @@ public class GoodsInfoFragment extends BaseFragment implements
                     Log.e("TAG_loginState1","loginState="+loginState);
                     if (!"0".equals(loginState)) {
                         llLadderPrices.setVisibility(View.GONE);
-                        soldout_money.setText(loginState);
-                        originalprice.setText(loginState);
-                        originalprice2.setText(loginState);
+                        tvTopActivionPrice.setText(loginState);
+                        tvTopActivionOriginalPrice.setText(loginState);
+                        tvGoodsOriginalPrice.setText(loginState);
                         //建议售价
                         llRetailPrice.setVisibility(View.GONE);
                     }
@@ -842,9 +849,9 @@ public class GoodsInfoFragment extends BaseFragment implements
         //设置临时价格
         double price = goodsDetails.getPrice();
         String priceResult = "￥" + String.format("%.2f", price);
-        soldout_money.setText(priceResult);
-        originalprice.setText(priceResult);
-        originalprice2.setText(priceResult);
+        tvTopActivionPrice.setText(priceResult);
+        tvTopActivionOriginalPrice.setText(priceResult);
+        tvGoodsOriginalPrice.setText(priceResult);
 
         //规格数据
         List<GoodsDetailsModel.GoodsDetailsBean.SpecsBean> specs = goodsDetails.getSpecs();
@@ -921,8 +928,8 @@ public class GoodsInfoFragment extends BaseFragment implements
 
         //已售数量
         int totalBuyCount = goodsDetails.getTotalBuyCount();
-        initSoldNumber(soldOut, String.valueOf(totalBuyCount), R.color.white);
-        initSoldNumber(soldOut2, String.valueOf(totalBuyCount), R.color.black_66);
+        initSoldNumber(tvTopActivionSoldOutNum, String.valueOf(totalBuyCount), R.color.white);
+        initSoldNumber(tvGoodsOriginalSoldOutNum, String.valueOf(totalBuyCount), R.color.black_66);
         //卖点
         String subTitle = goodsDetails.getSubTitle();
         if (TextUtils.isEmpty(subTitle)) {
@@ -986,7 +993,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             GoodsDetailsModel.GoodsDetailsBean.GoodsGallerysBean goodsGallerysBean = goodsGallerys.get(0);
             sobotModel.setSobotGoodsImgUrl(goodsGallerysBean.getThumbnail());
         }
-        sobotModel.setSobotGoodsLable(soldout_money.getText().toString().trim());
+        sobotModel.setSobotGoodsLable(tvTopActivionPrice.getText().toString().trim());
         ((GoodsDetailsActivity) getActivity()).setSobotModel(sobotModel);
     }
 
@@ -1063,7 +1070,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             //步长
             step = productsBean.getStep();
             enableStoreNum = productsBean.getEnableStore();
-            Log.e("TAG_库存", "position=" + position + ";enableStoreNum=" + enableStoreNum);
+//            Log.e("TAG_库存", "position=" + position + ";enableStoreNum=" + enableStoreNum);
             if (enableStoreNum >= 10) {
                 enableStore.setText("库存:充足");
                 etGoodsNum.setText(String.valueOf(smallSale));
@@ -1124,7 +1131,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         if (ladderPrices != null && ladderPrices.size() > 0) {
 
             //折扣价数据
-            Log.e("TAG_折扣价","products="+products.size()+";typeLadderPricesposition="+typeLadderPricesposition);
+//            Log.e("TAG_折扣价","products="+products.size()+";typeLadderPricesposition="+typeLadderPricesposition);
             if (productId == 0){
                 llLadderPrices.setVisibility(View.GONE);
                 tradeprice_recy.setVisibility(View.GONE);
@@ -1143,23 +1150,22 @@ public class GoodsInfoFragment extends BaseFragment implements
                 int maxNum = ladderPricesBean.getMaxNum();
                 if (goodsNumDou >= minNum && goodsNumDou <= maxNum) {
                     String activityPrice = ladderPricesBean.getActivityPrice();
-                    if (activityPrice == null || Double.valueOf(activityPrice)==0) {
-                        double wholesalePrice = ladderPricesBean.getWholesalePrice();//批发价
-                        String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
-                        soldout_money.setText(wholesalePriceResult);
-                        originalprice.setText(wholesalePriceResult);
-                        originalprice2.setText(wholesalePriceResult);
-                        Log.e("TAG_活动价", "soldout_money=" + wholesalePriceResult);
-                        Log.e("TAG_活动价市场价", "originalprice=" + activityPrice);
+                    double wholesalePrice = ladderPricesBean.getWholesalePrice();
+                    String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
+//                    Log.e("TAG_活动价", "tvTopActivionPrice=" + wholesalePriceResult);
+                    tvTopActivionOriginalPrice.setText(wholesalePriceResult);
+                    if (activityPrice == null
+//                            || Double.valueOf(activityPrice)==0
+                            ) {
+                        tvTopActivionPrice.setText(wholesalePriceResult);
+                        tvGoodsOriginalPrice.setText(wholesalePriceResult);
+//                        Log.e("TAG_活动价", "tvTopActivionPrice=" + wholesalePriceResult);
+//                        Log.e("TAG_活动价市场价", "tvTopActivionOriginalPrice=" + activityPrice);
                     } else {
-                        double wholesalePrice = ladderPricesBean.getWholesalePrice();
-                        String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
-                        originalprice.setText(wholesalePriceResult);
                         String activityPriceResult = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
-                        soldout_money.setText(activityPriceResult);
-                        originalprice2.setText(activityPriceResult);
-                        Log.e("TAG_活动价", "soldout_money=" + wholesalePriceResult);
-                        Log.e("TAG_活动价市场价", "originalprice=" + activityPriceResult);
+                        tvTopActivionPrice.setText(activityPriceResult);
+                        tvGoodsOriginalPrice.setText(activityPriceResult);
+//                        Log.e("TAG_活动价市场价", "tvTopActivionOriginalPrice=" + activityPriceResult);
                     }
                 }
             }
@@ -1168,23 +1174,24 @@ public class GoodsInfoFragment extends BaseFragment implements
             tradeprice_recy.setVisibility(View.GONE);
             tradeprice.setVisibility(View.GONE);
             String activityPrice = productsBean.getActivityPrice();
-            if (activityPrice != null && Double.valueOf(activityPrice)>0) {
+            String price = String.valueOf(productsBean.getPrice());
+            String priceResult = "￥" + String.format("%.2f", Double.valueOf(price));
+            tvTopActivionOriginalPrice.setText(priceResult);
+            if (activityPrice != null
+//                    && Double.valueOf(activityPrice)>0
+                    ) {
                 String activityPriceResult = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
-                soldout_money.setText(activityPriceResult);
-                originalprice.setText(activityPriceResult);
-                originalprice2.setText(activityPriceResult);
+                tvTopActivionPrice.setText(activityPriceResult);
+                tvGoodsOriginalPrice.setText(activityPriceResult);
             } else {
-                String price = String.valueOf(productsBean.getPrice());
-                String priceResult = "￥" + String.format("%.2f", Double.valueOf(price));
-                soldout_money.setText(priceResult);
-                originalprice.setText(priceResult);
-                originalprice2.setText(priceResult);
+                tvTopActivionPrice.setText(priceResult);
+                tvGoodsOriginalPrice.setText(priceResult);
             }
         }
         if (!"0".equals(loginState)) {
-            soldout_money.setText(loginState);
-            originalprice.setText(loginState);
-            originalprice2.setText(loginState);
+            tvTopActivionPrice.setText(loginState);
+            tvTopActivionOriginalPrice.setText(loginState);
+            tvGoodsOriginalPrice.setText(loginState);
         }
     }
 
@@ -1197,7 +1204,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         banner.setPages(new CBViewHolderCreator() {
             @Override
             public Object createHolder() {
-                return new BannerHolderView(viewpage_number, goodsGallerys);
+                return new BannerHolderView(tvVpNumber, goodsGallerys);
             }
         }, goodsGallerys)
                 .setOnItemClickListener(this)
@@ -1273,21 +1280,21 @@ public class GoodsInfoFragment extends BaseFragment implements
         }
         GoodsDetailsModel.GoodsDetailsBean.DiscountBean discount = goodsdetailsmodelData.getDiscount();
         if (discount == null) {
-            top_purchasepromotion.setVisibility(View.GONE);
-            sold_Linear.setVisibility(View.VISIBLE);
+            llTopPurchasepromotion.setVisibility(View.GONE);
+            llSold.setVisibility(View.VISIBLE);
 
         } else {
             int has_discount = discount.getHas_discount();
             if (has_discount == 0) {
-                top_purchasepromotion.setVisibility(View.GONE);
-                sold_Linear.setVisibility(View.VISIBLE);
+                llTopPurchasepromotion.setVisibility(View.GONE);
+                llSold.setVisibility(View.VISIBLE);
 //                ((GoodsDetailsActivity) getActivity()).setTvAddShopCar(false,null);
             } else {
-                top_purchasepromotion.setVisibility(View.VISIBLE);
-                sold_Linear.setVisibility(View.GONE);
+                llTopPurchasepromotion.setVisibility(View.VISIBLE);
+                llSold.setVisibility(View.GONE);
                 //限时抢购价
 //                String discount_price = discount.getDiscount_price();
-//                originalprice.setText(discount_price == null ? "" : String.format("%.2f", Double.valueOf(discount_price)));
+//                tvTopActivionOriginalPrice.setText(discount_price == null ? "" : String.format("%.2f", Double.valueOf(discount_price)));
                 //限时抢购倒计时
                 time = discount.getRemainingTime();
                 handler.postDelayed(runnable, 1000);
@@ -1326,7 +1333,7 @@ public class GoodsInfoFragment extends BaseFragment implements
     @Override
     public void onSelected(String title, String smallTitle, int childId, int parentId, boolean isSelectFirst, boolean isChecked) {
 //        retailPriceView
-        Log.e("TAG_isSelectFirst", "isSelectFirst=" + isSelectFirst);
+//        Log.e("TAG_isSelectFirst", "isSelectFirst=" + isSelectFirst);
         if (isSelectFirst) {
             return;
         }
@@ -1347,7 +1354,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                             int radiobuttonId = radiobutton1.getId();
                             if (radiobuttonId == childId) {
                                 boolean checked = radiobutton1.isChecked();
-                                Log.e("TAG_checked", "checked=" + checked);
+//                                Log.e("TAG_checked", "checked=" + checked);
                                 if (checked) {
                                     hashmapSelect.put(flowlayoutId, radiobuttonId);
                                 } else {
@@ -1359,7 +1366,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                 }
             }
         }
-        Log.e("TAG_hashmapSelect", "hashmapSelect=" + hashmapSelect.size());
+//        Log.e("TAG_hashmapSelect", "hashmapSelect=" + hashmapSelect.size());
         if (hashmapSelect.size() == 0) {
             label_include.removeAllViews();
             //重置规格id
@@ -1390,7 +1397,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         for (int i = 0; i < tmpInteger1.length; i++) {
             tmpInt1[i] = tmpInteger1[i].intValue();
         }
-        Log.e("TAG_选中id", "tmpInt1=" + tmpInt1.toString());
+//        Log.e("TAG_选中id", "tmpInt1=" + tmpInt1.toString());
         if (checkedAllList != null && checkedAllList.size() > 0) {
             checkedAllList.clear();
         }
@@ -1400,7 +1407,7 @@ public class GoodsInfoFragment extends BaseFragment implements
         if (checkedAllList == null && checkedAllList.size() == 0) {
             return;
         }
-        Log.e("TAG_选中id组合", "checkedAllList=" + checkedAllList);
+//        Log.e("TAG_选中id组合", "checkedAllList=" + checkedAllList);
         if (checkedAllMap != null || checkedAllMap.size() > 0) {
             checkedAllMap.clear();
         }
@@ -1436,7 +1443,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                 checkedAllMap.add(checkedMapId);
             }
         }
-        Log.e("TAG_选中id个规格key", "checkedAllMap=" + checkedAllMap);
+//        Log.e("TAG_选中id个规格key", "checkedAllMap=" + checkedAllMap);
         //不可点击的id
         Set<Integer> unClickSet = new HashSet<>();
         for (int o = 0, p = specsCount; o < p; o++) {
@@ -1463,7 +1470,7 @@ public class GoodsInfoFragment extends BaseFragment implements
                                 }
                             }
                             mapChangeList.add(checkboxId);
-                            Log.e("TAG_添加后的", "mapChangeList=" + mapChangeList);
+//                            Log.e("TAG_添加后的", "mapChangeList=" + mapChangeList);
                             int specGross = 0;
                             for (int i = 0, j = products.size(); i < j; i++) {
                                 GoodsDetailsModel.GoodsDetailsBean.ProductsBean productsBean = products.get(i);
@@ -1487,14 +1494,14 @@ public class GoodsInfoFragment extends BaseFragment implements
                                 checkbox.setBackgroundResource(R.drawable.text_orange_blackf7);
                                 checkbox.setTextColor(ContextCompat.getColor(getActivity(), R.color.orange));
                             }
-                            Log.e("TAG_checkbox", checkbox.getText().toString() + "=" + checkbox.isEnabled());
+//                            Log.e("TAG_checkbox", checkbox.getText().toString() + "=" + checkbox.isEnabled());
                         }
                     }
 
                 }
             }
         }
-        Log.e("TAG_不可点击id组合", "unClickSet=" + unClickSet.toString());
+//        Log.e("TAG_不可点击id组合", "unClickSet=" + unClickSet.toString());
         int isBeforeSale = goodsDetails.getIsBeforeSale(); // 是否预售, 0否1是
         if (isBeforeSale==0){//非预售产品规格库存为0置灰
             selectOneId(unClickSet);
@@ -1529,13 +1536,13 @@ public class GoodsInfoFragment extends BaseFragment implements
                         CheckBox checkbox = (CheckBox) radiobutton;
                         int checkboxId = checkbox.getId();
                         boolean checked = checkbox.isChecked();
-                        Log.e("TAG_比较按钮", "checkbox=" + checkbox.getText().toString() + ";Enabled=" + checkbox.isEnabled());
+//                        Log.e("TAG_比较按钮", "checkbox=" + checkbox.getText().toString() + ";Enabled=" + checkbox.isEnabled());
                         if (!checked) {
                             Iterator<Integer> iterator = unClickSet.iterator();
                             while (iterator.hasNext()) {
                                 Integer next = iterator.next();
                                 if (checkboxId == next) {
-                                    Log.e("TAG_比较ID", "checkboxId=" + checkboxId + ";next=" + next);
+//                                    Log.e("TAG_比较ID", "checkboxId=" + checkboxId + ";next=" + next);
                                     checkbox.setEnabled(false);
                                     checkbox.setBackgroundResource(R.drawable.text_black99_blacke0);
                                     checkbox.setTextColor(ContextCompat.getColor(getActivity(), R.color.black_33));
@@ -1635,8 +1642,8 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     @Override
     public void onPageSelected(int position) {
-        Log.e("TAG_轮播", "onPageSelected=" + position);
-        viewpage_number.setText(goodsGallerys == null ? "0/0" : ((position + 1) + "/" + goodsGallerys.size()));
+//        Log.e("TAG_轮播", "onPageSelected=" + position);
+        tvVpNumber.setText(goodsGallerys == null ? "0/0" : ((position + 1) + "/" + goodsGallerys.size()));
     }
 
     @Override
@@ -1650,7 +1657,7 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        Log.e("TAG_TextChanged", "trim=" + charSequence.toString() + ";typeLadderPricesposition=" + typeLadderPricesposition);
+//        Log.e("TAG_TextChanged", "trim=" + charSequence.toString() + ";typeLadderPricesposition=" + typeLadderPricesposition);
         String textChanged = charSequence.toString();
         if (textChanged != null && !"".equals(textChanged)) {
             initTradePricePositionTextChanged(products, typeLadderPricesposition);
@@ -1679,9 +1686,9 @@ public class GoodsInfoFragment extends BaseFragment implements
             productsBean = products.get(position);
             productId = productsBean.getProductId();
             etGoodsNum.setEnabled(true);
-            Log.e("TAG_库存规格id", "productId=" + productId);
+//            Log.e("TAG_库存规格id", "productId=" + productId);
             enableStoreNum = productsBean.getEnableStore();
-            Log.e("TAG_库存", "position=" + position + ";enableStoreNum=" + enableStoreNum);
+//            Log.e("TAG_库存", "position=" + position + ";enableStoreNum=" + enableStoreNum);
             //是否預售 , 0否1是
             int isBeforeSale = goodsDetails.getIsBeforeSale();
             if (enableStoreNum >= 10) {
@@ -1730,43 +1737,43 @@ public class GoodsInfoFragment extends BaseFragment implements
                     int maxNum = ladderPricesBean.getMaxNum();
                     if (goodsNumDou >= minNum && goodsNumDou <= maxNum) {
                         String activityPrice = ladderPricesBean.getActivityPrice();
-                        if (activityPrice == null || Double.valueOf(activityPrice)==0) {
-                            double wholesalePrice = ladderPricesBean.getWholesalePrice();
-                            String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
-                            soldout_money.setText(String.valueOf(wholesalePriceResult));
-                            originalprice.setText(String.valueOf(wholesalePriceResult));
-                            originalprice2.setText(String.valueOf(wholesalePriceResult));
+                        double wholesalePrice = ladderPricesBean.getWholesalePrice();
+                        String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
+                        tvTopActivionOriginalPrice.setText(String.valueOf(wholesalePriceResult));
+                        if (activityPrice == null
+//                                || Double.valueOf(activityPrice)==0
+                                ) {
+                            tvTopActivionPrice.setText(String.valueOf(wholesalePriceResult));
+                            tvGoodsOriginalPrice.setText(String.valueOf(wholesalePriceResult));
                         } else {
-                            double wholesalePrice = ladderPricesBean.getWholesalePrice();
-                            String wholesalePriceResult = "￥" + String.format("%.2f", wholesalePrice);
-                            originalprice.setText(String.valueOf(wholesalePriceResult));
                             String activityPriceResult = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
-                            soldout_money.setText(activityPriceResult);
-                            originalprice2.setText(activityPriceResult);
+                            tvTopActivionPrice.setText(activityPriceResult);
+                            tvGoodsOriginalPrice.setText(activityPriceResult);
                         }
                     }
                 }
             } else {
                 llLadderPrices.setVisibility(View.GONE);
                 String activityPrice = productsBean.getActivityPrice();
-                if (activityPrice != null && Double.valueOf(activityPrice)>0) {
-                    String price = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
-                    soldout_money.setText(price);
-                    originalprice.setText(price);
-                    originalprice2.setText(price);
+                String price = "￥" + String.format("%.2f", productsBean.getPrice());
+                tvTopActivionOriginalPrice.setText(price);
+                if (activityPrice != null
+//                        && Double.valueOf(activityPrice)>0
+                        ) {
+                    String activityPrice1 = "￥" + String.format("%.2f", Double.valueOf(activityPrice));
+                    tvTopActivionPrice.setText(activityPrice1);
+                    tvGoodsOriginalPrice.setText(activityPrice1);
                 } else {
-                    String price = "￥" + String.format("%.2f", productsBean.getPrice());
-                    soldout_money.setText(price);
-                    originalprice.setText(price);
-                    originalprice2.setText(price);
+                    tvTopActivionPrice.setText(price);
+                    tvGoodsOriginalPrice.setText(price);
                 }
             }
         }
-        Log.e("TAG_loginState3","loginState="+loginState);
+//        Log.e("TAG_loginState3","loginState="+loginState);
         if (!"0".equals(loginState)) {
-            soldout_money.setText(loginState);
-            originalprice.setText(loginState);
-            originalprice2.setText(loginState);
+            tvTopActivionPrice.setText(loginState);
+            tvTopActivionOriginalPrice.setText(loginState);
+            tvGoodsOriginalPrice.setText(loginState);
         }
         etGoodsNum.addTextChangedListener(this);
     }
@@ -1781,9 +1788,11 @@ public class GoodsInfoFragment extends BaseFragment implements
         if (goodsDetails == null) {
             return;
         }
+        //暂时隐藏，初始化完成后布局显示
+        voice.setVisibility(View.GONE);
         int haveVoice = goodsDetails.getHaveVoice();
         if (haveVoice == 1) {
-            voice.setVisibility(View.VISIBLE);
+//            voice.setVisibility(View.VISIBLE);
             String voiceDetailUrl = goodsDetails.getVoiceDetailUrl();
             if (voiceDetailUrl == null) {
                 return;
@@ -1793,37 +1802,51 @@ public class GoodsInfoFragment extends BaseFragment implements
                 if (mediaplayer == null) {
                     mediaplayer = new MediaPlayer();
                 }
-                if (mediaplayer.isPlaying()) {
-                    mediaplayer.stop();
+                if (mediaplayer != null && mediaplayer.isPlaying()) {
+//                    mediaplayer.stop();
+                    mediaplayer.pause();
+                    mediaplayer.seekTo(0);
+
                     mediaplayer.release();
                     mediaplayer = null;
                     mediaplayer = new MediaPlayer();
                 }
+                Log.e("TAG_语音讲解","voiceDetailUrl="+voiceDetailUrl);
+                mediaplayer.reset();
                 mediaplayer.setDataSource(voiceDetailUrl);
-                mediaplayer.setOnPreparedListener(this);//准备好的监听
+                mediaplayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mediaplayer.prepareAsync();
+                mediaplayer.setOnPreparedListener(this);//准备好的监听
+                mediaplayer.setOnErrorListener(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            voice.setVisibility(View.GONE);
         }
     }
     String formatLongToTimeStr;//总时长
 
     @Override
     public void onPrepared(MediaPlayer mp) {
+        Log.e("TAG_语音讲解","onPrepared准备完成");
         voice.setVisibility(View.VISIBLE);
         duration = mp.getDuration();//总时长
         allDuration = duration;
         formatLongToTimeStr = HelpUtils.formatLongToTime((long) duration);
         voice_time.setText("语音讲解");
     }
+
+    @Override
+    public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
+        voice.setVisibility(View.GONE);
+        Log.e("TAG_语音讲解", "播放错误: " + what + " Extra code: " + extra);
+        return true;
+    }
+
     //商品价格
     public boolean getGoodsMoney() {
-        Double aDouble = Double.valueOf(soldout_money.getText().toString().substring(1));
-        Double aDouble1 = Double.valueOf(originalprice.getText().toString().substring(1));
-        Double aDouble2 = Double.valueOf(originalprice2.getText().toString().substring(1));
+        Double aDouble = Double.valueOf(tvTopActivionPrice.getText().toString().substring(1));
+        Double aDouble1 = Double.valueOf(tvTopActivionOriginalPrice.getText().toString().substring(1));
+        Double aDouble2 = Double.valueOf(tvGoodsOriginalPrice.getText().toString().substring(1));
         if (aDouble >0 && aDouble1 > 0 && aDouble2 > 0 ){
             return true;
 

@@ -3,10 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:imeOptions="actionNext|flagNoExtractUi"
@@ -14,40 +17,37 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_Hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="@dimen/margin_30"
-            android:text="认证失败"
+            android:text="温馨提示"
             android:textColor="@color/orange"
             android:textSize="@dimen/textsize_16" />
 
         <TextView
-            android:id="@+id/reason"
+            android:id="@+id/tv_UpDataGoodsInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_20"
             android:gravity="center|left"
-            android:text="未获取到详细原因！"
+            android:text=""
             android:textColor="@color/black_66"
-            android:textSize="@dimen/textsize_13" />
+            android:textSize="@dimen/textsize_14" />
 
         <TextView
-            android:id="@+id/okbtn"
-            android:layout_marginTop="@dimen/margin_10"
-            android:layout_marginBottom="@dimen/height_30"
+            android:id="@+id/tv_UpDataGoodsInfoOk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/margin_20"
             android:paddingRight="@dimen/margin_20"
             android:paddingTop="@dimen/margin_5"
             android:paddingBottom="@dimen/margin_5"
-            android:layout_weight="1"
-            android:text="重新认证"
-            android:background="@drawable/shape2_orange_white"
-            android:textColor="@color/orange"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/height_30"
+            android:text="确定"
+            android:background="@color/orange"
+            android:textColor="@color/white"
             android:textSize="@dimen/textsize_14" />
-
     </LinearLayout>
 </LinearLayout>

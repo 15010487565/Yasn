@@ -29,6 +29,7 @@ import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.adapter.ShopCarPayAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.model.ShopCarAdapterModel;
+import com.yasn.purchase.model.order.OrderDetailsGiftModel;
 import com.yasn.purchase.model.order.ShopcarPayModel;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.RcDecoration;
@@ -56,7 +57,7 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
     private RecyclerView rcShopcarSignfor;
     private Switch swShopCarPay;
     private LinearLayout llShopCarPayHint, llInvoice;
-    private List<ShopCarAdapterModel> shopCarAdapterList;
+    private List<Object> shopCarAdapterList;
     //备注
     private TextView tvShopCarPayRemark, tvShopcarPayTotalMoney, tvShopcarPayCarriageMoney;
     //积分 0未使用 1使用
@@ -172,6 +173,11 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
     }
 
     private void orderCreate() {
+        if (isZPrice){
+            ToastUtil.showToast("0元商品暂不可购买，请联系客服400-9973-315或删除0元商品后提交！");
+            return;
+        }
+
         Map<String, String> params = new HashMap();
         if (token != null && !"".equals(token)) {
             params.put("access_token", token);
@@ -255,11 +261,30 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
                         intent.putExtra("webViewUrl", Config.ORDERPAY + orderid);
                         startActivity(intent);
                         finish();
+                    } else  if (returnCode == 1006){
+                        Map<String, Object> params = new HashMap<String, Object>();
+                        if (token != null && !"".equals(token)) {
+                            params.put("access_token", token);
+                            okHttpGet(106, Config.SHOPPCARCLOSEANACCOUNT, params);
+                        } else if (resetToken != null && !"".equals(resetToken)) {
+                            params.put("access_token", resetToken);
+                            okHttpGet(106, Config.SHOPPCARCLOSEANACCOUNT, params);
+                        } else {
+                            ToastUtil.showToast("登录过期，请重新登录");
+                        }
+                        showUpDataGoodsInfoDialog(returnMsg);
                     } else {
                         ToastUtil.showToast(returnMsg);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+                break;
+            case 106:
+                if (returnCode == 200){
+                    initShopCarPayModel(returnData);
+                }else {
+                    ToastUtil.showToast(returnMsg);
                 }
                 break;
         }
@@ -298,7 +323,7 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
         double shippingTotal = mainOrder.getShippingTotal();
         tvShopcarPayCarriageMoney.setText("(含运费￥" + String.format("%.2f", shippingTotal) + ")");
     }
-
+    private boolean isZPrice = false;
     private void initSubOrders(ShopcarPayModel shopcarPayModel) {
         shopCarAdapterList = new ArrayList<>();
         List<ShopcarPayModel.SubOrdersBean> subOrders = shopcarPayModel.getSubOrders();
@@ -324,6 +349,9 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
                         shopCarPayAdapterModel.setImageDefault(image);
                         //价格
                         double price = orderItemVOSBean.getPrice();
+                        if (price <= 0){
+                            isZPrice = true;
+                        }
                         shopCarPayAdapterModel.setPrice(price);
                         int num = orderItemVOSBean.getNum();
                         shopCarPayAdapterModel.setNum(num);
@@ -332,10 +360,28 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
                         shopCarAdapterList.add(shopCarPayAdapterModel);
                     }
                 }
+                //贈品
+                //赠品
+                ShopcarPayModel.SubOrdersBean.ActivityGiftBean activityGiftBean = subOrdersBean.getActivityGift();
+                OrderDetailsGiftModel orderDetailsGiftModel = new OrderDetailsGiftModel();
+                if (activityGiftBean != null) {
+                    String giftImg = activityGiftBean.getGiftImg();
+                    orderDetailsGiftModel.setImage(giftImg);
+                    String giftName = activityGiftBean.getGiftName();
+                    orderDetailsGiftModel.setName(giftName);
+                    double giftPrice = activityGiftBean.getGiftPrice();
+                    orderDetailsGiftModel.setMoney(String.format("%.2f", giftPrice));
+                }
+                String moreBuyToSend = subOrdersBean.getMoreBuyToSend();
+                if (!TextUtils.isEmpty(moreBuyToSend)){
+                    orderDetailsGiftModel.setMoreBuyToSend(moreBuyToSend);
+                }
+                orderDetailsGiftModel.setItmeType(3);
+                shopCarAdapterList.add(orderDetailsGiftModel);
                 //运费
                 double shippingTotal = subOrdersBean.getShippingTotal();
                 ShopCarAdapterModel shopCarPayTotalModel = new ShopCarAdapterModel();
-                shopCarPayTotalModel.setItmeType(3);
+                shopCarPayTotalModel.setItmeType(4);
                 shopCarPayTotalModel.setShippingTotal(shippingTotal);
                 shopCarAdapterList.add(shopCarPayTotalModel);
             }
@@ -464,5 +510,39 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
     @Override
     public void afterTextChanged(Editable editable) {
 
+    }
+    /**
+     * 商品信息发生变化
+     */
+    private void showUpDataGoodsInfoDialog(String upDataGoodsInfo) {
+
+        LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = factor.inflate(R.layout.dialog_updatagoodsinfo, null);
+
+        TextView tvUpDataGoodsInfo = (TextView) dialogView.findViewById(R.id.tv_UpDataGoodsInfo);
+        tvUpDataGoodsInfo.setText(upDataGoodsInfo == null ? "" : upDataGoodsInfo);
+
+        TextView tvUpDataGoodsInfoOk = (TextView) dialogView.findViewById(R.id.tv_UpDataGoodsInfoOk);
+        Activity activity = this;
+        while (activity.getParent() != null) {
+            activity = activity.getParent();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        final AlertDialog upDataGoodsInfoDialog = builder.create();
+        upDataGoodsInfoDialog.show();
+        upDataGoodsInfoDialog.setContentView(dialogView);
+        FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.WRAP_CONTENT);
+        //layout.setMargins(WallspaceUtil.dip2px(this, 10), 0, FeatureFunction.dip2px(this, 10), 0);
+        dialogView.setLayoutParams(layout);
+        //只用下面这一行弹出对话框时需要点击输入框才能弹出软键盘
+//        upDataGoodsInfoDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        //加上下面这一行弹出对话框时软键盘随之弹出
+//        upDataGoodsInfoDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        tvUpDataGoodsInfoOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                upDataGoodsInfoDialog.dismiss();
+            }
+        });
     }
 }

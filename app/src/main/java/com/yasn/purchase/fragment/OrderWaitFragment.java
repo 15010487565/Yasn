@@ -68,14 +68,6 @@ public class OrderWaitFragment extends OrderFragment implements
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        pageNo = 1;//初始化页数
-        slOrderWait.setVisibility(View.GONE);
-        OkHttpDemand();
-    }
-
-    @Override
     protected void OkHttpDemand() {
         token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
         resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
@@ -98,6 +90,9 @@ public class OrderWaitFragment extends OrderFragment implements
         title.setVisibility(View.GONE);
         initMultiSwipeRefresh(view);
         initRcView(view);
+        pageNo = 1;//初始化页数
+        slOrderWait.setVisibility(View.GONE);
+        OkHttpDemand();
     }
 
     private void initRcView(View view) {
@@ -356,6 +351,8 @@ public class OrderWaitFragment extends OrderFragment implements
         String msg = event.getMsg();
         Log.e("TAG_EventBusMsg","订单待收货="+msg);
         if ("refreshorder".equals(msg)) {
+            OkHttpDemand();
+        }else if ("paySucceed".equals(msg)){
             OkHttpDemand();
         }
     }

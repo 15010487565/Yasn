@@ -6,6 +6,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -102,7 +103,8 @@ public class InvoiceSpecialFragment extends SimpleTopbarFragment {
 
     private void initLeftView(TextView textView) {
         String s1 = textView.getText().toString();
-        String s2 = textView.getText().toString().trim();
+        String s2 = s1.replaceAll("^[\\s　]*|[\\s　]*$","").trim();
+        Log.e("TAG_發票","s1="+s1+";s2="+s2);
         SpannableStringBuilder span = new SpannableStringBuilder(s1);
         span.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.orange)), s1.length()-s2.length(), s1.length()-s2.length()+1,
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);

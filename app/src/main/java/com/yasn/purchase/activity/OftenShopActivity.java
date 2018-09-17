@@ -259,7 +259,7 @@ public class OftenShopActivity extends SimpleTopbarActivity
                         initGetMoreRequest();
                         rcOftenShop.setVisibility(View.GONE);
                         llShoplistnull.setVisibility(View.VISIBLE);
-                        refreshRightFunctionZone(false);
+//                        refreshRightFunctionZone(false);
                     }
                 }else {
                     OftenModel oftenModel = JSON.parseObject(returnData, OftenModel.class);
@@ -270,11 +270,11 @@ public class OftenShopActivity extends SimpleTopbarActivity
                             initGetMoreRequest();
                             rcOftenShop.setVisibility(View.GONE);
                             llShoplistnull.setVisibility(View.VISIBLE);
-                            refreshRightFunctionZone(false);
+//                            refreshRightFunctionZone(false);
                         } else {
                             rcOftenShop.setVisibility(View.VISIBLE);
                             llShoplistnull.setVisibility(View.GONE);
-                            refreshRightFunctionZone(true);
+//                            refreshRightFunctionZone(true);
                             if (pagNo > 1) {
                                 if (regularPurcase == null || regularPurcase.size() == 0) {
                                     adapter.upFootText();
@@ -300,7 +300,7 @@ public class OftenShopActivity extends SimpleTopbarActivity
                             initGetMoreRequest();
                             rcOftenShop.setVisibility(View.GONE);
                             llShoplistnull.setVisibility(View.VISIBLE);
-                            refreshRightFunctionZone(false);
+//                            refreshRightFunctionZone(false);
                         }else {
                             adapter.upFootText();
                             ToastUtil.showToast("常够商品已全部显示！");
@@ -316,7 +316,7 @@ public class OftenShopActivity extends SimpleTopbarActivity
                 initNullCollect(subject);
                 rcOftenShop.setVisibility(View.GONE);
                 llShoplistnull.setVisibility(View.VISIBLE);
-                refreshRightFunctionZone(false);
+//                refreshRightFunctionZone(false);
                 swipe_layout.setLoading(false);
                 swipe_layout.setRefreshing(false);
                 break;

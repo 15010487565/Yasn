@@ -1,9 +1,11 @@
 package com.yasn.purchase.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -466,6 +468,7 @@ public class MainActivity extends SimpleTopbarActivity implements LoadWebViewErr
         EventBus.getDefault().unregister(this);
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     protected void onSaveInstanceState(Bundle outState) {
 //        super.onSaveInstanceState(outState);
@@ -538,9 +541,13 @@ public class MainActivity extends SimpleTopbarActivity implements LoadWebViewErr
     //常购清单
     public void startOftenShopActivity(String memberId) {
 //        startWebViewActivity(Config.SHOPLIST);
-        Intent intent = new Intent( MainActivity.this , OftenShopActivity.class);
-        intent.putExtra("memberId",memberId);
-        startActivity(intent);
+        if (TextUtils.isEmpty(token)||TextUtils.isEmpty(resetToken)) {
+            startBaseActivity( MainActivity.this ,LoginActivity.class);
+        }  else {
+            Intent intent = new Intent( MainActivity.this , OftenShopActivity.class);
+            intent.putExtra("memberId",memberId);
+            startActivity(intent);
+        }
     }
     //订单
     public void startOrderActivity(int tabIndex) {
@@ -602,4 +609,45 @@ public class MainActivity extends SimpleTopbarActivity implements LoadWebViewErr
         Intent intent = new Intent(this, WeChatCaptureActivity.class);
         startActivity(intent);
     }
+//    private void checkForUpdates() {
+//        try {
+//            UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
+//            Log.e("TAG_策略升级","upgradeType="+(upgradeInfo != null));
+//            if (upgradeInfo != null) {
+//                Log.e("TAG_策略升级","upgradeType="+upgradeInfo.upgradeType);
+//                try {
+//                    if (upgradeInfo.upgradeType == 2){//弹窗类型（1:建议 2:强制 3:手工）
+//                        int versionCode = getVersionCode();
+//                        if (upgradeInfo.versionCode > versionCode) {
+//                            return;
+//                        }else if (upgradeInfo.versionCode==0){
+//                            isFirstOpen();
+//                            return;
+//                        }
+//                    }
+//                    StringBuilder info = new StringBuilder();
+//                    info.append("id: ").append(upgradeInfo.id).append("\n");
+//                    info.append("发布类型（0:测试 1:正式）: ").append(upgradeInfo.publishType).append("\n");
+//                    info.append("弹窗类型（1:建议 2:强制 3:手工）: ").append(upgradeInfo.upgradeType);
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }else {
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//
+//        }
+//    }
+//
+//    private int getVersionCode() throws Exception {
+//        // 获取packagemanager的实例
+//        PackageManager packageManager = getPackageManager();
+//        // getPackageName()是你当前类的包名，0代表是获取版本信息
+//        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
+//        int code = packInfo.versionCode;
+//        return code;
+//    }
 }

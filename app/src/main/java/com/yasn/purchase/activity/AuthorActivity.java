@@ -424,6 +424,12 @@ public class AuthorActivity extends BaseThreeActivity
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(AuthorActivity.this, MainActivity.class));
+    }
+
+    @Override
     public void onCancelResult() {
 
     }

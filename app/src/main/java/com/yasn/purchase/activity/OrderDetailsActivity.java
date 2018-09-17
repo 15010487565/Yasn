@@ -65,7 +65,6 @@ import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
-import static com.yasn.purchase.R.id.ll_BillType;
 
 /***
  * 订单详情
@@ -141,6 +140,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
         setContentView(R.layout.activity_order_details);
 
         isMainOrder = getIntent().getIntExtra("isMainOrder", 0);
+        Log.e("TAG_訂單詳情","isMainOrder="+isMainOrder);
         //rc线
         RecyclerViewDecoration recyclerViewDecoration = new RecyclerViewDecoration(
                 this, LinearLayoutManager.HORIZONTAL, 2, getResources().getColor(R.color.line_gray));
@@ -153,7 +153,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
         tvOrderTime = (TextView) findViewById(R.id.tv_orderTime);
         //发票类型
         tvBillType = (TextView) findViewById(R.id.tv_billType);
-        llBillType = (LinearLayout) findViewById(ll_BillType);
+        llBillType = (LinearLayout) findViewById(R.id.ll_BillType);
         llBillType.setOnClickListener(this);
         ivBillType = (ImageView) findViewById(R.id.iv_BillType);
         ivBillType.setVisibility(View.INVISIBLE);
@@ -277,7 +277,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                 params.put("reason", reason);
                 okHttpGet(101, Config.ORDERCANCEL, params);
                 break;
-            case ll_BillType://发票类型
+            case R.id.ll_BillType://发票类型
                 String tvBillTypeString = tvBillType.getText().toString();
                 if (!TextUtils.isEmpty(tvBillTypeString) && !"无".equals(tvBillTypeString)) {
                     showPopwindow();
@@ -965,8 +965,8 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
             //赠品
             OrderDetailsMainModel.OrderDetailsBean.ChildOrderListBean.ActivityGiftBean activityGiftBean = childOrderListBean.getActivityGift();
 //            Log.e("TAG_赠品", "activityGiftBean=" + (activityGiftBean != null));
+            OrderDetailsGiftModel orderDetailsGiftModel = new OrderDetailsGiftModel();
             if (activityGiftBean != null) {
-                OrderDetailsGiftModel orderDetailsGiftModel = new OrderDetailsGiftModel();
                 String giftImg = activityGiftBean.getGiftImg();
                 orderDetailsGiftModel.setImage(giftImg);
                 String giftName = activityGiftBean.getGiftName();
@@ -974,8 +974,12 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
 //                Log.e("TAG_赠品", "giftName=" + giftName);
                 double giftPrice = activityGiftBean.getGiftPrice();
                 orderDetailsGiftModel.setMoney(String.format("%.2f", giftPrice));
-                orderDetailsList.add(orderDetailsGiftModel);
             }
+            String moreBuyToSend = childOrderListBean.getMoreBuyToSend();
+            if (!TextUtils.isEmpty(moreBuyToSend)){
+                orderDetailsGiftModel.setMoreBuyToSend(moreBuyToSend);
+            }
+            orderDetailsList.add(orderDetailsGiftModel);
             //支付信息
             OrderDetailsPayModel payModel = new OrderDetailsPayModel();
             //商品总额

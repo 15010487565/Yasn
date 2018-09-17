@@ -68,12 +68,14 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void setData( List<SearchModel.DataBean> list) {
+        Log.e("TAG_搜索","setData");
         this.addList = list;
         this.list = list;
         notifyDataSetChanged();
     }
 
     public void addData( List<SearchModel.DataBean> list) {
+        Log.e("TAG_搜索","addData=");
         this.addList = list;
 
         if (this.list != null){
@@ -81,6 +83,13 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }else {
             this.list = list;
         }
+        notifyDataSetChanged();
+    }
+
+    public void clearData() {
+        Log.e("TAG_搜索","clearData=");
+        this.addList.clear();
+        this.list.clear();
         notifyDataSetChanged();
     }
 
@@ -262,7 +271,8 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     if (addList == null||addList.size()==0){
                         footviewholder.progressBar.setVisibility(View.GONE);
                         footviewholder.footText.setText(context.getResources().getString(R.string.unpullup_to_load));
-                    }else {
+                    }
+                    else {
                         int visibleItemCount = linearLayoutManager.getChildCount();
                         Log.e("TAG_底部","visibleItemCount="+visibleItemCount+";list="+list.size());
                         if (visibleItemCount <= list.size()){
@@ -347,17 +357,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
         }
     }
-//    class FootViewHolder  extends RecyclerView.ViewHolder{
-//        LinearLayout footView;
-//        ProgressBar progressBar;
-//        TextView footText;
-//        public FootViewHolder(View view) {
-//            super(view);
-//            footView = (LinearLayout) itemView.findViewById(R.id.footView);
-//            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
-//            footText = (TextView) itemView.findViewById(R.id.footText);
-//        }
-//    }
+
     private void onItemEventClick(RecyclerView.ViewHolder holder) {
         final int position = holder.getLayoutPosition();
         holder.itemView.setOnClickListener(new View.OnClickListener() {

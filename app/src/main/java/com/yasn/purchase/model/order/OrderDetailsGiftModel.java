@@ -11,6 +11,24 @@ public class OrderDetailsGiftModel implements Serializable{
     private String name;
     private String money;
     private String num;
+    private String moreBuyToSend;
+    private int itmeType;//布局类型
+
+    public int getItmeType() {
+        return itmeType;
+    }
+
+    public void setItmeType(int itmeType) {
+        this.itmeType = itmeType;
+    }
+
+    public String getMoreBuyToSend() {
+        return moreBuyToSend;
+    }
+
+    public void setMoreBuyToSend(String moreBuyToSend) {
+        this.moreBuyToSend = moreBuyToSend;
+    }
 
     public String getImage() {
         return image;

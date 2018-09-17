@@ -40,18 +40,6 @@
             android:layout_marginTop="@dimen/margin_10"
             android:layout_marginBottom="@dimen/height_30">
             <TextView
-                android:id="@+id/tv_tv_AuthorDialogSubmitOk"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/margin_20"
-                android:paddingRight="@dimen/margin_20"
-                android:paddingTop="@dimen/margin_5"
-                android:paddingBottom="@dimen/margin_5"
-                android:text="确定提交"
-                android:background="@drawable/shape2_orange_white"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/textsize_14" />
-            <TextView
                 android:id="@+id/tv_tv_AuthorDialogSubmitCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,10 +47,22 @@
                 android:paddingRight="@dimen/margin_20"
                 android:paddingTop="@dimen/margin_5"
                 android:paddingBottom="@dimen/margin_5"
-                android:layout_marginLeft="@dimen/margin_20"
                 android:text="返回修改"
                 android:background="@drawable/text_black_white_yuanjiao2"
                 android:textColor="@color/black_66"
+                android:textSize="@dimen/textsize_14" />
+            <TextView
+                android:id="@+id/tv_tv_AuthorDialogSubmitOk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin_20"
+                android:paddingRight="@dimen/margin_20"
+                android:paddingTop="@dimen/margin_5"
+                android:paddingBottom="@dimen/margin_5"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:text="确定提交"
+                android:background="@drawable/shape2_orange_white"
+                android:textColor="@color/orange"
                 android:textSize="@dimen/textsize_14" />
         </LinearLayout>
 

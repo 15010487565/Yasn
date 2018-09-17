@@ -3,7 +3,7 @@ package www.xcd.com.mylibrary.help;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.BuildConfig;
+import android.support.v7.appcompat.BuildConfig;
 import android.text.TextUtils;
 import android.util.Log;
 

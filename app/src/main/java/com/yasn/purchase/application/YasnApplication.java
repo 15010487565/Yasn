@@ -8,6 +8,8 @@ import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.smtt.sdk.QbSdk;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.MainActivity;
+import com.yasn.purchase.common.Config;
 
 
 /**
@@ -18,10 +20,6 @@ import com.yasn.purchase.R;
 public class YasnApplication extends BaseApplication {
 
     private static YasnApplication instance;
-    // 替换成bugly上注册的appid
-//    public static final String APP_ID = "2b3b07943f";
-    // 测试appid
-    public static final String APP_ID = "8e4914468a";
     public static YasnApplication getInstance() {
         if (instance == null) {
             instance = new YasnApplication();
@@ -104,7 +102,7 @@ public class YasnApplication extends BaseApplication {
          * 只允许在MainActivity上显示更新弹窗，其他activity上不显示弹窗;
          * 不设置会默认所有activity都可以显示弹窗;
          */
-//        Beta.canShowUpgradeActs.add(MainActivityOld.class);
+        Beta.canShowUpgradeActs.add(MainActivity.class);
 
 
         /**
@@ -214,7 +212,7 @@ public class YasnApplication extends BaseApplication {
          * 参数2：appId
          * 参数3：是否开启debug
          */
-        Bugly.init(getApplicationContext(), APP_ID, true);
+        Bugly.init(getApplicationContext(), Config.APP_ID, true);
 
         /**
          * 如果想自定义策略，按照如下方式设置

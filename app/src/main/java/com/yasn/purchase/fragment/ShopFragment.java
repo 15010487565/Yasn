@@ -87,11 +87,11 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     private int nameTitle[] = {R.string.mejifen,  R.string.help
             , R.string.phoneconsult, R.string.serviceing, R.string.zhuanpiao,R.string.yongyouquery};
     private int imageUrlAuth[] = {R.mipmap.jifen, R.mipmap.shouhuo_address,
-            R.mipmap.numbervip,
+//            R.mipmap.numbervip,
             R.mipmap.help, R.mipmap.phoneconsult, R.mipmap.serviceing
             , R.mipmap.zhuanpiao,R.mipmap.oil};
     private int nameTitleAuth[] = {R.string.mejifen, R.string.shouhuo_addressv,
-            R.string.numbervip,
+//            R.string.numbervip,
             R.string.help, R.string.phoneconsult, R.string.serviceing
             , R.string.zhuanpiao,R.string.yongyouquery};
     private SnsTabWidget tabWidget,makertabwidget;
@@ -260,6 +260,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         okdredgeYsenHelp = (TextView) view.findViewById(R.id.okdredge_YsenHelp);
         okdredgeYsenHelp.setVisibility(View.GONE);
         whiteTopText = (TextView) view.findViewById(R.id.whiteTopText);
+        whiteTopText.setVisibility(View.GONE);
     }
 
     private void initFuncData(int imageUrl[],int nameTitle[]) {
@@ -495,7 +496,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                         }
                         if (digital_member == 1) {//是数字会员
                             undredgeYsenHelp.setVisibility(View.GONE);
-                            okdredgeYsenHelp.setVisibility(View.VISIBLE);
+                            okdredgeYsenHelp.setVisibility(View.GONE);//会员有效期
                             gradeLinear.setVisibility(View.VISIBLE);
                             department.setVisibility(View.VISIBLE);
                             int endDate = member.getEndDate();
@@ -512,11 +513,13 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                             okdredgeYsenHelp.setVisibility(View.GONE);
                             if (this.lv_id == 2) {
                                 whiteTopText.setText("认证审核中");
+                                whiteTopText.setVisibility(View.VISIBLE);
                                 meanage.setVisibility(View.GONE);
                                 gradeLinear.setVisibility(View.VISIBLE);
                                 department.setVisibility(View.GONE);
                             } else if (this.lv_id == 3) {
                                 whiteTopText.setText("审核未通过  ");
+                                whiteTopText.setVisibility(View.VISIBLE);
                                 undredgeYsenHelp.setText("查看原因");
                                 meanage.setVisibility(View.GONE);
                                 undredgeYsenHelp.setVisibility(View.VISIBLE);
@@ -524,6 +527,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                                 department.setVisibility(View.GONE);
                             } else if (this.lv_id == 5) {
                                 whiteTopText.setText("");
+                                whiteTopText.setVisibility(View.GONE);
                                 undredgeYsenHelp.setText("去认证");
                                 meanage.setVisibility(View.GONE);
                                 undredgeYsenHelp.setVisibility(View.VISIBLE);
@@ -531,6 +535,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                                 department.setVisibility(View.GONE);
                             }else if (this.lv_id == 1) {
                                 whiteTopText.setText("");
+                                whiteTopText.setVisibility(View.GONE);
                                 undredgeYsenHelp.setText("去认证");
                                 meanage.setVisibility(View.GONE);
                                 undredgeYsenHelp.setVisibility(View.VISIBLE);
@@ -538,8 +543,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                                 department.setVisibility(View.GONE);
                             } else {
                                 whiteTopText.setText("");
-                                undredgeYsenHelp.setVisibility(View.VISIBLE);
-                                undredgeYsenHelp.setText("开通雅森帮");
+                                whiteTopText.setVisibility(View.GONE);
+                                undredgeYsenHelp.setVisibility(View.GONE);
+//                                undredgeYsenHelp.setText("开通雅森帮");
                                 gradeLinear.setVisibility(View.VISIBLE);
                                 department.setVisibility(View.VISIBLE);
                                 okdredgeYsenHelp.setVisibility(View.GONE);
@@ -843,25 +849,25 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
 //                    startWebViewActivity(Config.SHOPPLACEOFRECEIPT);
                     startActivity(new Intent(getActivity(), AddressActivity.class));
                     break;
-                case 2://雅森帮
-                    ((MainActivity)getActivity()).startYasnActivity(digital_member);
-                    break;
-                case 3://帮助中心
+//                case 2://雅森帮
+//                    ((MainActivity)getActivity()).startYasnActivity(digital_member);
+//                    break;
+                case 2://帮助中心
 //                    startWebViewActivity(Config.SHOPHELP);
                     ((MainActivity)getActivity()).startHelpActivity();
                     break;
-                case 4://电话咨询
+                case 3://电话咨询
 //                    startWebViewActivity(Config.SHOPPHONE);
                     ((MainActivity)getActivity()).startShopPhoneActivity();
                     break;
-                case 5://在线客服
+                case 4://在线客服
                     SobotUtil.startSobot(getActivity(),null);
                     break;
-                case 6://专票资质
+                case 5://专票资质
 //                    startWebViewActivity(Config.SHOPAPTITUDE);
                     ((MainActivity)getActivity()).startInvoiceSpecialActivity();
                     break;
-                case 7://用油查询
+                case 6://用油查询
                     ((MainActivity)getActivity()).startOilActivity();
                     break;
             }
@@ -1025,6 +1031,8 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
         if ("loginSucceed".equals(msg)&&getUserVisibleHint()) {
             OkHttpDemand();
         }else if ("refreshorder".equals(msg)) {
+            OkHttpDemand();
+        }else if ("paySucceed".equals(msg)){
             OkHttpDemand();
         }
     }

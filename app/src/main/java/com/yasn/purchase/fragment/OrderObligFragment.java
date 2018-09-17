@@ -66,13 +66,6 @@ public class OrderObligFragment extends OrderFragment implements
         EventBus.getDefault().register(this);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        slOrderOblig.setVisibility(View.GONE);
-        pageNo = 1;//初始化页数
-        OkHttpDemand();
-    }
 
     @Override
     protected void OkHttpDemand() {
@@ -97,6 +90,9 @@ public class OrderObligFragment extends OrderFragment implements
         title.setVisibility(View.GONE);
         initMultiSwipeRefresh(view);
         initRcView(view);
+        slOrderOblig.setVisibility(View.GONE);
+        pageNo = 1;//初始化页数
+        OkHttpDemand();
     }
 
     private void initRcView(View view) {
@@ -412,6 +408,8 @@ public class OrderObligFragment extends OrderFragment implements
         String msg = event.getMsg();
         Log.e("TAG_EventBusMsg","订单代付款="+msg);
         if ("refreshorder".equals(msg)) {
+            OkHttpDemand();
+        }else if ("paySucceed".equals(msg)){
             OkHttpDemand();
         }
     }

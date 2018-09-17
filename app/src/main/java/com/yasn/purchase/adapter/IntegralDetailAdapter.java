@@ -19,6 +19,9 @@ import java.util.Map;
 
 import www.xcd.com.mylibrary.help.HelpUtils;
 
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_FOOTER;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_ITEM;
+
 /**
  * /**
  * 常购清单
@@ -27,8 +30,6 @@ import www.xcd.com.mylibrary.help.HelpUtils;
 
 public class IntegralDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public final static int TYPE_ITEM = 1;
-    public final static int TYPE_FOOTER = 2;
     private Context context;
     private List<IntegralDetailModel.DataBean.PointHistoryListBean> list;
     private List<IntegralDetailModel.DataBean.PointHistoryListBean> addList;
@@ -102,6 +103,7 @@ public class IntegralDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        Log.e("TAG_积分详情Adapter","onBindViewHolder=");
         switch (getItemViewType(position)) {
             case TYPE_ITEM:
                 ViewHolderItem holderItem = (ViewHolderItem) holder;

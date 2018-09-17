@@ -124,7 +124,7 @@ public class PermissionsActivity extends FragmentActivity {
             allPermissionsGranted();
         } else {
             isRequireCheck = false;
-//            showMissingPermissionDialog();
+            showMissingPermissionDialog();
             finish();
         }
     }

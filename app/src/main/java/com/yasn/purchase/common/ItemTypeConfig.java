@@ -14,4 +14,6 @@ public class ItemTypeConfig {
     public final static int TYPE_TWO = 2;
     public static final int TYPE_ITEMTOTAL = 3;
     public final static int ITEM_FOOTER = 10000;
+    public final static int TYPE_ITEM = 1;
+    public final static int TYPE_FOOTER = 2;
 }

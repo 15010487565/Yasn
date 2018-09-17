@@ -11,11 +11,13 @@ public class Config {
 //    public static final String URLCAIGOU = "http://caigou.yasn.com/";//正式服
 //    public final static String SEARCH = "http://47.93.233.216:9998/search/solr/goods/list?";//正式服搜索页面
 //    public final static String IPPORTPAY = "http://39.106.213.117:10800/";//正式服支付接口
+//    public static final String APP_ID = "2b3b07943f";// 替换成bugly上注册的appid
 
     public static final String IP = "http://shoptest.yasn.com";//测试
     public static final String URLCAIGOU = "http://shoptt.yasn.com";//测试首服
     public final static String SEARCH = "http://47.93.192.134:9998/search/solr/goods/list?";//测试服搜索页面
     public final static String IPPORTPAY = "http://47.93.192.134:10800/";//测试服支付接口
+    public static final String APP_ID = "4408947e15";  // 测试appid
     //端口
     public static final String IPPORT = IP+":9100/api/composite-service/";//9100端口
     //城市列表所在地起
@@ -154,6 +156,8 @@ public class Config {
     public static final String MEORDER =  IPPORT +"order/list?";
     //订单详情
     public static final String ORDERDETAILS =  IPPORT +"order/details?";
+    //多买多送赠品
+    public static final String ORDERDETAILSGIFT = IPPORT + "goods/activityGift/";
     //取消订单
     public static final String ORDERCANCEL =  IPPORT +"order/cancel?";
     //订单提醒
@@ -193,4 +197,12 @@ public class Config {
     public final static String ORDERPAY = URLCAIGOU+"/payment.html?orderid=";
     //是否使用网页支付
     public final static boolean isWebViewPay = true;
+
+    //测试首页2
+    public static final String HOMEVIEW = URLCAIGOU+"/";
+    //用于处理底部导航回退
+    public static final String HOMEVIEWDOMAIN = "caigou.yasn.com";//首页
+    public static final String HOMEVIEW2 = URLCAIGOU+"/classify.html";//产品分类
+    public static final String HOMEVIEW3 = URLCAIGOU+"/cart.html";//购物车
+    public static final String HOMEVIEW4 = URLCAIGOU+"/member.html";//会员中心
 }

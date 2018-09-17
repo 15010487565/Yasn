@@ -19,6 +19,9 @@ import java.util.Map;
 
 import www.xcd.com.mylibrary.help.HelpUtils;
 
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_FOOTER;
+import static com.yasn.purchase.common.ItemTypeConfig.TYPE_ITEM;
+
 /**
  * /**
  * 常购清单
@@ -27,8 +30,6 @@ import www.xcd.com.mylibrary.help.HelpUtils;
 
 public class IntegralFreezeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public final static int TYPE_ITEM = 1;
-    public final static int TYPE_FOOTER = 2;
     private Context context;
     private List<IntegralFreezeModel.DataBean.FreezePointListBean> list;
     private List<IntegralFreezeModel.DataBean.FreezePointListBean> addList;
