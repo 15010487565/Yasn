@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.yasn.purchase.activityold.WebViewH5Activity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,4 +55,11 @@ public abstract class SimpleTopbarFragment extends BaseFragment {
             else return null;
         }
     };
+    protected void LogData(String tag){
+        // 所需要的时间格式，注意：SSS就是本次所要的毫秒值
+        String patten = "yyyy-MM-dd HH:mm:ss.SSS";
+        SimpleDateFormat format = new SimpleDateFormat(patten);
+        String dateFormatStr = format.format(new Date());
+        Log.e(tag,"dateFormatStr="+dateFormatStr);
+    }
 }

@@ -958,6 +958,30 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
                     int goodsId = orderItemBean.getGoodsId();
                     Log.e("TAG_商品詳情id","goodsId="+goodsId);
                     orderGoodsContentModel.setGoodsId(String.valueOf(goodsId));
+                    //规格
+                    String addon = orderItemBean.getAddon();
+                    if (!TextUtils.isEmpty(addon)) {
+                        try {
+                            addon.replaceFirst("\"", " ");
+                            addon = addon.substring(0, addon.length());
+                            StringBuffer sb = new StringBuffer("\"addon\":");
+                            sb.append(addon);
+                            Log.e("TAG_sb", sb.toString());
+                            JSONObject object = new JSONObject("{" + sb.toString() + "}");
+                            JSONArray addonList = object.getJSONArray("addon");
+                            List orderGoodsValueList = new ArrayList();
+                            for (int m = 0, n = addonList.length(); m < n; m++) {
+                                JSONObject jsonObject = addonList.getJSONObject(m);
+                                String value = jsonObject.optString("value");
+                                OrderGoodsContentModel.OrderGoodsValueBean valueBean = new OrderGoodsContentModel.OrderGoodsValueBean();
+                                valueBean.setValue(value);
+                                orderGoodsValueList.add(valueBean);
+                            }
+                            orderGoodsContentModel.setList(orderGoodsValueList);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     //商品信息
                     orderDetailsList.add(orderGoodsContentModel);
                 }

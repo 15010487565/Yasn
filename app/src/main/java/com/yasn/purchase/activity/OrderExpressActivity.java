@@ -34,6 +34,7 @@ public class OrderExpressActivity extends SimpleTopbarActivity implements
         ViewPager.OnPageChangeListener, TabLayout.OnTabSelectedListener{
 
     private ViewPager pager;
+    private TextView tvOrderExpressNull;
     private TabLayout tableLayout;
     private OrderExpressPagerAdapter orderExpressPagerAdapter;
     TextView tvTopExpressNum;
@@ -50,7 +51,12 @@ public class OrderExpressActivity extends SimpleTopbarActivity implements
     }
 
     private void initView() {
+        //无数据提示语
+        tvOrderExpressNull = findViewById(R.id.tv_OrderExpressNull);
+        tvOrderExpressNull.setVisibility(View.GONE);
+        //有物流信息
         pager = (ViewPager) findViewById(R.id.vp_OrderExpress);
+        pager.setVisibility(View.VISIBLE);
         tableLayout = (TabLayout) findViewById(R.id.tab_OrderExpress);
         pager.setOnPageChangeListener(this);
         //Viewpager的监听（这个接听是为Tablayout专门设计的）
@@ -99,6 +105,8 @@ public class OrderExpressActivity extends SimpleTopbarActivity implements
                             orderExpressPagerAdapter.setData(deliverys);
                             tableLayout.setVisibility(View.VISIBLE);
                         }
+                        tvOrderExpressNull.setVisibility(View.VISIBLE);
+                        pager.setVisibility(View.GONE);
                         for (int i = 0; i < deliverys.size(); i++) {
                             TabLayout.Tab tabAt = tableLayout.getTabAt(i);
                             tabAt.setCustomView(tabIcon(i));
@@ -113,7 +121,13 @@ public class OrderExpressActivity extends SimpleTopbarActivity implements
                         tvTopExpressNum.setText(span);
                     }else {
                         tableLayout.setVisibility(View.GONE);
+                        tvOrderExpressNull.setVisibility(View.VISIBLE);
+                        pager.setVisibility(View.GONE);
                     }
+                }else {
+                    tableLayout.setVisibility(View.GONE);
+                    tvOrderExpressNull.setVisibility(View.VISIBLE);
+                    pager.setVisibility(View.GONE);
                 }
                 break;
         }

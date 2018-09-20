@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -52,17 +53,17 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
  */
 public class ShopcarPayActivity extends SimpleTopbarActivity implements CompoundButton.OnCheckedChangeListener, TextWatcher {
 
-    private TextView tvShopCarPayName, tvShopCarPayAddress, tvShopCarPayIntegral, tvInvoice;
+    private TextView tvShopCarPayName, tvShopCarPayAddress, tvNullAddressHint, tvShopCarPayIntegral, tvInvoice;
     private ShopCarPayAdapter adapter;
     private RecyclerView rcShopcarSignfor;
     private Switch swShopCarPay;
-    private LinearLayout llShopCarPayHint, llInvoice;
+    private LinearLayout llShopCarPayHint, llInvoice, llSignforName, llSignforAddress;
     private List<Object> shopCarAdapterList;
     //备注
     private TextView tvShopCarPayRemark, tvShopcarPayTotalMoney, tvShopcarPayCarriageMoney;
     //积分 0未使用 1使用
     private String canUsePoint = "0";
-
+    private int enablePoint;
     @Override
     protected Object getTopbarTitle() {
         return "确认订单";
@@ -77,6 +78,10 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
         rlStartAddress.setOnClickListener(this);
         tvShopCarPayName = (TextView) findViewById(R.id.tv_ShopCarPayName);
         tvShopCarPayAddress = (TextView) findViewById(R.id.tv_ShopCarPayAddress);
+        llSignforName = findViewById(R.id.ll_SignforName);
+        llSignforAddress = findViewById(R.id.ll_SignforAddress);
+        //无收货地址提示
+        tvNullAddressHint = findViewById(R.id.tv_NullAddressHint);
         //商品信息
         rcShopcarSignfor = (RecyclerView) findViewById(R.id.rc_ShopcarSignfor);
 
@@ -299,7 +304,7 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
         initSubOrders(shopcarPayModel);
         //积分抵现
         mainOrder = shopcarPayModel.getMainOrder();
-        int enablePoint = mainOrder.getEnablePoint();
+        enablePoint = mainOrder.getEnablePoint();
         if (enablePoint > 0) {
             tvShopCarPayIntegral.setText("当前可用积分：" + enablePoint);
             swShopCarPay.setVisibility(View.VISIBLE);
@@ -353,9 +358,14 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
                             isZPrice = true;
                         }
                         shopCarPayAdapterModel.setPrice(price);
+                        //數量
                         int num = orderItemVOSBean.getNum();
                         shopCarPayAdapterModel.setNum(num);
                         shopCarPayAdapterModel.setNeedPayMoney(price * num);
+                        //規格
+                        String specs = orderItemVOSBean.getSpecs();
+                        shopCarPayAdapterModel.setSpecs(specs);
+
                         shopCarPayAdapterModel.setItmeType(2);
                         shopCarAdapterList.add(shopCarPayAdapterModel);
                     }
@@ -391,6 +401,9 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
 
     private void initMemberAddress(ShopcarPayModel.MemberAddressBean memberAddress) {
         if (memberAddress != null) {
+            tvNullAddressHint.setVisibility(View.GONE);
+            llSignforName.setVisibility(View.VISIBLE);
+            llSignforAddress.setVisibility(View.VISIBLE);
             //地址is
             addrId = memberAddress.getAddrId();
 
@@ -410,6 +423,10 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
                 tvShopCarPayAddress.setText(province + "-" + city + "-" + region + "-" + addr);
             }
 //            tvShopCarPayAddress.requestLayout();
+        }else {
+            tvNullAddressHint.setVisibility(View.VISIBLE);
+            llSignforName.setVisibility(View.GONE);
+            llSignforAddress.setVisibility(View.GONE);
         }
     }
 
@@ -442,12 +459,16 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
             double needPayMoney = mainOrder.getNeedPayMoney();
             tvShopcarPayTotalMoney.setText("￥" + String.format("%.2f", needPayMoney - enableDeductMoney));
             canUsePoint = "1";//积分 0未使用 1使用
+            tvShopCarPayIntegral.setTextColor(ContextCompat.getColor(this,R.color.orange));
+            tvShopCarPayIntegral.setText("当可用" + enablePoint+"积分\t\t抵"+enableDeductMoney+"现金");
         } else {
             Log.e("TAG_SW", "关闭");
             llShopCarPayHint.setVisibility(View.GONE);
             double needPayMoney = mainOrder.getNeedPayMoney();
             tvShopcarPayTotalMoney.setText("￥" + String.format("%.2f", needPayMoney));
             canUsePoint = "0";//积分 0未使用 1使用
+            tvShopCarPayIntegral.setTextColor(ContextCompat.getColor(this,R.color.black_99));
+            tvShopCarPayIntegral.setText("当前可用积分：" + enablePoint);
         }
     }
 

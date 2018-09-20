@@ -1,11 +1,13 @@
 package com.yasn.purchase.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,8 +28,13 @@ import com.yasn.purchase.model.ClassifyBrandModel;
 import com.yasn.purchase.model.ClassifyLeftModel;
 import com.yasn.purchase.model.ClassifyModel;
 import com.yasn.purchase.model.ClassifyRightModel;
+import com.yasn.purchase.model.EventBusMsg;
 import com.yasn.purchase.utils.ToastUtil;
 import com.yasn.purchase.view.NoScrollGridView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,7 +88,7 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
         token = SharePrefHelper.getInstance(getActivity()).getSpString("token");
         resetToken = SharePrefHelper.getInstance(getActivity()).getSpString("resetToken");
         resetTokenTime = SharePrefHelper.getInstance(getActivity()).getSpString("resetTokenTime");
-        //推荐品牌\
+        //推荐品牌
         Map<String, Object> params = new HashMap<String, Object>();
         if (token != null && !"".equals(token)) {
             params.put("access_token", token);
@@ -366,41 +373,6 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
 
     }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putInt("positionSelect", positionSelect);
-//        Log.e("TAG_分类", "返回键保存=" + positionSelect);
-//    }
-//
-//    //恢复数据
-//    @Override
-//    public void onViewStateRestored(Bundle savedInstanceState) {
-//        super.onViewStateRestored(savedInstanceState);
-//        if (savedInstanceState != null) {
-//            Log.e("TAG_分类", "返回键获取=" + positionSelect);
-//            selectLeftPostion(savedInstanceState.getInt("positionSelect"));
-//        }
-//    }
-//
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        Log.e("TAG_分类", "onStart=" + positionSelect);
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        Log.e("TAG_分类", "onResume=" + positionSelect);
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        getActivity().overridePendingTransition(0, 0);
-//        super.onPause();
-//        Log.e("TAG_分类", "onPause=" + positionSelect);
-//    }
 
     @Override
     public void onCancelResult() {
@@ -431,5 +403,27 @@ public class ClassifyFragment extends SimpleTopbarFragment implements
         } else {
 
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventBusMsg event) {
+        String msg = event.getMsg();
+        Log.e("TAG_onEventMain","分类="+msg);
+      if ("refreClassift".equals(msg)) {
+            OkHttpDemand();
+      }else if ("beforClassift".equals(msg)){//预加载
+          lazyLoad();
+      }
     }
 }

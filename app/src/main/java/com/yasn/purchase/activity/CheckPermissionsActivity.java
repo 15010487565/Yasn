@@ -12,10 +12,11 @@ import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 
 import com.yasn.purchase.R;
-import com.yasn.purchase.activity.base.YasnBaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 
 /**
  * 继承了Activity，实现Android6.0的运行时权限检测
@@ -28,7 +29,7 @@ import java.util.List;
  * @类型名称：PermissionsChecker
  * @since 2.5.0
  */
-public class CheckPermissionsActivity extends YasnBaseActivity implements
+public abstract class CheckPermissionsActivity extends SimpleTopbarActivity implements
 			ActivityCompat.OnRequestPermissionsResultCallback {
 	/**
 	 * 需要进行检测的权限数组

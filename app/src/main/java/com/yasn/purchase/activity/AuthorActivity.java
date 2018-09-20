@@ -299,6 +299,15 @@ public class AuthorActivity extends BaseThreeActivity
                             long startTime = probationTime.getStartTime();
                             //试用期结束时间时间
                             endTime = probationTime.getEndTime();
+                            if (String.valueOf(currentTime).length()==13){
+                                currentTime = currentTime/1000;
+                            }
+                            if (String.valueOf(startTime).length()==13){
+                                startTime = startTime/1000;
+                            }
+                            if (String.valueOf(endTime).length()==13){
+                                endTime = endTime/1000;
+                            }
                             if (currentTime >= startTime && currentTime <= endTime) {
                                 isProbation = true;
                             } else {
@@ -405,6 +414,7 @@ public class AuthorActivity extends BaseThreeActivity
                     }
                 } else if (returnCode == 9) {// 状态9表示crm同步已成功, 自动认证,lv_id=6
                     //清除首页认证成功弹窗提示
+                    finish();
                 } else { // 400
                     if (isProbation) {//试用期期间
                         startProbationActivity();

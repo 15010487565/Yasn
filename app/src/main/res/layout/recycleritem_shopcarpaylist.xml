@@ -29,13 +29,25 @@
             android:layout_marginRight="@dimen/margin_10"
             android:lineSpacingExtra="3dp"
             android:maxLines="2"
-            android:text="XXXXXXXXXXXXX"
+            android:text="名字"
             android:textColor="@color/black_66"
             android:textSize="@dimen/textsize_14" />
+        <TextView
+            android:id="@+id/tv_ShopCarPaySpecs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_10"
+            android:lineSpacingExtra="3dp"
+            android:maxLines="2"
+            android:text="規格"
+            android:textColor="@color/black_99"
+            android:textSize="@dimen/textsize_13" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
             android:orientation="horizontal">
 
             <TextView
@@ -43,7 +55,6 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/height_15"
                 android:text="￥0.00*1"
                 android:textColor="@color/black_66" />
 
@@ -51,7 +62,6 @@
                 android:id="@+id/tv_ShopCarPayNeedMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/height_15"
                 android:text="￥0.00"
                 android:textColor="@color/orange" />
         </LinearLayout>

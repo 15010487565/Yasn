@@ -30,5 +30,12 @@
         android:id="@+id/vp_OrderExpress"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
+    <TextView
+        android:id="@+id/tv_OrderExpressNull"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black_33"
+        android:textSize="@dimen/textsize_14"
+        android:text="暂无物流信息，请稍后查询！"/>
 </LinearLayout>

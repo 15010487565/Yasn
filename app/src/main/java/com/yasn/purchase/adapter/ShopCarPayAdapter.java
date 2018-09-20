@@ -131,7 +131,13 @@ public class ShopCarPayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 //需要金额
                 double needPayMoney = listModel.getNeedPayMoney();
                 listViewHolder.tvShopCarPayNeedMoney.setText("￥" + String.format("%.2f", needPayMoney <= 0 ? 0.00 : needPayMoney));
-
+                //規格
+                String specs = listModel.getSpecs();
+                if (TextUtils.isEmpty(specs)){
+                    listViewHolder.tvShopCarPaySpecs.setText("");
+                }else {
+                    listViewHolder.tvShopCarPaySpecs.setText(specs);
+                }
                 String imageDefault = listModel.getImageDefault();
                 Glide.with(context.getApplicationContext())
                         .load(imageDefault)
@@ -226,7 +232,7 @@ public class ShopCarPayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     class ListViewHolder extends RecyclerView.ViewHolder{
 
         ImageView ivShopCarPayImage;
-        private TextView tvShopCarPayName,tvShopCarPayNum,tvShopCarPayNeedMoney;
+        private TextView tvShopCarPayName,tvShopCarPayNum,tvShopCarPayNeedMoney, tvShopCarPaySpecs;
 
         public ListViewHolder(View itemView) {
             super(itemView);
@@ -234,6 +240,8 @@ public class ShopCarPayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             tvShopCarPayName = (TextView) itemView.findViewById(R.id.tv_ShopCarPayName);
             tvShopCarPayNum = (TextView) itemView.findViewById(R.id.tv_ShopCarPayNum);
             tvShopCarPayNeedMoney = (TextView) itemView.findViewById(R.id.tv_ShopCarPayNeedMoney);
+            //規格
+            tvShopCarPaySpecs = itemView.findViewById(R.id.tv_ShopCarPaySpecs);
         }
     }
     class GiftViewHolder extends RecyclerView.ViewHolder {

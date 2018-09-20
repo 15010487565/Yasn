@@ -214,8 +214,7 @@ public class GoodsInfoFragment extends BaseFragment implements
             params.put("access_token", resetToken);
         }
         okHttpGet(100, Config.GOODSDETAILS + goodsidString, params);
-        //读取临时文件
-//        String goodsdetailsmodel = HelpUtils.getJson(getActivity(), "goods.json");
+
         Map<String, Object> params1 = new HashMap<String, Object>();
         okHttpGet(101, Config.GOODSDETAILSOTHER + goodsidString, params1);
     }

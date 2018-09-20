@@ -242,6 +242,15 @@ public class HomeFragment extends SimpleTopbarFragment implements
             homeGrade.setText((levelName == null || "".equals(levelName)) ? "未知" : levelName);
             //地方站ID
             int regionId = member.getRegionId();
+            Log.e("TAG_regionId","首页regionId="+regionId);
+            String regionIdOld = SharePrefHelper.getInstance(getActivity()).getSpString("regionId");
+            Log.e("TAG_regionId","首页regionIdOld="+regionIdOld);
+            if (!TextUtils.isEmpty(regionIdOld)){
+                if (regionId != Integer.parseInt(regionIdOld)){
+                    //刷新分类数据
+                    EventBus.getDefault().post(new EventBusMsg("refreClassift"));
+                }
+            }
             SharePrefHelper.getInstance(getActivity()).putSpString("regionId", String.valueOf(regionId));
             digital_member = member.getDigital_member();
             if (digital_member == 0) {//未开通雅森帮
@@ -693,6 +702,9 @@ public class HomeFragment extends SimpleTopbarFragment implements
 //        Log.e("TAG_home", "onSuccessResult=" + requestCode);
         switch (requestCode) {
             case 100:
+                //分类预加载
+                EventBus.getDefault().post(new EventBusMsg("beforClassift"));
+                //实例化首页数据
                 mSwipeRefreshLayout.setRefreshing(false);
                 clHome.setVisibility(View.VISIBLE);
                 if (returnCode == 200) {

@@ -516,6 +516,15 @@ public class ShopcarPayModel implements Serializable{
             private String image;
             private double price;
             private String unit;
+            private String specs;
+
+            public String getSpecs() {
+                return specs;
+            }
+
+            public void setSpecs(String specs) {
+                this.specs = specs;
+            }
 
             public int getGoodsId() {
                 return goodsId;

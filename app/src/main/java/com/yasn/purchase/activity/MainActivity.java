@@ -37,13 +37,12 @@ import java.util.List;
 import java.util.Map;
 
 import www.xcd.com.mylibrary.R;
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 import www.xcd.com.mylibrary.view.BadgeView;
 import www.xcd.com.mylibrary.widget.SnsTabWidget;
 
-public class MainActivity extends SimpleTopbarActivity implements LoadWebViewErrListener {
+public class MainActivity extends CheckPermissionsActivity implements LoadWebViewErrListener {
 
     /**
      * 供应商

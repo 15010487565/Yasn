@@ -1,11 +1,11 @@
 package com.yasn.purchase.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +35,7 @@ import static com.yasn.purchase.activity.GuideActivity.GUIDEACTIVITYCODE;
 /**
  * 引导页或者启动页过后的广告页面  点击跳过或者自动3秒后跳到首页 不缓存图片
  */
-public class LaunchActivity extends CheckPermissionsActivity implements View.OnClickListener {
+public class LaunchActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView adIv;
     private Runnable runnable;
@@ -117,6 +117,7 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
         super.onRestart();
         isShowState = true;
         flag = false;
+        Log.e("TAG_isShowState","onRestart=");
         isFirstOpen();
     }
 
@@ -164,45 +165,6 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
         };
         handler.postDelayed(runnable, skipTime);
     }
-//    @Override
-//    public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-//        switch (requestCode) {
-//            case 100:
-//                try {
-//                    JSONObject jsonObject = new JSONObject(returnData);
-//                    String imagrurl = jsonObject.optString("image");
-////                    imagrurl = "http://img02.sogoucdn.com/app/a/100520024/dc36a9a8bf56661ab778bcdafc6b7d09";
-//                    Glide.with(LaunchActivity.this.getApplication()).load(imagrurl)
-//                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                            .crossFade()
-//                            .into(adIv);
-//                    isFirstOpen()
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
-//        }
-//    }
-//
-//    @Override
-//    public void onCancelResult() {
-////        isFirstOpen();
-//    }
-//
-//    @Override
-//    public void onErrorResult(int errorCode, IOException errorExcep) {
-////        isFirstOpen();
-//    }
-//
-//    @Override
-//    public void onParseErrorResult(int errorCode) {
-////        isFirstOpen();
-//    }
-//
-//    @Override
-//    public void onFinishResult() {
-////        isFirstOpen();
-//    }
 
     @Override
     public void onClick(View v) {
@@ -218,6 +180,7 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
         }
     }
     private void startActivity(){
+        Log.e("TAG_欢迎页","startActivity=");
 //        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIx" +
 //                "MjM0NTYiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiLCJ0cnVzdCJdLCJleHAiOjE1" +
 //                "MzM5NzY5MjgsImF1dGhvcml0aWVzIjpbIllBU05fU0hPUF9DTElFTlQiLCJZQVNOX1" +
@@ -231,19 +194,4 @@ public class LaunchActivity extends CheckPermissionsActivity implements View.OnC
         LaunchActivity.this.finish();
     }
 
-    // 回调方法，从第二个页面回来的时候会执行这个方法
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            // 根据上面发送过去的请求吗来区别
-            switch (requestCode) {
-                case 10000:
-                    SharePrefHelper.getInstance(context).putSpBoolean("is_user_guide_show", true);
-                    isFirstOpen(2000);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
 }

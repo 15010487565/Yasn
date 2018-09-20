@@ -50,7 +50,16 @@
                     android:background="@mipmap/home_top_arrows"
                     android:contentDescription="@null"
                     android:duplicateParentState="true" />
-
+                <TextView
+                    android:id="@+id/tv_NullAddressHint"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_40"
+                    android:gravity="center_vertical"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/margin_10"
+                    android:text="添加收货地址"
+                    android:textColor="@color/black_66"
+                    android:textSize="@dimen/textsize_14" />
                 <LinearLayout
                     android:id="@+id/ll_SignforName"
                     android:layout_width="match_parent"
@@ -75,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:paddingLeft="@dimen/margin_10"
-                        android:text="XX\t\t*********"
+                        android:text=""
                         android:textColor="@color/black_66"
                         android:textSize="@dimen/textsize_14" />
                 </LinearLayout>
@@ -104,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:paddingLeft="@dimen/margin_10"
-                        android:text="XX\t\t*********"
+                        android:text=""
                         android:textColor="@color/black_66"
                         android:textSize="@dimen/textsize_14" />
                 </LinearLayout>

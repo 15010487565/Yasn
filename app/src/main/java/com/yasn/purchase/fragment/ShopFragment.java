@@ -13,6 +13,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -474,13 +475,22 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                         lv_id = member.getLv_id();
                         //临时存储lv_id，判断数据是否普改变
                         int lv_idOld = SharePrefHelper.getInstance(getActivity()).getSpInt("lv_id");
-                        Log.e("TAG_OLD","lv_idOld="+lv_idOld);
                         if (lv_idOld != lv_id&&lv_idOld>0){
                             SharePrefHelper.getInstance(getActivity()).putSpInt("lv_id",lv_id);
                             //刷新首页数据
                             EventBus.getDefault().post(new EventBusMsg("refresh"));
                         }else if (lv_idOld==-1){
                             SharePrefHelper.getInstance(getActivity()).putSpInt("lv_id",lv_id);
+                        }
+                        int regionId = member.getRegionId();
+                        Log.e("TAG_regionId","门店regionId="+regionId);
+                        String regionIdOld = SharePrefHelper.getInstance(getActivity()).getSpString("regionId");
+                        Log.e("TAG_regionId","门店regionIdOld="+regionIdOld);
+                        if (!TextUtils.isEmpty(regionIdOld)){
+                            if (regionId != Integer.parseInt(regionIdOld)){
+                                //刷新首页数据
+                                EventBus.getDefault().post(new EventBusMsg("refresh"));
+                            }
                         }
                         //修改小红点
                         EventBusMsg carNum = new EventBusMsg("carNum");

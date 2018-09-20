@@ -122,21 +122,6 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         getWholeList();
     }
 
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        Log.e()
-//        //获取阶梯价列表
-//        getWholeList();
-//    }
-
-//    @Override
-//    protected void onNewIntent(Intent intent) {
-//        super.onNewIntent(intent);
-//        setIntent(intent);
-//        //获取阶梯价列表
-//        getWholeList();
-//    }
 
     private void initView() {
         llAnnouncement = (LinearLayout) findViewById(R.id.ll_announcement);
@@ -173,8 +158,9 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         mSwipeRefreshLayout = (MultiSwipeRefreshLayout) findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         //设置样式刷新显示的位置
-        mSwipeRefreshLayout.setProgressViewOffset(true, -20, 100);
+        mSwipeRefreshLayout.setProgressViewOffset(true, 200, 350);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.orange, R.color.blue, R.color.black);
+        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
@@ -1250,7 +1236,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                 int num = shopCarAdapterModel.getNum();
                 Log.e("TAG_进货单", "itmeType=" + itmeType + ";isCheck" + isCheck + ";num=" + num);
                 BigDecimal b1 = new BigDecimal(Double.toString(allNeedPayMoney));
-                BigDecimal b2 = new BigDecimal(Double.toString(price * num));
+                BigDecimal b2 = new BigDecimal(Double.toString((price<=0?0:price) * num));
                 allNeedPayMoney = b1.add(b2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             }
         }

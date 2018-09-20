@@ -4,20 +4,22 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.yasn.purchase.R;
-import com.yasn.purchase.activity.base.YasnBaseActivity;
 import com.yasn.purchase.adapter.GuideAdapter;
 import com.yasn.purchase.custom.indicator.CirclePageIndicator;
 
 import java.util.ArrayList;
 
+import www.xcd.com.mylibrary.utils.SharePrefHelper;
+
 /**
  * 引导页
  */
 
-public class GuideActivity extends YasnBaseActivity implements View.OnClickListener {
+public class GuideActivity extends AppCompatActivity implements View.OnClickListener {
 
     //code跳转码
     public static int GUIDEACTIVITYCODE = 10000;
@@ -66,13 +68,8 @@ public class GuideActivity extends YasnBaseActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-//        if (isRegister) {
-//            Bundle bundle = new Bundle();
-//            bundle.putInt("type", 4);
-//            startActivity(new Intent(this, MainActivityOld.class));
-//        } else
-//            startActivity(new Intent(this, MainActivityOld.class));
         // 设置结果，并进行传送
+        SharePrefHelper.getInstance(this).putSpBoolean("is_user_guide_show", true);
         this.setResult(Activity.RESULT_OK);
         finish();
     }
