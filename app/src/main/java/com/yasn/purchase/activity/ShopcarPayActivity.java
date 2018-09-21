@@ -481,7 +481,9 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
     TextView tvRemarkOk;
 
     private void showRemarkDialog(String tvShopCarPayRemarkDialog) {
-
+        if (showRemarkDialog !=null && showRemarkDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = factor.inflate(R.layout.dialog_remark, null);
 
@@ -535,8 +537,11 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
     /**
      * 商品信息发生变化
      */
+    private AlertDialog upDataGoodsInfoDialog;
     private void showUpDataGoodsInfoDialog(String upDataGoodsInfo) {
-
+        if (upDataGoodsInfoDialog !=null && upDataGoodsInfoDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = factor.inflate(R.layout.dialog_updatagoodsinfo, null);
 
@@ -549,7 +554,7 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
             activity = activity.getParent();
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        final AlertDialog upDataGoodsInfoDialog = builder.create();
+        upDataGoodsInfoDialog = builder.create();
         upDataGoodsInfoDialog.show();
         upDataGoodsInfoDialog.setContentView(dialogView);
         FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(Gallery.LayoutParams.FILL_PARENT, Gallery.LayoutParams.WRAP_CONTENT);

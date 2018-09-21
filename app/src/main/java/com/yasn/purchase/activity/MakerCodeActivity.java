@@ -252,6 +252,9 @@ public class MakerCodeActivity extends PhotoActivity implements View.OnLongClick
     protected AlertDialog mAuthNotifyDialog;
 
     private void showMakerCodeDialog() {
+        if (mAuthNotifyDialog !=null && mAuthNotifyDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_makercode, null);
         TextView tvDialogMakerShare = (TextView) serviceView.findViewById(R.id.tv_DialogMakerShare);

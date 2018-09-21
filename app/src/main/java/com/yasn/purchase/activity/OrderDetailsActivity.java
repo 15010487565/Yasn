@@ -1113,7 +1113,9 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
 
     protected AlertDialog okOrderDialog;
     private void confirmReapDialog(final int orderId) {
-
+        if (okOrderDialog !=null && okOrderDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_shopcardelete, null);
         TextView tvDelete = (TextView) serviceView.findViewById(R.id.tv_Delete);
@@ -1183,6 +1185,9 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
     private String reason;
 
     private void showCancelOrderDialog(String orderId) {
+        if (cancelOrderDialog !=null && cancelOrderDialog.isShowing()){
+            return;
+        }
         listCancelOrder = new ArrayList<>();
         LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = factor.inflate(R.layout.dialog_cancelorder, null);

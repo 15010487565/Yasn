@@ -1140,6 +1140,9 @@ public class HomeFragment extends SimpleTopbarFragment implements
     protected AlertDialog mUpgradeNotifyDialog;
 
     private void showUpgradeDialog(String reasonString) {
+        if (mUpgradeNotifyDialog !=null && mUpgradeNotifyDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_reason, null);
         TextView reason = (TextView) serviceView.findViewById(R.id.reason);

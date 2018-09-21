@@ -235,6 +235,7 @@ public class CollectActivity extends SimpleTopbarActivity
         CollectModel.ListFavoriteBean listFavoriteBean = data.get(position);
         int goods_id = listFavoriteBean.getGoods_id();
         removeAllDialog(String.valueOf(goods_id));
+
     }
 
     //收藏单个item点击事件
@@ -450,6 +451,9 @@ public class CollectActivity extends SimpleTopbarActivity
     protected AlertDialog remomeAllDialog;
 
     public void removeAllDialog(final String goods_id) {
+        if (remomeAllDialog !=null && remomeAllDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_collectremomeall, null);
         TextView tvCollectDelHintDialog = (TextView) serviceView.findViewById(R.id.tv_CollectDelHintDialog);

@@ -236,7 +236,9 @@ public class AuthorActivity extends BaseThreeActivity
                     ToastUtil.showToast("请选择经营面积");
                     return;
                 }
-                showAuthDialog();
+                if (submitOneDialog ==null || !submitOneDialog.isShowing()){
+                    showAuthDialog();
+                }
                 break;
         }
     }

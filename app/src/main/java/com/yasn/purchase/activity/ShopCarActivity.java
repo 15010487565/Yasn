@@ -1293,7 +1293,9 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
     protected AlertDialog updateNumNotifyDialog;
 
     private void showLazyWeightDialog(int residueNum) {
-        Log.e("TAG_更新数量", "调用");
+        if (updateNumNotifyDialog !=null && updateNumNotifyDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) ShopCarActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_shopcarlazyweight, null);
 
@@ -1435,7 +1437,9 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
     protected AlertDialog deleteNotifyDialog;
 
     private void showDeleteDialog(final int id) {
-
+        if (deleteNotifyDialog !=null && deleteNotifyDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) ShopCarActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_shopcardelete, null);
 
@@ -1473,6 +1477,9 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
     private ProgressBar progressTxt;
 
     private void upDataNumDialog(int num, final int position) {
+        if (upDataNumNotifyDialog !=null && upDataNumNotifyDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) ShopCarActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_shopcarupdatanum, null);
         progressTxt = (ProgressBar) serviceView.findViewById(R.id.progress_txt);

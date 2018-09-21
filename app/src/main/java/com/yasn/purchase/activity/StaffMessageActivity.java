@@ -193,6 +193,9 @@ public class StaffMessageActivity extends SimpleTopbarActivity implements StaffM
      * @param id
      */
     private void showUpdataAuthDialog(String employeeAuth , final int id) {
+        if (updataAuthNotifyDialog !=null && updataAuthNotifyDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_updatastaffmessage, null);
         //采购部
@@ -251,6 +254,9 @@ public class StaffMessageActivity extends SimpleTopbarActivity implements StaffM
     }
 
     private void showDelAuthDialog(final String url) {
+        if (delAuthNotifyDialog !=null && delAuthNotifyDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_delstaffmessage, null);
         TextView tvCancel = (TextView) serviceView.findViewById(R.id.tv_CancelStaffMessage);

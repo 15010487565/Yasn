@@ -90,10 +90,14 @@ public class AuthorImageActivity extends PhotoActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.tv_UploadCard:
-                showSampleDialog(R.mipmap.yangbentu1);
+                if (sampleDialog ==null || !sampleDialog.isShowing()){
+                    showSampleDialog(R.mipmap.yangbentu1);
+                }
                 break;
             case R.id.tv_UploadShop:
-                showSampleDialog(R.mipmap.yangbentu2);
+                if (sampleDialog ==null || !sampleDialog.isShowing()){
+                    showSampleDialog(R.mipmap.yangbentu2);
+                }
                 break;
             case R.id.iv_UploadCard://上传营业执照
 
@@ -283,11 +287,13 @@ public class AuthorImageActivity extends PhotoActivity {
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {
-                    showAuthDialog(1);
-//                    showPopwindow(1);
+                    if (authorDialog ==null || !authorDialog.isShowing()){
+                        showAuthDialog(1);
+                    }
                 } else if (returnCode == 400) {
-                    showAuthDialog(0);
-//                    showPopwindow(0);
+                    if (authorDialog ==null || !authorDialog.isShowing()){
+                        showAuthDialog(0);
+                    }
                 } else {
                     ToastUtil.showToast(returnMsg);
                 }

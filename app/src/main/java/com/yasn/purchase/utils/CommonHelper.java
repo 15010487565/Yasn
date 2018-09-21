@@ -1,16 +1,14 @@
 package com.yasn.purchase.utils;
 
-import java.text.DecimalFormat;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-
-
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
+
+import java.text.DecimalFormat;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class CommonHelper {
@@ -116,7 +114,7 @@ public class CommonHelper {
         if (TextUtils.isEmpty(trim)) {
             return false;
         }
-        String math = "1[3|5|7|8|][0-9]{9}";
+        String math = "1[3|4|5|6|7|8|9][0-9]{9}";
         return trim.trim().matches(math);
     }
 

@@ -482,6 +482,9 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
     }
 
     public void initShareDialog() {
+        if (mShareDialog !=null && mShareDialog.isShowing()){
+            return;
+        }
         mShareDialog = new Dialog(this, R.style.dialog_bottom_full);
         mShareDialog.setCanceledOnTouchOutside(true);
         mShareDialog.setCancelable(true);

@@ -110,11 +110,9 @@ public class StaffCreateActivity extends SimpleTopbarActivity {
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
         switch (requestCode){
             case 100:
-                if (returnCode == 200){
-                   if (staffCreateDialog ==null || !staffCreateDialog.isShowing()){
-                       showStaffCreateDialog();
-                   }
-                }
+
+                    showStaffCreateDialog(returnMsg);
+
                 break;
         }
     }
@@ -140,9 +138,14 @@ public class StaffCreateActivity extends SimpleTopbarActivity {
     }
     //认证弹窗
     protected AlertDialog staffCreateDialog;
-    private void showStaffCreateDialog() {
+    private void showStaffCreateDialog(String dialogHint) {
+        if (staffCreateDialog !=null && staffCreateDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_staffcreate, null);
+        TextView tvDialogStaffMessage = (TextView) serviceView.findViewById(R.id.tv_DialogStaffMessage);
+        tvDialogStaffMessage.setText(TextUtils.isEmpty(dialogHint)?"失敗":dialogHint);
         TextView okbtn = (TextView) serviceView.findViewById(R.id.okbtn);
         okbtn.setOnClickListener(new View.OnClickListener() {
             @Override

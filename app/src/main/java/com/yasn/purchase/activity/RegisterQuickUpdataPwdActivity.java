@@ -150,6 +150,9 @@ public class RegisterQuickUpdataPwdActivity extends SimpleTopbarActivity {
     protected AlertDialog passwordDialog;
 
     private void showAuthDialog() {
+        if (passwordDialog !=null && passwordDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_reason, null);
         TextView tvHint = (TextView) serviceView.findViewById(R.id.tv_Hint);

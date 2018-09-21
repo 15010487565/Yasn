@@ -288,7 +288,9 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
     public void OnItemDeleteAddressClick(View view, int position) {
         AddressModel addressModel = addressModels.get(position);
         int addrId = addressModel.getAddrId();
-        showDeleteDialog(addrId);
+        if (deleteNotifyDialog ==null || !deleteNotifyDialog.isShowing()){
+            showDeleteDialog(addrId);
+        }
     }
 
     protected AlertDialog deleteNotifyDialog;

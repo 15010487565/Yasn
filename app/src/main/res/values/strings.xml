@@ -104,4 +104,6 @@
     <string name="mareragreememt5">\u3000\u3000创客与雅森间为劳务关系。雅森为了创客开展业务便利可以为创客提供证明、名片、职务说明等材料文件，创客不得据此要求双方构成劳动关系。</string>
     <string name="mareragreememt6">\u3000\u3000因履行本协议发生争议的，由北京雅森国际展览有限公司住所地人民法院管辖。</string>
     <string name="mareragreememt7">\u3000\u3000本协议的解释权归雅森所有，雅森可以根据业务需要制定本协议实施的详细操作细则。</string>
+    <string name="staffcreatesucceed">恭喜您，员工账号创建成功！请等待被邀请的员工同意后，才会正式生效。</string>
+    <string name="staffcreatefailing">恭喜您，员工账号创建成功！请等待被邀请的员工同意后，才会正式生效。</string>
 </resources>

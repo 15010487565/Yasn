@@ -14,11 +14,12 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_DialogStaffMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_20"
             android:gravity="center|left"
-            android:text="恭喜您，员工账号创建成功！请等待被邀请的员工同意后，才会正式生效。"
+            android:text=""
             android:textColor="@color/black_66"
             android:textSize="@dimen/textsize_14" />
 
@@ -33,7 +34,7 @@
             android:paddingTop="@dimen/margin_5"
             android:paddingBottom="@dimen/margin_5"
             android:layout_weight="1"
-            android:text="关闭"
+            android:text="@string/ok"
             android:background="@drawable/shape2_orange_white"
             android:textColor="@color/orange"
             android:textSize="@dimen/textsize_16" />

@@ -160,6 +160,9 @@ public class RegisterQuickActivity extends SimpleTopbarActivity {
 
     protected AlertDialog registerDialog;
     private void showIsRegisterDialog() {
+        if (registerDialog !=null && registerDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_loginorregister, null);
 

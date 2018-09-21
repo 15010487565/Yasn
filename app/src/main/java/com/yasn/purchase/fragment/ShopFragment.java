@@ -927,6 +927,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
     protected AlertDialog mAuthNotifyDialog;
 
     private void showAuthDialog(String reasonString) {
+        if (mAuthNotifyDialog !=null && mAuthNotifyDialog.isShowing()){
+            return;
+        }
         LayoutInflater factor = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_reason, null);
         TextView reason = (TextView) serviceView.findViewById(R.id.reason);
@@ -963,7 +966,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
      */
     private int isInvite = 0;
     private void showInviteDialog(String admin,String dutyAuth,int isInvite) {
-        Log.e("TAG_邀请","isInvite="+isInvite);
+        if (mInviteNotifyDialog !=null && mInviteNotifyDialog.isShowing()){
+            return;
+        }
         this.isInvite = isInvite;
         LayoutInflater factor = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View serviceView = factor.inflate(R.layout.dialog_invite, null);
