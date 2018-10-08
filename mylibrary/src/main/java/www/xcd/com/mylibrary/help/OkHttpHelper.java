@@ -175,7 +175,6 @@ public class OkHttpHelper {
                     }
                     Request request = builder.build();
                     Call callRequest = client.newCall(request);
-
                     final Response response = callRequest.execute();
                     getJsonData(response, requestCode, paramsMaps, mHandler);
                 } catch (Exception e) {

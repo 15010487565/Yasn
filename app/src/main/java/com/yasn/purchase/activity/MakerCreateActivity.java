@@ -11,15 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.common.Config;
 
 import java.io.IOException;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
-public class MakerCreateActivity extends SimpleTopbarActivity {
+public class MakerCreateActivity extends BaseYasnActivity {
 
     @Override
     protected Object getTopbarTitle() {

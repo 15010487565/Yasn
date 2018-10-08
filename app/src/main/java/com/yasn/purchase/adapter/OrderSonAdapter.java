@@ -65,6 +65,13 @@ public class OrderSonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         notifyDataSetChanged();
     }
+
+    public void cleanData(){
+        this.list.clear();
+        this.addList.clear();
+        notifyDataSetChanged();
+    }
+
     public List<Object> getData(){
         return list;
     }
@@ -149,8 +156,19 @@ public class OrderSonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
 
             case ITEM_PAY://支付信息
-                OrderPayHolder footerHolder = (OrderPayHolder) holder;
+                OrderPayHolder payHolder = (OrderPayHolder) holder;
                 OrderSonPayInfoModel payInfoModel = (OrderSonPayInfoModel) list.get(position);
+                //需要支付金额
+                payHolder.tvNeedPayMoney.setText("￥" + payInfoModel.getNeedPayMoney());
+                //运费
+                String shippingTotal = payInfoModel.getShippingTotal();
+//                if (TextUtils.isEmpty(shippingTotal) || Double.valueOf(shippingTotal) <= 0) {
+//                    payHolder.tvTotalMoney.setText("0.00");
+//                    payHolder.tvTotalMoney.setVisibility(View.GONE);
+//                } else {
+                payHolder.tvTotalMoney.setText("\t(包含运费:￥" + shippingTotal + ")");
+//                    payHolder.tvTotalMoney.setVisibility(View.VISIBLE);
+//                }
                 break;
 
             case ITEM_FOOTER:
@@ -207,10 +225,13 @@ public class OrderSonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     class OrderPayHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private TextView tvLookOrder,tvLookMainOrder;
+        private TextView tvNeedPayMoney, tvTotalMoney,tvLookOrder,tvLookMainOrder;
 
         public OrderPayHolder(View view) {
             super(view);
+            tvNeedPayMoney = (TextView) view.findViewById(R.id.tv_NeedPayMoney);
+            tvTotalMoney = (TextView) view.findViewById(R.id.tv_totalMoney);
+
             tvLookOrder = (TextView) view.findViewById(R.id.tv_LookOrder);
             tvLookOrder.setOnClickListener(this);
             tvLookMainOrder = (TextView) view.findViewById(R.id.tv_LookMainOrder);

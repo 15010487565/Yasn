@@ -14,7 +14,6 @@ import com.alibaba.fastjson.JSON;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.utils.Debuger;
 import com.shuyu.gsyvideoplayer.utils.ListVideoUtil;
-import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.yasn.purchase.R;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.fragment.SimpleTopbarFragment;
@@ -142,6 +141,7 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
         });
         adapter = new FindAllAdapter(getActivity(), listVideoUtil);
         adapter.setRootView(activityListVideo);
+
         listView.setAdapter(adapter);
 //        setListViewHeightBasedOnChildren(listView);
         //XXX初始化view的各控件
@@ -160,7 +160,7 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
     public void onDestroy() {
         super.onDestroy();
         listVideoUtil.releaseVideoPlayer();
-        GSYVideoPlayer.releaseAllVideos();
+        GSYVideoManager.releaseAllVideos();
         if (handler != null) {
             handler.removeCallbacksAndMessages(null);
         }
@@ -284,6 +284,7 @@ public class FindAllFragment extends SimpleTopbarFragment implements AbsListView
     public void onRefresh() {
         onRefresh = true;
         pageCount = 1;
+        adapter.cleanData();
         Map<String, Object> params = new HashMap<String, Object>();
         okHttpGet(100, Config.FIND + findId + "/" + pageCount, params);
     }

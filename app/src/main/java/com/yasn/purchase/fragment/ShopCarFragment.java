@@ -3,6 +3,8 @@ package com.yasn.purchase.fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.yasn.purchase.activity.base.BaseYasnFragment;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -10,7 +12,7 @@ import java.util.Map;
 /**
  * Created by Android on 2017/9/5.
  */
-public class ShopCarFragment extends SimpleTopbarFragment {
+public class ShopCarFragment extends BaseYasnFragment {
 
 
     @Override

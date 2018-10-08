@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.adapter.StaffMsgAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.model.StaffMessageModel;
@@ -28,9 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
-public class StaffMessageActivity extends SimpleTopbarActivity implements StaffMsgAdapter.OnInviteStatusListener {
+public class StaffMessageActivity extends BaseYasnActivity implements StaffMsgAdapter.OnInviteStatusListener {
 
     protected LinearLayout llStaffMessage,llError;
     private TextView tvStaffMessageCreate;
@@ -109,6 +108,7 @@ public class StaffMessageActivity extends SimpleTopbarActivity implements StaffM
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 //文档 Code = 0 表示成功

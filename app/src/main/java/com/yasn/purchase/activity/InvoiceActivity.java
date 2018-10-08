@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.adapter.InvoiceGridAdapter;
 import com.yasn.purchase.fragment.InvoiceCommonFragment;
 import com.yasn.purchase.fragment.InvoiceSpecialFragment;
@@ -23,12 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 
 import static com.yasn.purchase.R.id.tv_InvoiceNo;
 
-public class InvoiceActivity extends SimpleTopbarActivity implements AdapterView.OnItemClickListener {
+public class InvoiceActivity extends BaseYasnActivity implements AdapterView.OnItemClickListener {
 
     private NoScrollGridView gvInvoice;
     private InvoiceGridAdapter adapter;

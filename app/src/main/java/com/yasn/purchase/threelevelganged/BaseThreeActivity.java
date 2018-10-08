@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,10 +19,8 @@ import java.util.Map;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 
-
-public abstract class BaseThreeActivity extends SimpleTopbarActivity implements AdapterView.OnItemClickListener, OnWheelChangedListener{
+public abstract class BaseThreeActivity extends BaseYasnActivity implements AdapterView.OnItemClickListener, OnWheelChangedListener{
 
     /**
      * 所有省

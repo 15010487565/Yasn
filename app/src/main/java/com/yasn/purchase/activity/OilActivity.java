@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.adapter.OilAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.model.OilParamsModel;
@@ -29,9 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
-public class OilActivity extends SimpleTopbarActivity implements OilAdapter.OnOilClickListener {
+public class OilActivity extends BaseYasnActivity implements OilAdapter.OnOilClickListener {
 
     private ArrowsSpinner spOilBrand, spOilCarType, spOilYeayStyle, spOilCc;
     private TextView tvOilQuery;
@@ -161,6 +160,7 @@ public class OilActivity extends SimpleTopbarActivity implements OilAdapter.OnOi
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100: //品牌
                 if (returnCode == 200) {

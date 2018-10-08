@@ -775,6 +775,7 @@ public class GoodsInfoFragment extends BaseFragment implements
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {

@@ -83,6 +83,11 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
         notifyDataSetChanged();
     }
+    public void cleanData(){
+        this.list.clear();
+        this.addList.clear();
+        notifyDataSetChanged();
+    }
     private Map getViewHolderMap() {
         return viewHolderMap;
     }

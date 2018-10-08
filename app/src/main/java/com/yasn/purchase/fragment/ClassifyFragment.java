@@ -20,6 +20,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.HotLableActivity;
 import com.yasn.purchase.activity.SearchActivity;
+import com.yasn.purchase.activity.base.BaseYasnFragment;
 import com.yasn.purchase.adapter.ClassifyLeftAdapter;
 import com.yasn.purchase.adapter.ClassifyRightGridAdapter;
 import com.yasn.purchase.common.Config;
@@ -50,7 +51,7 @@ import static com.yasn.purchase.common.ItemTypeConfig.ITEM_FOOTER;
 /**
  * Created by Android on 2017/9/5.
  */
-public class ClassifyFragment extends SimpleTopbarFragment implements
+public class ClassifyFragment extends BaseYasnFragment implements
         OnRcItemClickListener, OnItemClickListener {
 
     private RelativeLayout topbat_parent;

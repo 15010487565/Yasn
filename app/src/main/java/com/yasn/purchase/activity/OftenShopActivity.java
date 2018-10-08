@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.adapter.HomeRecyclerAdapter;
 import com.yasn.purchase.adapter.OftenShopAdapter;
 import com.yasn.purchase.common.Config;
@@ -34,13 +35,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 /**
  * 常购清单
  */
-public class OftenShopActivity extends SimpleTopbarActivity
+public class OftenShopActivity extends BaseYasnActivity
         implements OnRcItemClickListener
         , OftenShopAdapter.OnOftenAddShopCarListener
         , SwipeRefreshLayout.OnRefreshListener
@@ -252,6 +252,7 @@ public class OftenShopActivity extends SimpleTopbarActivity
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 if (returnData == null || "".equals(returnData)){
@@ -448,6 +449,7 @@ public class OftenShopActivity extends SimpleTopbarActivity
     public void onRefresh() {
         pagNo = 1;
         swipe_layout.setRefreshing(true);
+        adapter.cleanData();
         initOftenRequest();
     }
 

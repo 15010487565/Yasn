@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.adapter.StatisticsAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.model.StatisticsModel;
@@ -23,13 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
 /**
  * 2018年7月18日 14:39:14
  * 统计
  */
-public class StatisticsActivity extends SimpleTopbarActivity {
+public class StatisticsActivity extends BaseYasnActivity {
 
     private TextView stotalMoney, statisGoodsNum, statisOrderNum;
     private RecyclerView rcStatistic;
@@ -84,6 +83,7 @@ public class StatisticsActivity extends SimpleTopbarActivity {
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 StatisticsModel statisticsModel = JSON.parseObject(returnData, StatisticsModel.class);

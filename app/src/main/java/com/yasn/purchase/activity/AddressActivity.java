@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.adapter.AddressAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.model.AddressModel;
@@ -31,9 +32,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
-public class AddressActivity extends SimpleTopbarActivity implements AddressAdapter.OnAddressClickListener
+public class AddressActivity extends BaseYasnActivity implements AddressAdapter.OnAddressClickListener
         , SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView rcAddress;
@@ -132,6 +131,7 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100://初始化數據
                 if (returnCode == 200) {
@@ -194,7 +194,7 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
 
     @Override
     public void OnItemClick(View view, int position) {
-        if (addrId != 0) {
+//        if (addrId != 0) {
             AddressModel addressModel = addressModels.get(position);
             addrIdSelcet = addressModel.getAddrId();
             //姓名
@@ -222,7 +222,7 @@ public class AddressActivity extends SimpleTopbarActivity implements AddressAdap
             } else {
                 ToastUtil.showToast("登录过期，请重新登录");
             }
-        }
+//        }
     }
 
     //默认收货地址

@@ -73,6 +73,10 @@ public class FindAllAdapter  extends BaseAdapter {
         }
         notifyDataSetChanged();
     }
+    public void cleanData(){
+        this.list.clear();
+        notifyDataSetChanged();
+    }
     @Override
     public int getViewTypeCount() {
         return 4;

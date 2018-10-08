@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.adapter.SearchAdapter;
 import com.yasn.purchase.adapter.SortAdapter;
 import com.yasn.purchase.common.Config;
@@ -48,10 +49,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
-public class SearchActivity extends SimpleTopbarActivity implements
+public class SearchActivity extends BaseYasnActivity implements
         TabLayout.OnTabSelectedListener
         , SortAdapter.OnItemClickListener
         , OnRcItemClickListener
@@ -596,6 +596,7 @@ public class SearchActivity extends SimpleTopbarActivity implements
     List<SearchCatsModel.CatsBean> cats;
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 if (returnCode == 200){

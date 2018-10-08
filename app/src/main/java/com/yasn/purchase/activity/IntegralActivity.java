@@ -17,18 +17,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.fragment.IntegralDetailFragment;
 import com.yasn.purchase.fragment.IntegralFreezeFragment;
 
 import java.io.IOException;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
 /**
  * 积分
  */
-public class IntegralActivity extends SimpleTopbarActivity implements
+public class IntegralActivity extends BaseYasnActivity implements
         ViewPager.OnPageChangeListener, TabLayout.OnTabSelectedListener{
 
 

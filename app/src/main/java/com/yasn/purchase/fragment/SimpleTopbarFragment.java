@@ -45,7 +45,7 @@ public abstract class SimpleTopbarFragment extends BaseFragment {
         intent.putExtra("webViewUrl",webViewUrl);
         startActivity(intent);
     }
-    InputFilter filter = new InputFilter() {
+    public InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             String speChat = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";

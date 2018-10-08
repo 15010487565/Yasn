@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.utils.CommonHelper;
 import com.yasn.purchase.utils.ToastUtil;
@@ -21,9 +22,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
-public class MakerInviteRegisterAActivity extends SimpleTopbarActivity {
+public class MakerInviteRegisterAActivity extends BaseYasnActivity {
 
     private TextView tvMakerRegHint, tvMakerRegNext;
     private EditText etMakerRegAcc;
@@ -107,6 +106,7 @@ public class MakerInviteRegisterAActivity extends SimpleTopbarActivity {
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {

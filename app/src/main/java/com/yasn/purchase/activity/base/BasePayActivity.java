@@ -16,8 +16,6 @@ import com.yasn.purchase.utils.ToastUtil;
 
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
 import static com.yasn.purchase.pay.PayConfig.RSA2_PRIVATE;
 import static com.yasn.purchase.pay.PayConfig.RSA_PRIVATE;
 
@@ -25,7 +23,7 @@ import static com.yasn.purchase.pay.PayConfig.RSA_PRIVATE;
  * Created by gs on 2018/8/21.
  */
 
-public abstract class BasePayActivity extends SimpleTopbarActivity {
+public abstract class BasePayActivity extends BaseYasnActivity {
 
     public static final int SDK_PAY_FLAG = 1000;
     public static final int SDK_AUTH_FLAG = 1001;

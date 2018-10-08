@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.fragment.OrderAllFragment;
 import com.yasn.purchase.fragment.OrderObligFragment;
 import com.yasn.purchase.fragment.OrderOverFragment;
@@ -19,10 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.base.fragment.BaseFragment;
 
-public class MyOrderActivity extends SimpleTopbarActivity implements
+public class MyOrderActivity extends BaseYasnActivity implements
         ViewPager.OnPageChangeListener, TabLayout.OnTabSelectedListener {
 
     private final int[] TITLE = {R.string.all, R.string.obligation,

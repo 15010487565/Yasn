@@ -48,7 +48,11 @@ public class MakerShopOrderAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.list = list;
         notifyDataSetChanged();
     }
-
+    public void cleanData(){
+        this.list.clear();
+        this.addList.clear();
+        notifyDataSetChanged();
+    }
     public void addData(List<MakerShopOrderModel.DataBean> list) {
         this.addList = list;
         if (this.list != null) {

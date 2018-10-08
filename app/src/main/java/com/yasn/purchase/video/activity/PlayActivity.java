@@ -10,8 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.Transition;
 import android.view.View;
 
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
-import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.yasn.purchase.R;
 import com.yasn.purchase.listener.OnTransitionListener;
 import com.yasn.purchase.video.SampleVideo;
@@ -19,6 +19,9 @@ import com.yasn.purchase.video.model.SwitchVideoModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
+
 /**
  * 单独的视频播放页面
  * Created by shuyu on 2016/11/11.
@@ -42,30 +45,30 @@ public class PlayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play);
         videoPlayer = (SampleVideo) findViewById(R.id.video_player);
         isTransition = getIntent().getBooleanExtra(TRANSITION, false);
-
         init();
     }
 
     private void init() {
-        String videoUrl = getIntent().getStringExtra("VIDEOURL");
-        String videoName = getIntent().getStringExtra("VIDEONAME");
-//        videoUrl = "http://video.yasn.com/details/111yasn.mp4?sign=e84a418d37123cf028d7fb3f3c9c48d6&t=5a1d153f ";
+        String url = "https://res.exexm.com/cw_145225549855002";
+
         //String url = "http://7xse1z.com1.z0.glb.clouddn.com/1491813192";
         //需要路径的
         //videoPlayer.setUp(url, true, new File(FileUtils.getPath()), "");
 
         //借用了jjdxm_ijkplayer的URL
-        SwitchVideoModel switchVideoModel = new SwitchVideoModel(videoName, videoUrl);
+        String source1 = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4";
+        String name = "普通";
+        SwitchVideoModel switchVideoModel = new SwitchVideoModel(name, source1);
 
-//        String source2 = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f30.mp4";
-//        String name2 = "清晰";
-//        SwitchVideoModel switchVideoModel2 = new SwitchVideoModel(name2, source2);
+        String source2 = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f30.mp4";
+        String name2 = "清晰";
+        SwitchVideoModel switchVideoModel2 = new SwitchVideoModel(name2, source2);
 
         List<SwitchVideoModel> list = new ArrayList<>();
         list.add(switchVideoModel);
-//        list.add(switchVideoModel2);
+        list.add(switchVideoModel2);
 
-        videoPlayer.setUp(list, true, videoName);
+        videoPlayer.setUp(list, true, "测试视频");
 
         //增加封面
 //        ImageView imageView = new ImageView(this);
@@ -132,7 +135,7 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (orientationUtils  != null)
+        if (orientationUtils != null)
             orientationUtils.releaseListener();
     }
 
@@ -141,11 +144,11 @@ public class PlayActivity extends AppCompatActivity {
         //先返回正常状态
         if (orientationUtils.getScreenType() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             videoPlayer.getFullscreenButton().performClick();
-//            return;//横屏后自动退出，不进行竖屏
+            return;
         }
         //释放所有
-        videoPlayer.setStandardVideoAllCallBack(null);
-        GSYVideoPlayer.releaseAllVideos();
+        videoPlayer.setVideoAllCallBack(null);
+        GSYVideoManager.releaseAllVideos();
         if (isTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             super.onBackPressed();
         } else {
@@ -158,6 +161,7 @@ public class PlayActivity extends AppCompatActivity {
             }, 500);
         }
     }
+
 
     private void initTransition() {
         if (isTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

@@ -73,7 +73,11 @@ public class OrderMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
         notifyDataSetChanged();
     }
-
+    public void cleanData(){
+        this.list.clear();
+        this.addList.clear();
+        notifyDataSetChanged();
+    }
     private Map getViewHolderMap() {
         return viewHolderMap;
     }
@@ -170,10 +174,10 @@ public class OrderMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 //立即支付
                 boolean needPay = payInfoModel.isNeedPay();
                 if (needPay){
-                    payHolder.llPay.setVisibility(View.VISIBLE);
+//                    payHolder.llPay.setVisibility(View.VISIBLE);
                     payHolder.tvPayMoney.setVisibility(View.VISIBLE);
                 }else {
-                    payHolder.llPay.setVisibility(View.GONE);
+//                    payHolder.llPay.setVisibility(View.GONE);
                     payHolder.tvPayMoney.setVisibility(View.GONE);
                 }
                 break;

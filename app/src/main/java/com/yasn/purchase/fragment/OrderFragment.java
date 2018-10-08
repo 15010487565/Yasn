@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.yasn.purchase.R;
 import com.yasn.purchase.activity.OrderDetailsActivity;
 import com.yasn.purchase.activity.PayActivity;
+import com.yasn.purchase.activity.base.BaseYasnFragment;
 import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.model.order.OrderMainPayInfoModel;
@@ -23,7 +24,7 @@ import java.util.Date;
  * Created by gs on 2018/2/3.
  */
 
-public abstract class OrderFragment extends SimpleTopbarFragment {
+public abstract class OrderFragment extends BaseYasnFragment {
 
     protected LinearLayout llError;
     protected ImageView ivError;

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnFragment;
 import com.yasn.purchase.model.EventBusMsg;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,7 +20,7 @@ import java.util.Map;
 /**
  * Created by Android on 2017/9/5.
  */
-public class FindTestFragment extends SimpleTopbarFragment{
+public class FindTestFragment extends BaseYasnFragment {
 
     @Override
     protected Object getTopbarTitle() {

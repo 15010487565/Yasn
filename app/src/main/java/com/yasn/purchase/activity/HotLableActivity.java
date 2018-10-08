@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.adapter.RcCursorAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.db.RecordSQLiteOpenHelper;
@@ -40,12 +41,11 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.help.HelpUtils;
 
 import static www.xcd.com.mylibrary.utils.SharePrefHelper.context;
 
-public class HotLableActivity extends SimpleTopbarActivity implements View.OnClickListener, OnRcItemClickListener ,TextWatcher{
+public class HotLableActivity extends BaseYasnActivity implements View.OnClickListener, OnRcItemClickListener ,TextWatcher{
 
     private EditText topsearch;
     private LinearLayout topbar_right, topbar_left;
@@ -323,6 +323,7 @@ public class HotLableActivity extends SimpleTopbarActivity implements View.OnCli
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 if (returnCode == 0){

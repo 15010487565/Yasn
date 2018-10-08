@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.adapter.CollectAdapter;
 import com.yasn.purchase.adapter.HomeRecyclerAdapter;
 import com.yasn.purchase.common.Config;
@@ -36,13 +37,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 /**
  * 收藏
  */
-public class CollectActivity extends SimpleTopbarActivity
+public class CollectActivity extends BaseYasnActivity
         implements OnRcItemClickListener
         , CollectAdapter.OnCollectListener
         , SwipeRefreshLayout.OnRefreshListener
@@ -271,6 +271,7 @@ public class CollectActivity extends SimpleTopbarActivity
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 CollectModel collectModel = JSON.parseObject(returnData, CollectModel.class);
@@ -510,6 +511,7 @@ public class CollectActivity extends SimpleTopbarActivity
     public void onRefresh() {
         pageNo = 1;
         swipe_layout.setRefreshing(true);
+        adapter.cleanData();
         initGetCollectRequest();
     }
 

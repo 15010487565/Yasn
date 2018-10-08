@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.adapter.MakerShopOrderAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.model.MakerShopOrderModel;
@@ -23,9 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
-public class MakerShopOrderActivity extends SimpleTopbarActivity implements MultiSwipeRefreshLayout.OnLoadListener
+public class MakerShopOrderActivity extends BaseYasnActivity implements MultiSwipeRefreshLayout.OnLoadListener
       ,SwipeRefreshLayout.OnRefreshListener{
 
     protected LinearLayout llError;
@@ -134,6 +133,7 @@ public class MakerShopOrderActivity extends SimpleTopbarActivity implements Mult
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 if (returnCode == 200){
@@ -196,6 +196,7 @@ public class MakerShopOrderActivity extends SimpleTopbarActivity implements Mult
     public void onRefresh() {
         pagNo = 1;
         swipe_layout.setRefreshing(true);
+        adapter.cleanData();
         initData();
     }
 

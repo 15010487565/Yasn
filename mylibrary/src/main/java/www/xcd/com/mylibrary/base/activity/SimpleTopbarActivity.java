@@ -705,4 +705,5 @@ public abstract class SimpleTopbarActivity extends BaseActivity implements OnCli
         //layout.setMargins(WallspaceUtil.dip2px(this, 10), 0, FeatureFunction.dip2px(this, 10), 0);
         serviceView.setLayoutParams(layout);
     }
+
 }

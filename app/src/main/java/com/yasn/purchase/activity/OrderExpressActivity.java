@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.fragment.OrderExpressFragment;
 import com.yasn.purchase.model.order.OrderQueryExpressModel;
@@ -28,9 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
-public class OrderExpressActivity extends SimpleTopbarActivity implements
+public class OrderExpressActivity extends BaseYasnActivity implements
         ViewPager.OnPageChangeListener, TabLayout.OnTabSelectedListener{
 
     private ViewPager pager;
@@ -91,6 +90,7 @@ public class OrderExpressActivity extends SimpleTopbarActivity implements
     List<OrderQueryExpressModel.DeliverysBean> deliverys;
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100://查看物流
                 if (returnCode == 200) {
@@ -105,8 +105,8 @@ public class OrderExpressActivity extends SimpleTopbarActivity implements
                             orderExpressPagerAdapter.setData(deliverys);
                             tableLayout.setVisibility(View.VISIBLE);
                         }
-                        tvOrderExpressNull.setVisibility(View.VISIBLE);
-                        pager.setVisibility(View.GONE);
+                        tvOrderExpressNull.setVisibility(View.GONE);
+                        pager.setVisibility(View.VISIBLE);
                         for (int i = 0; i < deliverys.size(); i++) {
                             TabLayout.Tab tabAt = tableLayout.getTabAt(i);
                             tabAt.setCustomView(tabIcon(i));

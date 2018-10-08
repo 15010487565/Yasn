@@ -3,17 +3,16 @@ package com.yasn.purchase.activity;
 import android.os.Bundle;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 
 import java.io.IOException;
 import java.util.Map;
-
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 
 /**
  * 2018年6月6日 09:20:20
  * 转账支付
  */
-public class TransAccPayActivity extends SimpleTopbarActivity {
+public class TransAccPayActivity extends BaseYasnActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

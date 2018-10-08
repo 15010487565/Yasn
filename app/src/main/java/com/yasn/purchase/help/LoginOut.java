@@ -21,6 +21,11 @@ public class LoginOut {
         loginOut(activity);
 
     }
+    public static void loginOut(Context activity,String msg){
+        activity.startActivity(new Intent(activity, MainActivity.class));
+        loginOutClean(activity);
+        EventBus.getDefault().post(new EventBusMsg(msg));
+    }
     public static void loginOut(Context activity){
         loginOutClean(activity);
         EventBus.getDefault().post(new EventBusMsg("loginout"));

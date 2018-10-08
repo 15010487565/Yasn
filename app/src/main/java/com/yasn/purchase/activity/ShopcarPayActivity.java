@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.adapter.ShopCarPayAdapter;
 import com.yasn.purchase.common.Config;
@@ -43,7 +44,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 
@@ -51,7 +51,7 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
  * 进货单结算
  * 2018年6月6日 09:25:11
  */
-public class ShopcarPayActivity extends SimpleTopbarActivity implements CompoundButton.OnCheckedChangeListener, TextWatcher {
+public class ShopcarPayActivity extends BaseYasnActivity implements CompoundButton.OnCheckedChangeListener, TextWatcher {
 
     private TextView tvShopCarPayName, tvShopCarPayAddress, tvNullAddressHint, tvShopCarPayIntegral, tvInvoice;
     private ShopCarPayAdapter adapter;
@@ -213,6 +213,9 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
                     String address = data.getStringExtra("address");
                     addrId = data.getIntExtra("addressId", 0);
                     if (!TextUtils.isEmpty(address)) {
+                        tvNullAddressHint.setVisibility(View.GONE);
+                        llSignforName.setVisibility(View.VISIBLE);
+                        llSignforAddress.setVisibility(View.VISIBLE);
                         tvShopCarPayAddress.setText(address);
                         //姓名
                         String name = data.getStringExtra("addressName");
@@ -229,6 +232,7 @@ public class ShopcarPayActivity extends SimpleTopbarActivity implements Compound
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100://积分抵现接⼝口
                 if (returnCode == 200) {

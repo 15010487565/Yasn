@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.adapter.ShopCarAdapter;
 import com.yasn.purchase.common.Config;
@@ -54,12 +55,11 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 
-public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarClickListener
+public class ShopCarActivity extends BaseYasnActivity implements OnShopCarClickListener
         , SwipeRefreshLayout.OnRefreshListener {
 
     private MultiSwipeRefreshLayout mSwipeRefreshLayout;
@@ -340,6 +340,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         Log.e("TAG_购物车", "requestCode=" + requestCode);
         switch (requestCode) {
             case 101://选中
@@ -1248,7 +1249,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
     public void OnClickAdd(int listPosition) {
         ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(listPosition);
         int addIsCheck = shopCarAdapterModel.getIsCheck();
-        if (addIsCheck == 1) {//选中
+//        if (addIsCheck == 1) {//选中
             String beforeSale = shopCarAdapterModel.getBeforeSale();
             Log.e("TAG_shopcar", "点击添加");
             int enableStore = 0;
@@ -1285,9 +1286,9 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                     }
                 }
             }
-        } else {
-            ToastUtil.showToast("请选中该商品！");
-        }
+//        } else {
+//            ToastUtil.showToast("请选中该商品！");
+//        }
     }
 
     protected AlertDialog updateNumNotifyDialog;
@@ -1386,7 +1387,7 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
         Log.e("TAG_shopcar", "点击减");
         ShopCarAdapterModel shopCarAdapterModel = shopCarAdapterList.get(listPosition);
         int addIsCheck = shopCarAdapterModel.getIsCheck();
-        if (addIsCheck == 1) {//选中
+//        if (addIsCheck == 1) {//选中
             int id = shopCarAdapterModel.getId();
             int goodsId = shopCarAdapterModel.getGoodsId();
             int productId = shopCarAdapterModel.getProductId();
@@ -1412,9 +1413,9 @@ public class ShopCarActivity extends SimpleTopbarActivity implements OnShopCarCl
                 }
                 ToastUtil.showToast("该商品最小起订量为" + smallSale + "件！");
             }
-        } else {
-            ToastUtil.showToast("请选中该商品！");
-        }
+//        } else {
+//            ToastUtil.showToast("请选中该商品！");
+//        }
     }
 
     @Override

@@ -44,6 +44,7 @@ import com.yasn.purchase.activity.LoginActivity;
 import com.yasn.purchase.activity.MainActivity;
 import com.yasn.purchase.activity.RegisterQuickActivity;
 import com.yasn.purchase.activity.SearchActivity;
+import com.yasn.purchase.activity.base.BaseYasnFragment;
 import com.yasn.purchase.adapter.HomeRecyclerAdapter;
 import com.yasn.purchase.application.YasnApplication;
 import com.yasn.purchase.common.Config;
@@ -81,7 +82,7 @@ import static com.yasn.purchase.common.ItemTypeConfig.ITEM_FOOTER;
 /**
  * Created by Android on 2017/9/5.
  */
-public class HomeFragment extends SimpleTopbarFragment implements
+public class HomeFragment extends BaseYasnFragment implements
         SwipeRefreshLayout.OnRefreshListener,
         OnItemClickListener, TabLayout.OnTabSelectedListener,
         MultiSwipeRefreshLayout.OnMultiSwipeRefreshClickListener,
@@ -698,8 +699,8 @@ public class HomeFragment extends SimpleTopbarFragment implements
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         rlMainError.setVisibility(View.GONE);
-//        Log.e("TAG_home", "onSuccessResult=" + requestCode);
         switch (requestCode) {
             case 100:
                 //分类预加载

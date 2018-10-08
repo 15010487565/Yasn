@@ -163,7 +163,7 @@ public class OrderWaitFragment extends OrderFragment implements
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {
@@ -235,7 +235,12 @@ public class OrderWaitFragment extends OrderFragment implements
                     orderSonPayInfoModel.setParentId(parentId);
                     //订单号
                     orderSonPayInfoModel.setSn(sn);
-
+                    //支付金额
+                    double needPayMoney = ordersBean.getNeedPayMoney();
+                    orderSonPayInfoModel.setNeedPayMoney(String.format("%.2f", needPayMoney));
+                    //运费
+                    double shippingTotal = ordersBean.getShippingTotal();
+                    orderSonPayInfoModel.setShippingTotal(String.format("%.2f", shippingTotal));
                     orderWaitList.add(orderSonPayInfoModel);
                 }
                 if (pageNo > 1) {
@@ -332,6 +337,7 @@ public class OrderWaitFragment extends OrderFragment implements
     public void onRefresh() {
         pageNo = 1;
         slOrderWait.setRefreshing(true);
+        adapter.cleanData();
         OkHttpDemand();
     }
 

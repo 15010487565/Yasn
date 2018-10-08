@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnFragment;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.utils.ToastUtil;
 
@@ -22,7 +23,7 @@ import java.util.Map;
  * Created by gs on 2018/1/8.
  */
 
-public class MakerShroffAccFirmFragment extends SimpleTopbarFragment {
+public class MakerShroffAccFirmFragment extends BaseYasnFragment {
 
     private EditText tvTitle, tvNum, tvAddress,tvMobile, tvBank, tvBankNum;
     private TextView tvOk;
@@ -115,6 +116,7 @@ public class MakerShroffAccFirmFragment extends SimpleTopbarFragment {
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 if (returnCode == 200){

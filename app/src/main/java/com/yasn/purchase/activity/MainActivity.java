@@ -413,14 +413,12 @@ public class MainActivity extends CheckPermissionsActivity implements LoadWebVie
                         //原生进货单
                         startActivity(new Intent(MainActivity.this, ShopCarActivity.class));
                     } else {
-//                        viewPager.setCurrentItem(tabIndex, false);
                         clickFragmentBtn(tabIndex);
                     }
                 } else {
                     startBaseActivity(MainActivity.this,LoginActivity.class);
                 }
             } else {
-//                viewPager.setCurrentItem(tabIndex, false);
                 clickFragmentBtn(tabIndex);
             }
         }
@@ -480,6 +478,7 @@ public class MainActivity extends CheckPermissionsActivity implements LoadWebVie
 //        Log.e("TAG_Main", "msg=" + msg);
         if ("loginout".equals(msg)) {
             setCartNum(0);
+            clickFragmentBtn(0);
         } else if ("carNum".equals(msg)) {
             setCartNum(Integer.valueOf(event.getCarNum()));
 

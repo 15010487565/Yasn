@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.fragment.MakerShroffAccFirmFragment;
 import com.yasn.purchase.fragment.MakerShroffAccIndividualFragment;
@@ -24,9 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
-public class MakerShroffAccountActivity extends SimpleTopbarActivity
+public class MakerShroffAccountActivity extends BaseYasnActivity
         implements ViewPager.OnPageChangeListener, TabLayout.OnTabSelectedListener{
 
     private IntegralPagerAdapter adapter;
@@ -109,6 +108,7 @@ public class MakerShroffAccountActivity extends SimpleTopbarActivity
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 if (returnCode == 0){

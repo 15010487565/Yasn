@@ -166,7 +166,7 @@ public class OrderAllFragment extends OrderFragment implements
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
-
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 if (returnCode == 200){
@@ -397,6 +397,7 @@ public class OrderAllFragment extends OrderFragment implements
     public void onRefresh() {
         pageNo = 1;
         slOrderAll.setRefreshing(true);
+        adapter.cleanData();
         OkHttpDemand();
     }
     //上拉加载

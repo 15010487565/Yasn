@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.adapter.HomeMoreAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.func.CallServiceFunc;
@@ -24,13 +25,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
 /**
  * 首页更多
  */
-public class HomeMoreActivity extends SimpleTopbarActivity
+public class HomeMoreActivity extends BaseYasnActivity
         implements OnRcItemClickListener
         , SwipeRefreshLayout.OnRefreshListener
         , MultiSwipeRefreshLayout.OnLoadListener
@@ -212,6 +212,7 @@ public class HomeMoreActivity extends SimpleTopbarActivity
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 HomeMoreModel homeMoreModel = JSON.parseObject(returnData, HomeMoreModel.class);

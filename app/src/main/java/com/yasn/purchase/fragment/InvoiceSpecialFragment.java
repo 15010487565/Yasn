@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnFragment;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.model.InvoiceModel;
 import com.yasn.purchase.utils.ToastUtil;
@@ -29,7 +30,7 @@ import java.util.Map;
  * 专用发票
  */
 
-public class InvoiceSpecialFragment extends SimpleTopbarFragment {
+public class InvoiceSpecialFragment extends BaseYasnFragment {
 
     private TextView tvInvoicespTitle, tvInvoicespNum, tvInvoicespAddress, tvInvoicespMobile, tvInvoicespBank, tvInvoicespBankNum;
     private TextView tvInvoiceSpecial;
@@ -195,6 +196,7 @@ public class InvoiceSpecialFragment extends SimpleTopbarFragment {
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
 

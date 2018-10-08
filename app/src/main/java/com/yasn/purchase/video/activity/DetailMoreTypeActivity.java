@@ -9,9 +9,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
-import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.yasn.purchase.R;
 import com.yasn.purchase.listener.SampleListener;
@@ -107,7 +107,7 @@ public class DetailMoreTypeActivity extends AppCompatActivity {
             }
         });
 
-        detailPlayer.setStandardVideoAllCallBack(new SampleListener() {
+        detailPlayer.setVideoAllCallBack(new SampleListener() {
             @Override
             public void onPrepared(String url, Object... objects) {
                 super.onPrepared(url, objects);
@@ -158,7 +158,7 @@ public class DetailMoreTypeActivity extends AppCompatActivity {
             orientationUtils.backToProtVideo();
         }
 
-        if (StandardGSYVideoPlayer.backFromWindowFull(this)) {
+        if (GSYVideoManager.backFromWindowFull(this)) {
             return;
         }
         super.onBackPressed();

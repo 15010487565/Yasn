@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnFragment;
 import com.yasn.purchase.adapter.HelpRecyclerAdapter;
 import com.yasn.purchase.listener.OnRcItemClickListener;
 import com.yasn.purchase.model.HelpFragmentModel;
@@ -29,7 +30,7 @@ import static com.yasn.purchase.common.ItemTypeConfig.ITEM_HEADER;
  * 购物指南
  */
 
-public class InvoiceHelpFragment extends SimpleTopbarFragment implements OnRcItemClickListener{
+public class InvoiceHelpFragment extends BaseYasnFragment implements OnRcItemClickListener{
 
     private RecyclerView rcHelp;
     List<HelpFragmentModel> helpRecyList = new ArrayList<>();//储存转换后的数据格式

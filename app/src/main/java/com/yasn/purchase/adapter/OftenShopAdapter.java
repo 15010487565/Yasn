@@ -75,7 +75,11 @@ public class OftenShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.list = list;
         notifyDataSetChanged();
     }
-
+    public void cleanData(){
+        this.list.clear();
+        this.addList.clear();
+        notifyDataSetChanged();
+    }
     public void addData(List<OftenModel.DataBean.RegularPurcaseBean> list) {
         this.addList = list;
         if (this.list != null) {

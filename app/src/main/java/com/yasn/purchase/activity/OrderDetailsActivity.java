@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.adapter.DetailsReceiptAdapter;
 import com.yasn.purchase.adapter.OrderDetailsAdapter;
@@ -61,7 +62,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.help.HelpUtils;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 
@@ -70,7 +70,7 @@ import www.xcd.com.mylibrary.utils.SharePrefHelper;
  * 订单详情
  * 2018年6月6日 09:24:36
  */
-public class OrderDetailsActivity extends SimpleTopbarActivity
+public class OrderDetailsActivity extends BaseYasnActivity
         implements OrderDetailsGoodsAdapter.OnRcOrderDetailsClickListener, AdapterView.OnItemClickListener {
 
     private static Class<?> rightFuncArray[] = {CallServiceFunc.class};
@@ -294,6 +294,7 @@ public class OrderDetailsActivity extends SimpleTopbarActivity
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {

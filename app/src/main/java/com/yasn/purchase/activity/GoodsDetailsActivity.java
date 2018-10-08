@@ -29,6 +29,7 @@ import com.xyzlf.share.library.bean.ShareEntity;
 import com.xyzlf.share.library.interfaces.ShareConstant;
 import com.xyzlf.share.library.util.ShareUtil;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.activityold.WebViewH5Activity;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.func.GoodsDetailsTopBtnFunc;
@@ -54,7 +55,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
 import www.xcd.com.mylibrary.utils.SharePrefHelper;
 import www.xcd.com.mylibrary.view.BadgeView;
 import www.xcd.com.mylibrary.view.NoScrollViewPager;
@@ -62,7 +62,7 @@ import www.xcd.com.mylibrary.view.NoScrollViewPager;
 import static www.xcd.com.mylibrary.help.HelpUtils.REQUEST_CODE_ASK_CALL_PHONE;
 
 
-public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsInfoFragment.CallBack {
+public class GoodsDetailsActivity extends BaseYasnActivity implements GoodsInfoFragment.CallBack {
 
     PagerSlidingTabStrip titleTabs;
     LinearLayout llTitle;
@@ -515,6 +515,7 @@ public class GoodsDetailsActivity extends SimpleTopbarActivity implements GoodsI
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 if (returnCode == 200) {

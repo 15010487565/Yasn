@@ -175,6 +175,7 @@ public class IntegralFreezeFragment extends OrderFragment implements MultiSwipeR
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode) {
             case 100:
                 IntegralFreezeModel integralFreezeModel = JSON.parseObject(returnData, IntegralFreezeModel.class);

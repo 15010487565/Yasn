@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnFragment;
 import com.yasn.purchase.adapter.FindPagerAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.model.EventBusMsg;
@@ -28,7 +29,7 @@ import java.util.Map;
 /**
  * Created by Android on 2017/9/5.
  */
-public class FindFragment extends SimpleTopbarFragment implements
+public class FindFragment extends BaseYasnFragment implements
         ViewPager.OnPageChangeListener ,TabLayout.OnTabSelectedListener{
 
     private ViewPager pager;

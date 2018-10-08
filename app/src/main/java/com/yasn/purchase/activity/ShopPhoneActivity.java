@@ -12,16 +12,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.utils.AlignedTextUtils;
 
 import java.io.IOException;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
 import static www.xcd.com.mylibrary.help.HelpUtils.REQUEST_CODE_ASK_CALL_PHONE;
 
-public class ShopPhoneActivity extends SimpleTopbarActivity {
+public class ShopPhoneActivity extends BaseYasnActivity {
 
     private TextView tvShopPhoneLeft, tvShopPhoneCall;
     @Override

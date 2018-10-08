@@ -9,6 +9,24 @@ public class OrderSonPayInfoModel {
     private int orderId;
     private String sn;
     private int parentId;
+    private String needPayMoney;
+    private String shippingTotal;
+
+    public String getNeedPayMoney() {
+        return needPayMoney;
+    }
+
+    public void setNeedPayMoney(String needPayMoney) {
+        this.needPayMoney = needPayMoney;
+    }
+
+    public String getShippingTotal() {
+        return shippingTotal;
+    }
+
+    public void setShippingTotal(String shippingTotal) {
+        this.shippingTotal = shippingTotal;
+    }
 
     public int getParentId() {
         return parentId;

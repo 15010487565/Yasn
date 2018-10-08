@@ -15,6 +15,7 @@ import android.widget.Gallery;
 import android.widget.TextView;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.utils.AlignedTextUtils;
 import com.yasn.purchase.utils.CommonHelper;
@@ -24,9 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
-public class StaffCreateActivity extends SimpleTopbarActivity {
+public class StaffCreateActivity extends BaseYasnActivity {
 
     private CheckBox cbPurchase,cbFinance;
     private TextView tvStaffCreateNumber,tvStaffCreate;
@@ -108,6 +107,7 @@ public class StaffCreateActivity extends SimpleTopbarActivity {
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         switch (requestCode){
             case 100:
 

@@ -463,6 +463,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 		OkHttpHelper.getInstance().getAsyncHttp(requestCode, url, paramsMaps,new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
+
 				switch (msg.what) {
 					//请求错误
 					case HttpConfig.REQUESTERROR:

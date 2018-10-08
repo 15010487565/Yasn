@@ -10,13 +10,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yasn.purchase.R;
+import com.yasn.purchase.activity.base.BaseYasnActivity;
 
 import java.io.IOException;
 import java.util.Map;
 
-import www.xcd.com.mylibrary.base.activity.SimpleTopbarActivity;
-
-public class ProbationActivity extends SimpleTopbarActivity {
+public class ProbationActivity extends BaseYasnActivity {
 
     private TextView tvProbationEndTime,tvProbationShopHome, tvProbationAuthor;
     @Override

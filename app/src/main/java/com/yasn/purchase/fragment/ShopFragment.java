@@ -40,6 +40,7 @@ import com.yasn.purchase.activity.MakerShroffAccountActivity;
 import com.yasn.purchase.activity.SettingActivity;
 import com.yasn.purchase.activity.StaffCreateActivity;
 import com.yasn.purchase.activity.StaffMessageActivity;
+import com.yasn.purchase.activity.base.BaseYasnFragment;
 import com.yasn.purchase.adapter.ShopFuncAdapter;
 import com.yasn.purchase.common.Config;
 import com.yasn.purchase.help.LoginOut;
@@ -75,7 +76,7 @@ import www.xcd.com.mylibrary.widget.SnsTabWidget;
  * Created by Android on 2017/9/5.
  * 门店
  */
-public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickListener ,SwipeRefreshLayout.OnRefreshListener {
+public class ShopFragment extends BaseYasnFragment implements OnRcItemClickListener ,SwipeRefreshLayout.OnRefreshListener {
 
     private RelativeLayout title;
     private LinearLayout integral, feedback, callservice, collect;
@@ -333,8 +334,10 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
 
     @Override
     public void onSuccessResult(int requestCode, int returnCode, String returnMsg, String returnData, Map<String, Object> paramsMaps) {
+        super.onSuccessResult(requestCode,returnCode,returnMsg,returnData,paramsMaps);
         mSwipeRefreshLayout.setRefreshing(false);
         rlMainError.setVisibility(View.GONE);
+
         switch (requestCode) {
             case 101:
                 if (returnCode == 200) {
@@ -360,6 +363,7 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
                 break;
             case 103:
                 if (returnCode == 200){
+                    Log.e("TAG_邀请","isInvite="+isInvite);
                     if (isInvite == 1){//新用户
                         mInviteNotifyDialog.dismiss();
                     }else {
@@ -1047,7 +1051,9 @@ public class ShopFragment extends SimpleTopbarFragment implements OnRcItemClickL
             OkHttpDemand();
         }else if ("refreshorder".equals(msg)) {
             OkHttpDemand();
-        }else if ("paySucceed".equals(msg)){
+        }
+
+        else if ("paySucceed".equals(msg)){
             OkHttpDemand();
         }
     }

@@ -11,8 +11,8 @@ import android.transition.Transition;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
-import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.yasn.purchase.R;
 import com.yasn.purchase.listener.OnTransitionListener;
 import com.yasn.purchase.video.SmartPickVideo;
@@ -130,8 +130,8 @@ public class PlayPickActivity extends AppCompatActivity {
             return;
         }
         //释放所有
-        videoPlayer.setStandardVideoAllCallBack(null);
-        GSYVideoPlayer.releaseAllVideos();
+        videoPlayer.setVideoAllCallBack(null);
+        GSYVideoManager.releaseAllVideos();
         if (isTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             super.onBackPressed();
         } else {
