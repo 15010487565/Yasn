@@ -995,6 +995,7 @@ public class ShopFragment extends BaseYasnFragment implements OnRcItemClickListe
         agree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mInviteNotifyDialog.dismiss();
                 Map<String, Object> paramsShop = new HashMap<String, Object>();
                 if (token != null && !"".equals(token)) {
                     paramsShop.put("access_token", token);
@@ -1008,6 +1009,7 @@ public class ShopFragment extends BaseYasnFragment implements OnRcItemClickListe
         refuse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mInviteNotifyDialog.dismiss();
                 Map<String, Object> paramsShop = new HashMap<String, Object>();
                 if (token != null && !"".equals(token)) {
                     paramsShop.put("access_token", token);

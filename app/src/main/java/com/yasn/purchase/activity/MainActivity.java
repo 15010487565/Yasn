@@ -154,19 +154,6 @@ public class MainActivity extends CheckPermissionsActivity implements LoadWebVie
         tran.commit();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        tabWidget.getBackground().setAlpha(0);
-    }
-
-    @Override
-    protected void onPause() {
-        overridePendingTransition(0, 0);
-        super.onPause();
-
-    }
-
     /**
      * 获得所有的FragmentClass
      *
@@ -475,16 +462,31 @@ public class MainActivity extends CheckPermissionsActivity implements LoadWebVie
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(EventBusMsg event) {
         String msg = event.getMsg();
-//        Log.e("TAG_Main", "msg=" + msg);
+        Log.e("TAG_Main", "msg=" + msg);
         if ("loginout".equals(msg)) {
             setCartNum(0);
-            clickFragmentBtn(0);
+            if (isFront){
+                new Intent(this,LaunchActivity.class);
+            }
         } else if ("carNum".equals(msg)) {
             setCartNum(Integer.valueOf(event.getCarNum()));
 
         } else if ("webViewBack".equals(msg)) {//返回页
 
         }
+    }
+    private boolean isFront = false;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isFront = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isFront = false;
     }
 
     // 保存MyTouchListener接口的列表
